@@ -99,13 +99,23 @@ Use these fields below the title:
 
 Use only these sections:
 
-- **Purpose:** problem, users, value, and boundaries.
-- **Behavior:** entry points, flows, states, failures, and results.
-- **Rules:** business rules, validation, permissions, and edge cases.
-- **Integration:** data, APIs, events, dependencies, and migrations.
-- **Verification:** acceptance checks, coverage, and limitations.
+- **Purpose:** users, problem, value, scope, and exclusions.
+- **User Flow:** entry points, the main flow, UI feedback and states,
+  responsive behavior, and user-visible results.
+- **Rules:** permissions, business decisions, validation, calculations,
+  concurrency, retries, scale limits, and edge cases.
+- **Integration:** data ownership and contract, security boundaries, APIs,
+  events, side effects, dependencies, migrations, and rollout compatibility.
+- **Verification:** concise acceptance criteria, evidence, manual QA, remaining
+  work, and release gates.
 
-- Avoid model fields, code copies, and file or method inventories.
+- Use short subsections only when they make a complex section easier to scan.
+- Keep validation criteria in **Rules**; describe validation feedback in
+  **User Flow**.
+
+- Avoid code copies and file or method inventories.
+- Keep only contract-level data fields that readers need to understand the
+  feature in **Integration**.
 - Link deeper API, schema, or migration documents.
 
 ## Diagrams
