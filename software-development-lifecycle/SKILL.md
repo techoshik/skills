@@ -14,6 +14,9 @@ description: Shape a software idea collaboratively, create a concise lifecycle p
 - Apply senior architectural judgment.
 - Write so a new developer can act without material guessing.
 - Prefer short bullets over long paragraphs.
+- Keep every documentation sentence at 80 characters or fewer.
+- Split longer ideas into short sentences or separate bullets.
+- Do not use soft-wrapping to make a long sentence appear shorter.
 - Preserve unrelated work and authorization boundaries.
 - Require user approval before implementation.
 - Require separate approval for deployment and production access.

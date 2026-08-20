@@ -147,5 +147,8 @@ Use only these sections:
 
 - Use one idea per bullet.
 - Keep headings short.
+- Keep every sentence in every documentation artifact at 80 characters or fewer.
+- Split a longer idea into separate sentences or bullets.
+- Do not soft-wrap a long sentence merely to satisfy this rule.
 - Avoid repeated information and large tables.
 - Use nested bullets only when clarification is necessary.
