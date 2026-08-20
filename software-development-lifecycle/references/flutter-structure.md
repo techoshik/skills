@@ -76,9 +76,14 @@ lib/modules/<module>/
 
 ## Public Boundary
 
-- Export only types intentionally consumed outside the module.
-- Do not export feature widgets or state by default.
-- Do not export shared state without a confirmed external consumer.
+- Use `index.dart` as the stable public module boundary.
+- Always export public module files: models, root-level repository, service,
+  validator, constants, shared state, module-level screens in `screens/`, and
+  reusable module widgets in `widgets/`.
+- Keep feature behavior and state private by default.
+- Export a feature file or its state only when another module has a confirmed
+  need to compose or consume it.
+- Prefer direct imports inside the owning module.
 
 ## Verification
 

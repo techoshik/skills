@@ -34,7 +34,9 @@ test/
   subdirectories.
 - Create only files whose responsibilities exist.
 - Give supporting files the owning module name.
-- Give every module an `index.ts` public boundary.
+- Put triggers in `<module>_functions.ts`.
+- Give every module an `index.ts` public boundary that exports only the module's
+  intended public API.
 
 ## File Responsibilities
 
@@ -44,6 +46,8 @@ test/
 - `<module>_manager.ts` owns multi-step module coordination when needed.
 - `<module>_validator.ts` owns reusable domain validation.
 - `<module>_functions.ts` owns callable, scheduled, and trigger functions.
+- `index.ts` re-exports the intended public functions and types; it does not
+  define handlers.
 - Do not create empty responsibility files.
 
 ## Shared Code
@@ -51,6 +55,7 @@ test/
 - Keep shared platform infrastructure in `src/modules/platform/`.
 - Keep reusable generic helpers in `src/utils/`.
 - Keep `src/index.ts` limited to initialization, global options, and exports.
+- Import Cloud Function handlers from each module's `index.ts`.
 - Construct initialized platform dependencies inside handlers or lazy helpers.
 
 ## Persistence
