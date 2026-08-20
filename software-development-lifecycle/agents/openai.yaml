@@ -1,0 +1,4 @@
+interface:
+  display_name: "Software Development Lifecycle"
+  short_description: "Plan, build, verify, and observe outcomes"
+  default_prompt: "Use $software-development-lifecycle to create a plan clear enough for a new developer and Luna, then guide implementation and verify the production outcome."

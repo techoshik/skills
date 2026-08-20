@@ -1,0 +1,89 @@
+# Flutter Structure
+
+## Scope
+
+- Apply to Flutter application modules.
+- Treat `lib/` as relative to the Flutter package root.
+- Use `snake_case` for module, feature, and file names.
+- Follow explicit repository instructions when they conflict.
+- Surface conflicts before adding new structure.
+
+## Module Tree
+
+```text
+lib/modules/<module>/
+  models/
+    <module>.dart
+    <module>.freezed.dart
+    <module>.g.dart
+  features/
+    <feature_name>/
+      <feature_name>.dart
+      <feature_name>_state.dart
+      <feature_name>_state.freezed.dart
+      <feature_name>_state.g.dart
+  screens/
+    <module>_<screen_name>_screen.dart
+  <module>_repository.dart
+  <module>_service.dart
+  <module>_validator.dart
+  <module>_shared_state.dart
+  <module>_shared_state.g.dart
+  <module>_constants.dart
+  widgets/
+  index.dart
+```
+
+## Required Files
+
+- Use `models/` for module models and generated companions.
+- Do not create a new `entities/` directory.
+- Put the single module repository in the module root.
+- Name shared state `<module>_shared_state.dart`.
+- Use `index.dart` as the deliberate public boundary.
+
+## Optional Files
+
+- Create `<module>_service.dart` only when needed.
+- Create `<module>_validator.dart` only when needed.
+- Create `<module>_constants.dart` only for cross-feature values.
+- Create `widgets/` only when two or more features reuse a cohesive widget.
+- Do not create empty or speculative files or directories.
+
+## Features
+
+- Keep feature behavior, state, and widgets under `features/<feature_name>/`.
+- Keep feature-only constants inside the feature directory.
+- Use `screens/` for module-level screens.
+- Name screens `<module>_<screen_name>_screen.dart`.
+
+## Supporting Types
+
+- Keep one repository, service, or validator in the module root.
+- Create plural subdirectories only for multiple cohesive files of that type.
+- Prefer direct repository calls for simple feature orchestration.
+- Add a use case only for reusable domain policy, multi-repository coordination,
+  or a transaction boundary.
+
+## Persistence
+
+- Put persisted names in `<Module>Constants`.
+- Use `collectionName` and `viewCollectionName` identifiers.
+- Keep required persisted values in their contract format.
+- Use dedicated command constants when API keys differ from persistence keys.
+- Pass command data through typed request and response models.
+- Do not use handwritten command maps when typed models are practical.
+
+## Public Boundary
+
+- Export only types intentionally consumed outside the module.
+- Do not export feature widgets or state by default.
+- Do not export shared state without a confirmed external consumer.
+
+## Verification
+
+- Confirm new files match this tree.
+- Confirm optional structure has a current use.
+- Confirm generated companion files stay beside their source models or state.
+- Confirm tests mirror the relevant module and feature ownership.
+- Run repository-specific Flutter convention and analysis checks.
