@@ -95,7 +95,6 @@ Use these fields below the title:
 ```text
 - Status:
 - Updated:
-- Release:
 ```
 
 Use only these sections:
@@ -106,8 +105,6 @@ Use only these sections:
 - **Integration:** data, APIs, events, dependencies, and migrations.
 - **Verification:** acceptance checks, coverage, and limitations.
 
-- Use `Unreleased` before deployment.
-- Replace it with the release version or name after deployment.
 - Avoid model fields, code copies, and file or method inventories.
 - Link deeper API, schema, or migration documents.
 
