@@ -45,6 +45,12 @@ description: Shape a software idea collaboratively, create a concise lifecycle p
 
 - Work on one approved Implementation item at a time.
 - Read [luna-execution.md](references/luna-execution.md) completely.
+- Before editing an existing feature, inspect the closest comparable completed
+  implementations in the repository.
+- State which existing pattern will be reused, or why a different pattern is
+  required.
+- When repairing review findings, distinguish a narrow safe repair from a
+  required contract or architecture change before modifying code.
 - For Flutter work, read
   [flutter-structure.md](references/flutter-structure.md) completely.
 - For Cloud Functions work, read

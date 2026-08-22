@@ -56,6 +56,12 @@ lib/modules/<module>/
 - Keep feature-only constants inside the feature directory.
 - Use `screens/` for module-level screens.
 - Name screens `<module>_<screen_name>_screen.dart`.
+- Implement feature UI classes as `HookConsumerWidget` stateless widgets.
+  Use Flutter hooks for local controllers and other ephemeral UI state.
+- Keep each feature's Freezed state class and its Riverpod controller together
+  in the feature's `<feature_name>_state.dart` file.
+- Keep remote data loading, mutations, and error state in the feature
+  controller; UI classes should compose widgets and invoke controller methods.
 
 ### Standard record features
 
