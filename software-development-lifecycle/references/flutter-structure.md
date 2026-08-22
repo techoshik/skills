@@ -57,6 +57,21 @@ lib/modules/<module>/
 - Use `screens/` for module-level screens.
 - Name screens `<module>_<screen_name>_screen.dart`.
 
+### Standard record features
+
+- When a module needs standard record management, prefer these feature names:
+  - `<module>_list` for filtering, listing, and list actions.
+  - `<module>_form` for both create and update flows.
+  - `<module>_detail` for one record's read-only and action workspace.
+- Keep each feature's UI, state, validation feedback, and orchestration in its
+  own `features/<feature_name>/` directory.
+- A `<module>_form` supports both create and update when both flows exist.
+  Do not create separate create and edit features for the same record.
+- Module-level screens compose feature UI, routing inputs, permissions, and
+  page scaffolding. They do not call persistence or remote APIs directly.
+- Feature state calls a module repository or service through typed models.
+  Do not use handwritten command maps or raw persisted field names in UI.
+
 ## Supporting Types
 
 - Keep one repository, service, or validator in the module root.
