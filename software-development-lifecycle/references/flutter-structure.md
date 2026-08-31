@@ -62,6 +62,9 @@ lib/modules/<module>/
   in the feature's `<feature_name>_state.dart` file.
 - Keep remote data loading, mutations, and error state in the feature
   controller; UI classes should compose widgets and invoke controller methods.
+- Use Material `DropdownMenu` or `DropdownMenuFormField` APIs for selection 
+  controls. Do not add legacy `DropdownButton` or `DropdownButtonFormField`
+  controls. Prefer the shared dropdown wrapper when the application provides one.
 
 ### Standard record features
 
