@@ -15,7 +15,7 @@
 ## Plan Process
 
 - Create the plan inside the conversation.
-- Use short bullets and numbered Steps.
+- Use concise numbered Step entries.
 - Mark uncertain points as assumptions or questions.
 - Review and revise the plan with the user.
 - Save it only after user approval.
@@ -25,7 +25,7 @@
 
 ## Plan Format
 
-Use only these eight sections:
+Use only these seven sections:
 
 ### Problem
 
@@ -45,11 +45,20 @@ Use only these eight sections:
 
 ### Steps
 
-- Write one short line for each implementation outcome.
-- Number every line.
+- Use one numbered list entry for each implementation outcome.
 - Order lines by dependency and delivery sequence.
 - Keep wording clear and outcome-based.
-- Do not put detailed implementation here.
+- Make each Step name bold in a split-plan README.
+- Do not use headings for Step entries in a split-plan README.
+- Put the Step status and detailed-record link inside its entry.
+- Put one note before the list explaining which Step files to read.
+- Keep the status in one place only.
+- Link one detailed record for each Step in a split plan.
+- Keep a substantial plan in `<plan>/README.md` and `steps/` files.
+- Keep each detailed Step record in one `steps/<number>-<step>.md` file.
+- Read only the main README and the active Step file during implementation.
+- Keep a small plan in one `<plan>.md` file.
+- Put its detailed Step records directly below their Step entries.
 - Include work needed to observe the Goal after release.
 - Finalize Steps only after Scope, Requirements, and Migrations are understood.
 
@@ -78,40 +87,47 @@ Use only these eight sections:
 - Classify each migration as before, during, or after release.
 - Link the required migration document.
 - State compatibility and rollback requirements.
-- Add every migration action to Steps and Implementation.
+- Add every migration action to its Step and detailed record.
 
-### Implementation
-
-- Create one item for every numbered Step.
-- Use the same number and name.
-- Include all work needed to complete and verify the Step.
-- Add a new Step before adding new implementation work.
-
-Use this item structure:
+Use this detailed Step-file structure for split plans:
 
 ```text
-### 1. Item name
+# 1. Step name
 
-- Status:
-- Details:
-  - Outcome:
-  - Read:
-  - Change:
-  - Preserve:
-  - Guidelines:
-  - Dependencies:
-  - Actions:
-    1.
-    2.
-    3.
-- Verification:
-  - Requirements:
-  - Tests:
-  - Flow:
-  - Goal:
-  - Expected:
-- Notes:
+Plan: [Main plan](../README.md)
+
+## Outcome
+
+Exact result produced.
+
+## Context
+
+- Read:
+- Change:
+- Preserve:
+- Guidelines:
+- Dependencies:
+
+## Actions
+
+1.
+2.
+3.
+
+## Verification
+
+- Requirements:
+- Tests:
+- Flow:
+- Goal:
+- Expected:
+
+## Notes
 ```
+
+- Use these headings beneath a Step in a single-file plan.
+- Use bullets or numbered lists only for content within those headings.
+- Add a new Step before adding new implementation work.
 
 ### Observe
 
@@ -133,5 +149,5 @@ Use this item structure:
 - Avoid undocumented project knowledge.
 - Remove detail that does not change implementation decisions.
 - Review the plan from a new developer's perspective.
-- Make every item independently executable by Luna.
+- Make every Step independently executable by Luna.
 - Do not approve the plan while material choices require guessing.

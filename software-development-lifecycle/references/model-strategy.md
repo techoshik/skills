@@ -5,13 +5,13 @@
 - Brainstorm and challenge the idea.
 - Define the Problem, Goal, Scope, and Requirements.
 - Design architecture and delivery Steps.
-- Create Luna-ready Implementation items.
+- Create Luna-ready detailed Step records.
 - Check completeness and new-developer readability.
 - Present the plan for user approval.
 
-## 2. Luna — Item Implementation
+## 2. Luna — Step Implementation
 
-- Execute one bounded item at a time.
+- Execute one bounded Step at a time.
 - Follow Actions in order.
 - Follow listed guidelines and constraints.
 - Run focused tests and flow checks.
@@ -25,7 +25,7 @@
 - Escalate architecture, security, privacy, migration, compatibility,
   transaction, and concurrency risks.
 - Escalate repeated verification failures.
-- Escalate work outside the approved item.
+- Escalate work outside the approved Step.
 - Use Terra for moderately difficult implementation.
 - Use Sol for consequential decisions or high-risk work.
 
@@ -35,7 +35,7 @@
 - Verify Requirements and acceptance criteria.
 - Check interactions, regressions, and preserved behavior.
 - Confirm alignment with the Goal.
-- Reopen affected items when gaps remain.
+- Reopen affected Steps when gaps remain.
 - Confirm documentation and release readiness after gaps are resolved.
 
 ## Use

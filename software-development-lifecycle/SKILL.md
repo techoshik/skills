@@ -43,7 +43,7 @@ description: Shape a software idea collaboratively, create a concise lifecycle p
 
 ### 3. Implement
 
-- Work on one approved Implementation item at a time.
+- Work on one approved Step at a time.
 - Read [luna-execution.md](references/luna-execution.md) completely.
 - Before editing an existing feature, inspect the closest comparable completed
   implementations in the repository.
@@ -61,7 +61,7 @@ description: Shape a software idea collaboratively, create a concise lifecycle p
 
 ### 4. Verify
 
-- Verify every item and the complete Goal.
+- Verify every Step and the complete Goal.
 - Read [verification.md](references/verification.md) completely.
 - Read [model-strategy.md](references/model-strategy.md) for escalation or final review.
 
@@ -87,7 +87,7 @@ description: Shape a software idea collaboratively, create a concise lifecycle p
 ## Core Invariants
 
 - Keep one plan for one coherent Goal or change.
-- Every one-line Step must have one matching Implementation item.
+- Every Step must have one matching detailed record.
 - Do not implement work that has no approved Step.
 - Follow applicable repository instructions and guidelines.
 - Record actual verification evidence.

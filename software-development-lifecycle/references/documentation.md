@@ -18,6 +18,10 @@ docs/
     <application>.md
   plans/
     <plan>.md
+    <plan>/
+      README.md
+      steps/
+        <number>-<step>.md
   modules/
     <module>/
       README.md
@@ -40,7 +44,7 @@ docs/
 - Identify affected application areas.
 - Read applicable guidelines.
 - Check structure, design, code, testing, and review rules.
-- Record important constraints in the Implementation item.
+- Record important constraints in the detailed Step record.
 - Explain missing or conflicting guidance.
 - Suggest the smallest necessary addition.
 - Ask before creating or changing a guideline.
@@ -70,8 +74,11 @@ Use these sections:
 
 - Store approved plans under `docs/plans/`.
 - Keep one plan for one coherent Goal or change.
-- Read an existing plan before resuming work.
-- Update Implementation status and Notes during development.
+- Keep a small plan in one `<plan>.md` file.
+- Split a substantial plan into `<plan>/README.md` and `steps/` files.
+- Read the main README and active Step record before resuming work.
+- Keep Step status only in the main README for a split plan.
+- Update Step status and Notes during development.
 - Keep completed plans as delivery history.
 
 ## Modules

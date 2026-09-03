@@ -7,7 +7,7 @@
 - Include data, schema, API, contract, configuration, permission, and storage
   changes when relevant.
 - Classify each migration as before, during, or after release.
-- Create a matching Step and Implementation item.
+- Create a matching Step and detailed record.
 - Create one detailed document per migration.
 
 ## Document
