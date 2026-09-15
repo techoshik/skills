@@ -62,6 +62,7 @@ The lifecycle index must contain:
 Approval Mode: Guided | Strict | Auto
 Approval Status: Awaiting Developer Approval | Approved | Auto-approved | Blocked
 Next Phase: …
+Suggested Chat Title: [Phase] - [Feature]
 ```
 
 In `guided` or `strict` mode, set `Approval Status` to `Awaiting Developer
@@ -79,8 +80,9 @@ Treat each phase as independently resumable. Before ending a phase chat:
 1. Write the phase artifact.
 2. Update `00-lifecycle.md` with phase, status, approval state, and next phase.
 3. Record unresolved questions or blockers; do not carry them only in chat.
-4. End with a concise handoff naming the next phase skill and the artifact it
-   must read first.
+4. Set `Suggested Chat Title` to `[Next Phase] - [Feature]`.
+5. End with a concise handoff naming the next phase skill, suggested chat
+   title, and artifact it must read first.
 
 A new chat must read `00-lifecycle.md` first, then only the current phase's
 required upstream artifacts. It must not reconstruct state from the previous

@@ -45,7 +45,8 @@ Use `docs/lifecycle/<change-name>/`.
 The workspace should contain:
 
 - `00-lifecycle.md` — current state and artifact index.
-- approval mode, approval status, and next phase in `00-lifecycle.md`.
+- approval mode, approval status, next phase, and suggested chat title in
+  `00-lifecycle.md`.
 - numbered phase files created as phases begin.
 - `cycle-log.md` — improvement memory for the active cycle.
 
@@ -87,8 +88,9 @@ stop at the required approval gate. In `auto` mode, record `Auto-approved` and
 continue without a phase-approval prompt.
 
 When a phase chat ends, leave a concise handoff in the final response naming
-the next phase skill and the artifact it should read first. The host
-application, not the skill text, controls creating or deleting chat windows.
+the next phase skill, the suggested title `[Next Phase] - [Feature]`, and the
+artifact it should read first. The host application, not the skill text,
+controls creating, naming, or deleting chat windows.
 
 ## Context Discipline
 

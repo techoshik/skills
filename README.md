@@ -89,6 +89,25 @@ mode: auto
 contradictory requirements, missing authority, production safety boundaries,
 or separately authorized external actions.
 
+## Phase chat handoffs
+
+Each phase records its next handoff in `00-lifecycle.md`, including a suggested
+chat title in this form:
+
+```text
+[Phase] - [Feature]
+```
+
+For example:
+
+```text
+Plan - Add optional daytime field
+```
+
+The host application controls whether that suggested title is applied
+automatically. A new chat should read `00-lifecycle.md` first and then only the
+artifacts required by its phase.
+
 ## Project-owned files
 
 The installer manages only the reusable system pieces:
