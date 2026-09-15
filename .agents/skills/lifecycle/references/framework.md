@@ -89,6 +89,7 @@ A later phase must not silently repair an earlier mistake by inventing new assum
 
 ```text
 docs/lifecycle/ = temporary active-change memory
+docs/guidelines/ = permanent engineering standards
 docs/modules/   = permanent current product truth
 docs/backlog/   = permanent future opportunities
 cycle-log.md    = temporary development-system improvement memory
