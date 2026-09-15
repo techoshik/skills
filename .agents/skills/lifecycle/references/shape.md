@@ -80,6 +80,22 @@
 - Existing Patterns Reused
 - Explicitly Excluded Experience
 
+### Prototype
+
+Create a prototype when UI, responsive behaviour, or interaction states could
+change the shaped solution. Put it at
+`docs/lifecycle/<change-name>/prototype/index.html` and make it a standalone,
+responsive HTML file that opens directly without a server, dependency, network
+request, or production code. Keep only the screens and states needed to answer
+the uncertainty, and label the artifact as throwaway. Record its question,
+covered screens/states, run instructions, validation verdict, and decisions in
+`03-shape.md`. If the visual uncertainty is immaterial, record why a prototype
+is not needed.
+
+Keep an approved prototype available as a reference through Plan, Build, and
+Verify. Refine removes it after the validated decisions have been captured in
+the lifecycle or permanent documentation.
+
 ### Domain Shape
 
 - Core Concepts / Entities

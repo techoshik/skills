@@ -67,6 +67,7 @@
 - For each slice, plan **Model → UI → Backend → Connect → Verify** where applicable.
 - Keep model/domain changes limited to the current slice.
 - Reuse the approved prototype instead of redesigning UI during Plan.
+- Preserve the approved prototype's validated screens, states, and responsive decisions in the implementation plan; do not treat the prototype file itself as production code.
 - Identify affected code, data, interfaces, permissions, migrations, dependencies, and regression risks only as needed by the slice.
 - Define a concrete verification method for every slice before Build starts.
 - Remove technical work that does not contribute to an approved slice.

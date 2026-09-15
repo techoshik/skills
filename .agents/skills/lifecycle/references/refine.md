@@ -88,6 +88,7 @@
 - Identify the **few highest-leverage lessons and improvements**, not every cleanup opportunity.
 - For duplication/reusable behaviour: **reuse existing abstraction → extract shared abstraction only when justified → otherwise keep separate implementations when responsibilities differ or the pattern is not stable**.
 - Remove temporary/obsolete code introduced by the work when clearly safe and unnecessary.
+- Remove the lifecycle-managed prototype after Verify when its validated decisions have been captured in the lifecycle or permanent documentation. Preserve only a useful screenshot or decision record when future context genuinely benefits from it.
 - Classify each meaningful lesson into its proper home:
   - New requirement/value → Define / future work
   - Missing/stale system knowledge → Context / permanent module docs
