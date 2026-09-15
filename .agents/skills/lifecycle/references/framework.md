@@ -1,0 +1,107 @@
+# Development Lifecycle Framework
+
+## Governing Principle
+
+> **Build the minimum necessary thing that creates meaningful value.**
+
+- **Question** — Why is this requirement necessary? What real problem does it solve?
+- **Value** — What meaningful benefit will the user, product, or business receive?
+- **Delete** — What can we remove without losing that benefit?
+- **Simplify** — What is the simplest solution that produces the required outcome?
+- **Scope** — Never add nice-to-have behaviour unless explicitly approved.
+- **Stop** — Once the required outcome and acceptance criteria are satisfied, stop building.
+- **Optimize later** — Do not optimize something that may not need to exist.
+- **Automate last** — Automate only after the process or solution has proved useful and stable.
+
+## AI Scope Rule
+
+AI may discover additional opportunities, but it must never silently turn them into requirements.
+
+Use:
+
+**Discover → Mention → Justify → Get approval → Add to scope**
+
+Reminder:
+
+> **Just because AI can build it quickly does not mean we should build it.**
+
+## Development Flow
+
+1. **Define** — Understand what we are solving, for whom, why it matters, and what success means.
+2. **Context** — Give the AI the product, codebase, architecture, constraints, conventions, and history it needs.
+3. **Shape** — Validate what should be built before detailed implementation planning.
+4. **Plan** — Decide how the validated solution will be implemented and sequenced.
+5. **Build** — Implement the approved solution in small, understandable increments.
+6. **Verify** — Prove that the completed result works and satisfies the original requirement.
+7. **Refine** — Improve the solution, codebase, standards, context, and development process from what reality taught us.
+
+> **Shape validates the solution. Plan organizes the implementation.**
+
+## Standard Phase Structure
+
+Every phase uses the same structure:
+
+1. Purpose
+2. Inputs
+3. Rules
+4. Questions
+5. Actions
+6. Output
+7. Exit
+
+> **Same structure. Different thinking.**
+
+The process should carry procedural memory so humans and agents spend cognition on judgment rather than remembering what to check next.
+
+## Module and Feature
+
+- **Module** — A group of related features serving a larger product capability.
+- **Feature** — One specific user capability or behaviour inside a module.
+- **Module defines the system. Feature defines the behaviour.**
+- Shared business rules belong to the module.
+- Feature-specific rules belong to the feature.
+- Detailed domain/data modelling belongs to Shape, not Define.
+
+## Loop-Back Ownership
+
+When a later phase exposes a problem, return to the phase that owns it:
+
+- Requirement, value, scope, success criteria → **Define**
+- Existing-system understanding → **Context**
+- Experience, domain, solution behaviour → **Shape**
+- Implementation approach, sequencing, slices → **Plan**
+- Implementation defect or code conformance → **Build**
+- Whole-solution acceptance evidence → **Verify**
+- Reusable learning, standards, process, codebase improvement → **Refine**
+
+A later phase must not silently repair an earlier mistake by inventing new assumptions.
+
+## State and Context Rules
+
+- The lifecycle artifacts are the durable state; conversation history is not.
+- Keep one active lifecycle directory per change under `docs/lifecycle/`.
+- `00-lifecycle.md` is the entry point and current-state index.
+- Load only the artifacts needed by the current phase.
+- Reference permanent knowledge instead of copying it into every phase file.
+- `docs/modules/` describes the system as it is now; lifecycle files describe the change being worked through.
+
+## Information Architecture
+
+```text
+docs/lifecycle/ = temporary active-change memory
+docs/modules/   = permanent current product truth
+docs/backlog/   = permanent future opportunities
+cycle-log.md    = temporary development-system improvement memory
+```
+
+> **Human owns priority. Lifecycle owns backlog maintenance.**
+
+> **A backlog item never goes directly to Shape, Plan, or Build. It starts a new lifecycle at Define.**
+
+## Third-Party Skill Policy
+
+Third-party skills are techniques, not policy.
+
+> **Lifecycle owns the process. Specialist skills help execute it.**
+
+If a third-party skill conflicts with this lifecycle or the project's standards, this lifecycle and the project standards win.
