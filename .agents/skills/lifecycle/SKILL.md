@@ -14,11 +14,11 @@ Read:
 
 - `references/framework.md`
 - `references/cycle-log.md`
-- `references/third-party-skills.md` only when specialist-skill selection is relevant.
+  - `references/third-party-skills.md` before selecting or using a companion skill.
 
 ## Authority
 
-The lifecycle is the process authority. Phase artifacts and project Engineering Guidelines are the work authority. Specialist skills are techniques only and must not override either.
+The lifecycle is the process authority. Phase artifacts and project Engineering Guidelines are the work authority. Companion skills are techniques only and must not override either.
 
 ## Backlog Awareness
 
@@ -85,9 +85,9 @@ Load only what the current phase needs:
 
 Do not duplicate stable information into every artifact. Reference permanent sources where possible.
 
-## Third-Party Skills
+## Required Companion Skills
 
-Use specialist skills when they reduce uncertainty or improve execution. In particular:
+Use the required companion skills when their phase mapping applies:
 
 - Define: `grill-with-docs`, `wayfinder`
 - Context: `research`, `domain-modeling`
@@ -97,7 +97,7 @@ Use specialist skills when they reduce uncertainty or improve execution. In part
 - Verify: `code-review`, `diagnosing-bugs`
 - Refine: `improve-codebase-architecture`, `writing-for-agents`, `code-review`
 
-If unavailable, continue using the lifecycle phase directly.
+If a required companion skill is not installed, stop and report the setup requirement before continuing.
 
 ## Close the Cycle
 
@@ -112,4 +112,4 @@ Before closure:
 
 Then archive/remove the temporary lifecycle workspace according to project policy.
 
-> **The orchestrator remembers where we are. The phase skill remembers how to work. The artifacts remember what we know. Specialist skills provide techniques.**
+> **The orchestrator remembers where we are. The phase skill remembers how to work. The artifacts remember what we know. Companion skills provide techniques.**

@@ -74,7 +74,7 @@
 - Verify migrations, persistence, integrations, and compatibility where relevant.
 - Review the completed change against all applicable files under `docs/guidelines/`.
 - Run required formatter/lint/type/architecture/naming/test gates.
-- Use **code-review** when available for independent Standards + Spec review.
+- Use **code-review** for independent Guidelines + Spec review.
 - Record failures and route them to the owning phase rather than patching around them.
 - Use **diagnosing-bugs** for difficult failures.
 - Re-run affected verification after every correction.

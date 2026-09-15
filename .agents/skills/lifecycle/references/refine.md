@@ -99,7 +99,7 @@
 - Strengthen unclear guidelines with concrete rules/examples in `docs/guidelines/`.
 - Convert deterministic rules into formatter, linter, architecture test, compiler check, CI check, or another automated guard where worthwhile.
 - Remove obsolete or duplicated guidance.
-- Use **improve-codebase-architecture** when available to survey branch/codebase design opportunities.
+- Use **improve-codebase-architecture** to survey branch/codebase design opportunities.
 - Use **writing-for-agents** when the Cycle Log shows lifecycle/skill/pointer/agent-instruction problems.
 - Use **code-review** after code-level refinement when useful.
 - If implementation code changes, rerun applicable automated checks, Slice Conformance Review, and affected behavioural verification.

@@ -98,10 +98,10 @@ cycle-log.md    = temporary development-system improvement memory
 
 > **A backlog item never goes directly to Shape, Plan, or Build. It starts a new lifecycle at Define.**
 
-## Third-Party Skill Policy
+## Companion Skill Policy
 
-Third-party skills are techniques, not policy.
+Companion skills are techniques, not policy.
 
-> **Lifecycle owns the process. Specialist skills help execute it.**
+> **Lifecycle owns the process. Companion skills help execute it.**
 
-If a third-party skill conflicts with this lifecycle or the project's standards, this lifecycle and the project standards win.
+If a companion skill conflicts with this lifecycle or the project's guidelines, this lifecycle and the project guidelines win.

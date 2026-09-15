@@ -1,10 +1,17 @@
-# Specialist Skills
+# Required Companion Skills
 
-This lifecycle can use specialist skills from `mattpocock/skills` when available.
+The Lifecycle system depends on the companion skills in
+[mattpocock/skills](https://github.com/mattpocock/skills). Install them before
+using Lifecycle in a project:
 
-Repository: https://github.com/mattpocock/skills
+```bash
+npx skills@latest add mattpocock/skills
+```
 
-These skills are **supporting techniques**. They never replace the lifecycle's phase outputs or exit gates.
+Select the skills referenced below, including `setup-matt-pocock-skills`, and
+run `/setup-matt-pocock-skills` once per project. These skills provide
+techniques and setup; they never replace the Lifecycle phase outputs or exit
+gates.
 
 ## Recommended Mapping
 

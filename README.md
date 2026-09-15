@@ -3,6 +3,39 @@
 This repository contains reusable Lifecycle skills and installers that make a
 project Lifecycle-ready without overwriting its product knowledge.
 
+## Required companion skills
+
+Before using the Lifecycle skills in a project, install the required companion
+skills from [mattpocock/skills](https://github.com/mattpocock/skills):
+
+```bash
+npx skills@latest add mattpocock/skills
+```
+
+When prompted, install the Lifecycle companion skills, including:
+
+```text
+setup-matt-pocock-skills
+grill-with-docs
+wayfinder
+to-tickets
+research
+domain-modeling
+prototype
+codebase-design
+tdd
+diagnosing-bugs
+code-review
+improve-codebase-architecture
+writing-for-agents
+```
+
+Then run the setup skill once from the target project:
+
+```text
+/setup-matt-pocock-skills
+```
+
 ## Install into a project
 
 From this repository:

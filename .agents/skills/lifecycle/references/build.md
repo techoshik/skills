@@ -75,7 +75,7 @@ For every meaningful behaviour inside those steps, use the test-first loop where
 - **Refactor** — Improve structure without changing behaviour.
 - **Verify** — Confirm integrated slice through the real UI/API/technical boundary.
 
-Use **tdd** when available for the behavioural loop. Use **diagnosing-bugs** when failure is non-obvious.
+Use **tdd** for the behavioural loop. Use **diagnosing-bugs** when failure is non-obvious.
 
 After behaviour passes, run the mandatory **Slice Conformance Review**.
 
@@ -95,7 +95,7 @@ Review **all changed and newly created code** against every applicable guideline
 - no temporary/mock code left unintentionally;
 - required formatter, lint, type, architecture, naming, test, and other deterministic checks.
 
-Use **code-review** when available to review changed code against standards and the approved spec/slice.
+Use **code-review** to review changed code against guidelines and the approved spec/slice.
 
 Fix every discovered deviation, rerun affected automated checks, and reverify affected real behaviour. Only then close the slice.
 
