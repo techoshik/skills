@@ -15,7 +15,7 @@ Project knowledge:
 - `docs/modules/` — permanent current product truth
 - `docs/backlog/` — future product opportunities
 - `CONTEXT.md` — project/domain language when available
-- Project engineering guidelines and resources remain authoritative where applicable.
+- Project engineering guidelines remain authoritative during Build and Verify.
 
 Human owns priority. Lifecycle owns process and backlog maintenance.
 
