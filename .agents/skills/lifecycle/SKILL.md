@@ -14,7 +14,16 @@ Read:
 
 - `references/framework.md`
 - `references/cycle-log.md`
-  - `references/third-party-skills.md` before selecting or using a companion skill.
+- `references/approval.md`
+- `references/third-party-skills.md` before selecting or using a companion skill.
+
+Before selecting the first phase, determine the approval mode using
+`references/approval.md`. If the request does not specify a mode, ask the
+approval-mode question once and use `Strict` when the user gives no answer.
+Prefer the canonical short syntax `mode: strict`, `mode: guided`, or
+`mode: auto` when interpreting or documenting the selected mode.
+Persist the mode in `00-lifecycle.md`; later phase chats must read it and must
+not ask again.
 
 ## Authority
 
@@ -36,6 +45,7 @@ Use `docs/lifecycle/<change-name>/`.
 The workspace should contain:
 
 - `00-lifecycle.md` — current state and artifact index.
+- approval mode, approval status, and next phase in `00-lifecycle.md`.
 - numbered phase files created as phases begin.
 - `cycle-log.md` — improvement memory for the active cycle.
 
@@ -45,7 +55,8 @@ If the work already exists, read `00-lifecycle.md` first. Do not reconstruct sta
 
 ## Determine the Current Phase
 
-Use the latest approved artifact and its Exit gate:
+Use the latest approved artifact and its Exit gate. In `auto` mode,
+`Auto-approved` is an approved transition:
 
 - no approved Define → `lifecycle-define`
 - Define approved, Context incomplete → `lifecycle-context`
@@ -70,6 +81,14 @@ After the phase skill finishes:
 3. Update `00-lifecycle.md` with the current phase/status and relevant artifact references.
 4. Move forward only when the gate passes.
 5. If the gate fails, remain in the phase or loop back to the owning phase.
+
+Apply `references/approval.md` after each phase. In `guided` or `strict` mode,
+stop at the required approval gate. In `auto` mode, record `Auto-approved` and
+continue without a phase-approval prompt.
+
+When a phase chat ends, leave a concise handoff in the final response naming
+the next phase skill and the artifact it should read first. The host
+application, not the skill text, controls creating or deleting chat windows.
 
 ## Context Discipline
 

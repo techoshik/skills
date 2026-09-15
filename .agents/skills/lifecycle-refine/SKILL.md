@@ -7,6 +7,7 @@ Read:
 
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/guidelines.md`
+- `../lifecycle/references/approval.md`
 - `../lifecycle/references/refine.md`
 - the **complete** `../lifecycle/references/cycle-log.md` guidance
 - the active lifecycle's complete `cycle-log.md`
@@ -25,4 +26,5 @@ Process every Cycle Log entry, then archive the completed Cycle Log/workspace ac
 
 Before closing the cycle, ensure worthwhile postponed product work has been transferred to `docs/backlog/`.
 
-Do not complete until the Refine Exit gate passes.
+Do not complete until the Refine Exit gate passes. Apply the approval mode and
+update `00-lifecycle.md` before archiving the lifecycle workspace.

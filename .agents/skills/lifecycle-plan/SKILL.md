@@ -7,6 +7,7 @@ Read:
 
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/plan.md`
+- `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 
 Load approved Define, Context, and Shape artifacts.
@@ -17,4 +18,6 @@ Use `wayfinder` for large decision-heavy planning and `to-tickets` only when ext
 
 Write/update `04-plan.md`.
 
-Do not complete until the Plan Exit gate passes.
+Do not complete until the Plan Exit gate passes. In `guided` or `strict` mode,
+do not start Build until the developer approves the Plan; in `auto`, mark the
+transition `Auto-approved` and continue.

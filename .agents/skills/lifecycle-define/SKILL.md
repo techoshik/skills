@@ -7,6 +7,7 @@ Read:
 
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/define.md`
+- `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 - `../lifecycle/references/third-party-skills.md` when deep discovery is useful
 
@@ -18,4 +19,6 @@ Write/update `01-define.md` in the active lifecycle workspace.
 
 When Define ends in Defer or reduces release scope, preserve worthwhile future product work in `docs/backlog/`.
 
-Do not complete until the Define Exit gate passes.
+Do not complete until the Define Exit gate passes. Apply the approval mode: in
+`guided` or `strict`, stop with `Awaiting Developer Approval`; in `auto`, mark
+the transition `Auto-approved` and continue.

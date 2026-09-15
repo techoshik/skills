@@ -69,6 +69,26 @@ guidelines, module content, backlog content, and active lifecycle work alone.
 The installer supports both the current `.agents/skills/` repository layout
 and a future top-level `skills/` layout.
 
+## Approval modes
+
+The Lifecycle approval mode is recorded in `00-lifecycle.md` and survives
+phase-to-phase chat handoffs:
+
+- `strict` — default; pause after every phase and Build slice.
+- `guided` — pause at Define, Shape, Plan, and Verify decision gates.
+- `auto` — continue through passing gates without phase-approval prompts.
+
+Pass the mode in the request using the short syntax:
+
+```text
+Add an optional daytime field to the existing feature.
+mode: auto
+```
+
+`auto` skips phase approvals only. It does not authorize guessing through
+contradictory requirements, missing authority, production safety boundaries,
+or separately authorized external actions.
+
 ## Project-owned files
 
 The installer manages only the reusable system pieces:

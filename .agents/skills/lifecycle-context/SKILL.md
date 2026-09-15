@@ -7,6 +7,7 @@ Read:
 
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/context.md`
+- `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 
 Load the approved Define artifact and relevant permanent module docs/code. Gather only context that improves decision quality.
@@ -17,4 +18,5 @@ Write/update `02-context.md`.
 
 If discovered reality invalidates Define, return to Define rather than silently adapting the solution.
 
-Do not complete until the Context Exit gate passes.
+Do not complete until the Context Exit gate passes. Apply the approval mode and
+update `00-lifecycle.md` before handing off to Shape.

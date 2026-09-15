@@ -7,6 +7,7 @@ Read:
 
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/shape.md`
+- `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 
 Load approved Define and Context artifacts.
@@ -17,4 +18,6 @@ Write/update `03-shape.md`.
 
 If shaping invalidates Define or Context, loop back instead of hiding the mismatch.
 
-Do not complete until the Shape Exit gate passes.
+Do not complete until the Shape Exit gate passes. Apply the approval mode: in
+`guided` or `strict`, stop with `Awaiting Developer Approval`; in `auto`, mark
+the transition `Auto-approved` and continue.

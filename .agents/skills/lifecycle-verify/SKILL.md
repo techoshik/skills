@@ -8,6 +8,7 @@ Read:
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/verify.md`
 - `../lifecycle/references/guidelines.md`
+- `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 
 Load Define, Context, Shape, Plan, Build results, applicable Engineering Guidelines from `docs/guidelines/`, and the running integrated system.
@@ -18,4 +19,6 @@ Write/update `06-verify.md`.
 
 Route failures to the phase that owns them. Verification is not permission to patch around an earlier mistake.
 
-Do not complete until the Verify Exit gate passes.
+Do not complete until the Verify Exit gate passes. In `guided` or `strict` mode,
+stop with `Awaiting Developer Approval` before Refine or cycle closure; in
+`auto`, mark the transition `Auto-approved` and continue.

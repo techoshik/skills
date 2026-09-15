@@ -8,6 +8,7 @@ Read:
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/build.md`
 - `../lifecycle/references/guidelines.md`
+- `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 
 Load:
@@ -25,3 +26,7 @@ Implement one slice only. Do not start the next slice until behavioural verifica
 Write/update the slice result in `05-build.md` and update `00-lifecycle.md` current slice/status.
 
 Perform the Cycle Log check before closing every slice.
+
+Apply the approval mode after each slice. In `strict` mode, stop for approval;
+in `guided` mode, continue within the approved Plan unless a deviation is
+discovered; in `auto` mode, continue without a phase-approval prompt.
