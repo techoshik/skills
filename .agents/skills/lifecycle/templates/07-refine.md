@@ -11,7 +11,8 @@
 
 ## Promotion Check
 
-- [ ] Durable product/module knowledge promoted to `docs/modules/<module>/`.
+- [ ] Affected module document under `docs/modules/<module>.md` updated, or intentionally left unchanged because no durable product knowledge changed.
+- [ ] Module documentation follows `Goal → Rules → Features` and contains behavioral knowledge rather than implementation details.
 - [ ] Engineering/process learning promoted to its permanent source.
 - [ ] Every Cycle Log entry processed, deferred explicitly, or dismissed intentionally.
 - [ ] Code changes from Refine reverified where applicable.

@@ -26,7 +26,7 @@
 
 ## Permanent Sources
 
-- **Module Docs:** ../../modules/<module>/
+- **Module Docs:** ../../modules/<module>.md
 - **Engineering Guidelines:** ../../guidelines/
 
 ## Notes

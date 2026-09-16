@@ -105,7 +105,9 @@
 - Use **code-review** after code-level refinement when useful.
 - If implementation code changes, rerun applicable automated checks, Slice Conformance Review, and affected behavioural verification.
 - Process every Cycle Log entry by promoting useful learning, creating explicit future work, or intentionally dismissing a one-off.
-- Promote durable product/module knowledge from the lifecycle into `docs/modules/<module>/` so module documentation reflects the system as it now exists.
+- Promote durable product/module knowledge from the lifecycle into `docs/modules/<module>.md` so module documentation reflects the system as it now exists.
+- For an affected module, update the existing document in place; if it does not exist, create it from `.agents/skills/lifecycle/templates/module.md`.
+- Keep the document concise and behavioral: `Goal → Rules → Features`. Use `Feature Name — Responsibility` headings with capability bullets underneath. Remove stale behavior, keep implementation details in code, and skip the update when the completed change added no durable product knowledge.
 - Archive the completed Cycle Log and lifecycle workspace according to project policy after durable knowledge has been promoted.
 
 Before closing the lifecycle:

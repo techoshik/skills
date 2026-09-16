@@ -84,6 +84,7 @@ A later phase must not silently repair an earlier mistake by inventing new assum
 - Load only the artifacts needed by the current phase.
 - Reference permanent knowledge instead of copying it into every phase file.
 - `docs/modules/` describes the system as it is now; lifecycle files describe the change being worked through.
+- Each module normally has one concise document at `docs/modules/<module>.md` containing durable product behavior: its goal, shared rules, and feature responsibilities/capabilities—not implementation details.
 
 ## Information Architecture
 

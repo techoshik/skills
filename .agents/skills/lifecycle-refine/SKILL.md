@@ -20,7 +20,7 @@ Do not abstract merely because duplication exists. Prefer an existing abstractio
 
 Write/update `07-refine.md`.
 
-Promote durable product/module knowledge into `docs/modules/<module>/`. Promote process/standards learning into the appropriate permanent source. Reverify any implementation changes.
+Promote durable product/module knowledge into `docs/modules/<module>.md`. If the module document does not exist, create it from `../lifecycle/templates/module.md`; otherwise update the existing document in place. Promote process/standards learning into the appropriate permanent source. Reverify any implementation changes.
 
 Process every Cycle Log entry, then archive the completed Cycle Log/workspace according to project policy.
 

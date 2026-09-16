@@ -10,7 +10,11 @@ Read:
 - `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 
-Load the approved Define artifact and relevant permanent module docs/code. Gather only context that improves decision quality.
+Load the approved Define artifact and relevant permanent module docs/code. For
+every bug fix, existing-functionality change, or new functionality, identify
+the affected modules and read each existing `docs/modules/<module>.md` before
+completing Context. Record the paths read and any missing module document in
+`02-context.md`. Gather only context that improves decision quality.
 
 Use `research` or `domain-modeling` when helpful, but keep lifecycle Context authoritative.
 

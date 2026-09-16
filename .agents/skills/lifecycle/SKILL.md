@@ -104,6 +104,13 @@ Load only what the current phase needs:
 - Cycle Log only as required by the current phase; Refine loads the full log
 - `docs/backlog/` contains permanent future opportunities and may be consulted when relevant.
 
+For every change that fixes a bug, changes existing functionality, or adds new
+functionality, identify the affected module(s) and read each existing canonical
+module document at `docs/modules/<module>.md` during Context, before shaping or
+editing code. Record the document paths read in `02-context.md`. If an affected
+module has no document, record that context gap; create the document during
+Refine after Verify rather than inventing permanent documentation mid-change.
+
 Do not duplicate stable information into every artifact. Reference permanent sources where possible.
 
 ## Required Companion Skills
@@ -127,7 +134,7 @@ Refine owns cycle closure.
 Before closure:
 
 - useful Cycle Log learning is promoted to its permanent source;
-- permanent module documentation under `docs/modules/<module>/` reflects the system as it exists now;
+- permanent module documentation under `docs/modules/<module>.md` reflects the system as it exists now;
 - implementation refinements are reverified;
 - future requirements are explicitly separated from completed work.
 

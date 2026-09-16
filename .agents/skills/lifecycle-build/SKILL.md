@@ -17,6 +17,7 @@ Load:
 - approved `04-plan.md`
 - the current slice
 - relevant Shape/Context only as needed
+- canonical module documents for affected modules under `docs/modules/<module>.md`; confirm they were read during Context before editing code
 - applicable Engineering Guidelines under `docs/guidelines/` before editing code
 
 Use `tdd` for meaningful behaviour where available. Use `diagnosing-bugs` for difficult failures. Use `code-review` when useful for the mandatory slice standards/spec review.

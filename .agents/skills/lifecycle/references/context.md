@@ -11,6 +11,7 @@
 ## 2. Inputs
 
 - **Approved Define Output** — Finalized module or feature definition.
+- **Canonical Module Documentation** — The existing `docs/modules/<module>.md` for each affected module, when present.
 - **Global Product Context** — Existing product, architecture, stack, conventions, and shared rules.
 - **Module Context** — Existing module purpose, boundaries, domain, rules, and dependencies.
 - **Existing Implementation** — Relevant code, models, APIs, components, tests, configurations, and schemas.
@@ -26,6 +27,7 @@
 - **Current over stale** — Remove/correct outdated context.
 - **Relevant over complete** — Context is not an encyclopedia.
 - **Reference over duplication** — Do not repeat stable Global/Module knowledge in every feature.
+- **Read the canonical module document** — For every bug fix, existing-functionality change, or new functionality, identify each affected module and read its existing `docs/modules/<module>.md` before shaping or editing code. Record missing documents as context gaps.
 - **Do not invent missing information** — Surface the gap.
 - **Do not turn context into requirements** — Context explains the existing system; Define controls what we are building.
 - **Validate Define against reality** — If system facts contradict approved problem, scope, rules, constraints, or success criteria, return to Define.
