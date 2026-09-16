@@ -129,3 +129,4 @@ update_agents_file
 echo "Installed $installed Lifecycle skill(s) into $TARGET_SKILLS"
 echo "Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist"
 echo "Updated the managed Lifecycle section in $AGENTS_FILE"
+echo "Solo developers may add docs/lifecycle/ to the project's .gitignore"

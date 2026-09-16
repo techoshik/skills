@@ -83,3 +83,4 @@ if (-not (Test-Path -LiteralPath $AgentsFile -PathType Leaf)) {
 Write-Output "Installed $Installed Lifecycle skill(s) into $TargetSkills"
 Write-Output 'Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist'
 Write-Output "Updated the managed Lifecycle section in $AgentsFile"
+Write-Output "Solo developers may add docs/lifecycle/ to the project's .gitignore"

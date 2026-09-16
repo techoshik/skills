@@ -83,7 +83,8 @@
 - The lifecycle artifacts are the versioned active-cycle state; conversation history is not.
 - **Markdown wrapping** — Keep each coherent point on one line, even when it exceeds 80 characters. Wrap only when one line contains separate points or wrapping improves readability; do not wrap solely to meet an 80-character limit.
 - Keep one active lifecycle directory per change under `docs/lifecycle/`.
-- Keep the active lifecycle workspace versioned while the change is in progress so developers, branches, and new phase chats can share its state.
+- Keep the active lifecycle workspace versioned while the change is in progress when developers, branches, or new phase chats need shared continuity.
+- A developer working alone may add `docs/lifecycle/` to the project's `.gitignore`; the lifecycle still works locally, but its active records will not survive a fresh clone or move to another machine.
 - `00-lifecycle.md` is the entry point and current-state index.
 - Load only the artifacts needed by the current phase.
 - Reference permanent knowledge instead of copying it into every phase file.

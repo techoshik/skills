@@ -10,7 +10,7 @@
 
 - Project knowledge:
 
-  - `docs/lifecycle/` — temporary active-cycle memory
+  - `docs/lifecycle/` — temporary active-cycle memory; commit it for shared continuity, or add `docs/lifecycle/` to `.gitignore` when working alone
   - `docs/guidelines/` — project-specific engineering standards to load before Build and Verify
   - `docs/modules/` — permanent current product truth
   - `docs/backlog/` — future product opportunities

@@ -116,7 +116,9 @@ project/
 
 - The project owns the contents created during actual development. The installer does not generate guideline files, generic context, module documents, backlog items, or active cycle artifacts.
 
-- Active lifecycle workspaces are committed while a change is in progress so developers and phase chats can share state.
+- Active lifecycle workspaces are normally committed while a change is in progress so developers, branches, and phase chats can share state.
+- Developers working alone may add `docs/lifecycle/` to the project's `.gitignore` when they do not need to share or preserve active lifecycle records in version control. Lifecycle continues to work locally; ignoring the folder only removes those records from commits and means they will not be available after a fresh clone or on another machine.
+- If a team later needs shared lifecycle continuity, remove that ignore entry and commit the active workspace.
 - During Refine:
   - Record proposed durable knowledge, code improvements, guideline changes, automation, and backlog items in `07-refine.md`.
   - Review the branch for duplication, unnecessary complexity, temporary code, missing tests, automation opportunities, and other evidence-based improvements.
