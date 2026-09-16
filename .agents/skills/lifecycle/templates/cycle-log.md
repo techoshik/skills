@@ -1,12 +1,10 @@
 # Cycle Log
 
-Temporary source of truth for **improvement opportunities**, not product requirements or project status.
+- Temporary source of truth for **improvement opportunities**.
+- Not a source of truth for product requirements or project status.
 
-Format:
+- **Format:** `[Phase] Difficulty — Impact`
 
-`[Phase] Difficulty — Impact`
-
-Add one evidence line only when necessary.
+- Add one evidence line only when necessary.
 
 ## Entries
-

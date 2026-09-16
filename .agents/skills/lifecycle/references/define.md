@@ -29,10 +29,10 @@
 
 ## 4. Questions
 
-Use these as a decision-tree frontier, not as a three-question checklist. Ask
-all currently answerable user decisions in one round, wait for the answers,
-then recompute the next round. A short or apparently clear request does not
-remove this pass.
+- Use these as a decision-tree frontier, not a three-question checklist.
+- Ask all currently answerable user decisions in one round.
+- Wait for answers, then recompute the next round.
+- Run this pass even when the request sounds clear.
 
 - **Problem** — What real problem are we solving?
 - **User** — Who experiences it?
@@ -63,11 +63,8 @@ remove this pass.
 - Decide **Proceed, Defer, or Reject** before moving forward.
 - If the decision is **Defer** but the opportunity still has meaningful future value, create or update an entry in `docs/backlog/`.
 - If the current release intentionally excludes valuable capabilities, preserve those capabilities in the backlog instead of leaving them only in lifecycle history.
-- Use **grill-with-docs** for every non-trivial change to interview the user,
-  sharpen terminology, and stress-test concrete scenarios.
-- Use **wayfinder** when the decision tree is too large or foggy for one
-  session; translate its decisions into this lifecycle structure rather than
-  adopting a competing monolithic spec.
+- Use **grill-with-docs** for every non-trivial change to interview the user, sharpen terminology, and stress-test concrete scenarios.
+- Use **wayfinder** when the decision tree is too large or foggy for one session; translate its decisions into this lifecycle structure rather than adopting a competing monolithic spec.
 
 > **Define captures deferred value; it does not decide when that value becomes a priority.**
 
@@ -124,15 +121,15 @@ remove this pass.
 
 ## 7. Exit
 
-Move to **Context** only when:
+- Move to **Context** only when:
 
-- Decision is **Proceed**.
-- Problem, user, value, evidence, and minimum outcome are clear.
-- Scope and non-scope are explicit.
-- Success criteria are observable.
-- Important assumptions, open questions, dependencies, and risks are visible.
-- **Cycle Log Check** has been performed.
-- A **Defer** decision with future value has been preserved in the backlog.
-- A human or AI agent can honestly say:
+  - Decision is **Proceed**.
+  - Problem, user, value, evidence, and minimum outcome are clear.
+  - Scope and non-scope are explicit.
+  - Success criteria are observable.
+  - Important assumptions, open questions, dependencies, and risks are visible.
+  - **Cycle Log Check** has been performed.
+  - A **Defer** decision with future value has been preserved in the backlog.
+  - A human or AI agent can honestly say:
 
 > **I understand who needs this, why it matters, the minimum thing worth building, its boundaries, and what success looks like.**

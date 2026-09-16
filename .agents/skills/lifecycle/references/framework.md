@@ -15,13 +15,13 @@
 
 ## AI Scope Rule
 
-AI may discover additional opportunities, but it must never silently turn them into requirements.
+- AI may discover additional opportunities, but it must never silently turn them into requirements.
 
-Use:
+- Use:
 
-**Discover → Mention → Justify → Get approval → Add to scope**
+  - **Discover → Mention → Justify → Get approval → Add to scope**
 
-Reminder:
+- Reminder:
 
 > **Just because AI can build it quickly does not mean we should build it.**
 
@@ -39,19 +39,19 @@ Reminder:
 
 ## Standard Phase Structure
 
-Every phase uses the same structure:
+- Every phase uses the same structure:
 
-1. Purpose
-2. Inputs
-3. Rules
-4. Questions
-5. Actions
-6. Output
-7. Exit
+  1. Purpose
+  2. Inputs
+  3. Rules
+  4. Questions
+  5. Actions
+  6. Output
+  7. Exit
 
 > **Same structure. Different thinking.**
 
-The process should carry procedural memory so humans and agents spend cognition on judgment rather than remembering what to check next.
+- The process should carry procedural memory so humans and agents spend cognition on judgment rather than remembering what to check next.
 
 ## Module and Feature
 
@@ -64,26 +64,26 @@ The process should carry procedural memory so humans and agents spend cognition 
 
 ## Loop-Back Ownership
 
-When a later phase exposes a problem, return to the phase that owns it:
+- When a later phase exposes a problem, return to its owner:
 
-- Requirement, value, scope, success criteria → **Define**
-- Existing-system understanding → **Context**
-- Experience, domain, solution behaviour → **Shape**
-- Implementation approach, sequencing, slices → **Plan**
-- Implementation defect or code conformance → **Build**
-- Whole-solution acceptance evidence → **Verify**
-- Reusable learning, standards, process, codebase improvement → **Refine**
+| Problem | Owning phase |
+| --- | --- |
+| Requirement, value, scope, or success criteria | **Define** |
+| Existing-system understanding | **Context** |
+| Experience, domain, or solution behaviour | **Shape** |
+| Implementation approach, sequencing, or slices | **Plan** |
+| Implementation defect or code conformance | **Build** |
+| Whole-solution acceptance evidence | **Verify** |
+| Reusable learning, standards, process, or codebase improvement | **Refine** |
 
-A later phase must not silently repair an earlier mistake by inventing new assumptions.
+- A later phase must not silently repair an earlier mistake by inventing new assumptions.
 
 ## State and Context Rules
 
-- The lifecycle artifacts are the versioned active-cycle state; conversation
-  history is not.
+- The lifecycle artifacts are the versioned active-cycle state; conversation history is not.
 - **Markdown wrapping** — Keep each coherent point on one line, even when it exceeds 80 characters. Wrap only when one line contains separate points or wrapping improves readability; do not wrap solely to meet an 80-character limit.
 - Keep one active lifecycle directory per change under `docs/lifecycle/`.
-- Keep the active lifecycle workspace versioned while the change is in
-  progress so developers, branches, and new phase chats can share its state.
+- Keep the active lifecycle workspace versioned while the change is in progress so developers, branches, and new phase chats can share its state.
 - `00-lifecycle.md` is the entry point and current-state index.
 - Load only the artifacts needed by the current phase.
 - Reference permanent knowledge instead of copying it into every phase file.
@@ -100,12 +100,13 @@ docs/backlog/   = permanent future opportunities
 cycle-log.md    = temporary development-system improvement memory
 ```
 
-Active lifecycle workspaces are temporary working records, not permanent
-product documentation. During Refine, first record proposed promotions and
-improvements in `07-refine.md`. Ask the user to review and approve them before
-changing code or any permanent source. After the approved work is applied and
-reverified, ask whether the completed workspace should be retained, archived,
-or removed. Do not remove or archive it without explicit user confirmation.
+- Active lifecycle workspaces are temporary working records, not permanent product documentation.
+- During Refine:
+  - Record proposed promotions and improvements in `07-refine.md`.
+  - Ask the user to review and approve them before changing code or permanent sources.
+  - Apply and reverify approved changes.
+  - Ask whether to retain, archive, or remove the completed workspace.
+  - Remove or archive it only after explicit confirmation.
 
 > **Human owns priority. Lifecycle owns backlog maintenance.**
 
@@ -113,8 +114,8 @@ or removed. Do not remove or archive it without explicit user confirmation.
 
 ## Companion Skill Policy
 
-Companion skills are techniques, not policy.
+- Companion skills are techniques, not policy.
 
 > **Lifecycle owns the process. Companion skills help execute it.**
 
-If a companion skill conflicts with this lifecycle or the project's guidelines, this lifecycle and the project guidelines win.
+- If a companion skill conflicts with this lifecycle or the project's guidelines, this lifecycle and the project guidelines win.

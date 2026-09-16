@@ -32,4 +32,4 @@
 
 ## Notes
 
-Keep this file small. It is the session entry point and state index, not a duplicate of phase artifacts.
+- Keep this file small. It is the session entry point and state index, not a duplicate of phase artifacts.

@@ -1,6 +1,7 @@
 # 05 — Build
 
-Record completed/blocked slice results only. The code is the primary output.
+- Record completed or blocked slice results only.
+- The code is the primary output.
 
 ## Slice Result — …
 

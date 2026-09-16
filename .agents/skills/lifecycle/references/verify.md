@@ -100,22 +100,22 @@
 - **Loop-Back Required:** Define / Context / Shape / Plan / Build / None
 - **Remaining Risks:** …
 
-Only record meaningful evidence; do not create a huge QA report.
+- Only record meaningful evidence; do not create a huge QA report.
 
 ## 7. Exit
 
-Move to **Refine** only when:
+- Move to **Refine** only when:
 
-- Minimum outcome is demonstrably working.
-- Required success criteria pass.
-- Complete feature/module workflow works through the real system.
-- Important business rules, permissions, states, data, and integrations behave correctly.
-- Critical regressions are ruled out or fixed.
-- Completed changed code has no known violation of applicable Engineering Guidelines.
-- Required automated engineering/test gates pass.
-- No unresolved critical verification failure remains.
-- No unapproved scope has entered the result.
-- **Cycle Log Check** has been performed.
-- The AI/developer can honestly say:
+  - Minimum outcome is demonstrably working.
+  - Required success criteria pass.
+  - Complete feature/module workflow works through the real system.
+  - Important business rules, permissions, states, data, and integrations behave correctly.
+  - Critical regressions are ruled out or fixed.
+  - Completed changed code has no known violation of applicable Engineering Guidelines.
+  - Required automated engineering/test gates pass.
+  - No unresolved critical verification failure remains.
+  - No unapproved scope has entered the result.
+  - **Cycle Log Check** has been performed.
+  - The AI/developer can honestly say:
 
 > **The completed solution does what we promised, works as a whole, conforms to the applicable Engineering Guidelines, and has not broken the important behaviour around it.**

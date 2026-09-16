@@ -27,7 +27,10 @@
 - **Current over stale** — Remove/correct outdated context.
 - **Relevant over complete** — Context is not an encyclopedia.
 - **Reference over duplication** — Do not repeat stable Global/Module knowledge in every feature.
-- **Read the canonical module document** — For every bug fix, existing-functionality change, or new functionality, identify each affected module and read its existing `docs/modules/<module>.md` before shaping or editing code. Record missing documents as context gaps.
+- **Read the canonical module document**:
+  - Identify each affected module for every bug fix, existing-functionality change, or new functionality.
+  - Read its existing `docs/modules/<module>.md` before shaping or editing code.
+  - Record missing documents as context gaps.
 - **Do not invent missing information** — Surface the gap.
 - **Do not turn context into requirements** — Context explains the existing system; Define controls what we are building.
 - **Validate Define against reality** — If system facts contradict approved problem, scope, rules, constraints, or success criteria, return to Define.
@@ -37,7 +40,7 @@
 
 ## 4. Questions
 
-Ask these as concrete prompts and investigate facts yourself:
+- Ask these as concrete prompts and investigate facts yourself:
 
 ### Global
 
@@ -53,12 +56,9 @@ Ask these as concrete prompts and investigate facts yourself:
 
 ### Feature
 
-- How does the current behaviour work, and which code, data, tests, and rules
-  implement it?
-- Which areas, dependencies, history, limitations, or previous decisions are
-  relevant?
-- What is still unknown, and does the discovered system remain consistent with
-  Define?
+- How does the current behaviour work, and which code, data, tests, and rules implement it?
+- Which areas, dependencies, history, limitations, or previous decisions are relevant?
+- What is still unknown, and does the discovered system remain consistent with Define?
 
 ## 5. Actions
 
@@ -115,20 +115,20 @@ Ask these as concrete prompts and investigate facts yourself:
 - Context Gaps / Open Questions
 - Define Mismatches
 
-Not every field must be filled. Include it only when it helps current work.
+- Not every field must be filled. Include it only when it helps current work.
 
 ## 7. Exit
 
-Move to **Shape** only when:
+- Move to **Shape** only when:
 
-- The AI understands how the relevant part of the existing system works.
-- Required Global, Module, and Feature context is available.
-- Important boundaries, rules, dependencies, data, and affected areas are understood.
-- Relevant existing implementation has been identified.
-- Critical context gaps/contradictions are resolved or explicitly recorded.
-- Define is still valid; otherwise return to Define.
-- Unnecessary context has been removed.
-- **Cycle Log Check** has been performed.
-- The AI can honestly say:
+  - The AI understands how the relevant part of the existing system works.
+  - Required Global, Module, and Feature context is available.
+  - Important boundaries, rules, dependencies, data, and affected areas are understood.
+  - Relevant existing implementation has been identified.
+  - Critical context gaps/contradictions are resolved or explicitly recorded.
+  - Define is still valid; otherwise return to Define.
+  - Unnecessary context has been removed.
+  - **Cycle Log Check** has been performed.
+  - The AI can honestly say:
 
 > **I understand the existing system well enough to shape the smallest correct solution without inventing assumptions or unnecessary architecture.**

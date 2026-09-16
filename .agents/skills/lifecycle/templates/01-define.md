@@ -2,7 +2,7 @@
 
 ## Decision
 
-Proceed / Defer / Reject
+- Proceed / Defer / Reject
 
 ## Requirement Review
 

@@ -14,7 +14,7 @@
 - **Current Slice** — The one slice being implemented now.
 - **Shape Artifacts** — Approved prototype, domain model, flows, contracts, relevant design decisions.
 - **Relevant Context** — Existing code, patterns, dependencies, constraints, current behaviour.
-- **Engineering Guidelines** — Authoritative project rules discovered under `docs/guidelines/` for architecture, folders, file placement, naming, classes, interfaces, internal structure, dependencies, tests, and other code conventions applicable to this slice.
+- **Engineering Guidelines** — Authoritative rules under `docs/guidelines/` for architecture, placement, naming, structure, dependencies, tests, and other conventions applicable to this slice.
 - **Verification Method** — The proof already defined for this slice.
 
 ## 3. Rules
@@ -22,7 +22,10 @@
 - **One slice at a time** — Do not start later slices while the current slice is unfinished.
 - **Follow the Plan** — Build what was approved; do not redesign while implementing.
 - **Minimum change** — Change only what the current slice requires.
-- **Load guidelines before editing** — Identify the affected technologies and areas, discover all applicable files under `docs/guidelines/`, and read them before modifying code. If applicable guidance is unavailable or contradictory, stop rather than guess.
+- **Load guidelines before editing**:
+  - Identify affected technologies and areas.
+  - Discover and read all applicable files under `docs/guidelines/`.
+  - Stop when guidance is missing or contradictory; do not guess.
 - **Guidelines are a gate, not a suggestion** — A working slice that violates applicable project guidelines is incomplete.
 - **Test important behaviour first** — For meaningful behaviour, define proof before implementation and use **Specify → Red → Green → Refactor → Verify**.
 - **Do not force low-value tests** — Test business behaviour, contracts, integrations, and meaningful interactions; do not create ceremonial tests.
@@ -59,45 +62,45 @@
 
 ## 5. Actions
 
-For each slice execute:
+- For each slice execute:
 
-1. **Model** — Create/update only models, types, states, fields, contracts required by this slice.
-2. **UI** — Implement the approved portion of the prototype; temporary/mock data only where useful.
-3. **Backend** — Implement required database, repository, service, API, permissions, integrations, migrations, or other backend work.
-4. **Connect** — Connect real UI/API behaviour and remove temporary shortcuts.
-5. **Verify** — Exercise the real behaviour through its actual boundary.
+  1. **Model** — Create/update only models, types, states, fields, contracts required by this slice.
+  2. **UI** — Implement the approved portion of the prototype; temporary/mock data only where useful.
+  3. **Backend** — Implement required database, repository, service, API, permissions, integrations, migrations, or other backend work.
+  4. **Connect** — Connect real UI/API behaviour and remove temporary shortcuts.
+  5. **Verify** — Exercise the real behaviour through its actual boundary.
 
-For every meaningful behaviour inside those steps, use the test-first loop where appropriate:
+- For every meaningful behaviour inside those steps, use the test-first loop where appropriate:
 
-- **Specify** — Define expected behaviour.
-- **Red** — Write the failing test/executable proof.
-- **Green** — Implement minimum code required to pass.
-- **Refactor** — Improve structure without changing behaviour.
-- **Verify** — Confirm integrated slice through the real UI/API/technical boundary.
+  - **Specify** — Define expected behaviour.
+  - **Red** — Write the failing test/executable proof.
+  - **Green** — Implement minimum code required to pass.
+  - **Refactor** — Improve structure without changing behaviour.
+  - **Verify** — Confirm integrated slice through the real UI/API/technical boundary.
 
-Use **tdd** for the behavioural loop. Use **diagnosing-bugs** when failure is non-obvious.
+- Use **tdd** for the behavioural loop. Use **diagnosing-bugs** when failure is non-obvious.
 
-After behaviour passes, run the mandatory **Slice Conformance Review**.
+- After behaviour passes, run the mandatory **Slice Conformance Review**.
 
 ### Slice Conformance Review
 
-Review **all changed and newly created code** against every applicable guideline under `docs/guidelines/`:
+- Review **all changed and newly created code** against every applicable guideline under `docs/guidelines/`:
 
-- folder and file placement;
-- file and folder naming;
-- class, interface, type, method, and member naming where applicable;
-- internal file/class/interface structure;
-- correct architectural layer and dependency direction;
-- existing patterns reused where appropriate;
-- test placement/naming/style conventions;
-- no unnecessary abstraction or speculative generality;
-- no unrelated changes;
-- no temporary/mock code left unintentionally;
-- required formatter, lint, type, architecture, naming, test, and other deterministic checks.
+  - folder and file placement;
+  - file and folder naming;
+  - class, interface, type, method, and member naming where applicable;
+  - internal file/class/interface structure;
+  - correct architectural layer and dependency direction;
+  - existing patterns reused where appropriate;
+  - test placement/naming/style conventions;
+  - no unnecessary abstraction or speculative generality;
+  - no unrelated changes;
+  - no temporary/mock code left unintentionally;
+  - required formatter, lint, type, architecture, naming, test, and other deterministic checks.
 
-Use **code-review** to review changed code against guidelines and the approved spec/slice.
+- Use **code-review** to review changed code against guidelines and the approved spec/slice.
 
-Fix every discovered deviation, rerun affected automated checks, and reverify affected real behaviour. Only then close the slice.
+- Fix every discovered deviation, rerun affected automated checks, and reverify affected real behaviour. Only then close the slice.
 
 > **Model → UI → Backend → Connect → Verify → Conformance → Next Slice**
 
@@ -113,27 +116,27 @@ Fix every discovered deviation, rerun affected automated checks, and reverify af
 - **Result:** Pass / Blocked
 - **Discoveries / Deviations:** … *(only when relevant)*
 
-Keep the record small. The primary output is working, verified, conformant code.
+- Keep the record small. The primary output is working, verified, conformant code.
 
 ## 7. Exit
 
-Move to the next slice only when:
+- Move to the next slice only when:
 
-- Planned behaviour is implemented.
-- Meaningful behaviour is protected by appropriate automated tests/executable proof where useful.
-- Temporary development implementations are removed.
-- Relevant code-level checks pass.
-- Actual behaviour has been exercised through its real verification boundary.
-- All changed/new code conforms to applicable Engineering Guidelines.
-- Required deterministic checks pass where available.
-- Conformance fixes have been retested and affected real behaviour reverified.
-- No unresolved deviation from Plan remains.
-- No earlier phase has been invalidated.
-- **Cycle Log Check** has been performed for the slice.
-- The AI/developer can honestly say:
+  - Planned behaviour is implemented.
+  - Meaningful behaviour is protected by appropriate automated tests/executable proof where useful.
+  - Temporary development implementations are removed.
+  - Relevant code-level checks pass.
+  - Actual behaviour has been exercised through its real verification boundary.
+  - All changed/new code conforms to applicable Engineering Guidelines.
+  - Required deterministic checks pass where available.
+  - Conformance fixes have been retested and affected real behaviour reverified.
+  - No unresolved deviation from Plan remains.
+  - No earlier phase has been invalidated.
+  - **Cycle Log Check** has been performed for the slice.
+  - The AI/developer can honestly say:
 
 > **This slice works as planned, its changed code conforms to the applicable Engineering Guidelines, I have reverified it after any corrections, and I can now safely move to the next slice.**
 
-After all planned slices are complete, move to **Verify**.
+- After all planned slices are complete, move to **Verify**.
 
 > **Slice Verify proves the thing just built works. The Verify phase proves the completed feature/module works as a whole and still satisfies Define.**

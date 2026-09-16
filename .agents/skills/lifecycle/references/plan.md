@@ -36,23 +36,20 @@
 
 ## 4. Questions
 
-Ask these as concrete prompts in frontier rounds:
+- Ask these as concrete prompts in frontier rounds:
 
 ### Module
 
-- What feature order, cross-feature dependencies, shared foundation, and plan
-  size are actually required?
+- What feature order, cross-feature dependencies, shared foundation, and plan size are actually required?
 
 ### Feature
 
-- What observable outcome, slices, reusable patterns, and dependencies define
-  this feature's smallest implementation path?
+- What observable outcome, slices, reusable patterns, and dependencies define this feature's smallest implementation path?
 
 ### Slice
 
 - What minimum Model, UI, Backend, Connect, and Verify work is needed?
-- What regression risks, proof, and Delete Test determine whether this slice is
-  necessary and complete?
+- What regression risks, proof, and Delete Test determine whether this slice is necessary and complete?
 
 ## 5. Actions
 
@@ -95,21 +92,21 @@ Ask these as concrete prompts in frontier rounds:
 - **Connect:** …
 - **Verify:** …
 
-Add only as many slices as needed. Omit a sub-step when genuinely not applicable. If a feature needs its own detailed plan, link it instead of duplicating it.
+- Add only as many slices as needed. Omit a sub-step when genuinely not applicable. If a feature needs its own detailed plan, link it instead of duplicating it.
 
 ## 7. Exit
 
-Move to **Build** only when:
+- Move to **Build** only when:
 
-- Feature order and important cross-feature dependencies are clear.
-- Each feature is broken into small vertical slices understandable independently.
-- Each normal slice ends in observable behaviour verifiable through UI/API/another real interface.
-- Technical-only slices have concrete verification.
-- Each slice contains only necessary models and implementation work.
-- Dependencies, migrations, compatibility, permissions, and regression risks are understood where relevant.
-- No critical implementation questions force guessing.
-- Define, Context, and Shape remain valid.
-- **Cycle Log Check** has been performed.
-- A human or AI agent can honestly say:
+  - Feature order and important cross-feature dependencies are clear.
+  - Each feature is broken into small vertical slices understandable independently.
+  - Each normal slice ends in observable behaviour verifiable through UI/API/another real interface.
+  - Technical-only slices have concrete verification.
+  - Each slice contains only necessary models and implementation work.
+  - Dependencies, migrations, compatibility, permissions, and regression risks are understood where relevant.
+  - No critical implementation questions force guessing.
+  - Define, Context, and Shape remain valid.
+  - **Cycle Log Check** has been performed.
+  - A human or AI agent can honestly say:
 
 > **I know which slice to build next, what minimum changes it needs, and exactly how to prove that slice works before continuing.**

@@ -31,26 +31,22 @@
 
 ## 4. Questions
 
-Ask these as concrete prompts in frontier rounds:
+- Ask these as concrete prompts in frontier rounds:
 
 ### Experience
 
-- Where does the user enter, what can they do, and what is the minimum useful
-  flow?
-- Which states, transitions, feedback, errors, permissions, and empty/loading
-  cases must be defined?
+- Where does the user enter, what can they do, and what is the minimum useful flow?
+- Which states, transitions, feedback, errors, permissions, and empty/loading cases must be defined?
 
 ### Domain
 
 - Which concepts or entities exist, who owns them, and how do they relate?
-- Which information is required or optional, and which lifecycle states and
-  business rules must remain true?
+- Which information is required or optional, and which lifecycle states and business rules must remain true?
 
 ### Validation
 
 - Which assumptions or risks could change the solution?
-- What is the cheapest useful test, what alternatives exist, and do Define and
-  Context still hold?
+- What is the cheapest useful test, what alternatives exist, and do Define and Context still hold?
 
 ## 5. Actions
 
@@ -77,19 +73,16 @@ Ask these as concrete prompts in frontier rounds:
 
 ### Prototype
 
-Create a prototype when UI, responsive behaviour, or interaction states could
-change the shaped solution. Put it at
-`docs/lifecycle/<change-name>/prototype/index.html` and make it a standalone,
-responsive HTML file that opens directly without a server, dependency, network
-request, or production code. Keep only the screens and states needed to answer
-the uncertainty, and label the artifact as throwaway. Record its question,
-covered screens/states, run instructions, validation verdict, and decisions in
-`03-shape.md`. If the visual uncertainty is immaterial, record why a prototype
-is not needed.
+- Create a prototype when UI, responsive behaviour, or interaction states could change the shaped solution.
+  - Put it at `docs/lifecycle/<change-name>/prototype/index.html`.
+  - Make it standalone, responsive, and runnable by opening the file directly.
+  - Use no server, dependency, network request, or production code.
+  - Include only the screens and states needed to answer the uncertainty.
+  - Label it as throwaway.
+  - Record its question, covered screens/states, run instructions, validation verdict, and decisions in `03-shape.md`.
+- If visual uncertainty is immaterial, record why a prototype is not needed.
 
-Keep an approved prototype available as a reference through Plan, Build, and
-Verify. Refine removes it after the validated decisions have been captured in
-the lifecycle or permanent documentation.
+- Keep an approved prototype available as a reference through Plan, Build, and Verify. Refine removes it after the validated decisions have been captured in the lifecycle or permanent documentation.
 
 ### Domain Shape
 
@@ -117,16 +110,16 @@ the lifecycle or permanent documentation.
 
 ## 7. Exit
 
-Move to **Plan** only when:
+- Move to **Plan** only when:
 
-- Shaped solution satisfies approved Define outcome.
-- Define is still valid or changes have been returned and approved.
-- Context is still valid or corrected.
-- Minimum experience and required domain are clear.
-- Important assumptions are validated or explicitly accepted as risks.
-- Major uncertainty that could change the solution is reduced.
-- Unnecessary scope is removed and no new requirement entered scope without approval.
-- **Cycle Log Check** has been performed.
-- A human or AI agent can honestly say:
+  - Shaped solution satisfies approved Define outcome.
+  - Define is still valid or changes have been returned and approved.
+  - Context is still valid or corrected.
+  - Minimum experience and required domain are clear.
+  - Important assumptions are validated or explicitly accepted as risks.
+  - Major uncertainty that could change the solution is reduced.
+  - Unnecessary scope is removed and no new requirement entered scope without approval.
+  - **Cycle Log Check** has been performed.
+  - A human or AI agent can honestly say:
 
 > **I understand what we are building, why this is the smallest correct solution, how it should behave, and what domain it requires. Define and Context still hold, so I can now plan how to implement it.**
