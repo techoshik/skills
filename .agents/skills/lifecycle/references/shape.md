@@ -31,31 +31,26 @@
 
 ## 4. Questions
 
+Ask these as concrete prompts in frontier rounds:
+
 ### Experience
 
-- User Flow
-- States & Actions
-- Feedback & Errors
-- Permissions
-- Minimum Experience
+- Where does the user enter, what can they do, and what is the minimum useful
+  flow?
+- Which states, transitions, feedback, errors, permissions, and empty/loading
+  cases must be defined?
 
 ### Domain
 
-- Concepts / Entities
-- Required Information
-- Relationships & Ownership
-- Lifecycle / States
-- Business Rules
-- Required vs Optional
+- Which concepts or entities exist, who owns them, and how do they relate?
+- Which information is required or optional, and which lifecycle states and
+  business rules must remain true?
 
 ### Validation
 
-- Assumptions
-- Risk
-- Cheapest Test
-- Alternative
-- Define Check
-- Context Check
+- Which assumptions or risks could change the solution?
+- What is the cheapest useful test, what alternatives exist, and do Define and
+  Context still hold?
 
 ## 5. Actions
 

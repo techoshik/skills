@@ -80,6 +80,7 @@ A later phase must not silently repair an earlier mistake by inventing new assum
 
 - The lifecycle artifacts are the versioned active-cycle state; conversation
   history is not.
+- **Markdown wrapping** — Keep each coherent point on one line, even when it exceeds 80 characters. Wrap only when one line contains separate points or wrapping improves readability; do not wrap solely to meet an 80-character limit.
 - Keep one active lifecycle directory per change under `docs/lifecycle/`.
 - Keep the active lifecycle workspace versioned while the change is in
   progress so developers, branches, and new phase chats can share its state.

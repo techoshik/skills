@@ -6,6 +6,7 @@ description: "Run the Context phase of the development lifecycle: gather the min
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/questioning.md`
 - `../lifecycle/references/context.md`
 - `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
@@ -15,6 +16,12 @@ every bug fix, existing-functionality change, or new functionality, identify
 the affected modules and read each existing `docs/modules/<module>.md` before
 completing Context. Record the paths read and any missing module document in
 `02-context.md`. Gather only context that improves decision quality.
+
+Run the questioning protocol for context decisions that could change the
+solution. Find repository and system facts yourself; ask the user only for
+product authority, priorities, or decisions that the environment cannot answer.
+Do not proceed while a consequential context gap is silently being treated as
+fact.
 
 Use `research` or `domain-modeling` when helpful, but keep lifecycle Context authoritative.
 

@@ -5,8 +5,11 @@ project Lifecycle-ready without overwriting its product knowledge.
 
 ## Required companion skills
 
-Before using the Lifecycle skills in a project, install the required companion
-skills from [mattpocock/skills](https://github.com/mattpocock/skills):
+Before using the Lifecycle skills in a project, ensure the required companion
+skills from [mattpocock/skills](https://github.com/mattpocock/skills) are
+available. Codex-installed skills (for example, under `~/.agents/skills`) and
+repository-local `.agents/skills/` skills both count. If they are missing,
+install them with:
 
 ```bash
 npx skills@latest add mattpocock/skills

@@ -29,6 +29,11 @@
 
 ## 4. Questions
 
+Use these as a decision-tree frontier, not as a three-question checklist. Ask
+all currently answerable user decisions in one round, wait for the answers,
+then recompute the next round. A short or apparently clear request does not
+remove this pass.
+
 - **Problem** — What real problem are we solving?
 - **User** — Who experiences it?
 - **Current Situation** — How is it handled today?
@@ -58,12 +63,22 @@
 - Decide **Proceed, Defer, or Reject** before moving forward.
 - If the decision is **Defer** but the opportunity still has meaningful future value, create or update an entry in `docs/backlog/`.
 - If the current release intentionally excludes valuable capabilities, preserve those capabilities in the backlog instead of leaving them only in lifecycle history.
-- Use **grill-with-docs** when important requirements, terminology, constraints, or decisions are unclear.
-- Use **wayfinder** for large/highly uncertain modules or features where a long decision tree must be explored. Translate discoveries into this lifecycle structure; do not adopt a competing monolithic spec.
+- Use **grill-with-docs** for every non-trivial change to interview the user,
+  sharpen terminology, and stress-test concrete scenarios.
+- Use **wayfinder** when the decision tree is too large or foggy for one
+  session; translate its decisions into this lifecycle structure rather than
+  adopting a competing monolithic spec.
 
 > **Define captures deferred value; it does not decide when that value becomes a priority.**
 
 ## 6. Output
+
+### Requirement Review
+
+- **Question Rounds:** …
+- **Decisions Confirmed:** …
+- **Accepted Assumptions / Risks:** …
+- **Blockers / Open Questions:** …
 
 ### Feature Definition
 

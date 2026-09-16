@@ -6,6 +6,7 @@ description: "Run the Build phase of the development lifecycle: implement one ap
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/questioning.md`
 - `../lifecycle/references/build.md`
 - `../lifecycle/references/guidelines.md`
 - `../lifecycle/references/approval.md`
@@ -21,6 +22,10 @@ Load:
 - applicable Engineering Guidelines under `docs/guidelines/` before editing code
 
 Use `tdd` for meaningful behaviour where available. Use `diagnosing-bugs` for difficult failures. Use `code-review` when useful for the mandatory slice standards/spec review.
+
+Use the questioning protocol for slice mismatches or implementation uncertainty.
+Ask the user when a decision is needed; route earlier-phase uncertainty back
+to its owner instead of guessing.
 
 Implement one slice only. Do not start the next slice until behavioural verification and Slice Conformance Review both pass.
 

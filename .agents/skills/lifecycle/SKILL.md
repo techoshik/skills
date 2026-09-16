@@ -13,6 +13,7 @@ Use this skill as the normal entry point for development work.
 Read:
 
 - `references/framework.md`
+- `references/questioning.md`
 - `references/cycle-log.md`
 - `references/approval.md`
 - `references/third-party-skills.md` before selecting or using a companion skill.

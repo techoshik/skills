@@ -6,11 +6,17 @@ description: "Run the Shape phase of the development lifecycle: design and cheap
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/questioning.md`
 - `../lifecycle/references/shape.md`
 - `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 
 Load approved Define and Context artifacts.
+
+Run the questioning protocol for experience, domain, state, alternative, and
+validation decisions. Ask in rounds until solution-changing uncertainty is
+resolved or explicitly accepted as risk; do not treat a plausible first
+solution as a complete Shape.
 
 Use the cheapest medium that reduces important uncertainty. Invoke `prototype`, `domain-modeling`, or `codebase-design` when useful.
 

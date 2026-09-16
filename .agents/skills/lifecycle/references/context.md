@@ -37,37 +37,28 @@
 
 ## 4. Questions
 
+Ask these as concrete prompts and investigate facts yourself:
+
 ### Global
 
-- Product
-- Architecture
-- Technology
-- Conventions
-- Shared Rules
-- Reusable Building Blocks
+- Which product capability and system boundaries are relevant?
+- Which architecture, technology, conventions, and shared rules apply?
+- Which reusable building blocks already support this work?
 
 ### Module
 
-- Purpose
-- Boundaries
-- Domain / core concepts
-- Shared Business Rules
-- Flow
-- Existing Features
-- Dependencies
-- Integration Points
+- What is the module's purpose and boundary?
+- Which domain concepts, shared rules, flows, and existing features matter?
+- Which dependencies and integration points can constrain the solution?
 
 ### Feature
 
-- Current Behaviour
-- Relevant Code
-- Relevant Data
-- Applicable Rules
-- Affected Areas
-- History
-- Unknowns
-- Define Consistency
-- Relevance Test
+- How does the current behaviour work, and which code, data, tests, and rules
+  implement it?
+- Which areas, dependencies, history, limitations, or previous decisions are
+  relevant?
+- What is still unknown, and does the discovered system remain consistent with
+  Define?
 
 ## 5. Actions
 

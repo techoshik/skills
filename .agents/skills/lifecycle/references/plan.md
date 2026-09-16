@@ -36,29 +36,23 @@
 
 ## 4. Questions
 
+Ask these as concrete prompts in frontier rounds:
+
 ### Module
 
-- Feature Order
-- Cross-Feature Dependencies
-- Shared Foundation
-- Plan Size
+- What feature order, cross-feature dependencies, shared foundation, and plan
+  size are actually required?
 
 ### Feature
 
-- Outcome
-- Slices
-- Reuse
-- Dependencies
+- What observable outcome, slices, reusable patterns, and dependencies define
+  this feature's smallest implementation path?
 
 ### Slice
 
-- Model
-- UI
-- Backend
-- Connect
-- Verify
-- Regression
-- Delete Test
+- What minimum Model, UI, Backend, Connect, and Verify work is needed?
+- What regression risks, proof, and Delete Test determine whether this slice is
+  necessary and complete?
 
 ## 5. Actions
 

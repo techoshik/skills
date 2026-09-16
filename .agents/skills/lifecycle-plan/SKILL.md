@@ -6,11 +6,16 @@ description: "Run the Plan phase of the development lifecycle: translate approve
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/questioning.md`
 - `../lifecycle/references/plan.md`
 - `../lifecycle/references/approval.md`
 - `../lifecycle/references/cycle-log.md`
 
 Load approved Define, Context, and Shape artifacts.
+
+Run the questioning protocol for slice boundaries, dependencies, reuse,
+rollout, regression risk, and proof. Continue through dependent decision rounds
+until no critical implementation question would force Build to guess.
 
 Plan one module in one Plan file by default. Organize by Feature → Slice and use Model → UI → Backend → Connect → Verify when applicable.
 

@@ -1,8 +1,10 @@
 # Required Companion Skills
 
-The Lifecycle system depends on the companion skills in
-[mattpocock/skills](https://github.com/mattpocock/skills). Install them before
-using Lifecycle in a project:
+The Lifecycle system can use the companion skills in
+[mattpocock/skills](https://github.com/mattpocock/skills). A skill installed in
+Codex (for example, under `~/.agents/skills`) or in the repository's
+`.agents/skills/` is available; install the missing skills before using a
+phase that requires them:
 
 ```bash
 npx skills@latest add mattpocock/skills
@@ -17,8 +19,12 @@ gates.
 
 ### Define
 
-- **grill-with-docs** — Deep questioning when requirements, terminology, constraints, or decisions are unclear.
-- **wayfinder** — Large or highly uncertain modules/features where many decisions must be discovered and sequenced before the destination is clear.
+- **grill-with-docs** — Human-in-the-loop requirement interview that composes
+  grilling and domain modeling; use it for every non-trivial change to resolve
+  requirements, terminology, constraints, decisions, and concrete scenarios.
+- **wayfinder** — Breadth-first map of a large decision tree; name the
+  destination first, resolve one decision at a time, and return decisions to
+  the lifecycle artifacts.
 
 Discovery may be broad, but store findings in the correct lifecycle artifact. A large third-party-generated spec must not become a competing source of truth.
 
