@@ -26,8 +26,9 @@ more specific guidelines may both apply; load both when relevant.
 ## During Refine
 
 When completed work exposes a recurring engineering rule or correction,
-improve the appropriate project guideline under `docs/guidelines/` instead of
-leaving the learning only in a Cycle Log or lifecycle artifact.
+propose an update to the appropriate project guideline in `07-refine.md`.
+Apply it only after user approval; do not leave approved learning only in a
+Cycle Log or lifecycle artifact.
 
 Keep product knowledge, stable factual references, and active-cycle memory in
 their own homes:

@@ -131,13 +131,10 @@ If a required companion skill is not installed, stop and report the setup requir
 
 Refine owns cycle closure.
 
-Before closure:
-
-- useful Cycle Log learning is promoted to its permanent source;
-- permanent module documentation under `docs/modules/<module>.md` reflects the system as it exists now;
-- implementation refinements are reverified;
-- future requirements are explicitly separated from completed work.
-
-Then archive/remove the temporary lifecycle workspace according to project policy.
+Follow `lifecycle-refine` for the review, proposal, approval, promotion,
+reverification, and cleanup sequence. Refine must record proposed changes in
+`07-refine.md`, obtain user approval, apply only approved changes, and obtain a
+separate user decision before retaining, archiving, or removing the completed
+workspace. See `references/approval.md` for approval exceptions.
 
 > **The orchestrator remembers where we are. The phase skill remembers how to work. The artifacts remember what we know. Companion skills provide techniques.**

@@ -78,8 +78,11 @@ A later phase must not silently repair an earlier mistake by inventing new assum
 
 ## State and Context Rules
 
-- The lifecycle artifacts are the durable state; conversation history is not.
+- The lifecycle artifacts are the versioned active-cycle state; conversation
+  history is not.
 - Keep one active lifecycle directory per change under `docs/lifecycle/`.
+- Keep the active lifecycle workspace versioned while the change is in
+  progress so developers, branches, and new phase chats can share its state.
 - `00-lifecycle.md` is the entry point and current-state index.
 - Load only the artifacts needed by the current phase.
 - Reference permanent knowledge instead of copying it into every phase file.
@@ -95,6 +98,13 @@ docs/modules/   = permanent current product truth
 docs/backlog/   = permanent future opportunities
 cycle-log.md    = temporary development-system improvement memory
 ```
+
+Active lifecycle workspaces are temporary working records, not permanent
+product documentation. During Refine, first record proposed promotions and
+improvements in `07-refine.md`. Ask the user to review and approve them before
+changing code or any permanent source. After the approved work is applied and
+reverified, ask whether the completed workspace should be retained, archived,
+or removed. Do not remove or archive it without explicit user confirmation.
 
 > **Human owns priority. Lifecycle owns backlog maintenance.**
 

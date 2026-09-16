@@ -16,15 +16,21 @@ Load the completed branch diff, Verify result, Build results, relevant permanent
 
 Use `improve-codebase-architecture`, `writing-for-agents`, and `code-review` when useful.
 
-Do not abstract merely because duplication exists. Prefer an existing abstraction; create a shared abstraction only when real repeated usages represent the same responsibility and sharing reduces complexity.
-
 Write/update `07-refine.md`.
 
-Promote durable product/module knowledge into `docs/modules/<module>.md`. If the module document does not exist, create it from `../lifecycle/templates/module.md`; otherwise update the existing document in place. Promote process/standards learning into the appropriate permanent source. Reverify any implementation changes.
+Run the detailed review and proposal process in
+`../lifecycle/references/refine.md`. Record the Codebase Review, proposed
+knowledge promotions, proposed backlog items, and proposed cleanup in
+`07-refine.md`.
 
-Process every Cycle Log entry, then archive the completed Cycle Log/workspace according to project policy.
+Ask the user to review `07-refine.md` before applying any Refine changes. Wait
+for the user's decision, record it, and apply only approved code,
+documentation, guideline, automation, or backlog changes. Reverify approved
+implementation changes.
 
-Before closing the cycle, ensure worthwhile postponed product work has been transferred to `docs/backlog/`.
+After approved changes pass their checks, ask whether to retain, archive, or
+remove the completed lifecycle workspace. Record the choice before performing
+archive/removal.
 
 Do not complete until the Refine Exit gate passes. Apply the approval mode and
-update `00-lifecycle.md` before archiving the lifecycle workspace.
+update `00-lifecycle.md` with the cleanup decision before archive/removal.

@@ -12,6 +12,7 @@
 - **Suggested Chat Title:** [Phase] - [Feature]
 - **Current Feature:** …
 - **Current Slice:** …
+- **Cleanup Decision:** Pending until Refine user confirmation
 
 ## Artifacts
 

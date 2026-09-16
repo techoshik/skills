@@ -126,6 +126,16 @@ The project owns the contents created during actual development. The installer
 does not generate guideline files, generic context, module documents, backlog
 items, or active cycle artifacts.
 
+Active lifecycle workspaces are committed while a change is in progress so
+developers and phase chats can share state. During Refine, record proposed
+durable knowledge, code improvements, guideline changes, automation, and
+backlog items in `07-refine.md`. Review the branch for duplication, unnecessary
+complexity, temporary code, missing tests, automation opportunities, and other
+evidence-based improvements. Ask the user to approve the proposed changes and
+apply only approved changes. Finally, ask whether the completed lifecycle
+workspace should be retained, archived, or removed. Do not archive or remove
+it without explicit confirmation.
+
 Before Build and Verify, the Lifecycle skills discover and load every
 applicable guideline from `docs/guidelines/`. The installer does not guess
 which technologies a project uses and does not create files such as

@@ -25,7 +25,7 @@ these user phrases as
 ask permission for each step”. Recognize `strict` when the user asks to review
 or approve every phase.
 
-### `guided` — Default
+### `guided`
 
 Pause for developer approval at decision gates:
 
@@ -53,6 +53,9 @@ the current Exit gate passes, and record each transition as `Auto-approved`.
 `auto` removes phase-approval waits; it does not authorize inventing
 requirements, ignoring contradictory authority, bypassing production safety,
 or taking an action that requires separate user authorization.
+
+Refine proposal review and lifecycle-workspace cleanup are separate user
+decisions. `auto` does not bypass either decision.
 
 ## Persisted State
 

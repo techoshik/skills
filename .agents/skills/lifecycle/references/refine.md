@@ -25,7 +25,9 @@
 - **Fix the system, not only the symptom** — Repeated mistakes should improve the rule/check/context/process that allowed them.
 - **No gold-plating** — Refine is not permission to add extra features.
 - **New value goes through Define** — Newly discovered capability/requirement becomes future work.
-- **Update the source of truth** — Improve canonical Context, the applicable file under `docs/guidelines/`, lifecycle guidance, module docs, or automation rather than scattered notes.
+- **Update the source of truth** — Propose improvements to canonical Context,
+  the applicable file under `docs/guidelines/`, lifecycle guidance, module
+  docs, or automation in `07-refine.md`; apply only what the user approves.
 - **Automate mechanical rules** — Prefer deterministic checks where they can replace repeated human review.
 - **Keep judgment human-readable** — Do not force subjective architecture/product judgment into brittle automation.
 - **Smallest useful improvement** — Apply only enough refinement to prevent meaningful future cost.
@@ -85,10 +87,22 @@
 
 - Review the **Cycle Log**, Build deviations, Conformance failures, Verify failures, and developer corrections.
 - Review the branch diff and nearby code for duplication, reuse, unnecessary complexity, temporary/obsolete code, naming/structure inconsistencies, missing tests, and automation opportunities.
-- Identify the **few highest-leverage lessons and improvements**, not every cleanup opportunity.
+- Create a Codebase Review inventory of every meaningful finding. For each
+  finding, record its location, evidence, impact, recommendation, and
+  proposed disposition: fix now, add to the backlog, intentionally keep
+  separate, or dismiss with a reason.
+- Include reliability, security, performance, maintainability, and
+  documentation/context checks when the changed code or its dependencies make
+  them relevant.
+- Record all material findings, then prioritize only the highest-leverage
+  improvements for implementation.
 - For duplication/reusable behaviour: **reuse existing abstraction → extract shared abstraction only when justified → otherwise keep separate implementations when responsibilities differ or the pattern is not stable**.
-- Remove temporary/obsolete code introduced by the work when clearly safe and unnecessary.
-- Remove the lifecycle-managed prototype after Verify when its validated decisions have been captured in the lifecycle or permanent documentation. Preserve only a useful screenshot or decision record when future context genuinely benefits from it.
+- Propose removal of temporary/obsolete code introduced by the work; remove it
+  only after user approval and when clearly safe and unnecessary.
+- Propose removal of the lifecycle-managed prototype after Verify when its
+  validated decisions have been captured in the lifecycle or permanent
+  documentation. Remove it only after user approval; preserve a useful
+  screenshot or decision record when future context genuinely benefits from it.
 - Classify each meaningful lesson into its proper home:
   - New requirement/value → Define / future work
   - Missing/stale system knowledge → Context / permanent module docs
@@ -96,25 +110,45 @@
   - Planning problem → Plan guidance
   - Development/conformance problem → Build or the applicable file under `docs/guidelines/`
   - Mechanical recurring check → Automation
-- Update the appropriate canonical source of truth instead of leaving learning only in the Cycle Log.
-- Strengthen unclear guidelines with concrete rules/examples in `docs/guidelines/`.
-- Convert deterministic rules into formatter, linter, architecture test, compiler check, CI check, or another automated guard where worthwhile.
-- Remove obsolete or duplicated guidance.
+- Propose updates to the appropriate canonical source of truth in
+  `07-refine.md` instead of applying changes while preparing the review.
+- After approval, strengthen unclear guidelines with concrete rules/examples in
+  `docs/guidelines/`.
+- After approval, convert worthwhile deterministic rules into a formatter,
+  linter, architecture test, compiler check, CI check, or another automated
+  guard.
+- Propose removal of obsolete or duplicated guidance; apply it only after user
+  approval.
 - Use **improve-codebase-architecture** to survey branch/codebase design opportunities.
 - Use **writing-for-agents** when the Cycle Log shows lifecycle/skill/pointer/agent-instruction problems.
 - Use **code-review** after code-level refinement when useful.
-- If implementation code changes, rerun applicable automated checks, Slice Conformance Review, and affected behavioural verification.
-- Process every Cycle Log entry by promoting useful learning, creating explicit future work, or intentionally dismissing a one-off.
-- Promote durable product/module knowledge from the lifecycle into `docs/modules/<module>.md` so module documentation reflects the system as it now exists.
-- For an affected module, update the existing document in place; if it does not exist, create it from `.agents/skills/lifecycle/templates/module.md`.
-- Keep the document concise and behavioral: `Goal → Rules → Features`. Use `Feature Name — Responsibility` headings with capability bullets underneath. Remove stale behavior, keep implementation details in code, and skip the update when the completed change added no durable product knowledge.
-- Archive the completed Cycle Log and lifecycle workspace according to project policy after durable knowledge has been promoted.
+- If the user approves implementation changes, rerun applicable automated
+  checks, Slice Conformance Review, and affected behavioural verification.
+- Process every Cycle Log entry by proposing useful learning, explicit future
+  work, or intentional dismissal in `07-refine.md`.
+- After approval, promote durable product/module knowledge from the lifecycle
+  into `docs/modules/<module>.md` so module documentation reflects the system
+  as it now exists.
+- After approval, update the existing module document in place; if it does not
+  exist, create it from `.agents/skills/lifecycle/templates/module.md`.
+- After approval, keep the document concise and behavioral: `Goal → Rules →
+  Features`. Use `Feature Name — Responsibility` headings with capability
+  bullets underneath. Remove stale behavior, keep implementation details in
+  code, and skip the update when the completed change added no durable product
+  knowledge.
+- Keep the active lifecycle workspace versioned until the cycle is closed and
+  its handoff state is no longer needed.
+- After all promotion and reverification checks pass, present the cleanup
+  choice to the user. Record whether the workspace will be retained, archived,
+  or removed. Explicit confirmation is required before archive/removal.
 
 Before closing the lifecycle:
 
 - Identify intentionally postponed modules, features, and capabilities.
-- Preserve worthwhile future work in `docs/backlog/`.
-- Keep product opportunities in the backlog rather than the Cycle Log.
+- Propose worthwhile future work in `07-refine.md` before changing
+  `docs/backlog/`.
+- After approval, preserve product opportunities in the backlog rather than the
+  Cycle Log.
 - Do not duplicate items already represented accurately in the backlog.
 
 > **Every lesson should improve the place in the system that should have prevented the problem.**
@@ -126,11 +160,24 @@ Before closing the lifecycle:
 - **What We Learned:** …
 - **What Caused It:** …
 - **System Improvement:** …
-- **Updated Source:** Define / Context / Shape / Plan / Build / Verify / Engineering Guidelines / Module Docs / Automation / Other
+- **Proposed Source:** Define / Context / Shape / Plan / Build / Verify /
+  Engineering Guidelines / Module Docs / Automation / Other
 - **Future Work:** … *(only when something must return to Define or be deferred)*
 - **Reverification Required:** Yes / No
 
 Keep the result small. The goal is to change the system, not create a large retrospective document.
+
+### Codebase Review
+
+- **Findings:** None / …
+- **Recommendations:** …
+- **Proposed Disposition:** Fix now / Add to backlog / Keep separate /
+  Dismiss with reason
+
+### Lifecycle Workspace Closure
+
+- **Cleanup Decision:** Pending user confirmation / Retain / Archive / Remove
+- **User Confirmation:** …
 
 ## 7. Exit
 
@@ -140,11 +187,21 @@ Refine is complete when:
 - Repeated/expensive problems have been addressed at their root system/process level where practical.
 - The branch has been reviewed for worthwhile reuse, duplication reduction, unnecessary complexity, temporary code, and consistency issues introduced/exposed by this work.
 - Shared abstractions exist only where real repeated responsibility justifies them; premature abstraction is avoided.
-- Relevant Context, Engineering Guidelines, lifecycle guidance, permanent module docs, or automation has been updated where needed.
+- Approved updates to Context, Engineering Guidelines, lifecycle guidance,
+  permanent module docs, or automation have been applied where needed.
 - New requirements are separated from refinement and returned to Define/future work.
 - Valuable postponed product work has either been added to the backlog, intentionally dismissed, or is already represented there.
 - Any code changes made during Refine pass applicable automated checks, Conformance Review, and affected behavioural verification.
 - Useful learning has been transferred out of the Cycle Log.
+- A Codebase Review inventory records meaningful duplication, reuse,
+  simplification, quality, automation, and documentation findings, or
+  explicitly records that none were found.
+- The user has reviewed the Refine proposal and approved, declined, or
+  deferred each proposed change.
+- Only approved code, documentation, guideline, automation, or backlog changes
+  have been applied and reverified where applicable.
+- The user has confirmed whether the completed lifecycle workspace is retained,
+  archived, or removed.
 - No further refinement currently provides enough value to justify the work.
 - A human/AI agent can honestly say:
 

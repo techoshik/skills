@@ -53,10 +53,15 @@ If yes, append one concise entry. If no, continue without creating noise.
 
 ## Refine Responsibility
 
-Refine loads the complete Cycle Log and decides the proper destination for each meaningful lesson: lifecycle guidance, Context, Engineering Guidelines, automation, code improvement, or future work.
+Refine loads the complete Cycle Log and proposes the proper destination for
+each meaningful lesson: lifecycle guidance, Context, Engineering Guidelines,
+automation, code improvement, or future work. Apply only user-approved
+changes.
 
 Once useful learning has been transferred to its permanent source of truth, the Cycle Log must not remain the permanent documentation.
 
-At the end of Refine, archive the completed Cycle Log and begin the next development cycle with a fresh log.
+After approved learning has been transferred and the user confirms cleanup,
+archive the completed Cycle Log and begin the next development cycle with a
+fresh log.
 
 > **Capture during the cycle. Improve the system during Refine.**
