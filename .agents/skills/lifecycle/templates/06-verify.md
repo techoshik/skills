@@ -2,6 +2,9 @@
 
 ## Verification Result
 
+- **Verification Strategy Used:** …
+- **Module / E2E Evidence:** …
+
 - **Overall Result:** Pass / Fail / Blocked
 - **Minimum Outcome:** Pass / Fail
 - **Success Criteria:** …

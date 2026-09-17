@@ -17,6 +17,7 @@
 - **Existing Implementation** — Relevant code, models, APIs, components, tests, configurations, and schemas.
 - **Previous Decisions** — Architectural, product, or technical decisions affecting the work.
 - **Known Limitations** — Existing constraints, compatibility requirements, and known problems.
+- **Verification Landscape** — Existing test levels, harnesses, fixtures, real boundaries, environment constraints, and known flakiness.
 
 ## 3. Rules
 
@@ -65,6 +66,7 @@
 - Gather context in three layers: **Global → Module → Feature**.
 - Inspect the **real implementation** where necessary instead of relying only on summaries.
 - Identify the smallest set of files, rules, models, flows, and decisions relevant to the work.
+- Inspect existing automated coverage and the available real verification boundary before recommending module integration or E2E work.
 - Remove irrelevant, duplicated, vague, stale, or speculative information.
 - Separate verified facts from assumptions.
 - Surface conflicts or missing information instead of silently resolving them.
@@ -110,6 +112,7 @@
 - Dependencies
 - Affected Areas
 - Relevant Tests
+- Verification Landscape / Gaps
 - Previous Decisions / History
 - Known Limitations
 - Context Gaps / Open Questions

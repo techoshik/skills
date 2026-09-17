@@ -47,12 +47,15 @@
 
 - Which assumptions or risks could change the solution?
 - What is the cheapest useful test, what alternatives exist, and do Define and Context still hold?
+- What is the cheapest trustworthy proof for each important success criterion?
+- Does any criterion require a complete module or end-to-end flow through a real boundary?
 
 ## 5. Actions
 
 - Create the minimum user/system flow.
 - Define required domain concepts and information.
 - Identify important assumptions and risks.
+- Choose a proportionate verification level using `references/verification-strategy.md`; recommend module integration or E2E only when lower-level proof is insufficient.
 - Validate important uncertainty with the cheapest useful medium: prototype, flow diagram, API contract, conceptual model, architecture sketch, or technical spike.
 - Compare shaped solution against Define and Context.
 - Remove unnecessary screens, states, fields, concepts, steps, and behaviours.
@@ -100,6 +103,18 @@
 - Define Changes Needed
 - Context Changes Needed
 - Remaining Open Questions
+
+### Verification Strategy
+
+- **Outcome to Prove:** …
+- **Critical Journey / Module Flow:** …
+- **Recommended Proof Level:** Unit / Widget / Module Integration / E2E / Manual
+- **Real Boundaries Involved:** …
+- **Existing Coverage:** …
+- **Missing Coverage:** …
+- **Why This Level Is Sufficient:** …
+- **Cost / Determinism / Environment Risks:** …
+- **Approval or Accepted Gap:** …
 
 ### Shaped Solution
 

@@ -15,6 +15,7 @@
 - **Shape** — Approved user experience, domain behaviour, states, and rules.
 - **Prototype** — Approved standalone prototype and its recorded validation verdict, when Shape created one.
 - **Plan** — Features, slices, dependencies, technical approach, planned verification.
+- **Verification Strategy** — The approved proof levels, complete workflows, real boundaries, and accepted gaps.
 - **Build Results** — Completed slices and verification/conformance results.
 - **Engineering Guidelines** — Applicable project rules discovered under `docs/guidelines/`.
 - **Running System** — Real integrated implementation.
@@ -68,6 +69,7 @@
 
 - Run relevant automated test suite.
 - Verify each feature through its real UI/API/system flow.
+- Run the planned module integration or E2E workflow when the Verification Strategy requires it, and record the command/environment and result as evidence.
 - Verify the complete module workflow across slice boundaries.
 - Compare actual behaviour directly against Define success criteria.
 - When a prototype exists, compare the implemented screens, states, interactions, and responsive behaviour against its validated decisions; record intentional differences and route unapproved solution changes back to Shape.
@@ -91,6 +93,7 @@
 - **Minimum Outcome:** Pass / Fail
 - **Success Criteria:** …
 - **Feature / Workflow Results:** …
+- **Module / E2E Evidence:** …
 - **Business Rules:** …
 - **Regression Results:** …
 - **Data / Integration Results:** …

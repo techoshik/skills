@@ -52,11 +52,13 @@
 - **Open Questions** — What still needs an answer before Shape?
 - **Dependencies** — What other modules, services, people, or processes are involved?
 - **Risks** — What could make this fail even if the code works?
+- **Proof** — Which outcome or critical journey must be demonstrated, and what risk remains if it is not proven?
 
 ## 5. Actions
 
 - Question every requirement before accepting it.
 - Separate **facts, assumptions, and open questions**.
+- Capture the outcome, critical journey, and risk that verification must prove; defer the specific test level to Shape unless it is already known.
 - Delete requirements that do not materially improve the intended outcome.
 - Reduce the work to the **minimum outcome** that still creates meaningful value.
 - Resolve critical ambiguity; keep unresolved items visible as **Open Questions**.
@@ -99,6 +101,13 @@
 - **Dependencies:** …
 - **Risks:** …
 
+### Verification Intent
+
+- **Outcome to Prove:** …
+- **Critical Journey / Module Flow:** …
+- **Risk if Unproven:** …
+- **Verification Constraints:** …
+
 ### Module Definition
 
 - **Decision:** Proceed / Defer / Reject
@@ -128,6 +137,7 @@
   - Scope and non-scope are explicit.
   - Success criteria are observable.
   - Important assumptions, open questions, dependencies, and risks are visible.
+  - The outcome, critical journey, and verification risk are visible; no test level has been added as unapproved scope.
   - **Cycle Log Check** has been performed.
   - A **Defer** decision with future value has been preserved in the backlog.
   - A human or AI agent can honestly say:

@@ -27,6 +27,7 @@
 - **New value goes through Define** — Newly discovered capability/requirement becomes future work.
 - **Update the source of truth** — Propose improvements to canonical Context, the applicable file under `docs/guidelines/`, lifecycle guidance, module docs, or automation in `07-refine.md`; apply only what the user approves.
 - **Automate mechanical rules** — Prefer deterministic checks where they can replace repeated human review.
+- **Improve verification from evidence** — Recurring missing coverage, expensive setup, or flaky module/E2E tests should produce a small proposal for guidance, fixtures, CI, or automation; do not add broad test infrastructure speculatively.
 - **Keep judgment human-readable** — Do not force subjective architecture/product judgment into brittle automation.
 - **Smallest useful improvement** — Apply only enough refinement to prevent meaningful future cost.
 - **Duplication triggers investigation, not automatic abstraction.**

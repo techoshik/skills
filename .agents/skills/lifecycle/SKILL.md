@@ -16,6 +16,7 @@ disable-model-invocation: true
   - `references/questioning.md`
   - `references/cycle-log.md`
   - `references/approval.md`
+  - `references/verification-strategy.md`
   - `references/third-party-skills.md` before selecting or using a companion skill.
 
 - Before selecting the first phase, determine the approval mode using `references/approval.md`.

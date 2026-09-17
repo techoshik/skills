@@ -29,6 +29,7 @@
 - **Guidelines are a gate, not a suggestion** — A working slice that violates applicable project guidelines is incomplete.
 - **Test important behaviour first** — For meaningful behaviour, define proof before implementation and use **Specify → Red → Green → Refactor → Verify**.
 - **Do not force low-value tests** — Test business behaviour, contracts, integrations, and meaningful interactions; do not create ceremonial tests.
+- **Build planned proof before Verify** — Create or update planned module integration/E2E tests, fixtures, and test-environment setup alongside the behavior; Verify is not the place to invent the test strategy.
 - **Test behaviour, not implementation trivia.**
 - **Reuse existing patterns** — Do not create new abstractions when existing ones fit.
 - **No silent scope expansion** — Discoveries may be mentioned, never silently implemented.

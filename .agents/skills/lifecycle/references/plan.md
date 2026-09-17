@@ -14,6 +14,7 @@
 - **Approved Context Output** — Architecture, code, patterns, dependencies, constraints, relevant implementation.
 - **Approved Shape Output** — Experience, domain, prototype, rules, minimum solution.
 - **Validation Learnings** — Prototypes, spikes, contracts, diagrams, other findings from Shape.
+- **Verification Strategy** — The approved proof level, critical journeys, boundaries, and accepted gaps from Shape.
 
 ## 3. Rules
 
@@ -30,6 +31,7 @@
 - **Module Foundation is exceptional** — Put truly module-wide prerequisites before features only when they cannot naturally belong to a real slice.
 - **Do not expand scope** — New product behaviour requires approval.
 - **Verification is part of the slice** — Code written is not completion.
+- **Plan the proof before Build** — E2E or module integration scripts, fixtures, emulator setup, and CI changes belong in planned slices when the strategy requires them; do not defer their design to Verify.
 - **Status is not duplicated by default** — Use the existing execution tracker unless Plan itself is the execution source of truth.
 - **Split only when needed** — Large/independent feature details can move to a linked child plan.
 - **Loop back when needed** — Define mismatch → Define; missing system understanding → Context; solution/domain change → Shape; implementation uncertainty → remain in Plan.
@@ -56,6 +58,7 @@
 - Order module features by dependency and value.
 - Break each feature into the smallest practical vertical slices.
 - For each slice, plan **Model → UI → Backend → Connect → Verify** where applicable.
+- For each slice, name the automated proof and real verification boundary; include complete-flow tests in the plan when required by the Verification Strategy.
 - Keep model/domain changes limited to the current slice.
 - Reuse the approved prototype instead of redesigning UI during Plan.
 - Preserve the approved prototype's validated screens, states, and responsive decisions in the implementation plan; do not treat the prototype file itself as production code.
@@ -77,6 +80,13 @@
 - **Module Foundation:** … *(only when genuinely required)*
 - **Shared Risks / Constraints:** …
 
+### Verification Strategy
+
+- **Proof Level(s):** Unit / Widget / Module Integration / E2E / Manual
+- **Complete Workflow(s):** …
+- **Test Infrastructure / Fixtures Needed Before Verify:** …
+- **Accepted Gaps / Risks:** …
+
 ### Feature: …
 
 - **Feature Outcome:** …
@@ -91,6 +101,8 @@
 - **Backend:** …
 - **Connect:** …
 - **Verify:** …
+- **Automated Proof:** …
+- **Real Verification:** …
 
 - Add only as many slices as needed. Omit a sub-step when genuinely not applicable. If a feature needs its own detailed plan, link it instead of duplicating it.
 
