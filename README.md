@@ -45,10 +45,26 @@ writing-for-agents
 ./install-lifecycle.sh /path/to/project
 ```
 
-- If the repository itself is the target project:
+- To install into all projects listed in the ignored root file `.lifecycle-projects`, run without a project path:
 
 ```bash
 ./install-lifecycle.sh
+```
+
+- Use [`.lifecycle-projects.example`](.lifecycle-projects.example) as the list-file format: one existing project path per line, with blank lines and `#` comments ignored. Relative paths resolve from the list file's directory.
+
+- An explicit list file is also supported:
+
+```bash
+./install-lifecycle.sh --projects-file /path/to/projects-file
+```
+
+- Only existing listed project directories are processed. Missing entries are skipped with a warning and are never created. PowerShell uses `-ProjectsFile <path>`; no arguments use `.lifecycle-projects` at the installer root.
+
+- If the repository itself is the target project:
+
+```bash
+./install-lifecycle.sh .
 ```
 
 - On Windows PowerShell:

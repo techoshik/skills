@@ -1,0 +1,8 @@
+# Local project list example.
+# Copy this file to .lifecycle-projects and add one project path per line.
+# Blank lines and lines beginning with # should be ignored by the list-file switch.
+# Existing listed project directories are processed; missing directories are skipped.
+
+# /path/to/AwesomeProject
+# /path/to/AnotherProject
+# ../AnotherProject
