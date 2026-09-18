@@ -1,31 +1,43 @@
 # 07 — Refine
 
+## Decision Summary
+
+- **Decision / Result:** Refinement approved / Refinement needs revision.
+- **Status:** Complete / Blocked.
+- **Blockers:** …
+- **Next Action:** …
+
 ## Refinement Result
 
-- **What We Learned:** …
-- **What Caused It:** …
-- **Proposed Improvement:** …
-- **Proposed Source:** Define / Context / Shape / Plan / Build / Verify / Engineering Guidelines / Module Docs / Automation / Other
-- **Future Work:** …
-- **Reverification Required:** Yes / No
+- **Learning**
+  - What we learned and the evidence.
+- **Cause**
+  - What caused it.
+- **Improvement**
+  - Proposed improvement, source, and reverification requirement.
+- **Future work**
+  - Only when something must return to Define or be deferred.
 
 ## Codebase Review
 
-- [ ] Branch diff and nearby affected code reviewed.
-- [ ] Duplication and reuse opportunities reviewed.
-- [ ] Complexity, obsolete/temporary code, naming, and structural consistency reviewed.
-- [ ] Tests and deterministic automation reviewed; reliability, security, performance, and maintainability reviewed where relevant.
-- [ ] Context, module documentation, Engineering Guidelines, and lifecycle guidance reviewed for gaps.
+- **Change**
+  - [ ] Branch diff and nearby affected code reviewed.
+- **Structure**
+  - [ ] Duplication and reuse opportunities reviewed.
+  - [ ] Complexity, obsolete/temporary code, naming, and structural consistency reviewed.
+- **Quality**
+  - [ ] Tests and deterministic automation reviewed.
+  - [ ] Reliability, security, performance, and maintainability reviewed where relevant.
+- **Documentation**
+  - [ ] Context, module documentation, Engineering Guidelines, and lifecycle guidance reviewed for gaps.
 
 ### Findings
 
-- Record every meaningful finding. For each item, include:
-
-  - **Location:** …
-  - **Evidence:** …
-  - **Impact:** …
-  - **Recommendation:** …
-  - **Proposed Disposition:** Fix during Refine / Add to backlog / Keep separate / Dismiss with reason
+- **Finding — …**
+  - Location and evidence.
+  - Impact.
+  - Recommendation.
+  - Proposed disposition.
 
 ## Promotion Check
 
@@ -37,14 +49,24 @@
 
 ## User Review and Approval
 
-- **Approval Status:** Awaiting user review / Approved / Partially approved / Declined
-- **User Decision:** …
-- **Approved Changes:** …
-- [ ] No proposed Refine change applied before user approval.
-- [ ] Approved changes applied and reverified where applicable.
+- **Approval**
+  - Status: Awaiting user review / Approved / Partially approved / Declined.
+  - User decision: …
+  - Approved changes: …
+- **Safety**
+  - [ ] No proposed Refine change applied before user approval.
+  - [ ] Approved changes applied and reverified where applicable.
 
 ## Lifecycle Workspace Closure
 
-- **Cleanup Decision:** Pending user confirmation / Retain / Archive / Remove
-- **User Confirmation:** …
+- **Cleanup**
+  - Decision: Pending user confirmation / Retain / Archive / Remove.
+  - User confirmation: …
 - [ ] `00-lifecycle.md` updated with the cleanup decision before archive/removal.
+
+## Exit
+
+- **Exit Status:** Pass / Blocked.
+- **Evidence:** …
+- **Remaining Blockers:** …
+- **Next Phase:** Cycle closed.

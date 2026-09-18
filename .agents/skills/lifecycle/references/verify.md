@@ -31,6 +31,8 @@
 - **Code conformance still matters** — Completed changed code must have no known violation of applicable Engineering Guidelines.
 - **No new requirements** — Verification does not expand scope because another idea appears.
 - **Evidence over assumption** — Do not mark verified because tests should cover it.
+- **Group evidence by outcome** — Use bold top-level bullets for outcome, workflow, integration, conformance, failures, and risks; nest individual checks and evidence beneath them.
+- **Selective output** — Record meaningful proof and failures, not a field-by-field QA transcript.
 - **Failure goes back to its owner** — requirement/success criteria → Define; system understanding → Context; solution/domain → Shape; technical approach → Plan; implementation/conformance defect → Build.
 
 > **A failed verification is information about where the process must loop back.**
@@ -89,19 +91,32 @@
 
 ### Verification Result
 
-- **Overall Result:** Pass / Fail / Blocked
-- **Minimum Outcome:** Pass / Fail
-- **Success Criteria:** …
-- **Feature / Workflow Results:** …
-- **Module / E2E Evidence:** …
-- **Business Rules:** …
-- **Regression Results:** …
-- **Data / Integration Results:** …
-- **Engineering Guidelines:** Pass / Fail
-- **Automated Gates:** …
-- **Failures:** …
-- **Loop-Back Required:** Define / Context / Shape / Plan / Build / None
-- **Remaining Risks:** …
+- **Outcome**
+  - Overall result and minimum outcome: Pass / Fail / Blocked.
+  - Success criteria results.
+- **Workflow**
+  - Feature/module journey and module/E2E evidence.
+- **Business rules**
+  - States, permissions, data, and required behavior.
+- **Integration**
+  - Connected services, persistence, and compatibility.
+- **Regression**
+  - Affected existing behavior.
+- **Conformance**
+  - Engineering Guidelines.
+- **Gates**
+  - Automated gates.
+- **Failures**
+  - Failures and remaining risks.
+- **Loop-back**
+  - Owning phase and next action.
+
+### Exit
+
+- **Exit Status:** Pass / Blocked.
+- **Evidence:** …
+- **Remaining Blockers:** …
+- **Next Phase:** Refine.
 
 - Only record meaningful evidence; do not create a huge QA report.
 

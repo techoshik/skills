@@ -1,19 +1,37 @@
 # 06 — Verify
 
+## Decision Summary
+
+- **Decision / Result:** Verification passed / Verification failed / Blocked.
+- **Status:** Complete / Blocked.
+- **Blockers:** …
+- **Next Action:** …
+
 ## Verification Result
 
-- **Verification Strategy Used:** …
-- **Module / E2E Evidence:** …
+- **Outcome**
+  - Overall result and minimum outcome: Pass / Fail / Blocked.
+  - Success criteria results.
+- **Workflow**
+  - Feature/module journey and module/E2E evidence.
+- **Business rules**
+  - States, permissions, data, and required behavior.
+- **Integration**
+  - Connected services, persistence, and compatibility.
+- **Regression**
+  - Affected existing behavior.
+- **Conformance**
+  - Engineering Guidelines.
+- **Gates**
+  - Automated gates.
+- **Failures**
+  - Failures and remaining risks.
+- **Loop-back**
+  - Owning phase and next action.
 
-- **Overall Result:** Pass / Fail / Blocked
-- **Minimum Outcome:** Pass / Fail
-- **Success Criteria:** …
-- **Feature / Workflow Results:** …
-- **Business Rules:** …
-- **Regression Results:** …
-- **Data / Integration Results:** …
-- **Engineering Guidelines:** Pass / Fail
-- **Automated Gates:** …
-- **Failures:** …
-- **Loop-Back Required:** Define / Context / Shape / Plan / Build / None
-- **Remaining Risks:** …
+## Exit
+
+- **Exit Status:** Pass / Blocked.
+- **Evidence:** …
+- **Remaining Blockers:** …
+- **Next Phase:** Refine.

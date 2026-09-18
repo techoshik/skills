@@ -31,15 +31,26 @@ Do not force the test when the real boundary is unavailable, the external depend
 
 ## Required Record
 
-- **Outcome to prove:** …
-- **Critical journey or module flow:** …
-- **Recommended proof level:** Unit / Widget / Module Integration / E2E / Manual
-- **Real boundaries involved:** …
-- **Existing coverage:** …
-- **Missing coverage:** …
-- **Why this level is sufficient:** …
-- **Cost / determinism / environment risks:** …
-- **Approval or accepted gap:** …
+- **Outcome**
+  - Outcome to prove.
+- **Critical journey**
+  - Critical journey or module flow.
+- **Proof level**
+  - Unit / Widget / Module Integration / E2E / Manual, with why this level is sufficient.
+- **Real boundaries**
+  - UI, API, database, permissions, integrations, or other boundaries involved.
+- **Existing coverage**
+  - Current tests, harnesses, fixtures, and environments.
+- **Missing coverage**
+  - Proof that does not yet exist.
+- **Cost**
+  - Cost and determinism.
+- **Environment**
+  - Environment risks.
+- **Approval**
+  - Required approval.
+- **Accepted gap**
+  - Accepted limitations.
 
 ## Phase Ownership
 

@@ -27,6 +27,8 @@
 - **Facts over assumptions** — Mark uncertainty clearly.
 - **Current over stale** — Remove/correct outdated context.
 - **Relevant over complete** — Context is not an encyclopedia.
+- **Group by system boundary** — Use bold top-level bullets for Global, Module, Feature, and Gap topics; nest supporting files, rules, and evidence beneath them.
+- **Selective output** — The context categories are a decision aid, not a checklist; omit fields that do not affect the current solution.
 - **Reference over duplication** — Do not repeat stable Global/Module knowledge in every feature.
 - **Read the canonical module document**:
   - Identify each affected module for every bug fix, existing-functionality change, or new functionality.
@@ -80,43 +82,68 @@
 
 ## 6. Output
 
+### Decision Summary
+
+- **Decision / Result:** Context complete / Context gap.
+- **Status:** Complete / Blocked.
+- **Blockers:** …
+- **Next Action:** …
+
 ### Global Context
 
-- Product Overview
-- Architecture
-- Technology Stack
-- Engineering Conventions
-- Shared Product / Technical Rules
-- Reusable Components / Services
-- System-Wide Constraints
+- **Product**
+  - Product and system boundaries.
+- **Platforms**
+  - Supported platforms and environments.
+- **Architecture**
+  - Architecture and technology.
+- **Entry points**
+  - Bootstrap and relevant entry points.
+- **Shared rules**
+  - Engineering conventions and reusable components.
+- **Constraints**
+  - System-wide limits and technical constraints.
+- **Evidence**
+  - Files, commands, or external sources supporting the context.
 
 ### Module Context
 
-- Purpose
-- Boundaries
-- Core Domain / Entities
-- Shared Business Rules
-- Module Flow
-- Existing Features
-- Dependencies
-- Integration Points
-- Known Limitations / Decisions
+- **Purpose**
+  - Purpose and domain.
+- **Boundary**
+  - Module boundaries.
+- **Existing behavior**
+  - Existing features and module flow.
+- **Rules**
+  - Shared business rules and limitations.
+- **Dependencies**
+  - Dependencies.
+- **Integrations**
+  - Integration points.
+- **Canonical documentation**
+  - Module document path, or an explicit missing-document gap.
 
 ### Feature Context
 
-- Define Reference
-- Current Behaviour
-- Relevant Code / Files
-- Relevant Models / Data
-- Applicable Rules
-- Dependencies
-- Affected Areas
-- Relevant Tests
-- Verification Landscape / Gaps
-- Previous Decisions / History
-- Known Limitations
-- Context Gaps / Open Questions
-- Define Mismatches
+- **Current behavior**
+  - Current user/system behavior and relevant flows.
+- **Implementation**
+  - Relevant code and rules.
+- **Data**
+  - Relevant models, data, and existing tests.
+- **Affected areas**
+  - Files, dependencies, integrations, permissions, and verification landscape.
+- **Gaps**
+  - Unknowns, limitations, previous decisions, and open questions.
+- **Mismatches**
+  - Define mismatches.
+
+### Exit
+
+- **Exit Status:** Pass / Blocked.
+- **Evidence:** …
+- **Remaining Blockers:** …
+- **Next Phase:** Shape.
 
 - Not every field must be filled. Include it only when it helps current work.
 

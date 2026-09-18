@@ -24,6 +24,8 @@
 - **Reuse before invention**
 - **Do not expand scope silently**
 - **Make uncertainty visible**
+- **Group by solution decision** — Use bold top-level bullets for experience, domain, validation, proof, and minimum-solution topics; nest their supporting details.
+- **Keep implementation detail proportionate** — Record only the technical detail needed to validate the shape; defer build sequencing and file-level work to Plan.
 - **Prototype risky parts**
 - **Loop back when needed** — solution changes problem/value/minimum outcome/scope/success criteria → Define; missing/incorrect system understanding → Context.
 
@@ -66,13 +68,25 @@
 
 ## 6. Output
 
+### Decision Summary
+
+- **Decision / Result:** Shape approved / Shape needs revision.
+- **Status:** Complete / Blocked.
+- **Blockers:** …
+- **Next Action:** …
+
 ### Experience Shape
 
-- User Flow / Entry Points
-- Key Screens / Interactions / States
-- Feedback / Errors / Permissions
-- Existing Patterns Reused
-- Explicitly Excluded Experience
+- **User flow**
+  - Entry points and interactions.
+- **States**
+  - States and transitions.
+- **Feedback**
+  - Feedback, errors, and permissions.
+- **Existing patterns**
+  - Reusable product patterns that shape the solution.
+- **Excluded experience**
+  - Experience intentionally out of scope.
 
 ### Prototype
 
@@ -89,39 +103,66 @@
 
 ### Domain Shape
 
-- Core Concepts / Entities
-- Required Information
-- Relationships / Ownership
-- Lifecycle / States
-- Business Rules
-- Required vs Optional Information
+- **Concepts**
+  - Core concepts and entities.
+- **Ownership**
+  - Relationships and ownership.
+- **Information**
+  - Required and optional information.
+- **Lifecycle**
+  - States and transitions.
+- **Rules**
+  - Business rules.
 
 ### Validation
 
-- Important Assumptions / Risks
-- Validation Method / Learning
-- Define Changes Needed
-- Context Changes Needed
-- Remaining Open Questions
+- **Risks**
+  - Important assumptions and risks.
+- **Validation learning**
+  - Validation method, learning, and mitigation.
+- **Phase changes**
+  - Define changes, Context changes, and remaining open questions.
 
 ### Verification Strategy
 
-- **Outcome to Prove:** …
-- **Critical Journey / Module Flow:** …
-- **Recommended Proof Level:** Unit / Widget / Module Integration / E2E / Manual
-- **Real Boundaries Involved:** …
-- **Existing Coverage:** …
-- **Missing Coverage:** …
-- **Why This Level Is Sufficient:** …
-- **Cost / Determinism / Environment Risks:** …
-- **Approval or Accepted Gap:** …
+- **Outcome**
+  - Outcome that must be proven.
+- **Critical journey**
+  - Complete feature or module flow that must work.
+- **Proof level**
+  - Unit / Widget / Module Integration / E2E / Manual, with why it is sufficient.
+- **Real boundaries**
+  - UI, API, database, permissions, integrations, or other boundaries involved.
+- **Existing coverage**
+  - Current tests, harnesses, fixtures, and environments.
+- **Missing coverage**
+  - Proof that does not yet exist.
+- **Cost**
+  - Cost and determinism.
+- **Environment**
+  - Environment risks.
+- **Approval**
+  - Required approval.
+- **Accepted gap**
+  - Accepted limitations.
 
 ### Shaped Solution
 
-- Minimum Solution
-- Why This Solution
-- What Was Removed
-- What Requires Approval Before Expansion
+- **Solution**
+  - Minimum solution.
+- **Reason**
+  - Why this is the smallest correct solution.
+- **Removed scope**
+  - What was removed.
+- **Approval boundary**
+  - What requires approval before expansion.
+
+### Exit
+
+- **Exit Status:** Pass / Blocked.
+- **Evidence:** …
+- **Remaining Blockers:** …
+- **Next Phase:** Plan.
 
 ## 7. Exit
 

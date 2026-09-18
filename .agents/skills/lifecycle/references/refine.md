@@ -29,6 +29,9 @@
 - **Automate mechanical rules** — Prefer deterministic checks where they can replace repeated human review.
 - **Improve verification from evidence** — Recurring missing coverage, expensive setup, or flaky module/E2E tests should produce a small proposal for guidance, fixtures, CI, or automation; do not add broad test infrastructure speculatively.
 - **Keep judgment human-readable** — Do not force subjective architecture/product judgment into brittle automation.
+- **Group learning by finding** — Use bold top-level bullets for learning, cause, improvement, disposition, and approval; nest the supporting evidence and recommendations beneath them.
+- **One finding per group** — Give each codebase or process finding its own bold group; keep its location, evidence, impact, recommendation, and disposition together.
+- **Selective output** — Record meaningful findings and proposals only; do not create a field-by-field retrospective.
 - **Smallest useful improvement** — Apply only enough refinement to prevent meaningful future cost.
 - **Duplication triggers investigation, not automatic abstraction.**
 - **Prefer reuse of an existing abstraction.** Create a new shared abstraction only when multiple real usages represent the same responsibility and sharing reduces complexity/coupling.
@@ -139,25 +142,37 @@
 
 ### Refinement Result
 
-- **What We Learned:** …
-- **What Caused It:** …
-- **System Improvement:** …
-- **Proposed Source:** Define / Context / Shape / Plan / Build / Verify / Engineering Guidelines / Module Docs / Automation / Other
-- **Future Work:** … *(only when something must return to Define or be deferred)*
-- **Reverification Required:** Yes / No
+- **Learning**
+  - What we learned and the evidence.
+- **Cause**
+  - What caused it.
+- **Improvement**
+  - System improvement, proposed source, and reverification requirement.
+- **Future work**
+  - Only when something must return to Define or be deferred.
 
 - Keep the result small. The goal is to change the system, not create a large retrospective document.
 
 ### Codebase Review
 
-- **Findings:** None / …
-- **Recommendations:** …
-- **Proposed Disposition:** Fix now / Add to backlog / Keep separate / Dismiss with reason
+- **Finding — …**
+  - Location and evidence.
+  - Impact.
+  - Recommendation.
+  - Proposed disposition.
 
 ### Lifecycle Workspace Closure
 
-- **Cleanup Decision:** Pending user confirmation / Retain / Archive / Remove
-- **User Confirmation:** …
+- **Cleanup**
+  - Decision: Pending user confirmation / Retain / Archive / Remove.
+  - User confirmation: …
+
+### Exit
+
+- **Exit Status:** Pass / Blocked.
+- **Evidence:** …
+- **Remaining Blockers:** …
+- **Next Phase:** Cycle closed.
 
 ## 7. Exit
 

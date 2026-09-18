@@ -33,6 +33,8 @@
 - **Test behaviour, not implementation trivia.**
 - **Reuse existing patterns** — Do not create new abstractions when existing ones fit.
 - **No silent scope expansion** — Discoveries may be mentioned, never silently implemented.
+- **Group the slice record** — Use bold top-level bullets for outcome, changes, proof, conformance, and deviations; nest the supporting evidence beneath them.
+- **Selective output** — Record only meaningful slice evidence; omit empty or inapplicable fields.
 - **No unrelated cleanup** — Do not refactor neighbouring code merely because improvement is possible.
 - **Keep the system working** — Prefer small changes that leave the codebase valid.
 - **Temporary means temporary** — Mock/temporary data used during UI work must be removed during Connect.
@@ -109,13 +111,25 @@
 
 ### Slice Result
 
-- **Slice:** …
-- **Changes:** …
-- **Automated Proof:** …
-- **Real Verification:** …
-- **Conformance:** Pass / Blocked
-- **Result:** Pass / Blocked
-- **Discoveries / Deviations:** … *(only when relevant)*
+- **Outcome**
+  - Slice and result: Pass / Blocked.
+- **Changes**
+  - Meaningful implementation changes.
+- **Automated proof**
+  - Tests, executable checks, and their results.
+- **Real verification**
+  - Actual UI/API/technical boundary exercised and its result.
+- **Conformance**
+  - Pass / Blocked, with relevant evidence.
+- **Deviations**
+  - Discoveries or deviations, only when relevant.
+
+### Exit
+
+- **Exit Status:** Pass / Blocked.
+- **Evidence:** …
+- **Remaining Blockers:** …
+- **Next Phase:** Next slice / Verify.
 
 - Keep the record small. The primary output is working, verified, conformant code.
 

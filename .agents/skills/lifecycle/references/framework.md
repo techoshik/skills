@@ -82,14 +82,25 @@
 
 - **Zero cognitive load** — Make every artifact easy to scan so a user or agent can quickly decide **Yes / No**, **Pass / Fail**, **Proceed / Stop**, or **Needs clarification**.
 - **Clear, concise lines** — Use plain language, active voice, and the shortest wording that preserves the meaning.
-- **One point per bullet** — Break long or compound sentences into separate bullets, with one fact, decision, action, or question in each.
-- **If it is not important, do not write it** — Include only information that changes a decision, action, understanding, or verification result.
-- **Every line earns its meaning** — Remove repetition, filler, background, and detail that does not help the current phase move forward.
-- **Decision first** — Put the status, decision, result, or blocker before its explanation and supporting detail.
+- **Bold topic, nested support** — Make the main topic or decision a bold top-level bullet; place its supporting facts, constraints, risks, actions, and evidence on indented lines below it.
+- **Every line earns its meaning** — Include only information that changes a decision, action, understanding, or verification result.
+- **Use a decision header** — Start every phase artifact with **Status**, **Decision / Result**, **Blockers**, and **Next Action**; write **None** when a field has no item.
+- **Decision first** — Put the answer, status, or blocker before its explanation and supporting detail.
 - **Use explicit decision words** — Prefer stable labels such as **Proceed / Defer / Reject**, **Pass / Fail / Blocked**, and **Known / Assumed / Open**.
+- **Make open items actionable** — Every open question or blocker must name the decision needed, owner, impact, and next action.
+- **Use hierarchy, not a flat list** — Use headings for themes, top-level bullets for decisions or topics, nested bullets for details, and tables only when they make repeated structured values easier to compare.
+- **Separate by responsibility** — Create another bold group when details have a different owner, decision, evidence, or next action; do not merge unrelated points to reduce the bullet count.
+- **One responsibility per group** — A group contains one information type or decision type, such as **Success**, **Risk**, **Dependency**, or **Scope**.
+- **Avoid compound group titles** — Split titles joined by **and**, **/**, or **&** when they name different responsibilities.
+- **Use headings for section labels** — A group title may be a heading instead of a bullet when it only names the section; use bullets beneath it for the actual information.
+- **Bullets represent sibling items** — Use a bullet for a list of items or a supporting point, not merely because the surrounding document uses bullets.
+- **Keep sections readable** — When a section grows beyond roughly 5–7 sibling bullets, group by responsibility, split into multiple groups, move stable detail to a referenced source, or delete it.
+- **Clarity outranks compactness** — Split a sentence, bullet, or group whenever combining it would hide a distinct decision or responsibility.
 - **Separate information types** — Keep facts, decisions, questions, actions, risks, and evidence distinct instead of mixing them in one bullet.
 - **Put evidence beside the claim** — Record the file, command, observation, or other proof next to the decision or result it supports.
-- **Reference instead of repeating** — Link to the authoritative source for stable information; do not copy it into every phase artifact.
+- **Reference instead of repeating** — State each stable fact once; later artifacts should link to it and record only changes, decisions, or phase-specific implications.
+- **Templates are menus, not checklists** — Omit fields that do not improve the current phase decision; never fill a template merely to make it look complete.
+- **End with the gate** — Close every phase artifact with **Exit Status**, **Evidence**, **Remaining Blockers**, and **Next Phase**.
 
 ## State and Context Rules
 

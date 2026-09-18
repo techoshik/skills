@@ -22,7 +22,7 @@
 - **One module, one plan by default** — Keep features/slices together unless splitting clearly reduces cognitive load.
 - **Feature before slice** — Organize by feature, then vertical slices.
 - **Vertical slices over horizontal layers** — Prefer small end-to-end capability over all models, then all UI, then all backend.
-- **Slice sequence** — Use **Model → UI → Backend → Connect → Verify** when applicable.
+- **Slice sequence** — Show **Model → UI → Backend → Connect → Verify** as separate checkpoints in every slice; mark a checkpoint **Not applicable** when it does not belong.
 - **Observable result** — Normal slices end in behaviour that can be exercised through a real interface.
 - **Technical-only work is an exception** — It still requires concrete technical verification.
 - **Minimum models only** — Create/extend only what the current slice needs.
@@ -33,6 +33,8 @@
 - **Verification is part of the slice** — Code written is not completion.
 - **Plan the proof before Build** — E2E or module integration scripts, fixtures, emulator setup, and CI changes belong in planned slices when the strategy requires them; do not defer their design to Verify.
 - **Status is not duplicated by default** — Use the existing execution tracker unless Plan itself is the execution source of truth.
+- **Group by implementation decision** — Use bold top-level bullets for feature, dependency, slice, and proof topics; nest the details beneath them.
+- **Selective output** — Omit extra fields and repeated context; keep the five slice checkpoints visible even when one is Not applicable.
 - **Split only when needed** — Large/independent feature details can move to a linked child plan.
 - **Loop back when needed** — Define mismatch → Define; missing system understanding → Context; solution/domain change → Shape; implementation uncertainty → remain in Plan.
 
@@ -72,39 +74,69 @@
 
 ## 6. Output
 
+### Decision Summary
+
+- **Decision / Result:** Plan approved / Plan needs revision.
+- **Status:** Complete / Blocked.
+- **Blockers:** …
+- **Next Action:** …
+
 ### Module Plan
 
-- **Module:** …
-- **Feature Order:** …
-- **Cross-Feature Dependencies:** …
-- **Module Foundation:** … *(only when genuinely required)*
-- **Shared Risks / Constraints:** …
+- **Feature order**
+  - Feature order.
+- **Ordering rationale**
+  - Value and dependency rationale.
+- **Dependencies**
+  - Cross-feature dependencies.
+- **Foundation**
+  - Any genuinely required module foundation.
+- **Risks**
+  - Shared risks.
+- **Constraints**
+  - Shared constraints.
 
 ### Verification Strategy
 
-- **Proof Level(s):** Unit / Widget / Module Integration / E2E / Manual
-- **Complete Workflow(s):** …
-- **Test Infrastructure / Fixtures Needed Before Verify:** …
-- **Accepted Gaps / Risks:** …
+- **Proof level**
+  - Unit / Widget / Module Integration / E2E / Manual, with why it is sufficient.
+- **Complete workflows**
+  - Workflows that must be exercised before completion.
+- **Test infrastructure**
+  - Fixtures, environments, scripts, or CI needed before Verify.
+- **Accepted gaps**
+  - …
+- **Verification risks**
+  - …
 
 ### Feature: …
 
-- **Feature Outcome:** …
-- **Depends On:** …
+- **Outcome**
+  - Feature outcome.
+- **Dependencies**
+  - Feature prerequisites.
 
 #### Slice 1 — …
 
-- **Change:** …
-- **Depends On:** …
-- **Model:** …
-- **UI:** …
-- **Backend:** …
-- **Connect:** …
-- **Verify:** …
-- **Automated Proof:** …
-- **Real Verification:** …
+- **Model**
+  - Models, types, states, fields, or contracts required by the slice; otherwise Not applicable.
+- **UI**
+  - Screens, interactions, states, or local feedback; otherwise Not applicable.
+- **Backend**
+  - Database, repository, service, API, permissions, integrations, or migrations; otherwise Not applicable.
+- **Connect**
+  - Connections to real UI/API behavior and removal of temporary shortcuts; otherwise Not applicable.
+- **Verify**
+  - Automated proof and real verification boundary.
 
-- Add only as many slices as needed. Omit a sub-step when genuinely not applicable. If a feature needs its own detailed plan, link it instead of duplicating it.
+- Add only as many slices as needed. Keep all five slice checkpoints visible and mark a checkpoint Not applicable when genuinely irrelevant. If a feature needs its own detailed plan, link it instead of duplicating it.
+
+### Exit
+
+- **Exit Status:** Pass / Blocked.
+- **Evidence:** …
+- **Remaining Blockers:** …
+- **Next Phase:** Build.
 
 ## 7. Exit
 
