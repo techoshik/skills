@@ -78,6 +78,19 @@
 
 - A later phase must not silently repair an earlier mistake by inventing new assumptions.
 
+## Document Writing Rules
+
+- **Zero cognitive load** — Make every artifact easy to scan so a user or agent can quickly decide **Yes / No**, **Pass / Fail**, **Proceed / Stop**, or **Needs clarification**.
+- **Clear, concise lines** — Use plain language, active voice, and the shortest wording that preserves the meaning.
+- **One point per bullet** — Break long or compound sentences into separate bullets, with one fact, decision, action, or question in each.
+- **If it is not important, do not write it** — Include only information that changes a decision, action, understanding, or verification result.
+- **Every line earns its meaning** — Remove repetition, filler, background, and detail that does not help the current phase move forward.
+- **Decision first** — Put the status, decision, result, or blocker before its explanation and supporting detail.
+- **Use explicit decision words** — Prefer stable labels such as **Proceed / Defer / Reject**, **Pass / Fail / Blocked**, and **Known / Assumed / Open**.
+- **Separate information types** — Keep facts, decisions, questions, actions, risks, and evidence distinct instead of mixing them in one bullet.
+- **Put evidence beside the claim** — Record the file, command, observation, or other proof next to the decision or result it supports.
+- **Reference instead of repeating** — Link to the authoritative source for stable information; do not copy it into every phase artifact.
+
 ## State and Context Rules
 
 - The lifecycle artifacts are the versioned active-cycle state; conversation history is not.
