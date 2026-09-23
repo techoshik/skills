@@ -1,72 +1,66 @@
 # 07 — Refine
 
-## Decision Summary
+## Decision
 
-- **Decision / Result:** Refinement approved / Refinement needs revision.
-- **Status:** Complete / Blocked.
-- **Blockers:** …
-- **Next Action:** …
+- **Result:** Refinement complete / Awaiting approval / Blocked
+- **Status:** Pass / Blocked
+- **Blockers:** None
+- **Next:** Close cycle
 
-## Refinement Result
+## Improvements
 
-- **Learning**
-  - What we learned and the evidence.
-- **Cause**
-  - What caused it.
-- **Improvement**
-  - Proposed improvement, source, and reverification requirement.
-- **Future work**
-  - Only when something must return to Define or be deferred.
+### Codebase — …
 
-## Codebase Review
+- **Finding**
+  - …
 
-- **Change**
-  - [ ] Branch diff and nearby affected code reviewed.
-- **Structure**
-  - [ ] Duplication and reuse opportunities reviewed.
-  - [ ] Complexity, obsolete/temporary code, naming, and structural consistency reviewed.
-- **Quality**
-  - [ ] Tests and deterministic automation reviewed.
-  - [ ] Reliability, security, performance, and maintainability reviewed where relevant.
-- **Documentation**
-  - [ ] Context, module documentation, Engineering Guidelines, and lifecycle guidance reviewed for gaps.
+- **Action**
+  - …
 
-### Findings
+- **Home**
+  - Codebase.
 
-- **Finding — …**
-  - Location and evidence.
-  - Impact.
-  - Recommendation.
-  - Proposed disposition.
+- **Status**
+  - Proposed / Approved → Applied / Declined / Deferred.
 
-## Promotion Check
+- **Proof**
+  - …
 
-- [ ] Proposed affected-module update under `docs/modules/<module>.md` is recorded for user review, or no durable product knowledge changed.
-- [ ] Proposed module documentation follows `Goal → Rules → Features` and contains behavioral knowledge rather than implementation details.
-- [ ] Proposed Engineering/process learning recorded for user review.
-- [ ] Every Cycle Log entry processed, deferred explicitly, or dismissed intentionally.
-- [ ] Proposed code changes and durable knowledge recorded for user review.
+### Module Docs — …
 
-## User Review and Approval
+- **Finding**
+  - …
 
-- **Approval**
-  - Status: Awaiting user review / Approved / Partially approved / Declined.
-  - User decision: …
-  - Approved changes: …
-- **Safety**
-  - [ ] No proposed Refine change applied before user approval.
-  - [ ] Approved changes applied and reverified where applicable.
+- **Action**
+  - …
 
-## Lifecycle Workspace Closure
+- **Home**
+  - `docs/modules/….md`
 
-- **Cleanup**
-  - Decision: Pending user confirmation / Retain / Archive / Remove.
-  - User confirmation: …
-- [ ] `00-lifecycle.md` updated with the cleanup decision before archive/removal.
+- **Status**
+  - …
 
-## Exit
+### Lifecycle — …
 
-- **Exit Status:** Pass / Blocked.
-- **Evidence:** …
-- **Remaining Blockers:** …
-- **Next Phase:** Cycle closed.
+- **Finding**
+  - …
+
+- **Action**
+  - …
+
+- **Home**
+  - Lifecycle skill / Engineering Guideline.
+
+- **Status**
+  - …
+
+## Closure
+
+- **Code improvements:** Applied / None / Pending
+- **Module knowledge:** Transferred / None / Pending
+- **Lifecycle improvements:** Applied / None / Pending
+- **Cycle Log:** Processed / Pending
+- **Workspace:** Safe to delete / Retain / Archive / Remove / Pending
+- **Cycle:** Closed / Blocked
+
+> Omit empty improvement groups.

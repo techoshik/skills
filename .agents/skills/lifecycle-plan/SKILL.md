@@ -1,30 +1,52 @@
 ---
 name: lifecycle-plan
-description: "Use after Shape to turn the approved solution into the smallest sequence of verifiable vertical slices."
+description: "Use after Shape to turn the approved solution into the smallest sequence of runnable, verifiable slices."
 ---
 
-- Read:
+## Phase Question
 
+> **What is the safest runnable build sequence?**
+
+- Use this question as the delete test for phase work and artifact content.
+- Follow the shared **Decide → Work → Resolve** frame without renaming the phase-specific sections.
+
+- Read:
   - `../lifecycle/references/framework.md`
   - `../lifecycle/references/questioning.md`
   - `../lifecycle/references/plan.md`
   - `../lifecycle/references/approval.md`
   - `../lifecycle/references/cycle-log.md`
 
-- Load approved Define, Context, and Shape artifacts.
+- Load approved Shape plus only the Context/Define details needed for dependencies and success traceability.
 
-- Run the questioning protocol for slice boundaries, dependencies, reuse, rollout, regression risk, and proof.
-- Continue through dependent decision rounds until no critical implementation question would force Build to guess.
+- Plan outside-in:
+  - start from the journey;
+  - create state/models just before or alongside UI when needed;
+  - complete the frontend/application path;
+  - use a controlled/fake boundary to make the journey runnable early when useful;
+  - then implement/connect the real backend;
+  - exercise the same journey again.
 
-- Plan one module in one Plan file by default.
-- Organize by Feature → Slice.
-- Use Model → UI → Backend → Connect → Verify when applicable.
+- Do not force project layers or `Not applicable` checkpoints.
+- Write only implementation groups that contain real work.
+- Keep naming/folder/class conventions out of Plan; Build loads the Engineering Guidelines.
 
-- Use `wayfinder` for large, decision-heavy planning.
-- Use `to-tickets` only when external execution tracking is useful.
+- Use `wayfinder` for large/dependency-heavy plans.
+- Use `to-tickets` only when external tracking helps.
 
-- Write/update `04-plan.md`.
+- Write/update `04-plan.md` using:
+  - Decision
+  - Build Order
+  - Slices
+  - Open
 
-- Complete only after the Plan Exit gate passes.
-- In `guided` or `strict` mode, wait for developer approval before Build.
-- In `auto`, mark the transition `Auto-approved` and continue.
+- Each user-facing slice should contain:
+  - Journey
+  - Build
+  - Proof
+  - optional Depends / Boundary / Risk
+
+- Resolve critical implementation/slicing questions before Build.
+
+- Complete when the Plan gate passes.
+- Apply approval mode and update `00-lifecycle.md`.

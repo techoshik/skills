@@ -1,65 +1,61 @@
 # 04 — Plan
 
-## Decision Summary
+## Decision
 
-- **Decision / Result:** Plan approved / Plan needs revision.
-- **Status:** Complete / Blocked.
-- **Blockers:** …
-- **Next Action:** …
+- **Result:** Plan approved / Needs revision
+- **Status:** Pass / Blocked
+- **Blockers:** None
+- **Next:** Build
 
-## Module Plan
+## Build Order
 
-- **Feature order**
-  - Module and feature order.
-- **Ordering rationale**
-  - Value and dependency rationale.
-- **Dependencies**
-  - Cross-feature dependencies.
-- **Foundation**
-  - Any genuinely required foundation.
-- **Risks**
-  - …
-- **Constraints**
+1. …
+2. …
+3. …
+
+- **Prerequisite**
   - …
 
-## Verification Strategy
-
-- **Proof level**
-  - Unit / Widget / Module Integration / E2E / Manual, with why it is sufficient.
-- **Complete workflows**
-  - Workflows that must be exercised before completion.
-- **Test infrastructure**
-  - Fixtures, environments, scripts, or CI needed before Verify.
-- **Accepted gaps**
-  - …
-- **Verification risks**
-  - …
-
-## Feature: …
-
-- **Outcome**
-  - Feature outcome.
-- **Dependencies**
-  - Feature prerequisites.
+## Slices
 
 ### Slice 1 — …
 
-- **Model**
-  - Models, types, states, fields, or contracts; otherwise Not applicable.
-- **UI**
-  - Screens, interactions, states, or local feedback; otherwise Not applicable.
-- **Backend**
-  - Database, repository, service, API, permissions, integrations, or migrations; otherwise Not applicable.
-- **Connect**
-  - Connections to real UI/API behavior and removal of temporary shortcuts; otherwise Not applicable.
-- **Verify**
-  - Automated proof and real verification boundary.
+- **Journey**
+  - …
 
-- Add only as many slices as needed. Keep all five slice checkpoints visible and mark a checkpoint Not applicable when genuinely irrelevant.
+- **Build**
+  1. …
+  2. …
+  3. …
 
-## Exit
+- **Proof**
+  - Automated: …
+  - Real: …
 
-- **Exit Status:** Pass / Blocked.
-- **Evidence:** …
-- **Remaining Blockers:** …
-- **Next Phase:** Build.
+- **Depends**
+  - …
+
+- **Risk**
+  - …
+
+### Slice 2 — …
+
+- **Journey**
+  - …
+
+- **Build**
+  - …
+
+- **Proof**
+  - …
+
+## Open
+
+### Research
+- …
+  - Resolve: Plan
+
+### Blockers
+- …
+
+> Omit optional/empty groups. Do not add `Not applicable` placeholders.

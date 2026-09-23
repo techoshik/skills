@@ -1,181 +1,126 @@
-# Lifecycle — Shape
+# Shape
 
-## 1. Purpose
+## Purpose
 
-- Turn the approved problem into the **smallest viable solution**.
-- Validate important assumptions before implementation.
-- Define experience and domain enough that Plan can focus on **how to build it**.
+- Turn the approved outcome and verified context into the smallest correct solution.
+- Produce a blueprint Plan can implement without re-solving the product/design problem.
 
-> **Shape the right solution before planning the implementation.**
+## Inputs
 
-## 2. Inputs
+- Approved Define.
+- Completed Context.
+- Relevant permanent module knowledge and verified repository facts.
 
-- Approved Define Output
-- Approved Context Output
-- Existing Product Behaviour
-- Known Constraints
+## Rules
 
-## 3. Rules
+- Do not repeat Define scope or Context facts unless Shape changes their implication.
+- Explore experience, domain, states, alternatives, risks, seams, and proof deeply.
+- Record only the final shaped solution.
+- Domain before database.
+- Reuse existing patterns before inventing new ones.
+- Do not let shared UI widgets own persistence or cross-module orchestration unless that is already the established boundary.
+- A solution-changing unknown cannot silently pass Shape.
+  - Resolve it.
+  - Accept it explicitly as a risk.
+  - Or route it back to Define/Context.
+- Only implementation-level uncertainty owned by Plan may move forward.
 
-- **Minimum solution first**
-- **Validate before committing**
-- **Experience before implementation**
-- **Domain before database**
-- **Reuse before invention**
-- **Do not expand scope silently**
-- **Make uncertainty visible**
-- **Group by solution decision** — Use bold top-level bullets for experience, domain, validation, proof, and minimum-solution topics; nest their supporting details.
-- **Keep implementation detail proportionate** — Record only the technical detail needed to validate the shape; defer build sequencing and file-level work to Plan.
-- **Prototype risky parts**
-- **Loop back when needed** — solution changes problem/value/minimum outcome/scope/success criteria → Define; missing/incorrect system understanding → Context.
+## Questions
 
-> **Shape validates the solution. Plan organizes the implementation.**
+### Solution
+- What is the minimum solution?
+- What did Shape remove or constrain?
+- What expansion requires approval?
 
-## 4. Questions
+### Flow
+- What is the shortest complete user/system journey?
+- What states and transitions matter?
+- What failures/feedback materially change the experience?
 
-- Ask these as concrete prompts in frontier rounds:
+### Model
+- What concepts, ownership, information, lifecycle, and invariants are needed?
+- What snapshots/revisions/identity must be preserved?
 
-### Experience
+### Seams
+- What should be reused?
+- What new responsibility must exist?
+- Which interface/module owns cross-boundary behaviour?
+- What must callers not duplicate?
 
-- Where does the user enter, what can they do, and what is the minimum useful flow?
-- Which states, transitions, feedback, errors, permissions, and empty/loading cases must be defined?
+### Proof
+- What complete journey must work?
+- What is the cheapest trustworthy proof level?
+- What accepted proof gaps remain?
 
-### Domain
+## Prototype
 
-- Which concepts or entities exist, who owns them, and how do they relate?
-- Which information is required or optional, and which lifecycle states and business rules must remain true?
+- Use a prototype only when it materially reduces experience/state/logic uncertainty.
+- If needed:
+  - create `docs/lifecycle/<change>/prototype/index.html`;
+  - keep it self-contained and throwaway;
+  - record its result beside the decision it validated.
+- If not needed, write nothing.
+- Do not add a mandatory `Prototype: Not needed` section.
+- Keep a useful prototype through Plan, Build, and Verify; Refine may remove it after its learning is transferred.
 
-### Validation
+## Companion Skills
 
-- Which assumptions or risks could change the solution?
-- What is the cheapest useful test, what alternatives exist, and do Define and Context still hold?
-- What is the cheapest trustworthy proof for each important success criterion?
-- Does any criterion require a complete module or end-to-end flow through a real boundary?
+- `prototype` — material UX/state uncertainty.
+- `domain-modeling` — difficult domain concepts/rules.
+- `codebase-design` — material seams/interfaces.
+- Do not use `grill-with-docs` by default; requirement ambiguity belongs to Define.
 
-## 5. Actions
+## Output — `03-shape.md`
 
-- Create the minimum user/system flow.
-- Define required domain concepts and information.
-- Identify important assumptions and risks.
-- Choose a proportionate verification level using `references/verification-strategy.md`; recommend module integration or E2E only when lower-level proof is insufficient.
-- Validate important uncertainty with the cheapest useful medium: prototype, flow diagram, API contract, conceptual model, architecture sketch, or technical spike.
-- Compare shaped solution against Define and Context.
-- Remove unnecessary screens, states, fields, concepts, steps, and behaviours.
-- Escalate mismatches early rather than continuing with a flawed solution.
-- Use **prototype** for cheap experience/state/logic validation.
-- Use **domain-modeling** for domain terminology, ownership, lifecycle, and rule stress-testing.
-- Use **codebase-design** when module seams/interfaces are material to the solution.
+### Decision
+- Result: Shape approved / Needs revision.
+- Status: Pass / Blocked.
+- Blockers.
+- Next.
 
-## 6. Output
+### Solution
+- Minimum.
+- Removed.
+- Approval boundary.
+- Add rejected alternatives only when the reason is important for future implementation decisions.
 
-### Decision Summary
+### Flow
+- Journey.
+- Important states/transitions.
+- Important failure/retry behaviour.
 
-- **Decision / Result:** Shape approved / Shape needs revision.
-- **Status:** Complete / Blocked.
-- **Blockers:** …
-- **Next Action:** …
+### Model
+- Core concepts and ownership.
+- Required information.
+- Rules/invariants.
+- Storage details only when they materially shape the solution.
 
-### Experience Shape
+### Seams
+- Reuse.
+- Add.
+- Ownership/boundary.
+- Cross-module responsibilities.
 
-- **User flow**
-  - Entry points and interactions.
-- **States**
-  - States and transitions.
-- **Feedback**
-  - Feedback, errors, and permissions.
-- **Existing patterns**
-  - Reusable product patterns that shape the solution.
-- **Excluded experience**
-  - Experience intentionally out of scope.
+### Proof
+- Critical journey.
+- Selected proof levels and why they are sufficient.
+- Accepted gaps.
 
-### Prototype
+### Open
+- Research.
+- Risks.
+- Questions/blockers if any.
+- Only Plan-owned implementation uncertainty may normally remain.
 
-- Create a prototype when UI, responsive behaviour, or interaction states could change the shaped solution.
-  - Put it at `docs/lifecycle/<change-name>/prototype/index.html`.
-  - Make it standalone, responsive, and runnable by opening the file directly.
-  - Use no server, dependency, network request, or production code.
-  - Include only the screens and states needed to answer the uncertainty.
-  - Label it as throwaway.
-  - Record its question, covered screens/states, run instructions, validation verdict, and decisions in `03-shape.md`.
-- If visual uncertainty is immaterial, record why a prototype is not needed.
+## Phase Gate
 
-- Keep an approved prototype available as a reference through Plan, Build, and Verify. Refine removes it after the validated decisions have been captured in the lifecycle or permanent documentation.
+Pass when:
 
-### Domain Shape
+- the minimum solution is explicit;
+- the user/system flow is coherent;
+- domain ownership and key rules are clear;
+- reuse/new seams are explicit;
+- proof strategy is trustworthy;
+- no unresolved solution-changing unknown remains.
 
-- **Concepts**
-  - Core concepts and entities.
-- **Ownership**
-  - Relationships and ownership.
-- **Information**
-  - Required and optional information.
-- **Lifecycle**
-  - States and transitions.
-- **Rules**
-  - Business rules.
-
-### Validation
-
-- **Risks**
-  - Important assumptions and risks.
-- **Validation learning**
-  - Validation method, learning, and mitigation.
-- **Phase changes**
-  - Define changes, Context changes, and remaining open questions.
-
-### Verification Strategy
-
-- **Outcome**
-  - Outcome that must be proven.
-- **Critical journey**
-  - Complete feature or module flow that must work.
-- **Proof level**
-  - Unit / Widget / Module Integration / E2E / Manual, with why it is sufficient.
-- **Real boundaries**
-  - UI, API, database, permissions, integrations, or other boundaries involved.
-- **Existing coverage**
-  - Current tests, harnesses, fixtures, and environments.
-- **Missing coverage**
-  - Proof that does not yet exist.
-- **Cost**
-  - Cost and determinism.
-- **Environment**
-  - Environment risks.
-- **Approval**
-  - Required approval.
-- **Accepted gap**
-  - Accepted limitations.
-
-### Shaped Solution
-
-- **Solution**
-  - Minimum solution.
-- **Reason**
-  - Why this is the smallest correct solution.
-- **Removed scope**
-  - What was removed.
-- **Approval boundary**
-  - What requires approval before expansion.
-
-### Exit
-
-- **Exit Status:** Pass / Blocked.
-- **Evidence:** …
-- **Remaining Blockers:** …
-- **Next Phase:** Plan.
-
-## 7. Exit
-
-- Move to **Plan** only when:
-
-  - Shaped solution satisfies approved Define outcome.
-  - Define is still valid or changes have been returned and approved.
-  - Context is still valid or corrected.
-  - Minimum experience and required domain are clear.
-  - Important assumptions are validated or explicitly accepted as risks.
-  - Major uncertainty that could change the solution is reduced.
-  - Unnecessary scope is removed and no new requirement entered scope without approval.
-  - **Cycle Log Check** has been performed.
-  - A human or AI agent can honestly say:
-
-> **I understand what we are building, why this is the smallest correct solution, how it should behave, and what domain it requires. Define and Context still hold, so I can now plan how to implement it.**
+Do not add a second Exit section to the artifact.

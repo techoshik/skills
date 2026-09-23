@@ -3,30 +3,55 @@
 ## Source of Truth
 
 - Project-specific engineering standards live under `docs/guidelines/`.
+- The Lifecycle owns when they must be loaded.
+- The project owns what they say.
+- Do not assume fixed filenames, technologies, or conventions.
 
-- The Lifecycle system owns when these guidelines must be loaded. The project owns what the guidelines say.
+## Build — Before Editing
 
-- Guideline files are project-specific. Do not assume a fixed set of filenames or technologies, and do not invent a guideline when one is absent.
+1. Identify affected technologies, layers, and areas.
+2. Discover every applicable guideline.
+3. Read them before editing.
+4. Inspect nearby established code patterns.
+5. Treat applicable guidance as mandatory.
 
-## Before Build or Verify
+If guidance is missing, unclear, or contradictory:
 
-1. Identify the technologies, layers, and project areas affected by the work.
-2. Discover the applicable files under `docs/guidelines/`.
-3. Read every relevant guideline before editing code or reviewing the result.
-4. Treat applicable guidelines as mandatory conformance requirements.
-5. If applicable guidance is missing, unclear, or contradictory, surface the gap and pause the affected decision rather than inventing a convention.
+- do not invent a project-wide convention;
+- use a clear local established pattern only for routine local choices;
+- surface consequential gaps to the owning phase/user.
 
-- Use the affected paths, technology configuration, existing code patterns, and the change scope to determine applicability. A broad project guideline and more specific guidelines may both apply; load both when relevant.
+## Build — While Creating
 
-## During Refine
+Before creating an important file/class/interface/abstraction/folder, check:
 
-- When completed work exposes a recurring engineering rule or correction:
-  - Propose an update to the appropriate guideline in `07-refine.md`.
-  - Apply it only after user approval.
-  - Move approved learning out of the Cycle Log and lifecycle artifacts.
+- placement;
+- naming;
+- layer;
+- dependencies;
+- internal structure;
+- nearest established pattern.
 
-- Keep product knowledge, stable factual references, and active-cycle memory in their own homes:
+## Build — Slice Audit
 
-  - `docs/modules/` — what the product and system are now.
-  - `docs/lifecycle/` — temporary active-cycle work.
-  - `docs/backlog/` — future product opportunities.
+After implementation, run the full Slice Conformance Review and fix drift before continuing.
+
+## Verify
+
+- Load the applicable guidelines again.
+- Perform final integrated conformance checks after all slices are combined.
+
+## Refine
+
+When the cycle exposes a recurring engineering rule:
+
+- propose the smallest guideline improvement;
+- apply it when approved;
+- move the learning out of temporary lifecycle files/Cycle Log.
+
+Keep durable information in its proper home:
+
+- `docs/modules/` — module knowledge and future/deferred module work;
+- `docs/guidelines/` — engineering standards;
+- lifecycle skills — lifecycle/process guidance;
+- codebase — implemented behaviour.

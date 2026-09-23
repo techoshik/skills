@@ -4,143 +4,226 @@
 
 > **Build the minimum necessary thing that creates meaningful value.**
 
-- **Question** — Why is this requirement necessary? What real problem does it solve?
-- **Value** — What meaningful benefit will the user, product, or business receive?
-- **Delete** — What can we remove without losing that benefit?
-- **Simplify** — What is the simplest solution that produces the required outcome?
-- **Scope** — Never add nice-to-have behaviour unless explicitly approved.
-- **Stop** — Once the required outcome and acceptance criteria are satisfied, stop building.
-- **Optimize later** — Do not optimize something that may not need to exist.
-- **Automate last** — Automate only after the process or solution has proved useful and stable.
-
-## AI Scope Rule
-
-- AI may discover additional opportunities, but it must never silently turn them into requirements.
-
-- Use:
-
-  - **Discover → Mention → Justify → Get approval → Add to scope**
-
-- Reminder:
-
-> **Just because AI can build it quickly does not mean we should build it.**
+- **Question**
+  - Why is this necessary?
+  - What real problem does it solve?
+- **Value**
+  - What meaningful benefit must exist when we finish?
+- **Delete**
+  - What can disappear without losing that value?
+- **Simplify**
+  - What is the smallest correct solution?
+- **Scope**
+  - Never add nice-to-have behaviour without approval.
+- **Stop**
+  - Stop when the approved outcome and proof are satisfied.
 
 ## Development Flow
 
-1. **Define** — Understand what we are solving, for whom, why it matters, and what success means.
-2. **Context** — Give the AI the product, codebase, architecture, constraints, conventions, and history it needs.
-3. **Shape** — Validate what should be built before detailed implementation planning.
-4. **Plan** — Decide how the validated solution will be implemented and sequenced.
-5. **Build** — Implement the approved solution in small, understandable increments.
-6. **Verify** — Prove that the completed result works and satisfies the original requirement.
-7. **Refine** — Improve the solution, codebase, standards, context, and development process from what reality taught us.
+1. **Define** — What must change and why?
+2. **Context** — What existing reality matters?
+3. **Shape** — What is the smallest correct solution?
+4. **Plan** — What is the smallest runnable build sequence?
+5. **Build** — Implement outside-in and keep the journey runnable.
+6. **Verify** — Prove the complete promise and protect existing behaviour.
+7. **Refine** — Move useful learning to its permanent home, then close the cycle.
 
-> **Shape validates the solution. Plan organizes the implementation.**
+> **Shape validates the solution. Plan organizes implementation. Build proves slices. Verify proves the promise.**
 
-## Standard Phase Structure
+## Phase Frame
 
-- Every phase uses the same structure:
+> **Decide → Work → Resolve**
 
-  1. Purpose
-  2. Inputs
-  3. Rules
-  4. Questions
-  5. Actions
-  6. Output
-  7. Exit
+Use this as the common mental structure for every phase. It is a thinking frame, not a requirement to rename phase-specific sections.
 
-> **Same structure. Different thinking.**
+- **Decide**
+  - State the phase result, status, blockers, and next step.
+- **Work**
+  - Record only the information owned by this phase.
+- **Resolve**
+  - Resolve, accept, or route anything that remains.
+  - Omit the exception/open/issues group when nothing remains.
 
-- The process should carry procedural memory so humans and agents spend cognition on judgment rather than remembering what to check next.
+The seven phase names remain unchanged. Do not introduce an abbreviation for the lifecycle or this frame unless it clearly reduces cognitive load.
 
-## Module and Feature
+## Phase Questions
 
-- **Module** — A group of related features serving a larger product capability.
-- **Feature** — One specific user capability or behaviour inside a module.
-- **Module defines the system. Feature defines the behaviour.**
-- Shared business rules belong to the module.
-- Feature-specific rules belong to the feature.
-- Detailed domain/data modelling belongs to Shape, not Define.
+Each phase answers one question:
 
-## Loop-Back Ownership
+1. **Define** — What change is worth making and why?
+2. **Context** — What existing reality must this change respect?
+3. **Shape** — What is the smallest correct solution?
+4. **Plan** — What is the safest runnable build sequence?
+5. **Build** — Can we implement the current slice correctly and keep it runnable?
+6. **Verify** — Does the completed change fulfil the original promise?
+7. **Refine** — What should improve permanently because of what we learned?
 
-- When a later phase exposes a problem, return to its owner:
+Use the phase question as a delete test for artifact content.
 
-| Problem | Owning phase |
-| --- | --- |
-| Requirement, value, scope, or success criteria | **Define** |
-| Existing-system understanding | **Context** |
-| Experience, domain, or solution behaviour | **Shape** |
-| Implementation approach, sequencing, or slices | **Plan** |
-| Implementation defect or code conformance | **Build** |
-| Whole-solution acceptance evidence | **Verify** |
-| Reusable learning, standards, process, or codebase improvement | **Refine** |
+## Working Depth vs Artifact Depth
 
-- A later phase must not silently repair an earlier mistake by inventing new assumptions.
+> **Think deeply. Record only the decision.**
+
+- Investigation, questioning, alternatives, repository reading, prototypes, and test exploration may be deep.
+- Phase artifacts are compressed handoffs, not transcripts of the reasoning process.
+- Record only information required for:
+  - a decision;
+  - the next phase;
+  - verification;
+  - an accepted risk;
+  - future recovery.
+- Do not copy question history, discarded exploration, or stable information already owned by a permanent source.
+
+> **Artifact = handoff, not transcript.**
+
+## Grouping Rule
+
+> **Keep one concept in one place.**
+
+- Keep related inputs, decisions, actions, risks, and evidence together.
+- Do not scatter one concept across several sections and force the reader to reconnect it.
+- Use a short title, then concise supporting bullets.
+- When a topic becomes large, group it by responsibility instead of writing paragraphs.
+- Reference stable sources instead of repeating them.
 
 ## Document Writing Rules
 
-- **Zero cognitive load** — Make every artifact easy to scan so a user or agent can quickly decide **Yes / No**, **Pass / Fail**, **Proceed / Stop**, or **Needs clarification**.
-- **Clear, concise lines** — Use plain language, active voice, and the shortest wording that preserves the meaning.
-- **Bold topic, nested support** — Make the main topic or decision a bold top-level bullet; place its supporting facts, constraints, risks, actions, and evidence on indented lines below it.
-- **Every line earns its meaning** — Include only information that changes a decision, action, understanding, or verification result.
-- **Use a decision header** — Start every phase artifact with **Status**, **Decision / Result**, **Blockers**, and **Next Action**; write **None** when a field has no item.
-- **Decision first** — Put the answer, status, or blocker before its explanation and supporting detail.
-- **Use explicit decision words** — Prefer stable labels such as **Proceed / Defer / Reject**, **Pass / Fail / Blocked**, and **Known / Assumed / Open**.
-- **Make open items actionable** — Every open question or blocker must name the decision needed, owner, impact, and next action.
-- **Use hierarchy, not a flat list** — Use headings for themes, top-level bullets for decisions or topics, nested bullets for details, and tables only when they make repeated structured values easier to compare.
-- **Separate by responsibility** — Create another bold group when details have a different owner, decision, evidence, or next action; do not merge unrelated points to reduce the bullet count.
-- **One responsibility per group** — A group contains one information type or decision type, such as **Success**, **Risk**, **Dependency**, or **Scope**.
-- **Avoid compound group titles** — Split titles joined by **and**, **/**, or **&** when they name different responsibilities.
-- **Use headings for section labels** — A group title may be a heading instead of a bullet when it only names the section; use bullets beneath it for the actual information.
-- **Bullets represent sibling items** — Use a bullet for a list of items or a supporting point, not merely because the surrounding document uses bullets.
-- **Keep sections readable** — When a section grows beyond roughly 5–7 sibling bullets, group by responsibility, split into multiple groups, move stable detail to a referenced source, or delete it.
-- **Clarity outranks compactness** — Split a sentence, bullet, or group whenever combining it would hide a distinct decision or responsibility.
-- **Separate information types** — Keep facts, decisions, questions, actions, risks, and evidence distinct instead of mixing them in one bullet.
-- **Put evidence beside the claim** — Record the file, command, observation, or other proof next to the decision or result it supports.
-- **Reference instead of repeating** — State each stable fact once; later artifacts should link to it and record only changes, decisions, or phase-specific implications.
-- **Templates are menus, not checklists** — Omit fields that do not improve the current phase decision; never fill a template merely to make it look complete.
-- **End with the gate** — Close every phase artifact with **Exit Status**, **Evidence**, **Remaining Blockers**, and **Next Phase**.
+- **Zero cognitive load**
+  - Optimize for scanning and decisions, not document beauty.
+- **Short lines**
+  - Prefer one clear idea per line.
+- **Title → description**
+  - Use headings or bold labels for the topic; place short supporting bullets beneath.
+- **Use the shallowest useful hierarchy**
+  - If a section contains one kind of information, use direct bullets.
+  - If it contains several distinct groups, use short bold labels with nested bullets.
+  - Never add a heading or label only to hold a list.
+- **Decision first**
+  - Put the answer before its explanation.
+- **Every line earns its place**
+  - Delete anything that does not change a decision, action, understanding, risk, or proof.
+  - If a line does not help answer the current phase question, it probably does not belong in the artifact.
+- **No forced completeness**
+  - Templates are menus, not checklists.
+  - Omit empty or irrelevant groups.
+  - Never add `Not applicable` just to preserve a template.
+- **Evidence beside the claim**
+  - Put the file, command, observation, or proof next to what it supports.
+- **Reference over duplication**
+  - State stable knowledge once in its permanent source.
+- **One gate**
+  - Each phase artifact has one decision/status area near the top.
+  - Do not repeat the same status in a second Exit section.
+- **Actionable uncertainty**
+  - Consequential unknowns must be classified and owned.
+- **Clarity over compactness**
+  - Split a group when combining items would hide different responsibilities.
+
+## Uncertainty Rule
+
+> **Resolve only what the current phase owns. Carry the rest without guessing.**
+
+Classify consequential uncertainty as:
+
+- **Assumption**
+  - We intentionally proceed as though it is true.
+- **Question**
+  - A decision or clarification is still needed.
+- **Research**
+  - Evidence must be gathered before deciding.
+- **Blocker**
+  - The current phase cannot pass until it is resolved.
+
+When useful, record:
+
+- the item;
+- why it matters;
+- `Resolve: <phase>`.
+
+Do not record trivial unknowns that cannot change value, scope, solution, implementation, risk, or proof.
+
+## Information Ownership
+
+> **One fact, one owner.**
+
+- Every requirement, fact, decision, plan, result, and lesson has one owning phase or permanent source.
+- Later phases reference upstream information; they do not restate it unless a short reminder is required to understand the local decision.
+- If upstream information is wrong or changes, route back to its owner and update the owning source.
+- Do not create a second source of truth for convenience.
+
+Ownership by phase:
+
+- **Define** — value, requirement, scope, rules, success.
+- **Context** — existing-system reality relevant to the change.
+- **Shape** — chosen solution, flow, model, seams, proof level.
+- **Plan** — build order, slices, slice journeys and proof.
+- **Build** — implementation result, slice proof, conformance, deviations.
+- **Verify** — whole-change acceptance and protection evidence.
+- **Refine** — reusable learning and its permanent destination.
+
+> **Reference; do not rewrite.**
+
+## Loop-Back Ownership
+
+| Problem | Owning phase |
+| --- | --- |
+| Requirement, value, scope, success | **Define** |
+| Existing-system understanding | **Context** |
+| Experience, domain, solution behaviour | **Shape** |
+| Implementation approach, sequencing, slices | **Plan** |
+| Implementation defect or code conformance | **Build** |
+| Whole-solution acceptance evidence | **Verify** |
+| Reusable learning or development-system improvement | **Refine** |
+
+- A later phase must not silently repair an earlier mistake by inventing assumptions.
+- Route the problem to its owner.
+
+## Module and Feature
+
+- **Module**
+  - A group of related features serving a larger product capability.
+- **Feature**
+  - One specific user capability or behaviour inside a module.
+- Shared business rules belong to the module.
+- Feature-specific rules belong to the feature.
+- Detailed solution/domain modelling belongs to Shape, not Define.
 
 ## State and Context Rules
 
-- The lifecycle artifacts are the versioned active-cycle state; conversation history is not.
-- **Markdown wrapping** — Keep each coherent point on one line, even when it exceeds 80 characters. Wrap only when one line contains separate points or wrapping improves readability; do not wrap solely to meet an 80-character limit.
-- Keep one active lifecycle directory per change under `docs/lifecycle/`.
-- Keep the active lifecycle workspace versioned while the change is in progress when developers, branches, or new phase chats need shared continuity.
-- A developer working alone may add `docs/lifecycle/` to the project's `.gitignore`; the lifecycle still works locally, but its active records will not survive a fresh clone or move to another machine.
+- `docs/lifecycle/<change>/` is temporary active-change memory.
 - `00-lifecycle.md` is the entry point and current-state index.
-- Load only the artifacts needed by the current phase.
-- Reference permanent knowledge instead of copying it into every phase file.
-- `docs/modules/` describes the system as it is now; lifecycle files describe the change being worked through.
-- Each module normally has one concise document at `docs/modules/<module>.md` containing durable product behavior: its goal, shared rules, and feature responsibilities/capabilities—not implementation details.
+- Load only the artifacts required by the current phase.
+- Conversation history is not the source of truth when lifecycle artifacts exist.
+- Keep active lifecycle files versioned when multiple developers, branches, or chats need continuity.
+- A solo developer may ignore `docs/lifecycle/` in Git if local persistence is enough.
 
-## Information Architecture
+## Permanent Knowledge
 
 ```text
-docs/lifecycle/ = temporary active-change memory
+docs/lifecycle/ = temporary change memory
+docs/modules/   = permanent module knowledge, including deferred/future work
 docs/guidelines/ = permanent engineering standards
-docs/modules/   = permanent current product truth
-docs/backlog/   = permanent future opportunities
-cycle-log.md    = temporary development-system improvement memory
+cycle-log.md    = temporary process-improvement memory
+codebase        = permanent implemented behaviour
+skills repository = permanent lifecycle/process guidance
 ```
 
-- Active lifecycle workspaces are temporary working records, not permanent product documentation.
-- During Refine:
-  - Record proposed promotions and improvements in `07-refine.md`.
-  - Ask the user to review and approve them before changing code or permanent sources.
-  - Apply and reverify approved changes.
-  - Ask whether to retain, archive, or remove the completed workspace.
-  - Remove or archive it only after explicit confirmation.
+- Lifecycle files should normally be removable after the cycle.
+- Before cleanup, Refine must move every useful lesson to its permanent home.
+- `docs/modules/<module>.md` contains:
+  - current module goal;
+  - durable rules;
+  - current feature responsibilities;
+  - concise future/deferred work for that module.
+- Future work in a module document is **not approved scope**.
+- When selected, future work starts a new lifecycle at Define.
+- Do not keep a separate permanent backlog inside temporary lifecycle files.
 
-> **Human owns priority. Lifecycle owns backlog maintenance.**
-
-> **A backlog item never goes directly to Shape, Plan, or Build. It starts a new lifecycle at Define.**
+> **Temporary files help perform the change. Permanent sources preserve what matters after it.**
 
 ## Companion Skill Policy
 
 - Companion skills are techniques, not policy.
-
-> **Lifecycle owns the process. Companion skills help execute it.**
-
-- If a companion skill conflicts with this lifecycle or the project's guidelines, this lifecycle and the project guidelines win.
+- The lifecycle owns the process.
+- Project Engineering Guidelines own project conventions.
+- If a companion skill conflicts with either, the lifecycle/project rule wins.

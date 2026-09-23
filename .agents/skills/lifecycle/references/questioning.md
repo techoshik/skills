@@ -2,48 +2,54 @@
 
 ## Purpose
 
-- Use questions to remove consequential uncertainty, not to satisfy a fixed question count. A request that sounds clear still receives a structured pass.
+- Use questions to remove consequential uncertainty.
+- Do not ask questions merely to fill a template.
 
 ## Rules
 
-- Ask as many rounds as the decision tree requires; there is no three-question limit.
-- Ask the user for decisions, preferences, authority, priorities, and acceptance. Find facts yourself through the repository, tools, and available documentation.
-- Ask all independent questions in the current **frontier** together. Wait for the answers, then recompute the frontier before asking the next round.
-- Give a recommendation and the consequence of each meaningful choice.
-- Do not silently answer a question whose answer could change value, scope, behaviour, architecture, sequencing, or acceptance.
-- Record unresolved questions as assumptions, risks, or blockers. An explicit accepted risk is different from an unanswered question.
-- `auto` skips routine phase-approval prompts; it does not authorize guessing through a consequential unanswered question.
+- Ask as many rounds as the decision tree requires.
+- Ask independent questions in the current frontier together.
+- Recompute the frontier after each answer.
+- Ask the user for:
+  - product decisions;
+  - priorities;
+  - preferences;
+  - authority;
+  - acceptance.
+- Find repository/system facts yourself.
+- Do not silently answer anything that can materially change value, scope, behaviour, architecture, sequencing, or acceptance.
+- Give a recommendation when a meaningful choice needs one.
+- Preserve unresolved consequential uncertainty instead of inventing an answer.
 
-## Round Protocol
+## Recording Rule
 
-1. Name the destination and minimum outcome before exploring alternatives.
-2. Build a decision tree from the current phase's questions and the request.
-3. Mark each node as **known**, **verified**, **user decision**, or **unresolved**.
-4. Ask the whole current frontier of user decisions in one numbered round. Number the questions, give a recommendation and consequence for each meaningful choice, and wait before asking dependent questions.
-5. Record the answers and update the tree before proceeding. Never answer a human-in-the-loop question on the user's behalf.
-6. Stop questioning only when every consequential branch is resolved, explicitly accepted as an assumption/risk, or returned to its owning phase.
+> **Discovery depth and artifact size are independent.**
 
-- If no user question is needed, record why the requirement is sufficiently defined and list the assumptions and evidence that support proceeding.
+- Do not copy interview history into phase artifacts.
+- Record only:
+  - the final decision;
+  - accepted assumptions or risks;
+  - unresolved consequential items;
+  - information the next phase needs.
 
-## Phase Ownership
+Use the lifecycle uncertainty types:
 
-| Phase | Owns |
-| --- | --- |
-| **Define** | Problem, users, value, priority, scope, business rules, constraints, and observable success |
-| **Context** | Verified facts about the product, module, code, dependencies, conventions, and limitations; ask the user only for authority or product decisions |
-| **Shape** | Experience, domain concepts, states, alternatives, and solution-level assumptions |
-| **Plan** | Implementation sequencing, slice boundaries, dependencies, reuse, rollout, and proof |
-| **Build** | Slice-level implementation uncertainty |
-| **Verify** | Acceptance and regression evidence |
+- **Assumption**
+- **Question**
+- **Research**
+- **Blocker**
 
-- Build and Verify must not silently repair an earlier unanswered decision.
+When known, assign the earliest owning phase with `Resolve: <phase>`.
 
-## Specialist Routing
+## `grill-with-docs`
 
-- Use `grill-with-docs` for every non-trivial change: it combines deep human-in-the-loop grilling with domain modeling, so use it to sharpen terms, expose boundaries, and stress-test concrete scenarios.
-- Use `wayfinder` when the decision tree is large or foggy:
-  - Name the destination.
-  - Explore the current frontier breadth-first.
-  - Bring decisions back into lifecycle artifacts.
-- If the route is clear and fits one session, do not create a separate map.
-- If a specialist is unavailable, follow this protocol directly.
+- Use by default during Define for non-trivial requirement discovery.
+- Later phases use it only when a genuinely new requirement/domain decision needs grilling.
+- Do not rerun general requirement discovery in every phase.
+
+## Decision Boundary
+
+- If a later phase discovers a requirement ambiguity, route it to Define.
+- If it discovers a fact gap, route it to Context.
+- If it discovers solution uncertainty, route it to Shape.
+- If it discovers implementation/slicing uncertainty, route it to Plan.

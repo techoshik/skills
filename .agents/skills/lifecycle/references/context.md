@@ -1,164 +1,102 @@
-# Lifecycle — Context
+# Context
 
-## 1. Purpose
+## Purpose
 
-- Give the AI the **minimum sufficient understanding of the existing system** required to make correct decisions.
-- Help the AI extend the existing product instead of inventing parallel patterns, rules, or architecture.
-- Context exists for **decision quality**, not documentation completeness.
+- Find the existing facts that constrain the change.
+- Give Shape the minimum sufficient map of current reality.
 
-> **Give the AI what it needs to know — no more, no less.**
+## Inputs
 
-## 2. Inputs
+- Approved `01-define.md`.
+- Canonical module documents for every affected module.
+- Relevant code, configuration, tests, integrations, and engineering guidance.
 
-- **Approved Define Output** — Finalized module or feature definition.
-- **Canonical Module Documentation** — The existing `docs/modules/<module>.md` for each affected module, when present.
-- **Global Product Context** — Existing product, architecture, stack, conventions, and shared rules.
-- **Module Context** — Existing module purpose, boundaries, domain, rules, and dependencies.
-- **Existing Implementation** — Relevant code, models, APIs, components, tests, configurations, and schemas.
-- **Previous Decisions** — Architectural, product, or technical decisions affecting the work.
-- **Known Limitations** — Existing constraints, compatibility requirements, and known problems.
-- **Verification Landscape** — Existing test levels, harnesses, fixtures, real boundaries, environment constraints, and known flakiness.
+## Investigation Strategy
 
-## 3. Rules
+> **Global → Module → Feature**
 
-- **Every line must earn its place** — Remove anything that does not improve understanding or decision quality.
-- **Minimum sufficient context** — Never dump the entire codebase/documentation just because it is available.
-- **Specific over vague** — Prefer concrete rules, files, flows, constraints, and examples.
-- **Facts over assumptions** — Mark uncertainty clearly.
-- **Current over stale** — Remove/correct outdated context.
-- **Relevant over complete** — Context is not an encyclopedia.
-- **Group by system boundary** — Use bold top-level bullets for Global, Module, Feature, and Gap topics; nest supporting files, rules, and evidence beneath them.
-- **Selective output** — The context categories are a decision aid, not a checklist; omit fields that do not affect the current solution.
-- **Reference over duplication** — Do not repeat stable Global/Module knowledge in every feature.
-- **Read the canonical module document**:
-  - Identify each affected module for every bug fix, existing-functionality change, or new functionality.
-  - Read its existing `docs/modules/<module>.md` before shaping or editing code.
-  - Record missing documents as context gaps.
-- **Do not invent missing information** — Surface the gap.
-- **Do not turn context into requirements** — Context explains the existing system; Define controls what we are building.
-- **Validate Define against reality** — If system facts contradict approved problem, scope, rules, constraints, or success criteria, return to Define.
-- **Do not create new patterns unnecessarily** — Prefer existing proven patterns unless there is a clear reason to change them.
+Use this as a research path, not as the artifact structure.
 
-> **Context should reduce uncertainty, not increase information volume.**
+- **Global**
+  - Architecture, platforms, shared constraints, project conventions.
+- **Module**
+  - Purpose, boundary, rules, dependencies, integrations.
+- **Feature**
+  - Current behaviour, implementation, data, tests, gaps.
 
-## 4. Questions
+Investigate deeply enough to understand the change. Record only change-relevant facts.
 
-- Ask these as concrete prompts and investigate facts yourself:
+## Rules
 
-### Global
+- Identify every affected module.
+- Read each existing `docs/modules/<module>.md`.
+- Record the module document path or a missing-document gap.
+- Find repository/system facts yourself.
+- Do not restate stable module documentation.
+- Put evidence beside claims when evidence matters.
+- If reality contradicts Define, block and return to Define.
+- Do not silently adapt the requirement.
 
-- Which product capability and system boundaries are relevant?
-- Which architecture, technology, conventions, and shared rules apply?
-- Which reusable building blocks already support this work?
+## Questions
 
-### Module
+- What parts of the system are affected?
+- How do those parts work today?
+- What existing behaviour, components, contracts, or infrastructure can be reused?
+- What technical/product facts constrain Shape?
+- What verification infrastructure already exists?
+- What consequential facts are still unknown?
 
-- What is the module's purpose and boundary?
-- Which domain concepts, shared rules, flows, and existing features matter?
-- Which dependencies and integration points can constrain the solution?
+## Actions
 
-### Feature
+- Use repository inspection as the default.
+- Use `research` for external/technical facts when needed.
+- Use `domain-modeling` when terminology/domain concepts are unclear.
+- Do not run `grill-with-docs` again by default; use it only if a new product/domain decision appears.
 
-- How does the current behaviour work, and which code, data, tests, and rules implement it?
-- Which areas, dependencies, history, limitations, or previous decisions are relevant?
-- What is still unknown, and does the discovered system remain consistent with Define?
+## Output — `02-context.md`
 
-## 5. Actions
+### Decision
+- Result: Context sufficient / Define mismatch / More context required.
+- Status: Pass / Blocked.
+- Blockers.
+- Next.
 
-- Gather context in three layers: **Global → Module → Feature**.
-- Inspect the **real implementation** where necessary instead of relying only on summaries.
-- Identify the smallest set of files, rules, models, flows, and decisions relevant to the work.
-- Inspect existing automated coverage and the available real verification boundary before recommending module integration or E2E work.
-- Remove irrelevant, duplicated, vague, stale, or speculative information.
-- Separate verified facts from assumptions.
-- Surface conflicts or missing information instead of silently resolving them.
-- Compare finalized Define output against discovered Context.
-- If Context is incomplete or contradictory, stay in Context until resolved or explicitly recorded.
-- If Context invalidates approved problem/value/scope/rules/constraints/success criteria, return to Define.
-- Reference stable context instead of copying repeatedly.
-- Keep context gaps visible before moving forward.
-- Use specialist **research** when an external/technical fact needs investigation.
-- Use **domain-modeling** when terminology/domain understanding is the source of uncertainty.
+### Affected
+For each affected module:
+- module name;
+- canonical docs path or missing-doc gap;
+- one-line role in this change.
 
-## 6. Output
+### Current
+- Only current behaviour relevant to the change.
+- Group by affected responsibility/module.
 
-### Decision Summary
+### Reuse
+- Existing UI, domain logic, contracts, services, infrastructure, or tests that Shape should build on.
 
-- **Decision / Result:** Context complete / Context gap.
-- **Status:** Complete / Blocked.
-- **Blockers:** …
-- **Next Action:** …
+### Constraints
+- Only facts that can constrain the solution.
+- Examples: mutable data, ownership, permissions, architecture, integration limits, platform constraints.
 
-### Global Context
+### Verification
+- Existing unit/widget/integration/E2E harnesses, fixtures, environments, or important gaps.
+- Do not choose the future proof strategy here.
 
-- **Product**
-  - Product and system boundaries.
-- **Platforms**
-  - Supported platforms and environments.
-- **Architecture**
-  - Architecture and technology.
-- **Entry points**
-  - Bootstrap and relevant entry points.
-- **Shared rules**
-  - Engineering conventions and reusable components.
-- **Constraints**
-  - System-wide limits and technical constraints.
-- **Evidence**
-  - Files, commands, or external sources supporting the context.
+### Open
+- Assumptions.
+- Questions.
+- Research.
+- Blockers.
+- Add `Resolve: <phase>` where useful.
 
-### Module Context
+## Phase Gate
 
-- **Purpose**
-  - Purpose and domain.
-- **Boundary**
-  - Module boundaries.
-- **Existing behavior**
-  - Existing features and module flow.
-- **Rules**
-  - Shared business rules and limitations.
-- **Dependencies**
-  - Dependencies.
-- **Integrations**
-  - Integration points.
-- **Canonical documentation**
-  - Module document path, or an explicit missing-document gap.
+Pass when:
 
-### Feature Context
+- affected modules and current behaviour are understood;
+- relevant reusable pieces and constraints are known;
+- the verification landscape is known enough for Shape;
+- no Context-owned blocker remains;
+- Define still matches reality.
 
-- **Current behavior**
-  - Current user/system behavior and relevant flows.
-- **Implementation**
-  - Relevant code and rules.
-- **Data**
-  - Relevant models, data, and existing tests.
-- **Affected areas**
-  - Files, dependencies, integrations, permissions, and verification landscape.
-- **Gaps**
-  - Unknowns, limitations, previous decisions, and open questions.
-- **Mismatches**
-  - Define mismatches.
-
-### Exit
-
-- **Exit Status:** Pass / Blocked.
-- **Evidence:** …
-- **Remaining Blockers:** …
-- **Next Phase:** Shape.
-
-- Not every field must be filled. Include it only when it helps current work.
-
-## 7. Exit
-
-- Move to **Shape** only when:
-
-  - The AI understands how the relevant part of the existing system works.
-  - Required Global, Module, and Feature context is available.
-  - Important boundaries, rules, dependencies, data, and affected areas are understood.
-  - Relevant existing implementation has been identified.
-  - Critical context gaps/contradictions are resolved or explicitly recorded.
-  - Define is still valid; otherwise return to Define.
-  - Unnecessary context has been removed.
-  - **Cycle Log Check** has been performed.
-  - The AI can honestly say:
-
-> **I understand the existing system well enough to shape the smallest correct solution without inventing assumptions or unnecessary architecture.**
+Do not add a second Exit section to the artifact.

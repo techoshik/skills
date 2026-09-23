@@ -1,32 +1,46 @@
 ---
 name: lifecycle-verify
-description: "Use after Build to prove the completed feature fulfills Define and conforms to project guidelines."
+description: "Use after Build to prove the complete integrated change satisfies the original promise and protects affected existing behaviour."
 ---
 
-- Read:
+## Phase Question
 
+> **Does the completed change fulfil the original promise?**
+
+- Use this question as the delete test for phase work and artifact content.
+- Follow the shared **Decide → Work → Resolve** frame without renaming the phase-specific sections.
+
+- Read:
   - `../lifecycle/references/framework.md`
-  - `../lifecycle/references/questioning.md`
   - `../lifecycle/references/verify.md`
+  - `../lifecycle/references/verification-strategy.md`
   - `../lifecycle/references/guidelines.md`
   - `../lifecycle/references/approval.md`
   - `../lifecycle/references/cycle-log.md`
 
-- Load Define, Context, Shape, Plan, and Build results.
-- Load applicable Engineering Guidelines from `docs/guidelines/`.
-- Use the running integrated system.
+- Load:
+  - Define success criteria/journey;
+  - Context protection boundaries;
+  - Shape proof decision;
+  - Plan journeys;
+  - Build results;
+  - applicable Engineering Guidelines.
 
-- Use `code-review` for independent Guidelines + Spec review.
-- Use `diagnosing-bugs` for hard verification failures.
+- Verify the final integrated change, not each Build slice again.
+- Run the required real journey/boundary.
+- Check critical rules, targeted regressions, final conformance, and project gates.
+- Record the smallest trustworthy evidence; do not write a QA transcript.
 
-- Use the questioning protocol when acceptance, expected behaviour, or a regression boundary is ambiguous.
-- Route unresolved requirement or solution decisions back to Define or Shape.
+- Use `code-review` for independent final review when useful.
+- Use `diagnosing-bugs` for difficult failures.
 
-- Write/update `06-verify.md`.
+- Route failures to the owning phase with the required action and reverification target.
 
-- Route failures to the phase that owns them.
-- Do not use verification to patch around an earlier mistake.
+- Write/update `06-verify.md` using:
+  - Decision
+  - Proof
+  - Protection
+  - Issues
 
-- Complete only after the Verify Exit gate passes.
-- In `guided` or `strict` mode, stop with `Awaiting Developer Approval` before Refine or cycle closure.
-- In `auto`, mark the transition `Auto-approved` and continue.
+- Complete when the Verify gate passes.
+- Apply approval mode and update `00-lifecycle.md`.

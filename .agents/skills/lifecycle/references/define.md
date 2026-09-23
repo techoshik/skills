@@ -1,174 +1,113 @@
-# Lifecycle — Define
+# Define
 
-## 1. Purpose
+## Purpose
 
-- Decide whether the work is worth doing and define the **minimum valuable outcome**.
-- Clarify the problem, user, value, boundaries, and success before designing the solution.
-- Do **not** design detailed UI, data models, APIs, architecture, or code yet.
+- Decide whether the work is worth doing.
+- Define the problem, minimum valuable outcome, boundaries, rules, and success.
+- Do not design the solution.
 
-## 2. Inputs
+## Inputs
 
-- **Request / Idea** — The proposed module, feature, task, or problem.
-- **Evidence** — User feedback, observed behavior, analytics, support issues, business needs, or other proof available.
-- **Priorities** — Relevant product or business goals that help answer why this matters now.
-- **Known Constraints** — Product, legal, time, platform, compatibility, permission, or business limits already known.
-- **Existing Module Definition** — When defining a feature inside an existing module.
+- User request, bug, idea, or change.
+- Relevant product/module knowledge when already available.
+- Existing future-work note when the work originated from a module document.
 
-## 3. Rules
+## Rules
 
-- **Value before features** — Build only what creates meaningful value or necessary risk reduction.
-- **Minimum before complete** — Find the smallest useful outcome before expanding scope.
-- **Group by decision** — In the artifact, use bold top-level bullets for topics such as scope, outcome, rules, and proof; nest supporting details beneath them.
-- **Selective output** — The question set is a thinking aid, not a checklist; omit fields that do not change the Define decision.
-- Describe **problems and outcomes before solutions**.
-- Prefer observable requirements over vague words such as easy, fast, or user-friendly.
-- Separate **facts from assumptions**.
-- Never let unanswered questions silently become implementation assumptions.
-- Never let AI silently convert discovered opportunities into requirements.
-- Do not add content merely to fill the template; unknowns remain unknown or Open Questions.
-- Avoid detailed UI, data, API, and architecture decisions; those belong to later phases.
-- If the problem or value is unclear, do not move forward just because AI can build it quickly.
+- Work only on Define concerns.
+- Do not design detailed UI, data models, APIs, architecture, storage, or code.
+- Use the full questioning process when the change is non-trivial.
+- Resolve only what Define owns.
+- Carry later-phase uncertainty without guessing.
+- A Define blocker must be resolved before passing.
 
-## 4. Questions
+## Questions
 
-- Use these as a decision-tree frontier, not a three-question checklist.
-- Ask all currently answerable user decisions in one round.
-- Wait for answers, then recompute the next round.
-- Run this pass even when the request sounds clear.
+### Problem
+- Who has the problem?
+- What is happening now?
+- What is wrong or missing?
+- What evidence supports the need?
+- Why now?
 
-- **Problem** — What real problem are we solving?
-- **User** — Who experiences it?
-- **Current Situation** — How is it handled today?
-- **Value** — What meaningful change will solving it create?
-- **Evidence** — Why do we believe the problem is real?
-- **Why Now** — Why is this worth doing before other work?
-- **Delete Test** — What happens if we do not build it?
-- **Minimum Outcome** — What is the smallest result that meaningfully solves the problem?
-- **Required Capabilities** — What must the user be able to do?
-- **Business Rules** — What must always remain true?
-- **Scope** — What is included now?
-- **Non-Scope** — What tempting additions are intentionally excluded?
-- **Success Criteria** — What observable result proves this works?
-- **Constraints** — What limits must the solution respect?
-- **Assumptions** — What do we believe but have not verified?
-- **Open Questions** — What still needs an answer before Shape?
-- **Dependencies** — What other modules, services, people, or processes are involved?
-- **Risks** — What could make this fail even if the code works?
-- **Proof** — Which outcome or critical journey must be demonstrated, and what risk remains if it is not proven?
+### Outcome
+- What valuable change must exist?
+- What is the minimum valuable outcome?
+- What capabilities are necessary?
+- What can be removed without losing value?
 
-## 5. Actions
+### Boundaries
+- What is in scope?
+- What is explicitly out?
+- What constraints or dependencies already matter?
 
-- Question every requirement before accepting it.
-- Separate **facts, assumptions, and open questions**.
-- Capture the outcome, critical journey, and risk that verification must prove; defer the specific test level to Shape unless it is already known.
-- Delete requirements that do not materially improve the intended outcome.
-- Reduce the work to the **minimum outcome** that still creates meaningful value.
-- Resolve critical ambiguity; keep unresolved items visible as **Open Questions**.
-- Decide **Proceed, Defer, or Reject** before moving forward.
-- If the decision is **Defer** but the opportunity still has meaningful future value, create or update an entry in `docs/backlog/`.
-- If the current release intentionally excludes valuable capabilities, preserve those capabilities in the backlog instead of leaving them only in lifecycle history.
-- Use **grill-with-docs** for every non-trivial change to interview the user, sharpen terminology, and stress-test concrete scenarios.
-- Use **wayfinder** when the decision tree is too large or foggy for one session; translate its decisions into this lifecycle structure rather than adopting a competing monolithic spec.
+### Rules
+- What must always be true regardless of implementation?
 
-> **Define captures deferred value; it does not decide when that value becomes a priority.**
+### Success
+- What observable criteria prove the outcome?
+- What critical journey must eventually work?
+- What is the risk if that journey cannot be proven?
 
-## 6. Output
+## Actions
 
-### Decision Summary
+- Use `grill-with-docs` for non-trivial requirement discovery.
+- Use `wayfinder` only when the decision tree is large or foggy.
+- Find facts through repository/docs/tools instead of asking the user for discoverable information.
+- If a worthwhile idea is deferred, record it in the affected module document during Refine, not as permanent lifecycle scope.
 
-- **Decision / Result:** Proceed / Defer / Reject.
-- **Status:** Complete / Blocked.
-- **Blockers:** …
-- **Next Action:** …
+## Output — `01-define.md`
 
-### Requirement Review
+Use only these groups when they add information:
 
-- **Decisions**
-  - …
-- **Assumptions**
-  - …
-- **Risks**
-  - …
-- **Open questions**
-  - Decision needed, owner, impact, and next action.
+### Decision
+- Result: Proceed / Defer / Reject.
+- Status: Pass / Blocked.
+- Blockers.
+- Next.
 
-### Feature Definition
+### Problem
+- User.
+- Problem.
+- Current.
+- Evidence.
+- Why now.
 
-- **Problem framing**
-  - Problem, users, current situation, and evidence.
-- **Value**
-  - Value and why now.
-- **Minimum outcome**
-  - The smallest result that creates meaningful value.
-  - Delete test: what happens if the work is not built.
-- **Capabilities**
-  - Required user or system capabilities.
-- **Rules**
-  - Business, privacy, safety, and reliability rules.
-- **Scope**
-  - In-scope and out-of-scope work.
-- **Constraints**
-  - Product, platform, permission, legal, or technical constraints.
-- **Success**
-  - Observable success criteria.
-- **Dependencies**
-  - Services, people, permissions, or systems required.
-- **Risks**
-  - Risk, impact, and mitigation.
+### Outcome
+- Value.
+- Minimum.
+- Capabilities.
+- Delete test.
 
-### Verification Intent
+### Boundaries
+- In.
+- Out.
+- Constraints.
+- Dependencies.
 
-- **Outcome**
-  - Outcome to prove.
-- **Critical journey**
-  - Feature or module flow that must work.
-- **Risk**
-  - Risk if the outcome remains unproven.
-- **Constraints**
-  - Verification constraints.
+### Rules
+- Only durable behaviour/invariants relevant to the outcome.
 
-### Exit
+### Success
+- Criteria.
+- Critical journey.
+- Proof risk.
 
-- **Exit Status:** Pass / Blocked.
-- **Evidence:** …
-- **Remaining Blockers:** …
-- **Next Phase:** Context.
+### Open
+- Assumptions.
+- Questions.
+- Research.
+- Blockers.
+- Add `Resolve: <phase>` when useful.
 
-### Module Definition
+## Phase Gate
 
-- **Decision / result**
-  - Proceed / Defer / Reject.
-- **Purpose**
-  - Purpose and users.
-- **Value**
-  - Module outcome, value, evidence, and why now.
-- **Minimum outcome**
-  - Minimum outcome and delete test.
-- **Rules**
-  - Shared business rules.
-- **Scope**
-  - In-scope and out-of-scope work.
-- **Dependencies**
-  - Dependencies.
-- **Risks**
-  - Risks and mitigations.
-- **Features**
-  - Features in the module.
+Pass when:
 
-- A **Defer** decision with future value has been preserved in the backlog.
+- the problem and value are clear enough to justify the work;
+- the minimum outcome is bounded;
+- success can be observed;
+- no Define-owned blocker remains;
+- later-phase uncertainty is classified rather than guessed.
 
-## 7. Exit
-
-- Move to **Context** only when:
-
-  - Decision is **Proceed**.
-  - Problem, user, value, evidence, and minimum outcome are clear.
-  - Scope and non-scope are explicit.
-  - Success criteria are observable.
-  - Important assumptions, open questions, dependencies, and risks are visible.
-  - The outcome, critical journey, and verification risk are visible; no test level has been added as unapproved scope.
-  - **Cycle Log Check** has been performed.
-  - A **Defer** decision with future value has been preserved in the backlog.
-  - A human or AI agent can honestly say:
-
-> **I understand who needs this, why it matters, the minimum thing worth building, its boundaries, and what success looks like.**
+Do not add a second Exit section to the artifact.

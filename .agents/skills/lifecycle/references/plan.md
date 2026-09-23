@@ -1,156 +1,134 @@
-# Lifecycle — Plan
+# Plan
 
-## 1. Purpose
+## Purpose
 
-- Translate the approved **Shape** into the smallest clear implementation path.
-- Organize the work into **vertical slices** that produce observable working behaviour as early as possible.
-- Make each slice small enough for humans and AI agents to understand, review, and verify without holding the whole module in mind.
+- Turn the approved Shape into the smallest dependency-aware sequence Build can execute without guessing.
+- Optimize for early runnable journeys, not horizontal technical layers.
 
-> **Plan working slices, not isolated technical layers.**
+## Inputs
 
-## 2. Inputs
+- Approved Shape.
+- Context facts needed for dependencies/reuse.
+- Define only when success criteria need traceability.
 
-- **Approved Define Output** — Problem, value, scope, business rules, success criteria.
-- **Approved Context Output** — Architecture, code, patterns, dependencies, constraints, relevant implementation.
-- **Approved Shape Output** — Experience, domain, prototype, rules, minimum solution.
-- **Validation Learnings** — Prototypes, spikes, contracts, diagrams, other findings from Shape.
-- **Verification Strategy** — The approved proof level, critical journeys, boundaries, and accepted gaps from Shape.
+## Core Principle
 
-## 3. Rules
+> **Build outside-in: make the journey runnable early, then replace controlled boundaries with real ones.**
 
-- **Shape controls what; Plan controls how** — Planning must not silently change the shaped solution.
-- **One module, one plan by default** — Keep features/slices together unless splitting clearly reduces cognitive load.
-- **Feature before slice** — Organize by feature, then vertical slices.
-- **Vertical slices over horizontal layers** — Prefer small end-to-end capability over all models, then all UI, then all backend.
-- **Slice sequence** — Show **Model → UI → Backend → Connect → Verify** as separate checkpoints in every slice; mark a checkpoint **Not applicable** when it does not belong.
-- **Observable result** — Normal slices end in behaviour that can be exercised through a real interface.
-- **Technical-only work is an exception** — It still requires concrete technical verification.
-- **Minimum models only** — Create/extend only what the current slice needs.
-- **Reuse before creating** — Prefer existing architecture, components, services, repositories, patterns, abstractions.
-- **Build shared foundations when required** — Never speculative infrastructure for hypothetical future features.
-- **Module Foundation is exceptional** — Put truly module-wide prerequisites before features only when they cannot naturally belong to a real slice.
-- **Do not expand scope** — New product behaviour requires approval.
-- **Verification is part of the slice** — Code written is not completion.
-- **Plan the proof before Build** — E2E or module integration scripts, fixtures, emulator setup, and CI changes belong in planned slices when the strategy requires them; do not defer their design to Verify.
-- **Status is not duplicated by default** — Use the existing execution tracker unless Plan itself is the execution source of truth.
-- **Group by implementation decision** — Use bold top-level bullets for feature, dependency, slice, and proof topics; nest the details beneath them.
-- **Selective output** — Omit extra fields and repeated context; keep the five slice checkpoints visible even when one is Not applicable.
-- **Split only when needed** — Large/independent feature details can move to a linked child plan.
-- **Loop back when needed** — Define mismatch → Define; missing system understanding → Context; solution/domain change → Shape; implementation uncertainty → remain in Plan.
+- Do not build all server layers first and leave the feature untestable until the end.
+- UI state/models may be created just before or alongside UI.
+- The exact order depends on what the UI/journey needs.
+- Do not prescribe project layers that do not exist.
 
-## 4. Questions
+## Default User-Facing Slice Path
 
-- Ask these as concrete prompts in frontier rounds:
+```text
+Journey
+  ↓
+State / Models ↔ UI
+  ↓
+Frontend / Application path
+  ↓
+Controlled / fake boundary
+  ↓
+Exercise the journey early
+  ↓
+Backend / real implementation
+  ↓
+Real connection
+  ↓
+Exercise the same journey
+  ↓
+Conformance
+```
 
-### Module
+- Backend-only, migration, or infrastructure slices use the shortest relevant path.
+- The governing rule is: **keep the slice runnable as early and as often as possible.**
 
-- What feature order, cross-feature dependencies, shared foundation, and plan size are actually required?
+## Rules
 
-### Feature
+- Plan behaviour and boundaries, not every coding step.
+- Each slice should produce one understandable outcome.
+- Each user-facing slice should expose a journey the developer can exercise.
+- Each slice carries its own proof.
+- Resolve anything that could materially change:
+  - slice boundaries;
+  - architecture/contracts;
+  - dependency order;
+  - migrations/rollout;
+  - proof.
+- Build should not have to invent these.
+- Do not plan routine local implementation mechanics already governed by engineering guidelines.
+- Do not copy naming/folder/class conventions into Plan; Build loads the applicable guidelines.
+- Do not force `Model / UI / Backend / Connect / Verify` headings or `Not applicable`.
+- Write only the implementation areas that contain work.
 
-- What observable outcome, slices, reusable patterns, and dependencies define this feature's smallest implementation path?
+## Questions
 
-### Slice
+- What is the smallest useful build order?
+- What genuine prerequisite exists?
+- What can become runnable before backend completion?
+- Which controlled/fake boundary can unlock early interaction?
+- What real boundary must replace it?
+- What journey proves the slice before and after real connection?
+- What regression or rollout risk changes the sequence?
 
-- What minimum Model, UI, Backend, Connect, and Verify work is needed?
-- What regression risks, proof, and Delete Test determine whether this slice is necessary and complete?
+## Companion Skills
 
-## 5. Actions
+- `wayfinder` — large/dependency-heavy planning.
+- `to-tickets` — only when external execution tracking is useful.
 
-- Order module features by dependency and value.
-- Break each feature into the smallest practical vertical slices.
-- For each slice, plan **Model → UI → Backend → Connect → Verify** where applicable.
-- For each slice, name the automated proof and real verification boundary; include complete-flow tests in the plan when required by the Verification Strategy.
-- Keep model/domain changes limited to the current slice.
-- Reuse the approved prototype instead of redesigning UI during Plan.
-- Preserve the approved prototype's validated screens, states, and responsive decisions in the implementation plan; do not treat the prototype file itself as production code.
-- Identify affected code, data, interfaces, permissions, migrations, dependencies, and regression risks only as needed by the slice.
-- Define a concrete verification method for every slice before Build starts.
-- Remove technical work that does not contribute to an approved slice.
-- Keep feature slices in one module Plan unless splitting clearly reduces cognitive load.
-- Re-check **Define → Context → Shape** before approving Plan.
-- Use **wayfinder** when the implementation path is too large/uncertain for a single session or has many unresolved decision edges.
-- Use **to-tickets** only when external issue-tracker decomposition is useful; the lifecycle Plan remains authoritative.
+## Output — `04-plan.md`
 
-## 6. Output
+### Decision
+- Result: Plan approved / Needs revision.
+- Status: Pass / Blocked.
+- Blockers.
+- Next.
 
-### Decision Summary
+### Build Order
+- Ordered slice names.
+- Add a short reason only when order is non-obvious.
+- Add genuine prerequisites only.
 
-- **Decision / Result:** Plan approved / Plan needs revision.
-- **Status:** Complete / Blocked.
-- **Blockers:** …
-- **Next Action:** …
+### Slices
+For each slice:
 
-### Module Plan
+#### Slice N — <name>
 
-- **Feature order**
-  - Feature order.
-- **Ordering rationale**
-  - Value and dependency rationale.
-- **Dependencies**
-  - Cross-feature dependencies.
-- **Foundation**
-  - Any genuinely required module foundation.
-- **Risks**
-  - Shared risks.
-- **Constraints**
-  - Shared constraints.
+- **Journey**
+  - The developer-visible user/system path to exercise.
 
-### Verification Strategy
+- **Build**
+  - Ordered implementation groups needed for this slice.
+  - Group related work together.
+  - Include state/models, UI, application path, controlled boundary, backend, real connection, migrations, etc. only when applicable.
 
-- **Proof level**
-  - Unit / Widget / Module Integration / E2E / Manual, with why it is sufficient.
-- **Complete workflows**
-  - Workflows that must be exercised before completion.
-- **Test infrastructure**
-  - Fixtures, environments, scripts, or CI needed before Verify.
-- **Accepted gaps**
-  - …
-- **Verification risks**
-  - …
+- **Proof**
+  - Automated proof.
+  - Real journey/boundary proof.
 
-### Feature: …
+Optional only when they matter:
+- **Depends**
+- **Boundary**
+- **Risk**
 
-- **Outcome**
-  - Feature outcome.
-- **Dependencies**
-  - Feature prerequisites.
+### Open
+- Research/questions/blockers that Plan still owns.
+- Build must not start with a critical Plan-owned unknown.
 
-#### Slice 1 — …
+## Delete Test
 
-- **Model**
-  - Models, types, states, fields, or contracts required by the slice; otherwise Not applicable.
-- **UI**
-  - Screens, interactions, states, or local feedback; otherwise Not applicable.
-- **Backend**
-  - Database, repository, service, API, permissions, integrations, or migrations; otherwise Not applicable.
-- **Connect**
-  - Connections to real UI/API behavior and removal of temporary shortcuts; otherwise Not applicable.
-- **Verify**
-  - Automated proof and real verification boundary.
+- If removing a planned item does not prevent the slice outcome or its proof, remove it from the Plan.
 
-- Add only as many slices as needed. Keep all five slice checkpoints visible and mark a checkpoint Not applicable when genuinely irrelevant. If a feature needs its own detailed plan, link it instead of duplicating it.
+## Phase Gate
 
-### Exit
+Pass when:
 
-- **Exit Status:** Pass / Blocked.
-- **Evidence:** …
-- **Remaining Blockers:** …
-- **Next Phase:** Build.
+- Build order is clear;
+- each slice has an observable journey/outcome;
+- each slice has a proof path;
+- required dependencies and real boundaries are known;
+- no critical implementation/slicing decision is left for Build to invent.
 
-## 7. Exit
-
-- Move to **Build** only when:
-
-  - Feature order and important cross-feature dependencies are clear.
-  - Each feature is broken into small vertical slices understandable independently.
-  - Each normal slice ends in observable behaviour verifiable through UI/API/another real interface.
-  - Technical-only slices have concrete verification.
-  - Each slice contains only necessary models and implementation work.
-  - Dependencies, migrations, compatibility, permissions, and regression risks are understood where relevant.
-  - No critical implementation questions force guessing.
-  - Define, Context, and Shape remain valid.
-  - **Cycle Log Check** has been performed.
-  - A human or AI agent can honestly say:
-
-> **I know which slice to build next, what minimum changes it needs, and exactly how to prove that slice works before continuing.**
+Do not add a second Exit section to the artifact.

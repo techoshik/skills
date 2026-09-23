@@ -1,64 +1,73 @@
-# Cycle Log — Improvement Source of Truth
+# Cycle Log — Temporary Improvement Memory
 
-- Keep one Cycle Log per active development cycle or branch.
-- Share it across developers and AI agents.
-
-- The Cycle Log is the **single temporary source of truth for improvement opportunities during the active cycle**.
-- Use it as a mental sweep: capture improvements, then continue the current work.
+- Keep one Cycle Log per active development cycle/branch.
+- It is temporary memory for **development-system improvement opportunities**.
+- It is not product documentation.
 
 ## What Belongs Here
 
-- The Cycle Log is for:
+- lifecycle/process friction;
+- Engineering Guideline gaps;
+- tooling/automation opportunities;
+- code-quality/structural improvements;
+- recurring ambiguity/rework/manual correction;
+- agent drift;
+- missing or hard-to-find guidance;
+- hidden dependencies or poor slicing;
+- repeated duplication/reuse opportunities;
+- missing deterministic checks.
 
-  - system and lifecycle improvements;
-  - Engineering Guideline improvements;
-  - tooling and automation opportunities;
-  - code-quality and structural improvements;
-  - recurring friction, ambiguity, rework, or manual correction;
-  - agent drift from standards or lifecycle instructions;
-  - missing, unclear, stale, or hard-to-find guidance/context;
-  - hidden dependencies, poor slicing, or late discoveries;
-  - recurring duplication or reuse opportunities;
-  - missing tests, observability, or deterministic checks.
+Do not store:
 
-- It is **not** the source of truth for product requirements, feature decisions, bugs, domain knowledge, or project status.
+- product requirements;
+- feature decisions;
+- domain truth;
+- project status;
+- future product work.
 
-- If a product problem exposes a process or guideline weakness, log the **system weakness** here while product information stays in its proper lifecycle artifact.
+Future module work belongs in the module document during Refine.
 
-## Resolve Now vs Log for Later
+## Resolve Now vs Later
 
-- If the issue blocks correctness, safety, or the current phase's Exit condition: **fix it now** and optionally log the lesson so Refine can prevent recurrence.
-- If the issue does not block the current work but is worth improving: **log it and continue**.
-- Do not interrupt the current phase to redesign the process merely because an improvement idea appeared.
+- If it blocks correctness, safety, or the current phase gate:
+  - fix it now;
+  - optionally log the lesson so Refine can prevent recurrence.
+- Otherwise:
+  - log it;
+  - continue current work.
 
 ## Entry Format
 
-- Use one concise line:
+Use one concise line:
 
-  - `[Phase] Difficulty — Impact`
+`[Phase] Difficulty — Impact`
 
-- Add one evidence line only when needed to understand the entry later.
+Add one evidence line only when necessary.
 
-- Examples:
+Examples:
 
-  - `[Build] Repository created in the wrong folder — developer manually corrected four files.`
-  - `[Context] Permission rules were difficult to locate — agent made an incorrect assumption.`
-  - `[Plan] Dependency discovered only during Build — slice had to be replanned.`
+- `[Build] Repository files placed incorrectly — developer manually corrected four files.`
+- `[Context] Permission rule was hard to locate — agent made an incorrect assumption.`
+- `[Plan] Backend dependency appeared during Build — slice required replanning.`
 
-## Common Phase Exit Check
+## Phase Sweep
 
-- Before leaving Define, Context, Shape, Plan, or Verify, and before closing each Build slice, ask:
+Before leaving Define, Context, Shape, Plan, or Verify, and before closing each Build slice, ask:
 
-> **Did this work create unnecessary friction, rework, ambiguity, manual correction, agent drift, or a repeated mistake that we should prevent next time?**
+> **Did this work create avoidable friction, rework, ambiguity, manual correction, agent drift, or a repeated mistake worth preventing?**
 
-- If yes, append one concise entry. If no, continue without creating noise.
+If yes, log one concise entry. Otherwise add nothing.
 
-## Refine Responsibility
+## Refine
 
-- Refine loads the complete Cycle Log and proposes the proper destination for each meaningful lesson: lifecycle guidance, Context, Engineering Guidelines, automation, code improvement, or future work. Apply only user-approved changes.
-
-- Once useful learning has been transferred to its permanent source of truth, the Cycle Log must not remain the permanent documentation.
-
-- After approved learning has been transferred and the user confirms cleanup, archive the completed Cycle Log and begin the next development cycle with a fresh log.
+- Refine processes the complete Cycle Log.
+- Each meaningful lesson is:
+  - applied to the codebase;
+  - transferred to module docs;
+  - transferred to engineering/lifecycle guidance;
+  - deferred intentionally;
+  - or dismissed intentionally.
+- After transfer, the Cycle Log is no longer the source of truth.
+- When nothing valuable remains trapped in it, the workspace is safe to clean up.
 
 > **Capture during the cycle. Improve the system during Refine.**

@@ -10,9 +10,8 @@
 - **Approval Status:** Awaiting Developer Approval
 - **Next Phase:** …
 - **Suggested Chat Title:** [Phase] - [Feature]
-- **Current Feature:** …
 - **Current Slice:** …
-- **Cleanup Decision:** Pending until Refine user confirmation
+- **Cleanup Decision:** Pending
 
 ## Artifacts
 
@@ -32,4 +31,6 @@
 
 ## Notes
 
-- Keep this file small. It is the session entry point and state index, not a duplicate of phase artifacts.
+- Keep this file small.
+- It is state/index only, not a duplicate of phase artifacts.
+- Phase artifacts are temporary and should be safe to remove after Refine transfers durable learning.

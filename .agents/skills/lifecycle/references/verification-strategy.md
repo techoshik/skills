@@ -3,61 +3,58 @@
 ## Purpose
 
 - Choose the cheapest trustworthy proof for the approved outcome.
-- Make module-level and end-to-end testing an explicit risk-based decision rather than a default requirement.
-- Keep test planning ahead of Build while keeping whole-solution execution and evidence in Verify.
+- Keep proof decisions ahead of Build.
+- Avoid forcing expensive E2E coverage when a smaller real boundary is sufficient.
 
-## Decision Rules
+## Test Levels
 
-- Use **unit tests** for isolated rules, transformations, and domain logic.
-- Use **widget/component tests** for screen states, interactions, and local feedback.
-- Use **module integration tests** when several internal layers or features must work together and the real module boundary is the important proof.
-- Use **end-to-end tests** when an approved success criterion depends on a complete user/system journey across real navigation, permissions, persistence, backend/functions, or external integrations.
-- Use **manual verification** only when automation is not yet practical or when human judgment is part of the acceptance criterion; record the reason and remaining risk.
-- Prefer the lowest test level that gives trustworthy evidence. Do not add E2E tests for isolated behavior already adequately proven by faster tests.
-- A proposed test level is not automatically new product scope. If it requires meaningful infrastructure, environment, fixture, CI, or maintenance cost, surface it for approval in the current phase.
-- In `auto` mode, routine test selection may proceed from approved success criteria and risk, but infrastructure expansion, new requirements, and unresolved consequential tradeoffs still require explicit handling.
+- **Unit**
+  - Isolated rules, transformations, domain logic.
+- **Widget / Component**
+  - UI states, interactions, local feedback.
+- **Module Integration**
+  - Several internal layers/features must work together and the module boundary is the meaningful proof.
+- **E2E**
+  - The success criterion depends on a complete journey across real navigation, permissions, persistence, backend/functions, or external integrations.
+- **Manual**
+  - Automation is impractical or human judgment is part of acceptance; record the reason/risk.
 
-## E2E / Module-Test Triggers
+Prefer the lowest level that provides trustworthy evidence.
 
-Recommend module integration or E2E coverage when one or more of these are true:
+## Escalate Proof When
 
-- The change crosses navigation, state management, repository/API, database, function, or permission boundaries.
-- A failure would cause data loss, incorrect access, an invalid lifecycle transition, or a high-value workflow regression.
-- The success criterion is expressed as a complete user journey rather than an isolated component behavior.
-- Existing lower-level tests cannot prove that the connected parts work together.
-- The workflow has previously regressed or is difficult to verify manually.
+- the change crosses several real boundaries;
+- failure can cause data loss, incorrect access, invalid lifecycle state, or high-value workflow regression;
+- the success criterion is a complete journey;
+- lower-level tests cannot prove connected behaviour;
+- the workflow has a regression history.
 
-Do not force the test when the real boundary is unavailable, the external dependency is inherently nondeterministic, or a smaller deterministic test provides equivalent confidence. Record the gap and risk instead.
+Do not force higher-level tests when:
 
-## Required Record
+- the real boundary is unavailable;
+- external behaviour is inherently nondeterministic;
+- a smaller deterministic proof provides equivalent confidence.
 
-- **Outcome**
-  - Outcome to prove.
-- **Critical journey**
-  - Critical journey or module flow.
-- **Proof level**
-  - Unit / Widget / Module Integration / E2E / Manual, with why this level is sufficient.
-- **Real boundaries**
-  - UI, API, database, permissions, integrations, or other boundaries involved.
-- **Existing coverage**
-  - Current tests, harnesses, fixtures, and environments.
-- **Missing coverage**
-  - Proof that does not yet exist.
-- **Cost**
-  - Cost and determinism.
-- **Environment**
-  - Environment risks.
-- **Approval**
-  - Required approval.
-- **Accepted gap**
-  - Accepted limitations.
+Record accepted gaps explicitly.
 
 ## Phase Ownership
 
-- **Define** identifies the outcome, critical journey, and risk that must be proven.
-- **Context** verifies existing test coverage, harnesses, boundaries, fixtures, and environment constraints.
-- **Shape** selects the cheapest trustworthy proof level and validates important testability assumptions.
-- **Plan** assigns automated proof and real verification to slices, including any test infrastructure needed before Verify.
-- **Build** creates or updates executable proof with the behavior and runs slice-level verification.
-- **Verify** runs the complete feature/module flow through the required real boundary and records evidence.
-- **Refine** proposes durable guidance, automation, or backlog work when verification gaps or flakiness recur.
+- **Define**
+  - Names success criteria, critical journey, and proof risk.
+- **Context**
+  - Maps existing tests, harnesses, fixtures, environments, and gaps.
+- **Shape**
+  - Selects the trustworthy proof level and accepted gaps.
+- **Plan**
+  - Assigns automated + real proof to each slice.
+- **Build**
+  - Creates/runs slice proof and keeps the journey runnable.
+- **Verify**
+  - Runs final integrated proof and protection checks.
+- **Refine**
+  - Moves recurring verification learning to permanent guidance/automation/module docs.
+
+## Recording Rule
+
+- Do not repeat a full verification strategy in every phase.
+- Each phase records only the proof decision it owns.

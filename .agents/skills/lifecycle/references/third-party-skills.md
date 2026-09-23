@@ -1,39 +1,33 @@
-# Required Companion Skills
+# Companion Skills
 
-- The Lifecycle system can use the companion skills in [mattpocock/skills](https://github.com/mattpocock/skills).
-- Codex-installed skills, such as `~/.agents/skills`, and repository-local `.agents/skills/` skills both count.
-- Install missing skills before using a phase that requires them:
+- Companion skills provide techniques.
+- They never replace lifecycle outputs, ownership, or gates.
+- Repository-local and installed agent skills both count when available.
 
-```bash
-npx skills@latest add mattpocock/skills
-```
+## Mapping
 
-- Select the referenced skills, including `setup-matt-pocock-skills`.
-- Run `/setup-matt-pocock-skills` once per project.
-- These skills provide techniques and setup; they never replace Lifecycle outputs or exit gates.
-
-## Recommended Mapping
-
-| Phase | Companion skills and purpose |
+| Phase | Companion skills |
 | --- | --- |
-| **Define** | **grill-with-docs** for every non-trivial change; **wayfinder** for a large or foggy decision tree |
-| **Context** | **research** for external or technical questions; **domain-modeling** for unclear terminology or concepts |
-| **Shape** | **prototype** for risky experience/state/logic assumptions; **domain-modeling** for domain rules; **codebase-design** for material module seams or interfaces |
-| **Plan** | **wayfinder** for large decision trees; **to-tickets** when external execution tracking is useful |
-| **Build** | **tdd** for meaningful behaviour; **diagnosing-bugs** for non-obvious failures; **code-review** for standards/spec review |
-| **Verify** | **code-review** for independent standards/spec review; **diagnosing-bugs** for hard verification failures |
-| **Refine** | **improve-codebase-architecture** for design opportunities; **code-review** after code changes; **writing-for-agents** for instruction/pointer problems |
+| **Define** | `grill-with-docs` for non-trivial discovery; `wayfinder` for large/foggy decision trees |
+| **Context** | `research` for external/technical facts; `domain-modeling` for unclear terminology/concepts |
+| **Shape** | `prototype` for material UX/state uncertainty; `domain-modeling` for domain rules; `codebase-design` for material seams/interfaces |
+| **Plan** | `wayfinder` for dependency-heavy planning; `to-tickets` only when external tracking helps |
+| **Build** | `tdd` for meaningful behaviour; `diagnosing-bugs` for hard failures; `code-review` as an aid to conformance review |
+| **Verify** | `code-review` for independent final review; `diagnosing-bugs` for difficult failures |
+| **Refine** | `improve-codebase-architecture`, `code-review`, `writing-for-agents` when evidence calls for them |
 
-- Use `grill-with-docs` to resolve requirements, terminology, constraints, decisions, and concrete scenarios.
-- Use `wayfinder` to name the destination, explore the frontier breadth-first, and return decisions to lifecycle artifacts.
-- Discovery may be broad, but store findings in the correct lifecycle artifact. A third-party-generated spec must not become a competing source of truth.
+## `grill-with-docs`
+
+- Default home: Define.
+- Later phases use it only when a genuinely new requirement/domain decision appears.
+- Do not repeat general requirement discovery in every phase.
 
 ## Conflict Rule
 
-- If a specialist skill conflicts with any of these:
-  - Approved lifecycle artifacts.
-  - This lifecycle framework.
-  - Project Engineering Guidelines under `docs/guidelines/`.
-- The lifecycle/project rule wins.
+If a companion skill conflicts with:
 
-- Example: if an external TDD skill uses a different refactoring cadence, the current Lifecycle — Build instructions control the work.
+- approved lifecycle artifacts;
+- this framework;
+- project Engineering Guidelines;
+
+the lifecycle/project rule wins.

@@ -6,124 +6,120 @@ disable-model-invocation: true
 
 # Development Lifecycle Orchestrator
 
-- Use this skill as the normal entry point for development work.
-
 ## Load
 
-- Read:
+Read:
 
-  - `references/framework.md`
-  - `references/questioning.md`
-  - `references/cycle-log.md`
-  - `references/approval.md`
-  - `references/verification-strategy.md`
-  - `references/third-party-skills.md` before selecting or using a companion skill.
+- `references/framework.md`
+- `references/questioning.md`
+- `references/cycle-log.md`
+- `references/approval.md`
+- `references/verification-strategy.md`
+- `references/third-party-skills.md`
 
-- Before selecting the first phase, determine the approval mode using `references/approval.md`.
-  - Ask once if the request does not specify a mode.
-  - Use `Strict` when the user gives no answer.
-  - Prefer `mode: strict`, `mode: guided`, or `mode: auto` in lifecycle records.
-  - Persist the mode in `00-lifecycle.md`; later chats must not ask again.
+Determine approval mode once and persist it in `00-lifecycle.md`.
+
+## Shared Phase Frame
+
+Use **Decide → Work → Resolve** across all phases:
+
+- **Decide** — phase result/status/next.
+- **Work** — only phase-owned information.
+- **Resolve** — resolve or route what remains; omit when empty.
+
+This is a mental frame, not a reason to rename the seven phases or force identical headings.
 
 ## Authority
 
-- The lifecycle is the process authority. Phase artifacts and project Engineering Guidelines are the work authority. Companion skills are techniques only and must not override either.
+- Lifecycle = process authority.
+- Approved phase artifacts = active-change authority.
+- `docs/modules/` = permanent module knowledge.
+- `docs/guidelines/` = permanent engineering standards.
+- Companion skills = techniques only.
 
-## Backlog Awareness
+## Workspace
 
-- Permanent future opportunities live in `docs/backlog/`.
+Use `docs/lifecycle/<change-name>/`.
 
-- The lifecycle may search, surface, and recommend backlog items.
-- Human owns priority; the lifecycle must not automatically promote a backlog item into active work.
-- When a backlog item is selected, start a new lifecycle at Define.
-- Treat old backlog information as input to revalidate, not as an already-approved requirement.
+Keep:
 
-## Locate or Create the Lifecycle Workspace
+- `00-lifecycle.md` — state/index.
+- phase artifacts as phases begin.
+- `cycle-log.md` — temporary improvement memory.
 
-- Use `docs/lifecycle/<change-name>/`.
+Lifecycle artifacts are temporary working memory. Refine must transfer durable knowledge before cleanup.
 
-- The workspace should contain:
+## Future Work
 
-  - `00-lifecycle.md` — current state and artifact index.
-  - approval mode, approval status, next phase, and suggested chat title in `00-lifecycle.md`.
-  - numbered phase files created as phases begin.
-  - `cycle-log.md` — improvement memory for the active cycle.
+- Durable future/deferred module work belongs in the affected `docs/modules/<module>.md`.
+- It is not approved scope.
+- When selected, it starts a new lifecycle at Define.
+- Do not maintain permanent future work only inside lifecycle artifacts.
 
-- If the work is new, initialize from `.agents/skills/lifecycle/templates/`.
+## Current Phase
 
-- If the work already exists, read `00-lifecycle.md` first. Do not reconstruct state from conversation history when lifecycle artifacts exist.
+Use the latest passed/approved artifact:
 
-## Determine the Current Phase
+- no passed Define → `lifecycle-define`
+- Define passed, Context incomplete → `lifecycle-context`
+- Context passed, Shape incomplete → `lifecycle-shape`
+- Shape passed, Plan incomplete → `lifecycle-plan`
+- Plan passed, slices incomplete → `lifecycle-build`
+- slices complete, solution unverified → `lifecycle-verify`
+- Verify passed, cycle not closed → `lifecycle-refine`
 
-- Use the latest approved artifact and its Exit gate. In `auto` mode, `Auto-approved` is an approved transition:
-
-  - no approved Define → `lifecycle-define`
-  - Define approved, Context incomplete → `lifecycle-context`
-  - Context approved, Shape incomplete → `lifecycle-shape`
-  - Shape approved, Plan incomplete → `lifecycle-plan`
-  - Plan approved, slices incomplete → `lifecycle-build`
-  - all planned slices complete, whole solution unverified → `lifecycle-verify`
-  - Verify passed, cycle not closed → `lifecycle-refine`
-
-- If a later phase invalidates earlier work, route back to the phase that owns the problem.
+If a later phase invalidates earlier work, route to the owning phase.
 
 ## Run One Phase at a Time
 
-- Invoke the matching `lifecycle-*` phase skill.
+1. Invoke the matching `lifecycle-*` skill.
+2. Confirm its internal gate passes.
+3. Run the Cycle Log sweep.
+4. Update `00-lifecycle.md`.
+5. Apply approval mode.
+6. Move forward only when the gate passes.
 
-- Keep the active phase's completion criterion in focus. Do not load every later phase merely because it exists.
+Each phase artifact has one decision/status area near the top. Do not require duplicate Exit sections.
 
-- After the phase skill finishes:
+## Ownership Discipline
 
-  1. Confirm its Exit gate actually passes.
-  2. Perform the Cycle Log check required by that phase.
-  3. Update `00-lifecycle.md` with the current phase/status and relevant artifact references.
-  4. Move forward only when the gate passes.
-  5. If the gate fails, remain in the phase or loop back to the owning phase.
-
-- Apply `references/approval.md` after each phase. In `guided` or `strict` mode, stop at the required approval gate. In `auto` mode, record `Auto-approved` and continue without a phase-approval prompt.
-
-- When a phase chat ends, leave a concise handoff naming:
-  - The next phase skill.
-  - The suggested title: `[Next Phase] - [Feature]`.
-  - The first artifact to read.
-- The host application controls creating, naming, and deleting chat windows.
+- One fact has one owner.
+- Reference upstream decisions instead of rewriting them.
+- If an upstream fact/decision changes, route back to its owning phase and update that source.
+- Use each phase question as a delete test for artifact content.
 
 ## Context Discipline
 
-- Load only what the current phase needs:
+Load only what the active phase needs:
 
-  - `00-lifecycle.md`
-  - approved upstream phase artifacts relevant now
-  - relevant permanent module docs under `docs/modules/`
-  - relevant Engineering Guidelines under `docs/guidelines/`; read `references/guidelines.md` before Build or Verify work
-  - actual code/implementation needed for the current decision
-  - Cycle Log only as required by the current phase; Refine loads the full log
-  - `docs/backlog/` contains permanent future opportunities and may be consulted when relevant.
+- `00-lifecycle.md`;
+- relevant approved upstream artifacts;
+- affected module docs;
+- relevant code/config/tests;
+- Engineering Guidelines before Build/Verify;
+- Cycle Log as required (Refine loads all).
 
-- For every bug fix, existing-functionality change, or new functionality:
-  - Identify the affected modules.
-  - Read each canonical `docs/modules/<module>.md` during Context.
-  - Record the paths read in `02-context.md`.
-  - Record missing module documents as context gaps; create them during Refine after Verify.
+Do not duplicate stable information across artifacts.
 
-- Do not duplicate stable information into every artifact. Reference permanent sources where possible.
+## Module Documents
 
-## Required Companion Skills
+For every bug fix, existing-functionality change, or new functionality:
 
-- Use the phase mapping in `references/third-party-skills.md` when a companion skill is needed.
-
-- If a required companion skill is not installed, stop and report the setup requirement before continuing.
+- Context identifies affected modules.
+- Context reads each existing `docs/modules/<module>.md`.
+- Missing module docs are recorded as gaps.
+- Refine transfers durable learning and future/deferred module work into module docs before cleanup.
 
 ## Close the Cycle
 
-- Refine owns cycle closure.
+Refine owns closure:
 
-- Follow `lifecycle-refine` for review, proposal, approval, promotion, reverification, and cleanup.
-  - Record proposed changes in `07-refine.md`.
-  - Obtain user approval before applying them.
-  - Apply only approved changes.
-  - Obtain a separate user decision before retaining, archiving, or removing the completed workspace.
-- See `references/approval.md` for approval exceptions.
+- review the completed work and Cycle Log;
+- propose/apply approved code improvements;
+- transfer durable module knowledge/future work;
+- improve engineering/lifecycle guidance when needed;
+- reverify applied code changes;
+- record cleanup decision;
+- ensure the workspace is safe to delete/archive.
 
-> **The orchestrator remembers where we are. The phase skill remembers how to work. The artifacts remember what we know. Companion skills provide techniques.**
+> **The orchestrator remembers where we are. The phase skill remembers how to work. Temporary artifacts remember the active change. Permanent sources remember what survives it.**

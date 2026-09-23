@@ -1,45 +1,51 @@
 ---
 name: lifecycle-shape
-description: "Use after Context to shape and cheaply validate the smallest correct experience and domain solution."
+description: "Use after Context to shape and cheaply validate the smallest correct solution."
 ---
 
-- Read:
+## Phase Question
 
+> **What is the smallest correct solution?**
+
+- Use this question as the delete test for phase work and artifact content.
+- Follow the shared **Decide → Work → Resolve** frame without renaming the phase-specific sections.
+
+- Read:
   - `../lifecycle/references/framework.md`
   - `../lifecycle/references/questioning.md`
   - `../lifecycle/references/shape.md`
+  - `../lifecycle/references/verification-strategy.md`
   - `../lifecycle/references/approval.md`
   - `../lifecycle/references/cycle-log.md`
 
-- Load approved Define and Context artifacts.
+- Load approved Define and Context.
 
-- Run the questioning protocol for experience, domain, state, alternative, and validation decisions.
-- Ask in rounds until solution-changing uncertainty is resolved or accepted as a risk.
-- Do not treat a plausible first solution as a complete Shape.
+- Explore experience, domain, states, alternatives, seams, risks, and proof deeply.
+- Do not treat the first plausible solution as complete.
+- Resolve solution-changing uncertainty or accept/route it explicitly.
 
-- Use the cheapest medium that reduces important uncertainty.
-- Invoke `prototype`, `domain-modeling`, or `codebase-design` when useful.
+- Use:
+  - `prototype` only for material UX/state uncertainty;
+  - `domain-modeling` for difficult domain concepts;
+  - `codebase-design` for material seams/interfaces.
 
-- When UI, responsive behaviour, or interaction states are materially uncertain:
-  - Create `docs/lifecycle/<change-name>/prototype/index.html`.
-  - Keep it self-contained, responsive, clearly labelled as throwaway, and runnable by opening it directly.
-  - Use no server, external dependency, network request, or production application code.
-  - Use the `prototype` companion skill for its screens and interactions.
-- If no meaningful visual uncertainty exists, record `Prototype: Not needed` and the reason in `03-shape.md`.
+- Prototype only when it materially reduces uncertainty.
+  - If needed, use `docs/lifecycle/<change>/prototype/index.html`.
+  - Keep it throwaway and self-contained.
+  - Record the result beside the decision it validated.
+  - If not needed, do not add a placeholder section.
 
-- For a prototype inside an active Lifecycle workspace, follow the lifecycle-managed location, retention, and cleanup rule.
-- This rule takes precedence over the companion skill's generic capture convention.
+- Write/update `03-shape.md` using:
+  - Decision
+  - Solution
+  - Flow
+  - Model
+  - Seams
+  - Proof
+  - Open
 
-- Write/update `03-shape.md`.
+- Record the compressed solution, not exploration history.
+- If Shape invalidates Define or Context, route back.
 
-- Record the prototype path, question, covered screens/states, run instructions, validation verdict, and implementation decisions.
-- Keep the prototype available through Plan, Build, and Verify.
-- Refine removes it after its validated decisions are captured in lifecycle or permanent documentation.
-
-- If shaping invalidates Define or Context, loop back.
-- Do not hide the mismatch.
-
-- Complete only after the Shape Exit gate passes.
-- Apply the approval mode:
-  - `guided` or `strict`: stop with `Awaiting Developer Approval`.
-  - `auto`: mark the transition `Auto-approved` and continue.
+- Complete when the Shape gate passes.
+- Apply approval mode and update `00-lifecycle.md`.

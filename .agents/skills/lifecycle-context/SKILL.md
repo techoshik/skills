@@ -1,36 +1,50 @@
 ---
 name: lifecycle-context
-description: "Use after Define to gather the minimum Global → Module → Feature context needed to shape the change correctly."
+description: "Use after Define to gather the minimum existing-system context that constrains the change."
 ---
 
-- Read:
+## Phase Question
 
+> **What existing reality must this change respect?**
+
+- Use this question as the delete test for phase work and artifact content.
+- Follow the shared **Decide → Work → Resolve** frame without renaming the phase-specific sections.
+
+- Read:
   - `../lifecycle/references/framework.md`
   - `../lifecycle/references/questioning.md`
   - `../lifecycle/references/context.md`
   - `../lifecycle/references/approval.md`
   - `../lifecycle/references/cycle-log.md`
 
-- Load the approved Define artifact and relevant permanent module docs and code.
-- For every bug fix, existing-functionality change, or new functionality:
-  - Identify the affected modules.
-  - Read each existing `docs/modules/<module>.md` before completing Context.
-  - Record the paths read and any missing module document in `02-context.md`.
-- Gather only context that improves decision quality.
+- Load approved Define plus relevant permanent module docs, code, configuration, and tests.
 
-- Run the questioning protocol for context decisions that could change the solution.
-- Find repository and system facts yourself.
-- Ask the user only for product authority, priorities, or decisions the environment cannot answer.
-- Record consequential context gaps instead of treating them as facts.
+- Investigate **Global → Module → Feature**, but do not use that as the artifact structure.
+- For every affected module:
+  - read `docs/modules/<module>.md` when it exists;
+  - record the path or missing-doc gap in `02-context.md`.
 
-- Use `research` or `domain-modeling` when helpful.
-- Keep lifecycle Context authoritative.
+- Find repository/system facts yourself.
+- Ask the user only for product authority/decisions the environment cannot answer.
+- Use `research` or `domain-modeling` when useful.
+- Do not rerun general `grill-with-docs` by default.
 
-- Write/update `02-context.md`.
+- Write/update `02-context.md` using:
+  - Decision
+  - Affected
+  - Current
+  - Reuse
+  - Constraints
+  - Verification
+  - Open
 
-- If discovered reality invalidates Define, return to Define.
-- Do not silently adapt the solution.
+- Record only change-relevant facts.
+- Put evidence beside the claim when needed.
 
-- Complete only after the Context Exit gate passes.
-- Apply the approval mode.
-- Update `00-lifecycle.md` before handing off to Shape.
+- If reality invalidates Define:
+  - block Context;
+  - return to Define;
+  - do not silently adapt the requirement.
+
+- Complete when the Context gate passes.
+- Apply approval mode and update `00-lifecycle.md`.

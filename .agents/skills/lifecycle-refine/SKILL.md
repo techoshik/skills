@@ -1,34 +1,61 @@
 ---
 name: lifecycle-refine
-description: "Use after Verify to review completed work, promote approved learning, and close the lifecycle cycle."
+description: "Use after Verify to move useful learning into permanent sources and make the temporary lifecycle workspace safe to clean up."
 ---
 
-- Read:
+## Phase Question
 
+> **What should improve permanently because of what we learned?**
+
+- Use this question as the delete test for phase work and artifact content.
+- Follow the shared **Decide → Work → Resolve** frame without renaming the phase-specific sections.
+
+- Read:
   - `../lifecycle/references/framework.md`
   - `../lifecycle/references/guidelines.md`
   - `../lifecycle/references/approval.md`
   - `../lifecycle/references/refine.md`
-  - the **complete** `../lifecycle/references/cycle-log.md` guidance
-  - the active lifecycle's complete `cycle-log.md`
+  - complete `../lifecycle/references/cycle-log.md`
+  - active lifecycle `cycle-log.md`
 
-- Load the completed branch diff, Verify result, Build results, relevant permanent docs, and applicable Engineering Guidelines.
+- Load:
+  - Verify result;
+  - Build results/deviations;
+  - completed branch diff;
+  - affected module docs;
+  - applicable Engineering Guidelines;
+  - lifecycle skills when process drift was observed.
 
-- Use `improve-codebase-architecture`, `writing-for-agents`, and `code-review` when useful.
+- Review broadly; record selectively.
+- Route each meaningful lesson to:
+  - Codebase;
+  - Module Docs;
+  - Lifecycle / Engineering Guidance.
 
-- Write/update `07-refine.md`.
+- Future/deferred module work must be transferred to `docs/modules/<module>.md`.
+- It is not approved scope; a future implementation starts at Define.
 
-- Run the detailed review and proposal process in `../lifecycle/references/refine.md`.
-- Record the Codebase Review, knowledge promotions, backlog items, and cleanup proposals in `07-refine.md`.
+- Use `improve-codebase-architecture`, `writing-for-agents`, and `code-review` when evidence calls for them.
 
-- Ask the user to review `07-refine.md` before applying Refine changes.
-- Wait for the user's decision and record it.
-- Apply only approved code, documentation, guideline, automation, or backlog changes.
-- Reverify approved implementation changes.
+- Write/update `07-refine.md` using:
+  - Decision
+  - Improvements
+  - Closure
 
-- After approved changes pass their checks, ask whether to retain, archive, or remove the completed lifecycle workspace.
-- Record the choice before archive/removal.
+- Keep each finding complete in one group:
+  - Finding
+  - Action
+  - Home
+  - Status
+  - Proof when needed
 
-- Complete only after the Refine Exit gate passes.
-- Apply the approval mode.
-- Update `00-lifecycle.md` with the cleanup decision before archive/removal.
+- Propose changes before applying unless the user already authorized direct updates.
+- Apply only approved changes.
+- Reverify approved code changes.
+
+- Process every meaningful Cycle Log entry.
+- Ensure no valuable information remains only in temporary lifecycle files.
+- Record the workspace cleanup decision and whether it is safe to delete/archive.
+
+- Complete when the Refine gate passes.
+- Update `00-lifecycle.md` before cleanup.

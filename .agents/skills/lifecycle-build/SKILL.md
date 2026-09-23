@@ -1,43 +1,62 @@
 ---
 name: lifecycle-build
-description: "Use after Plan to implement approved vertical slices with tests, guideline conformance, and real verification."
+description: "Use after Plan to implement one approved slice at a time, keep the journey runnable, and enforce guideline conformance during development."
 ---
 
-- Read:
+## Phase Question
 
+> **Can we implement the current slice correctly and keep it runnable?**
+
+- Use this question as the delete test for phase work and artifact content.
+- Follow the shared **Decide → Work → Resolve** frame without renaming the phase-specific sections.
+
+- Read:
   - `../lifecycle/references/framework.md`
-  - `../lifecycle/references/questioning.md`
   - `../lifecycle/references/build.md`
   - `../lifecycle/references/guidelines.md`
   - `../lifecycle/references/approval.md`
   - `../lifecycle/references/cycle-log.md`
 
 - Load:
+  - active `00-lifecycle.md`;
+  - approved `04-plan.md`;
+  - current slice;
+  - relevant Shape/Context only as needed;
+  - affected module docs;
+  - all applicable Engineering Guidelines before editing.
 
-  - active `00-lifecycle.md`
-  - approved `04-plan.md`
-  - the current slice
-  - relevant Shape/Context only as needed
-  - canonical module documents for affected modules under `docs/modules/<module>.md`; confirm they were read during Context before editing code
-  - applicable Engineering Guidelines under `docs/guidelines/` before editing code
+- Before editing:
+  - identify affected technologies/layers/areas;
+  - map applicable placement, naming, architecture, dependency, structure, and test rules;
+  - inspect nearby established patterns.
 
-- Use `tdd` for meaningful behaviour where available.
+- Build outside-in.
+  - State/models may come just before or alongside UI.
+  - Make the frontend/application journey runnable early.
+  - Use controlled/fake boundaries when they accelerate feedback.
+  - Implement/connect the real backend afterward.
+  - Exercise the same journey again.
+
+- Before creating important files/classes/interfaces/abstractions/folders, check applicable conventions.
+- Do not invent consequential project-wide conventions silently.
+
+- Use `tdd` for meaningful behaviour when useful.
 - Use `diagnosing-bugs` for difficult failures.
-- Use `code-review` for the mandatory slice standards/spec review when useful.
-
-- Use the questioning protocol for slice mismatches or implementation uncertainty.
-- Ask the user when a decision is needed.
-- Route earlier-phase uncertainty back to its owner instead of guessing.
+- Use `code-review` as an aid when useful.
 
 - Implement one slice only.
-- Start the next slice only after behavioural verification and Slice Conformance Review pass.
+- Run the mandatory Slice Conformance Review before closing it.
+- Fix drift and rerun affected checks/journey.
+- Route upstream mismatches to their owner instead of improvising.
 
-- Write/update the slice result in `05-build.md`.
-- Update the current slice/status in `00-lifecycle.md`.
+- Write/update `05-build.md` as a compact slice ledger:
+  - Status
+  - Result
+  - Built
+  - Proof
+  - Conformance
+  - Deviation only when relevant
 
-- Perform the Cycle Log check before closing every slice.
-
-- Apply the approval mode after each slice.
-  - `strict`: stop for approval.
-  - `guided`: continue within the approved Plan unless a deviation is discovered.
-  - `auto`: continue without a phase-approval prompt.
+- Run the Cycle Log sweep before closing each slice.
+- Start the next slice only after the current slice passes.
+- Apply approval mode and update `00-lifecycle.md`.

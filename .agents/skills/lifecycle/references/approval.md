@@ -2,7 +2,7 @@
 
 ## Approval Mode
 
-- Read the requested mode from the user's instruction and persist it in `docs/lifecycle/<change>/00-lifecycle.md`. The canonical short syntax is:
+Persist one mode in `docs/lifecycle/<change>/00-lifecycle.md`:
 
 ```text
 mode: strict
@@ -10,42 +10,40 @@ mode: guided
 mode: auto
 ```
 
-- If the request does not specify a mode, ask this once before starting the first phase:
+If unspecified, ask once before the first phase. If the user does not answer, use `strict`.
 
-> Which Lifecycle approval mode should I use? **Strict** (default) pauses after every phase and Build slice; **Guided** pauses at the main decision gates; **Auto** continues without phase-approval prompts.
+### Guided
 
-- If the user does not answer, use `strict`.
-- If the request specifies `mode: <value>`, use it without asking.
-- Recognize these phrases as `auto`: “continue automatically”, “do not ask for phase approval”, and “do not ask permission for each step”.
-- Recognize a request to review or approve every phase as `strict`.
+Pause for developer approval:
 
-### `guided`
+- after Define;
+- after Shape;
+- after Plan;
+- after Verify.
 
-- Pause for developer approval at decision gates:
+Context may proceed when it only records verified facts and does not invalidate Define.
+Build may complete approved slices without per-slice approval unless a deviation appears.
 
-  - after Define, before Context;
-  - after Shape, before Plan;
-  - after Plan, before Build;
-  - after Verify, before Refine or cycle closure.
+### Strict
 
-- Context may proceed without separate approval when it only records verified facts and does not invalidate Define.
-- Build may complete planned slices without approval after every slice, but must pause for plan or scope deviations.
+Pause after every phase and each Build slice.
 
-### `strict`
+### Auto
 
-- Pause after every phase, including Context, each Build slice, Verify, and Refine. Do not start the next phase until the developer approves the current phase result.
+Continue whenever the current phase gate passes.
 
-### `auto`
+Auto does not authorize:
 
-- Do not ask for phase-approval prompts. Continue through the lifecycle whenever the current Exit gate passes, and record each transition as `Auto-approved`.
+- inventing requirements;
+- ignoring conflicting authority;
+- bypassing safety/production authorization;
+- silently expanding scope.
 
-- `auto` removes phase-approval waits; it does not authorize inventing requirements, ignoring contradictory authority, bypassing production safety, or taking an action that requires separate user authorization.
-
-- Refine proposal review and lifecycle-workspace cleanup are separate user decisions. `auto` does not bypass either decision.
+Refine proposals and destructive workspace cleanup still require explicit user authorization unless the user already gave a standing instruction.
 
 ## Persisted State
 
-- The lifecycle index must contain:
+`00-lifecycle.md` contains:
 
 ```text
 Approval Mode: Guided | Strict | Auto
@@ -54,20 +52,16 @@ Next Phase: …
 Suggested Chat Title: [Phase] - [Feature]
 ```
 
-- In `guided` or `strict` mode, set `Approval Status` to `Awaiting Developer Approval` and stop at the applicable gate. In `auto` mode, set it to `Auto-approved` and continue.
-
-- An explicit developer approval applies only to the current phase and its artifacts. If the scope, solution, or plan changes materially, require a new approval unless the mode is `auto`.
+A material scope/solution/plan change invalidates earlier approval unless mode is `auto` and no separate authorization is required.
 
 ## Chat Handoff
 
-- Treat each phase as independently resumable. Before ending a phase chat:
+Before ending a phase chat:
 
-  1. Write the phase artifact.
-  2. Update `00-lifecycle.md` with phase, status, approval state, and next phase.
-  3. Record unresolved questions or blockers; do not carry them only in chat.
-  4. Set `Suggested Chat Title` to `[Next Phase] - [Feature]`.
-  5. End with a concise handoff naming the next phase skill, suggested chat title, and artifact it must read first.
+1. Write/update the phase artifact.
+2. Update `00-lifecycle.md`.
+3. Ensure unresolved consequential items are in the artifact, not only chat.
+4. Set `Suggested Chat Title`.
+5. Name the next phase skill and first artifact to read.
 
-- A new chat must read `00-lifecycle.md` first, then only the current phase's required upstream artifacts. It must not reconstruct state from the previous conversation.
-
-- The Lifecycle skill can prepare this handoff, but creating or deleting chat windows is controlled by the host application. Deleting a completed phase chat is safe after its artifacts and lifecycle index are updated.
+A new chat reads `00-lifecycle.md` first, then only the sources required by the active phase.
