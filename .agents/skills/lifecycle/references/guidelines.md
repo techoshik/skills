@@ -9,6 +9,8 @@
 
 ## Rule Promotion
 
+A rule gap is a missing, ambiguous, contradictory, or repeatedly missed rule.
+
 When Build or Verify finds a **rule gap**, do not close with a local fix alone.
 
 1. Classify it:
