@@ -46,6 +46,8 @@ description: "Use after Shape to turn the approved solution into the smallest se
   - Proof
   - optional Depends / Boundary / Risk
 
+- Add a Mermaid slice dependency graph when the build order branches or has multiple proof paths. Omit it for a simple linear plan.
+
 - Resolve critical implementation/slicing questions before Build.
 
 - Complete when the Plan gate passes.

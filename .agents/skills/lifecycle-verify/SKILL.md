@@ -42,5 +42,7 @@ description: "Use after Build to prove the complete integrated change satisfies 
   - Protection
   - Issues
 
+- Add a compact Mermaid verification journey when final proof crosses UI, navigation, backend, persistence, permissions, or external boundaries. Keep evidence and pass/fail results in the text.
+
 - Complete when the Verify gate passes.
 - Apply approval mode and update `00-lifecycle.md`.

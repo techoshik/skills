@@ -9,6 +9,8 @@
 
 ## Proof
 
+<!-- Add a Mermaid verification journey when final proof crosses UI, navigation, backend, persistence, permissions, or external boundaries. Keep evidence beside the claims below. -->
+
 - **Outcome — Pass / Fail**
   - …
 

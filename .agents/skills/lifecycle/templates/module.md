@@ -4,6 +4,8 @@
 
 - …
 
+<!-- For a multi-feature module, add a compact Mermaid topology showing feature and boundary relationships. Keep durable rules in the sections below. -->
+
 ## Rules
 
 - …

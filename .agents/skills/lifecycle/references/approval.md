@@ -12,6 +12,19 @@ mode: auto
 
 If unspecified, ask once before the first phase. If the user does not answer, use `strict`.
 
+## Mode Flow
+
+```mermaid
+flowchart TD
+    Gate[Current phase gate passes] --> Mode{Approval mode}
+    Mode -->|Strict| Strict[Pause after every phase and Build slice]
+    Mode -->|Guided| Guided[Pause after Define, Shape, Plan, and Verify]
+    Mode -->|Auto| Auto[Continue after each passing gate]
+    Strict --> Next[Proceed only within the recorded authority]
+    Guided --> Next
+    Auto --> Next
+```
+
 ### Guided
 
 Pause for developer approval:

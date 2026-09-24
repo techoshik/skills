@@ -119,6 +119,15 @@ Use the phase question as a delete test for artifact content.
 - **Clarity over compactness**
   - Split a group when combining items would hide different responsibilities.
 
+## Diagram Use
+
+- Use Mermaid for sequence, branching, state, dependency, or system-boundary relationships that are harder to scan in prose.
+- Place the diagram beside the phase decision or journey it summarizes.
+- Keep the diagram compact and give it one clear reading direction.
+- Treat the surrounding bullets, evidence, and ownership fields as authoritative; the diagram is a navigation aid.
+- Do not repeat the same diagram across phase artifacts. Reference the owning artifact when the flow is already documented elsewhere.
+- Omit the diagram when a short list or table is clearer.
+
 ## Uncertainty Rule
 
 > **Resolve only what the current phase owns. Carry the rest without guessing.**

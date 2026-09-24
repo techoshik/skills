@@ -20,6 +20,8 @@
 
 ## Flow
 
+<!-- Add a compact Mermaid journey/state chart when the flow has multiple states, branches, retries, or ownership boundaries. Keep the bullets below authoritative. -->
+
 - **Journey**
   - …
 

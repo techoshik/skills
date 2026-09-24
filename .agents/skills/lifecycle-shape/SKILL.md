@@ -44,6 +44,8 @@ description: "Use after Context to shape and cheaply validate the smallest corre
   - Proof
   - Open
 
+- Add a compact Mermaid journey/state summary under Flow when the solution has multiple states, branches, retries, or ownership boundaries. Keep exact rules and evidence in the bullets.
+
 - Record the compressed solution, not exploration history.
 - If Shape invalidates Define or Context, route back.
 

@@ -6,6 +6,23 @@
 - Keep proof decisions ahead of Build.
 - Avoid forcing expensive E2E coverage when a smaller real boundary is sufficient.
 
+## Proof Selection
+
+```mermaid
+flowchart TD
+    Start[Approved outcome] --> Human{Human judgment required or automation impractical?}
+    Human -->|Yes| Manual[Manual]
+    Human -->|No| Journey{Complete journey across navigation, permission, persistence, backend, or external integration?}
+    Journey -->|Yes| E2E[E2E]
+    Journey -->|No| Layers{Several internal layers or features?}
+    Layers -->|Yes| Integration[Module Integration]
+    Layers -->|No| Evidence{What local behavior must be proven?}
+    Evidence -->|Rule or transformation| Unit[Unit]
+    Evidence -->|UI state or interaction| Widget[Widget / Component]
+```
+
+Use the lowest branch that produces trustworthy evidence, then escalate for risk, regression history, or an incomplete connected journey.
+
 ## Test Levels
 
 - **Unit**

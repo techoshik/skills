@@ -29,6 +29,19 @@ Use **Decide → Work → Resolve** across all phases:
 
 This is a mental frame, not a reason to rename the seven phases or force identical headings.
 
+## Orientation
+
+The lifecycle moves from value to context, solution, implementation, proof, and durable learning:
+
+```mermaid
+flowchart LR
+    D[Define] --> C[Context] --> S[Shape] --> P[Plan] --> B[Build] --> V[Verify] --> R[Refine]
+    V -. failure .-> O[Owning phase]
+    R -. selected future work .-> D
+```
+
+Later findings route back to the phase that owns the problem; the chart is an orientation aid, not a replacement for the phase gates or artifacts.
+
 ## Authority
 
 - Lifecycle = process authority.
