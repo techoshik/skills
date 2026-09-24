@@ -39,6 +39,8 @@ description: "Use after Plan to implement one approved slice at a time, keep the
 
 - Before creating important files/classes/interfaces/abstractions/folders, check applicable conventions.
 - Do not invent consequential project-wide conventions silently.
+- If conformance finds a rule gap, apply **Rule Promotion** in `../lifecycle/references/guidelines.md` before closing the slice.
+- Keep unrelated legacy violations out unless approved; record migration debt or future work.
 
 - Use `tdd` for meaningful behaviour when useful.
 - Use `diagnosing-bugs` for difficult failures.

@@ -30,6 +30,7 @@ description: "Use after Build to prove the complete integrated change satisfies 
 - Run the required real journey/boundary.
 - Check critical rules, targeted regressions, final conformance, and project gates.
 - Record the smallest trustworthy evidence; do not write a QA transcript.
+- If final conformance finds a rule gap, apply **Rule Promotion** before passing Verify.
 
 - Use `code-review` for independent final review when useful.
 - Use `diagnosing-bugs` for difficult failures.

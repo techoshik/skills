@@ -108,6 +108,8 @@ If a deviation is found:
 Fix → rerun affected checks → rerun affected journey → close
 ```
 
+If the review finds a rule gap, apply **Rule Promotion** in `guidelines.md` before closing. A safety fix may land immediately, but Conformance cannot pass until the gap is resolved or explicitly excepted.
+
 ## Mismatch Routing
 
 - Requirement/value/scope problem → Define.

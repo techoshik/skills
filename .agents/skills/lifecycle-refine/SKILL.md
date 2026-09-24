@@ -52,6 +52,8 @@ description: "Use after Verify to move useful learning into permanent sources an
 - Propose changes before applying unless the user already authorized direct updates.
 - Apply only approved changes.
 - Reverify approved code changes.
+- Close Rule Promotion findings only after the authoritative source, current code, checks, re-verification, and Cycle Log evidence are complete.
+- Keep unrelated legacy violations out unless approved; record migration debt or future work.
 
 - Process every meaningful Cycle Log entry.
 - Ensure no valuable information remains only in temporary lifecycle files.

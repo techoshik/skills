@@ -44,6 +44,10 @@ Use one concise line:
 
 Add one evidence line only when necessary.
 
+For a rule gap, include the route and decision in the entry or its evidence line:
+
+`[Build] Rule gap — misplaced files. Route: guideline + checker. Decision: apply now; no migration.`
+
 Examples:
 
 - `[Build] Repository files placed incorrectly — developer manually corrected four files.`

@@ -37,6 +37,8 @@ Use when:
 
 Future work recorded in a module document is not approved scope. When selected, it starts at Define.
 
+Unrelated legacy violations stay outside scope unless approved; record migration debt as future/deferred work.
+
 ### Lifecycle / Engineering Guidance
 Use when:
 - the lifecycle caused avoidable friction;
@@ -129,6 +131,7 @@ Pass when:
 - approved code improvements are reverified;
 - durable module knowledge/future work is in module docs;
 - approved lifecycle/guideline learning is in its permanent source;
+- Rule Promotion findings are resolved, reverified, and recorded in the Cycle Log;
 - nothing valuable exists only in temporary lifecycle files;
 - workspace cleanup decision is recorded.
 

@@ -46,6 +46,7 @@ Pass or route failure
 - Put evidence beside the claim it supports.
 - Build already performed slice conformance; Verify performs the final integrated conformance check.
 - If verification exposes an upstream mistake, route it to its owner instead of patching the requirement/solution silently.
+- If final conformance finds a rule gap, apply **Rule Promotion** in `guidelines.md` before passing Verify.
 
 ## Proof
 
