@@ -4,8 +4,6 @@
 
 - …
 
-<!-- For a multi-feature module, add a compact Mermaid topology showing feature and boundary relationships. Keep durable rules in the sections below. -->
-
 ## Rules
 
 - …
@@ -20,7 +18,5 @@
 ## Future Work
 
 - **Opportunity**
-  - Why it matters / known constraint.
+  - Why it matters.
   - Status: Future / Deferred.
-
-> Future Work is permanent module memory, not approved scope. When selected, start a new lifecycle at Define.

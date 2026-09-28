@@ -1,171 +1,194 @@
-# Build
+# Phase 4 — Build
 
-## Purpose
+## Responsibility
 
-- Implement one approved slice at a time.
-- Keep the journey runnable early.
-- Conform while creating, then audit the completed slice.
+Implement the approved Plan one small, reviewable Build Step at a time while strictly following project rules and validated decisions.
 
-## Inputs
+## Principles
 
-- Approved `04-plan.md`.
-- Current slice.
-- Relevant Shape/Context only as needed.
-- Applicable permanent module docs.
-- Applicable Engineering Guidelines.
+> **Follow the plan. Follow the project. Never silently invent.**
 
-## Core Principle
+> **UI first when meaningful UI exists.**
 
-> **Build outside-in. Keep the journey runnable. Conform while creating. Audit before continuing.**
+> **Test first when behaviour is testable.**
 
-## Before Editing
+> **The agent may suggest beyond the Plan, but must not implement beyond the Plan without approval.**
 
-1. Identify the technologies, layers, and areas the slice touches.
-2. Discover and read all applicable files under `docs/guidelines/`.
-3. Build an internal applicability map:
-   - placement;
-   - naming;
-   - architecture/layer;
-   - dependency direction;
-   - internal structure;
-   - test conventions.
-4. Inspect nearby established code patterns.
-5. If guidance is missing, unclear, or contradictory and the choice is consequential, surface it instead of inventing a project-wide convention.
+## Preflight — Before Every Build Step
 
-Do not add the guideline map to `05-build.md` unless a gap matters to the result.
+Before writing code, answer:
 
-## Slice Build Path
+1. What exactly am I building?
+2. What is this step's `Done When`?
+3. Which project rules apply?
+4. Which established implementation am I following?
+5. What files/classes/components should change?
+6. Is there a consequential choice I would have to guess?
 
-For normal user-facing work:
+If #6 is yes:
 
-```text
-Journey
-  ↓
-State / Models ↔ UI
-  ↓
-Application path
-  ↓
-Controlled boundary
-  ↓
-Early journey check
-  ↓
-Backend / real implementation
-  ↓
-Real connection
-  ↓
-Same journey check
-  ↓
-Conformance review
-```
+> **Stop and ask before coding.**
 
-- State/models may come just before or alongside UI.
-- Use only the layers the project actually needs.
-- Backend-only/technical slices use the shortest relevant path.
+### Hard Gates
 
-## During Build
+- Missing consequential rule → ask.
+- Conflicting rules → ask.
+- Missing naming/placement/structure/test convention after inspection → ask.
+- New architectural decision → ask.
+- Extra requirement → suggest and ask.
+- Unrelated improvement → suggest; do not implement.
+- Plan conflicts with project reality → stop and surface it.
 
-Before creating an important file, class, interface, abstraction, or folder, check:
+Do not invent project-wide conventions.
 
-- placement;
-- naming;
-- layer;
-- dependencies;
-- internal structure;
-- nearest established pattern.
+## Build Unit
 
-> **Prevent continuously → audit completely.**
+A **Build Step** is one coherent responsibility.
 
-Do not silently invent a new project-wide convention.
+It may contain several tightly related files.
 
-## TDD
+It must remain reviewable as one unit.
 
-Use `tdd` for meaningful behaviour when practical:
+Do not build the whole feature in one giant step.
 
-```text
-Specify → Red → Green → Refactor
-```
+## UI-first Default
 
-TDD proves pieces. The slice journey proves the pieces work together.
+For meaningful UI work, prefer an early Build Step containing:
 
-## Slice Conformance Review
+- UI/component(s);
+- presentation state/model;
+- fake/dummy/in-memory data or provider;
+- relevant visible states.
 
-Before closing a slice, verify:
+Use this only when it improves early review.
 
-- folder/file placement;
-- naming;
-- class/interface/type structure;
-- architectural layer and dependency direction;
-- reuse of established patterns;
-- test placement/style;
-- no temporary shortcuts remain unintentionally;
-- no unnecessary abstractions;
-- no unrelated changes;
-- formatter/lint/type/architecture checks required by the project.
+Backend-only work uses the shortest relevant path.
 
-If a deviation is found:
+## TDD — Hard Rule for Testable Behaviour
 
-```text
-Fix → rerun affected checks → rerun affected journey → close
-```
+Use:
 
-If the review finds a rule gap, apply **Rule Promotion** in `guidelines.md` before closing. A safety fix may land immediately, but Conformance cannot pass until the gap is resolved or explicitly excepted.
+> **RED → GREEN → REFACTOR**
 
-## Mismatch Routing
+For each testable behaviour:
 
-- Requirement/value/scope problem → Define.
-- Existing-system misunderstanding → Context.
-- Wrong solution/domain/seam → Shape.
-- Wrong implementation approach/slicing → Plan.
-- Implementation defect/conformance → Build.
+1. Write the failing test.
+2. Run it.
+3. Confirm RED.
+4. Write the minimum implementation.
+5. Run it.
+6. Confirm GREEN.
+7. Refactor.
+8. Keep tests green.
 
-Build must not improvise an upstream decision.
+Typical mapping:
 
-## Companion Skills
+- pure logic → unit test;
+- use cases/repositories/controllers → unit tests;
+- state transitions → state/controller tests;
+- UI behaviour → widget/component tests;
+- complete journeys → integration tests when justified.
 
-- `tdd` — meaningful behaviour.
-- `diagnosing-bugs` — difficult failures.
-- `code-review` — useful aid for the mandatory standards/spec review.
+Do not force meaningless tests for purely decorative details.
 
-Conformance Review is mandatory even if `code-review` is unavailable.
+If test placement/naming/mock conventions are unclear:
 
-## Output — `05-build.md`
+- inspect existing examples;
+- if still consequentially unclear, ask.
 
-The code is the primary output. Keep the artifact as a compact slice ledger.
+## Build Process
 
-### Status
-- State: In Progress / Complete / Blocked.
-- Current slice.
-- Next.
+### 1. Prepare
 
-### Slice N — <name>
+- Read the current Plan step.
+- Read its `Done When`.
+- Read applicable rules.
+- Inspect nearby patterns.
+- Complete Preflight.
 
-- **Result**
-  - Pass / Blocked.
+### 2. Test First
 
-- **Built**
-  - Only meaningful implementation groups.
+- Create the smallest useful failing test.
+- Confirm RED.
 
-- **Proof**
-  - Automated result.
-  - Real journey/boundary result.
+### 3. Implement
 
-- **Conformance**
-  - Guidelines: Pass / Blocked.
-  - Deterministic checks: Pass / Blocked.
+- Implement only the approved Build Step.
+- Follow project conventions.
+- Reuse established patterns.
+- Do not implement future steps early.
+- Do not add unrelated refactors.
 
-Optional:
-- **Deviation**
-  - Only when a discovery/deviation matters.
-  - Name owner/return phase when blocked.
+### 4. Refactor
 
-## Phase Gate
+- Improve only within the approved responsibility.
+- Keep tests green.
+- Do not broaden scope.
 
-A slice passes only when:
+### 5. Check
 
-- its approved outcome is implemented;
-- required proof passes;
-- the real/meaningful boundary has been exercised;
-- conformance review passes;
-- any deviation is resolved or routed to its owner.
+Before presenting the step:
 
-Start the next slice only after the current slice passes.
+- relevant tests/checks pass;
+- `Done When` passes;
+- project conventions are followed;
+- no unrelated code changed;
+- no unapproved behaviour/architecture appeared;
+- app remains compilable/runnable when practical.
+
+### 6. Approval Gate
+
+Present the completed Build Step.
+
+Wait for explicit user approval.
+
+Do not start the next Build Step before approval.
+
+## Discoveries
+
+When implementation exposes a consequential unknown:
+
+1. state the discovery;
+2. explain why it matters;
+3. recommend options when useful;
+4. wait for approval before implementing the choice.
+
+Route invalidated decisions back to:
+
+- Idea;
+- Prototype;
+- Plan.
+
+## Mechanical Consequences
+
+Do not interrupt for deterministic consequences such as:
+
+- required imports;
+- compiler-required wiring;
+- obvious call-site updates;
+- boilerplate governed by a clear project convention.
+
+The gate is for consequential choices.
+
+## Build vs Finalize
+
+Build asks:
+
+> **Is this Build Step correct and conforming?**
+
+Finalize asks:
+
+> **Does the complete change fulfil the original promise?**
+
+## Complete When
+
+- Every Build Step is approved.
+- Every Build Step satisfies `Done When`.
+- Testable behaviour used TDD.
+- Relevant tests/checks pass.
+- Project conventions are followed.
+- No consequential unapproved decision remains.
+
+Present Build completion.
+
+Wait for explicit user approval before Finalize.

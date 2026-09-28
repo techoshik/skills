@@ -1,0 +1,29 @@
+# Finalize
+
+## Verify
+
+- **Goal / Key Results:** Pass / Blocked
+- **Proof:** …
+- **Gaps:** … <!-- only when real -->
+- **Issues:** …
+
+## Synchronize
+
+- **Module Docs:** …
+- **Support/User Docs:** …
+- **Other Permanent Sources:** …
+
+## Improve
+
+- **Finding**
+  - Action: …
+  - Home: …
+  - Status: …
+
+## Clean
+
+- **Temporary Artifacts:** …
+
+## Close
+
+- **Status:** Complete / Blocked

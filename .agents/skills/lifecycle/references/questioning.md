@@ -2,54 +2,62 @@
 
 ## Purpose
 
-- Use questions to remove consequential uncertainty.
-- Do not ask questions merely to fill a template.
+Remove consequential uncertainty without turning the artifact into an interview transcript.
 
-## Rules
+## Design Tree
 
-- Ask as many rounds as the decision tree requires.
-- Ask independent questions in the current frontier together.
+Treat unresolved decisions as a tree.
+
+- Ask questions in rounds.
+- Ask the current independent frontier together when practical.
 - Recompute the frontier after each answer.
-- Ask the user for:
-  - product decisions;
-  - priorities;
-  - preferences;
-  - authority;
-  - acceptance.
-- Find repository/system facts yourself.
-- Do not silently answer anything that can materially change value, scope, behaviour, architecture, sequencing, or acceptance.
-- Give a recommendation when a meaningful choice needs one.
-- Preserve unresolved consequential uncertainty instead of inventing an answer.
+- An answer may reveal new branches that were impossible to ask well before.
+- Continue until no meaningful unanswered branch can materially change the current phase outcome.
 
-## Recording Rule
+## Human vs Agent
+
+Ask the user for:
+
+- product decisions;
+- priorities;
+- preferences;
+- trade-offs;
+- authority/acceptance.
+
+Discover yourself:
+
+- repository facts;
+- existing architecture and patterns;
+- available components/services/models;
+- configuration;
+- tests;
+- documented project conventions;
+- technical facts available from trusted project/external sources.
+
+Do not make the user answer facts the agent can inspect.
+
+## No Silent Assumptions
+
+Never silently decide something that can materially change:
+
+- value or scope;
+- user-visible behaviour;
+- architecture/ownership;
+- data semantics;
+- build sequence;
+- acceptance/proof.
+
+Give a recommendation when a meaningful choice needs one, but the user's decision remains theirs.
+
+## Recording
 
 > **Discovery depth and artifact size are independent.**
 
-- Do not copy interview history into phase artifacts.
-- Record only:
-  - the final decision;
-  - accepted assumptions or risks;
-  - unresolved consequential items;
-  - information the next phase needs.
+Record only:
 
-Use the lifecycle uncertainty types:
+- finalized decisions;
+- important unresolved questions;
+- accepted assumptions/risks;
+- information needed to resume or continue.
 
-- **Assumption**
-- **Question**
-- **Research**
-- **Blocker**
-
-When known, assign the earliest owning phase with `Resolve: <phase>`.
-
-## `grill-with-docs`
-
-- Use by default during Define for non-trivial requirement discovery.
-- Later phases use it only when a genuinely new requirement/domain decision needs grilling.
-- Do not rerun general requirement discovery in every phase.
-
-## Decision Boundary
-
-- If a later phase discovers a requirement ambiguity, route it to Define.
-- If it discovers a fact gap, route it to Context.
-- If it discovers solution uncertainty, route it to Shape.
-- If it discovers implementation/slicing uncertainty, route it to Plan.
+For Idea, capture finalized points continuously while questioning. The document is living memory, not an end-of-session report.

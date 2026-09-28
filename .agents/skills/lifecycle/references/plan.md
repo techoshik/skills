@@ -1,134 +1,166 @@
+# Phase 3 — Plan
+
+## Responsibility
+
+Understand the existing system, specify the technical change, choose trustworthy proof, and create the safest reviewable build sequence.
+
+## Principle
+
+> **Understand → Specify → Prove → Plan**
+
+Inspect before deciding.
+
+Specify before sequencing.
+
+Choose proof before Build.
+
+## 1. Understand
+
+- Read Idea and Prototype.
+- Inspect relevant:
+  - code;
+  - module docs;
+  - configuration;
+  - tests;
+  - project rules;
+  - integrations;
+  - dependencies.
+- Find reuse, constraints, and established patterns.
+- Do not create a separate Context artifact.
+- Record project facts only when they affect:
+  - specification;
+  - build order;
+  - risk;
+  - proof.
+
+## 2. Specify
+
+Write the technical summary of what must be true when the change is complete.
+
+Include only what Build needs without guessing:
+
+- responsibilities/ownership;
+- state/data changes;
+- flows/interactions;
+- interfaces/contracts;
+- important edge cases;
+- existing reuse;
+- migration/compatibility/rollout when relevant.
+
+Specification is the finished technical picture.
+
+It is not the implementation order.
+
+## 3. Prove
+
+Choose the **cheapest trustworthy proof** before Build.
+
+For each important Goal, Key Result, contract, or risky behaviour:
+
+- state the proof;
+- use the lowest-cost proof that can actually establish it;
+- record any proof gap that cannot be closed reasonably.
+
+Examples:
+
+- pure behaviour → unit test;
+- state/UI behaviour → widget/component test;
+- cross-layer contract → integration test;
+- complete user journey → end-to-end/integration test;
+- visual/experience match → human acceptance;
+- performance → measurement against an agreed threshold.
+
+A cheaper proof is not acceptable when it cannot establish the claim.
+
+A proof gap must be explicit.
+
+Do not silently treat an unproved claim as verified.
+
+## 4. Plan
+
+Break the specification into **Build Steps**.
+
+A Build Step is one coherent responsibility that can be:
+
+- implemented;
+- reviewed;
+- independently checked.
+
+Rules:
+
+- several tightly related files may belong to one step;
+- do not use one-file-per-step mechanically;
+- do not generate the full feature in one giant step;
+- prefer early reviewable feedback.
+
+### UI-first default
+
+When meaningful UI exists:
+
+- prefer the first Build Step as UI + presentation contract;
+- use fake/dummy/in-memory data when useful;
+- include relevant visible states;
+- avoid premature backend integration.
+
+Do not force backend/domain/database models into the first step unless the UI truly requires them.
+
+A common later order is:
+
+- application logic;
+- data/infrastructure;
+- server/API;
+- integration.
+
+Use project reality and dependencies to decide the actual order.
+
+## Done When
+
+Every Build Step has an observable `Done When`.
+
+It proves the step is complete enough to continue.
+
+It does not replace Finalize's whole-change proof.
+
+## Artifact
+
+Use:
+
+```md
 # Plan
 
-## Purpose
+## Specification
+- ...
 
-- Turn the approved Shape into the smallest dependency-aware sequence Build can execute without guessing.
-- Optimize for early runnable journeys, not horizontal technical layers.
+## Proof
+- **<Outcome>**
+  - Proof: ...
+  - Gap: ...  # only when real
 
-## Inputs
+## Build Plan
 
-- Approved Shape.
-- Context facts needed for dependencies/reuse.
-- Define only when success criteria need traceability.
+### 1. <Build Step>
+- **Build:** ...
+- **Done When:**
+  - ...
 
-## Core Principle
-
-> **Build outside-in: make the journey runnable early, then replace controlled boundaries with real ones.**
-
-- Do not build all server layers first and leave the feature untestable until the end.
-- UI state/models may be created just before or alongside UI.
-- The exact order depends on what the UI/journey needs.
-- Do not prescribe project layers that do not exist.
-
-## Default User-Facing Slice Path
-
-```text
-Journey
-  ↓
-State / Models ↔ UI
-  ↓
-Frontend / Application path
-  ↓
-Controlled / fake boundary
-  ↓
-Exercise the journey early
-  ↓
-Backend / real implementation
-  ↓
-Real connection
-  ↓
-Exercise the same journey
-  ↓
-Conformance
+## Open Questions
+- ...
 ```
 
-- Backend-only, migration, or infrastructure slices use the shortest relevant path.
-- The governing rule is: **keep the slice runnable as early and as often as possible.**
+Use `Depends` or `Risk` only when useful.
 
-## Rules
+Use Mermaid only when dependencies are clearer visually.
 
-- Plan behaviour and boundaries, not every coding step.
-- Each slice should produce one understandable outcome.
-- Each user-facing slice should expose a journey the developer can exercise.
-- Each slice carries its own proof.
-- Resolve anything that could materially change:
-  - slice boundaries;
-  - architecture/contracts;
-  - dependency order;
-  - migrations/rollout;
-  - proof.
-- Build should not have to invent these.
-- Do not plan routine local implementation mechanics already governed by engineering guidelines.
-- Do not copy naming/folder/class conventions into Plan; Build loads the applicable guidelines.
-- Do not force `Model / UI / Backend / Connect / Verify` headings or `Not applicable`.
-- Write only the implementation areas that contain work.
+## Complete When
 
-## Questions
+- Technical solution is clear.
+- Proof is defined for important claims.
+- Real proof gaps are explicit.
+- Build order is clear.
+- Every Build Step is reviewable.
+- Every Build Step has useful `Done When`.
+- No consequential technical/build-sequence question remains.
 
-- What is the smallest useful build order?
-- What genuine prerequisite exists?
-- What can become runnable before backend completion?
-- Which controlled/fake boundary can unlock early interaction?
-- What real boundary must replace it?
-- What journey proves the slice before and after real connection?
-- What regression or rollout risk changes the sequence?
+Present Plan.
 
-## Companion Skills
-
-- `wayfinder` — large/dependency-heavy planning.
-- `to-tickets` — only when external execution tracking is useful.
-
-## Output — `04-plan.md`
-
-### Decision
-- Result: Plan approved / Needs revision.
-- Status: Pass / Blocked.
-- Blockers.
-- Next.
-
-### Build Order
-- Ordered slice names.
-- Add a short reason only when order is non-obvious.
-- Add genuine prerequisites only.
-
-### Slices
-For each slice:
-
-#### Slice N — <name>
-
-- **Journey**
-  - The developer-visible user/system path to exercise.
-
-- **Build**
-  - Ordered implementation groups needed for this slice.
-  - Group related work together.
-  - Include state/models, UI, application path, controlled boundary, backend, real connection, migrations, etc. only when applicable.
-
-- **Proof**
-  - Automated proof.
-  - Real journey/boundary proof.
-
-Optional only when they matter:
-- **Depends**
-- **Boundary**
-- **Risk**
-
-### Open
-- Research/questions/blockers that Plan still owns.
-- Build must not start with a critical Plan-owned unknown.
-
-## Delete Test
-
-- If removing a planned item does not prevent the slice outcome or its proof, remove it from the Plan.
-
-## Phase Gate
-
-Pass when:
-
-- Build order is clear;
-- each slice has an observable journey/outcome;
-- each slice has a proof path;
-- required dependencies and real boundaries are known;
-- no critical implementation/slicing decision is left for Build to invent.
-
-Do not add a second Exit section to the artifact.
+Wait for explicit user approval before Build.

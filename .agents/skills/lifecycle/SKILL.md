@@ -1,6 +1,6 @@
 ---
 name: lifecycle
-description: "Run the project's Define → Context → Shape → Plan → Build → Verify → Refine lifecycle."
+description: "Run the project's Idea → Prototype → Plan → Build → Finalize development lifecycle."
 disable-model-invocation: true
 ---
 
@@ -11,44 +11,64 @@ disable-model-invocation: true
 Read:
 
 - `references/framework.md`
+- `references/artifacts.md`
 - `references/questioning.md`
 - `references/cycle-log.md`
-- `references/approval.md`
-- `references/verification-strategy.md`
-- `references/third-party-skills.md`
+- `references/guidelines.md`
+- `references/companion-skills.md`
 
-Determine approval mode once and persist it in `00-lifecycle.md`.
-
-## Shared Phase Frame
-
-Use **Decide → Work → Resolve** across all phases:
-
-- **Decide** — phase result/status/next.
-- **Work** — only phase-owned information.
-- **Resolve** — resolve or route what remains; omit when empty.
-
-This is a mental frame, not a reason to rename the seven phases or force identical headings.
-
-## Orientation
-
-The lifecycle moves from value to context, solution, implementation, proof, and durable learning:
+## Lifecycle
 
 ```mermaid
 flowchart LR
-    D[Define] --> C[Context] --> S[Shape] --> P[Plan] --> B[Build] --> V[Verify] --> R[Refine]
-    V -. failure .-> O[Owning phase]
-    R -. selected future work .-> D
+    I[Idea] --> P[Prototype] --> L[Plan] --> B[Build] --> F[Finalize]
+    P -. invalidates goal .-> I
+    L -. invalidates behaviour .-> P
+    L -. invalidates goal .-> I
+    B -. technical plan wrong .-> L
+    B -. behaviour wrong .-> P
+    B -. goal wrong .-> I
+    F -. implementation issue .-> B
+    F -. technical design issue .-> L
+    F -. behaviour issue .-> P
+    F -. goal issue .-> I
 ```
 
-Later findings route back to the phase that owns the problem; the chart is an orientation aid, not a replacement for the phase gates or artifacts.
+## Approval
+
+Always stop:
+
+- after every phase;
+- after every Build Step.
+
+Then:
+
+- present the result;
+- wait for explicit user approval;
+- continue only after approval.
+
+Do not infer approval from silence.
+
+If changes are requested:
+
+- stay in the current phase/step;
+- update it;
+- present again.
 
 ## Authority
 
-- Lifecycle = process authority.
-- Approved phase artifacts = active-change authority.
-- `docs/modules/` = permanent module knowledge.
+- Lifecycle skills = process authority.
+- Current phase artifacts = active-change decisions.
+- `docs/modules/` = permanent product/module truth.
 - `docs/guidelines/` = permanent engineering standards.
+- Support/user docs = permanent user-facing truth.
 - Companion skills = techniques only.
+
+When sources conflict:
+
+- do not silently choose;
+- route the conflict to the owning phase;
+- ask the user when a consequential decision remains.
 
 ## Workspace
 
@@ -56,83 +76,68 @@ Use `docs/lifecycle/<change-name>/`.
 
 Keep:
 
-- `00-lifecycle.md` — state/index.
-- phase artifacts as phases begin.
-- `cycle-log.md` — temporary improvement memory.
+- `00-lifecycle.md`;
+- one artifact per phase;
+- `cycle-log.md`;
+- `prototype/` only when useful.
 
-Lifecycle artifacts are temporary working memory. Refine must transfer durable knowledge before cleanup.
+Use `templates/`.
 
-## Future Work
-
-- Durable future/deferred module work belongs in the affected `docs/modules/<module>.md`.
-- It is not approved scope.
-- When selected, it starts a new lifecycle at Define.
-- Do not maintain permanent future work only inside lifecycle artifacts.
+Follow `references/artifacts.md` for every lifecycle document.
 
 ## Current Phase
 
-Use the latest passed/approved artifact:
+Read `00-lifecycle.md` first when it exists.
 
-- no passed Define → `lifecycle-define`
-- Define passed, Context incomplete → `lifecycle-context`
-- Context passed, Shape incomplete → `lifecycle-shape`
-- Shape passed, Plan incomplete → `lifecycle-plan`
-- Plan passed, slices incomplete → `lifecycle-build`
-- slices complete, solution unverified → `lifecycle-verify`
-- Verify passed, cycle not closed → `lifecycle-refine`
+Otherwise infer from approved artifacts:
 
-If a later phase invalidates earlier work, route to the owning phase.
+- no approved Idea → `lifecycle-idea`;
+- Idea approved, Prototype unresolved/needed → `lifecycle-prototype`;
+- Prototype approved/not-needed, Plan incomplete → `lifecycle-plan`;
+- Plan approved, Build Steps incomplete → `lifecycle-build`;
+- Build approved, cycle not closed → `lifecycle-finalize`.
 
-## Run One Phase at a Time
+## Run One Responsibility at a Time
 
-1. Invoke the matching `lifecycle-*` skill.
-2. Confirm its internal gate passes.
-3. Run the Cycle Log sweep.
-4. Update `00-lifecycle.md`.
-5. Apply approval mode.
-6. Move forward only when the gate passes.
+1. Load the active phase skill.
+2. Load only the sources that phase needs.
+3. Resolve the phase responsibility.
+4. Capture finalized points continuously.
+5. Run the Cycle Log sweep.
+6. Update `00-lifecycle.md`.
+7. Present the result.
+8. Wait for explicit user approval.
+9. Continue only after approval.
 
-Each phase artifact has one decision/status area near the top. Do not require duplicate Exit sections.
+## Ownership Routing
 
-## Ownership Discipline
+When later work changes earlier truth:
 
-- One fact has one owner.
-- Reference upstream decisions instead of rewriting them.
-- If an upstream fact/decision changes, route back to its owning phase and update that source.
-- Use each phase question as a delete test for artifact content.
+- Problem / Goal / Key Results → Idea.
+- Behaviour / experience → Prototype.
+- Technical solution / proof / build sequence → Plan.
+- Implementation / conformance → Build.
+
+Update the owning artifact.
+
+Do not hide the change later.
 
 ## Context Discipline
 
-Load only what the active phase needs:
+- Idea → current request + needed product facts.
+- Prototype → Idea + needed product/project context.
+- Plan → Idea + Prototype + relevant code/docs/config/tests/guidelines.
+- Build → current Plan step + applicable project rules + nearby patterns.
+- Finalize → planned proof + Build results + relevant permanent docs + Cycle Log.
 
-- `00-lifecycle.md`;
-- relevant approved upstream artifacts;
-- affected module docs;
-- relevant code/config/tests;
-- Engineering Guidelines before Build/Verify;
-- Cycle Log as required (Refine loads all).
+## Permanent Knowledge
 
-Do not duplicate stable information across artifacts.
+During Finalize:
 
-## Module Documents
+- current product behaviour → module docs;
+- user-facing instructions → support/user docs;
+- reusable engineering conventions → project guidelines/checkers;
+- reusable process lessons → lifecycle skills;
+- temporary evidence → clean only after useful learning is preserved.
 
-For every bug fix, existing-functionality change, or new functionality:
-
-- Context identifies affected modules.
-- Context reads each existing `docs/modules/<module>.md`.
-- Missing module docs are recorded as gaps.
-- Refine transfers durable learning and future/deferred module work into module docs before cleanup.
-
-## Close the Cycle
-
-Refine owns closure:
-
-- review the completed work and Cycle Log;
-- propose/apply approved code improvements;
-- transfer durable module knowledge/future work;
-- improve engineering/lifecycle guidance when needed;
-- reverify applied code changes;
-- record cleanup decision;
-- ensure the workspace is safe to delete/archive.
-
-> **The orchestrator remembers where we are. The phase skill remembers how to work. Temporary artifacts remember the active change. Permanent sources remember what survives it.**
+> **The conversation explores. The artifacts remember. Permanent sources preserve what survives the change.**

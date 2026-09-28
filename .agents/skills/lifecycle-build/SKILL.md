@@ -1,64 +1,71 @@
 ---
 name: lifecycle-build
-description: "Use after Plan to implement one approved slice at a time, keep the journey runnable, and enforce guideline conformance during development."
+description: "Use after Plan to implement one approved Build Step at a time with strict project conformance, UI-first feedback when useful, and TDD for testable behaviour."
 ---
+
+# Build
 
 ## Phase Question
 
-> **Can we implement the current slice correctly and keep it runnable?**
+> **Can we implement the current Build Step correctly without guessing or drifting from the project?**
 
-- Use this question as the delete test for phase work and artifact content.
-- Follow the shared **Decide → Work → Resolve** frame without renaming the phase-specific sections.
+Read:
 
-- Read:
-  - `../lifecycle/references/framework.md`
-  - `../lifecycle/references/build.md`
-  - `../lifecycle/references/guidelines.md`
-  - `../lifecycle/references/approval.md`
-  - `../lifecycle/references/cycle-log.md`
+- `../lifecycle/references/framework.md`
+- `../lifecycle/references/artifacts.md`
+- `../lifecycle/references/build.md`
+- `../lifecycle/references/guidelines.md`
+- `../lifecycle/references/cycle-log.md`
+- `../lifecycle/references/companion-skills.md`
 
-- Load:
-  - active `00-lifecycle.md`;
-  - approved `04-plan.md`;
-  - current slice;
-  - relevant Shape/Context only as needed;
-  - affected module docs;
-  - all applicable Engineering Guidelines before editing.
+Load:
 
-- Before editing:
-  - identify affected technologies/layers/areas;
-  - map applicable placement, naming, architecture, dependency, structure, and test rules;
-  - inspect nearby established patterns.
+- `00-lifecycle.md`;
+- approved `03-plan.md`;
+- current Build Step;
+- current `Done When`;
+- only relevant Idea/Prototype decisions;
+- affected module docs;
+- every applicable engineering rule;
+- nearby established implementations.
 
-- Build outside-in.
-  - State/models may come just before or alongside UI.
-  - Make the frontend/application journey runnable early.
-  - Use controlled/fake boundaries when they accelerate feedback.
-  - Implement/connect the real backend afterward.
-  - Exercise the same journey again.
+Complete Preflight before editing.
 
-- Before creating important files/classes/interfaces/abstractions/folders, check applicable conventions.
-- Do not invent consequential project-wide conventions silently.
-- If conformance finds a rule gap, apply **Rule Promotion** in `../lifecycle/references/guidelines.md` before closing the slice.
-- Keep unrelated legacy violations out unless approved; record migration debt or future work.
+## Non-negotiable
 
-- Use `tdd` for meaningful behaviour when useful.
-- Use `diagnosing-bugs` for difficult failures.
-- Use `code-review` as an aid when useful.
+- Do not invent consequential conventions.
+- Do not silently broaden scope.
+- Do not implement an unapproved architectural/product decision.
+- Suggestions are welcome.
+- Consequential extra implementation requires approval.
+- Implement one Build Step at a time.
+- Use TDD for testable behaviour.
+- Honor approved UI-first steps.
+- Check conformance and `Done When`.
 
-- Implement one slice only.
-- Run the mandatory Slice Conformance Review before closing it.
-- Fix drift and rerun affected checks/journey.
-- Route upstream mismatches to their owner instead of improvising.
+When something unexpected requires a **consequential choice**:
 
-- Write/update `05-build.md` as a compact slice ledger:
-  - Status
-  - Result
-  - Built
-  - Proof
-  - Conformance
-  - Deviation only when relevant
+- stop;
+- explain;
+- recommend;
+- ask.
 
-- Run the Cycle Log sweep before closing each slice.
-- Start the next slice only after the current slice passes.
-- Apply approval mode and update `00-lifecycle.md`.
+When an upstream decision is wrong:
+
+- route it to Idea/Prototype/Plan;
+- do not improvise inside Build.
+
+After each Build Step:
+
+- update `04-build.md`;
+- run the Cycle Log sweep;
+- update `00-lifecycle.md`;
+- present the step;
+- wait for explicit user approval.
+
+Do not start the next Build Step before approval.
+
+When all Build Steps are approved:
+
+- present Build completion;
+- wait for explicit user approval before Finalize.

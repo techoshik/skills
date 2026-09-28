@@ -1,54 +1,74 @@
 ---
 name: lifecycle-plan
-description: "Use after Shape to turn the approved solution into the smallest sequence of runnable, verifiable slices."
+description: "Use after Idea/Prototype to inspect the existing project, specify the technical solution, choose proof, and create small reviewable Build Steps."
 ---
+
+# Plan
 
 ## Phase Question
 
-> **What is the safest runnable build sequence?**
+> **How exactly will we build and prove this correctly in the existing system?**
 
-- Use this question as the delete test for phase work and artifact content.
-- Follow the shared **Decide → Work → Resolve** frame without renaming the phase-specific sections.
+Read:
 
-- Read:
-  - `../lifecycle/references/framework.md`
-  - `../lifecycle/references/questioning.md`
-  - `../lifecycle/references/plan.md`
-  - `../lifecycle/references/approval.md`
-  - `../lifecycle/references/cycle-log.md`
+- `../lifecycle/references/framework.md`
+- `../lifecycle/references/artifacts.md`
+- `../lifecycle/references/plan.md`
+- `../lifecycle/references/guidelines.md`
+- `../lifecycle/references/cycle-log.md`
+- `../lifecycle/references/companion-skills.md`
 
-- Load approved Shape plus only the Context/Define details needed for dependencies and success traceability.
+Load:
 
-- Plan outside-in:
-  - start from the journey;
-  - create state/models just before or alongside UI when needed;
-  - complete the frontend/application path;
-  - use a controlled/fake boundary to make the journey runnable early when useful;
-  - then implement/connect the real backend;
-  - exercise the same journey again.
+- approved `01-idea.md`;
+- approved/not-needed `02-prototype.md`;
+- only relevant project sources.
 
-- Do not force project layers or `Not applicable` checkpoints.
-- Write only implementation groups that contain real work.
-- Keep naming/folder/class conventions out of Plan; Build loads the Engineering Guidelines.
+Use:
 
-- Use `wayfinder` for large/dependency-heavy plans.
-- Use `to-tickets` only when external tracking helps.
+> **Understand → Specify → Prove → Plan**
 
-- Write/update `04-plan.md` using:
-  - Decision
-  - Build Order
-  - Slices
-  - Open
+- **Understand**
+  - inspect code/docs/config/tests/guidelines;
+  - discover reuse, constraints, dependencies, patterns.
+- **Specify**
+  - define the technical result.
+- **Prove**
+  - choose the cheapest trustworthy proof;
+  - record real proof gaps.
+- **Plan**
+  - create small reviewable Build Steps;
+  - give each step `Done When`.
 
-- Each user-facing slice should contain:
-  - Journey
-  - Build
-  - Proof
-  - optional Depends / Boundary / Risk
+Do not create a separate Context artifact.
 
-- Add a Mermaid slice dependency graph when the build order branches or has multiple proof paths. Omit it for a simple linear plan.
+Do not repeat product decisions owned by Idea/Prototype.
 
-- Resolve critical implementation/slicing questions before Build.
+When meaningful UI exists:
 
-- Complete when the Plan gate passes.
-- Apply approval mode and update `00-lifecycle.md`.
+- prefer an early UI + presentation-state Build Step;
+- use fake/dummy data when useful.
+
+Do not hard-code a universal layer order.
+
+Ask the user only for consequential choices/trade-offs not resolved by:
+
+- approved decisions;
+- project facts;
+- established rules.
+
+If planning invalidates behaviour:
+
+- return to Prototype.
+
+If planning invalidates Goal/Key Results:
+
+- return to Idea.
+
+Run the Cycle Log sweep.
+
+Update `00-lifecycle.md`.
+
+Present the Plan.
+
+Wait for explicit user approval before Build.

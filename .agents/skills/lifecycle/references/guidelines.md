@@ -1,77 +1,81 @@
-# Engineering Guidelines
+# Project Rules and Engineering Guidelines
 
 ## Source of Truth
 
-- Project-specific engineering standards live under `docs/guidelines/`.
-- The Lifecycle owns when they must be loaded.
-- The project owns what they say.
-- Do not assume fixed filenames, technologies, or conventions.
+Project-specific standards belong in permanent project guidance.
 
-## Rule Promotion
+Lifecycle skills define **when** to read rules.
 
-A rule gap is a missing, ambiguous, contradictory, or repeatedly missed rule.
+The project defines **what** the rules are.
 
-When Build or Verify finds a **rule gap**, do not close with a local fix alone.
+Never assume:
 
-1. Classify it:
-   - process → lifecycle skill;
-   - project standard → project guideline;
-   - deterministic rule → project checker;
-   - temporary lesson → Cycle Log.
-2. Record and update the authoritative source according to approval mode.
-3. If safety or correctness requires it, apply the smallest immediate fix; keep promotion open.
-4. Add or extend a checker when practical.
-5. Apply the promoted rule to current code.
-6. Rerun affected checks, analyzer, tests, and journey.
-7. Log the decision, owner, scope, and evidence.
-
-Shared skills define portable process only. Project names, paths, conventions, commands, and lifecycle records stay project-owned. Synchronization replaces portable skill content only.
-
-## Build — Before Editing
-
-1. Identify affected technologies, layers, and areas.
-2. Discover every applicable guideline.
-3. Read them before editing.
-4. Inspect nearby established code patterns.
-5. Treat applicable guidance as mandatory.
-
-If guidance is missing, unclear, or contradictory:
-
-- do not invent a project-wide convention;
-- use a clear local established pattern only for routine local choices;
-- surface consequential gaps to the owning phase/user.
-
-## Build — While Creating
-
-Before creating an important file/class/interface/abstraction/folder, check:
-
-- placement;
+- filenames;
+- folder structure;
+- class types;
+- frameworks;
 - naming;
-- layer;
-- dependencies;
-- internal structure;
-- nearest established pattern.
+- architecture;
+- test conventions.
 
-## Build — Slice Audit
+## Plan
 
-After implementation, run the full Slice Conformance Review and fix drift before continuing.
+Plan inspects relevant rules and existing patterns.
 
-## Verify
+Do not copy stable conventions into Plan unless they affect:
 
-- Load the applicable guidelines again.
-- Perform final integrated conformance checks after all slices are combined.
+- technical design;
+- build order;
+- risk;
+- proof.
 
-## Refine
+## Build — Mandatory Preflight
 
-When the cycle exposes a recurring engineering rule:
+Before every Build Step:
 
-- propose and, when approved, apply the smallest guideline improvement;
-- add or extend enforcement and reverify current code;
-- move the learning out of temporary lifecycle files/Cycle Log.
+1. Identify touched technologies/layers.
+2. Find every applicable rule.
+3. Read the rules.
+4. Inspect nearby established patterns.
+5. Confirm:
+   - placement;
+   - naming;
+   - architecture/layer;
+   - dependency direction;
+   - structure;
+   - test conventions.
 
-Keep durable information in its proper home:
+If a **consequential** convention is missing, unclear, or contradictory:
 
-- `docs/modules/` — module knowledge and future/deferred module work;
-- `docs/guidelines/` — engineering standards;
-- lifecycle skills — lifecycle/process guidance;
-- codebase — implemented behaviour.
+> **Stop and ask. Do not invent it.**
+
+Ordinary implementation judgment does not require interruption when:
+
+- the Plan already determines the outcome;
+- an existing rule/pattern clearly determines the choice;
+- the change is a mechanical consequence of approved work.
+
+## Suggestions vs Authority
+
+The agent may:
+
+- explain a discovery;
+- explain why it matters;
+- recommend an option.
+
+The agent must not implement an unapproved consequential change outside the Plan.
+
+> **Permission to suggest is not permission to implement.**
+
+## Finalize — Promote Real Learning
+
+When real work exposes a reusable rule gap:
+
+- propose the durable improvement;
+- get explicit user approval;
+- update the authoritative guideline/checker;
+- rerun relevant checks when current work changes.
+
+Update lifecycle skills only for portable process learning.
+
+Do not change guidance merely because Finalize contains Improve.

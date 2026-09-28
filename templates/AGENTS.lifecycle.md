@@ -4,20 +4,20 @@
 
 - Use the `lifecycle` skill for module, feature, fix, and product-development work.
 
-- Development flow:
+- Development flow: **Idea → Prototype → Plan → Build → Finalize**.
 
-  - Define → Context → Shape → Plan → Build → Verify → Refine
+- Stop after every phase and every Build Step. Present the result and wait for explicit user approval before continuing.
 
 - Project knowledge:
 
-  - `docs/lifecycle/` — temporary active-cycle memory; commit it for shared continuity, or add `docs/lifecycle/` to `.gitignore` when working alone
-  - `docs/guidelines/` — project-specific engineering standards to load before Build and Verify
+  - `docs/lifecycle/` — compact active-cycle memory; commit it for shared continuity, or add it to `.gitignore` when working alone
+  - `docs/guidelines/` — project-specific engineering standards to load when relevant during Plan, Build, and Finalize
   - `docs/modules/` — permanent current product truth
-  - `docs/backlog/` — future product opportunities
+  - support/user docs — permanent user-facing truth
   - `CONTEXT.md` — project/domain language when available
-  - Project engineering guidelines remain authoritative during Build and Verify.
-  - Markdown formatting follows the Lifecycle framework rule: keep coherent points on one line and wrap only for separate points or genuine readability.
+  - Project engineering guidelines remain authoritative.
 
-- Human owns priority. Lifecycle owns process and backlog maintenance.
+- Keep lifecycle artifacts compact: one idea per line, short bullets, one fact per owner, and references instead of duplication.
+- The user owns priority and approval. Lifecycle owns process.
 
 <!-- lifecycle:end -->

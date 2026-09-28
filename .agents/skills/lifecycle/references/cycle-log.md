@@ -1,77 +1,57 @@
-# Cycle Log — Temporary Improvement Memory
+# Cycle Log — Temporary Process-Improvement Memory
 
-- Keep one Cycle Log per active development cycle/branch.
-- It is temporary memory for **development-system improvement opportunities**.
-- It is not product documentation.
+Keep one `cycle-log.md` inside each active lifecycle workspace.
 
-## What Belongs Here
+It captures development-system lessons that may deserve permanent improvement during Finalize.
+
+## Log
 
 - lifecycle/process friction;
-- Engineering Guideline gaps;
+- project guideline gaps;
+- repeated agent drift;
+- naming/placement/structure ambiguity;
+- repeated rework/manual correction;
+- missing deterministic checks;
 - tooling/automation opportunities;
-- code-quality/structural improvements;
-- recurring ambiguity/rework/manual correction;
-- agent drift;
-- missing or hard-to-find guidance;
-- hidden dependencies or poor slicing;
-- repeated duplication/reuse opportunities;
-- missing deterministic checks.
+- poor Build Step boundaries;
+- recurring code-quality/architecture friction.
 
-Do not store:
+Do not log:
 
 - product requirements;
 - feature decisions;
-- domain truth;
+- current module behaviour;
 - project status;
-- future product work.
+- future product ideas.
 
-Future module work belongs in the module document during Refine.
+Those belong to their owning artifacts/permanent sources.
 
-## Resolve Now vs Later
+## Format
 
-- If it blocks correctness, safety, or the current phase gate:
-  - fix it now;
-  - optionally log the lesson so Refine can prevent recurrence.
-- Otherwise:
-  - log it;
-  - continue current work.
-
-## Entry Format
-
-Use one concise line:
+Prefer one concise entry:
 
 `[Phase] Difficulty — Impact`
 
-Add one evidence line only when necessary.
+Add evidence only when it helps Finalize make a real improvement decision.
 
-For a rule gap, include the route and decision in the entry or its evidence line:
+## Sweep
 
-`[Build] Rule gap — misplaced files. Route: guideline + checker. Decision: apply now; no migration.`
+Before leaving each phase and before completing each Build Step, ask:
 
-Examples:
+> **Did this work create avoidable friction, ambiguity, rework, manual correction, or agent drift worth preventing next time?**
 
-- `[Build] Repository files placed incorrectly — developer manually corrected four files.`
-- `[Context] Permission rule was hard to locate — agent made an incorrect assumption.`
-- `[Plan] Backend dependency appeared during Build — slice required replanning.`
+If yes, log it. Otherwise add nothing.
 
-## Phase Sweep
+## Finalize
 
-Before leaving Define, Context, Shape, Plan, or Verify, and before closing each Build slice, ask:
+Finalize reviews the entire Cycle Log during **Improve**, before **Clean**.
 
-> **Did this work create avoidable friction, rework, ambiguity, manual correction, agent drift, or a repeated mistake worth preventing?**
+Each meaningful entry is:
 
-If yes, log one concise entry. Otherwise add nothing.
+- promoted to a project guideline/checker;
+- promoted to a lifecycle skill;
+- used for an approved code/process improvement;
+- intentionally deferred;
+- or intentionally dismissed.
 
-## Refine
-
-- Refine processes the complete Cycle Log.
-- Each meaningful lesson is:
-  - applied to the codebase;
-  - transferred to module docs;
-  - transferred to engineering/lifecycle guidance;
-  - deferred intentionally;
-  - or dismissed intentionally.
-- After transfer, the Cycle Log is no longer the source of truth.
-- When nothing valuable remains trapped in it, the workspace is safe to clean up.
-
-> **Capture during the cycle. Improve the system during Refine.**
+After permanent transfer, the Cycle Log is no longer the source of truth.
