@@ -76,6 +76,33 @@ Do not change process merely to fill this section.
 
 Consequential process changes require explicit user approval before applying.
 
+### Process Friction
+
+Review the Cycle Log for:
+
+- repeated problems;
+- environment limitations;
+- verification blockers;
+- missing conventions;
+- tooling friction;
+- agent mistakes.
+
+Do not dismiss an item only because it existed before the current change.
+
+Ask:
+
+> **Could this problem reasonably affect future work again?**
+
+If yes:
+
+- preserve it as reusable learning;
+- recommend its permanent home;
+- fix it only when appropriate and approved.
+
+If no:
+
+- make no permanent process change.
+
 ## 4. Clean
 
 After useful learning is preserved:

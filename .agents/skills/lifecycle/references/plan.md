@@ -113,6 +113,60 @@ A common later order is:
 
 Use project reality and dependencies to decide the actual order.
 
+## Build Step Reviewability
+
+Each Build Step should have one primary review question.
+
+Ask:
+
+> **What is the main thing the user needs to judge after this step?**
+
+If one step requires independent review of several responsibilities:
+
+- split the step;
+- keep tightly coupled files together when they represent one responsibility.
+
+Do not split mechanically by:
+
+- file;
+- layer;
+- frontend/backend boundary.
+
+Split by reviewable responsibility.
+
+## UI-first Deviation
+
+When meaningful UI exists but a separate UI-first step is not appropriate:
+
+- record one short reason in the Plan.
+
+Example:
+
+```md
+- **UI-first:** Not separated.
+  - Existing control depends directly on established application state.
+```
+
+Do not add this note when no meaningful UI exists.
+
+## Proof Changes During Build
+
+If planned proof becomes impossible or materially different:
+
+- stop before treating the affected Build Step as complete;
+- return to Plan;
+- update the Proof section;
+- record:
+  - unavailable proof;
+  - reason;
+  - substitute proof, if any;
+  - remaining gap.
+- present the updated Plan;
+- wait for explicit user approval;
+- then continue Build.
+
+Never silently replace planned proof with weaker evidence.
+
 ## Done When
 
 Every Build Step has an observable `Done When`.

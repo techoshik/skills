@@ -63,6 +63,8 @@ Improve:
 
 Only when a reusable lesson exists.
 
+Treat recurring environment and verification friction as reusable learning when it can affect future work again.
+
 Consequential process changes require explicit user approval before applying.
 
 ### Clean

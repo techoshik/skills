@@ -45,6 +45,27 @@ Example:
 
 Do not compress several ideas into one long sentence.
 
+## Compaction Pass
+
+Before presenting any lifecycle artifact for approval:
+
+- Read the complete artifact once.
+- Keep one idea per line.
+- Split bullets with multiple independent ideas.
+- Prefer:
+  - short parent point;
+  - short sub-bullets.
+- Remove repeated information.
+- Remove wording that does not help:
+  - understand;
+  - decide;
+  - act;
+  - verify;
+  - resume.
+- Keep necessary meaning.
+
+The final artifact should be easy to scan without reading paragraphs.
+
 ## Evidence
 
 Keep evidence beside the point it supports.

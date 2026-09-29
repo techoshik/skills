@@ -136,7 +136,25 @@ Before presenting the step:
 - no unapproved behaviour/architecture appeared;
 - app remains compilable/runnable when practical.
 
-### 6. Approval Gate
+### 6. Reviewability Check
+
+Before presenting a Build Step:
+
+- confirm it still has one primary review question;
+- if implementation expanded into multiple independent responsibilities:
+  - stop;
+  - return to Plan;
+  - split the remaining work appropriately.
+
+If planned proof cannot be executed:
+
+- return to Plan;
+- update the Proof strategy;
+- get explicit approval before continuing.
+
+Do not silently downgrade proof inside Build.
+
+### 7. Approval Gate
 
 Present the completed Build Step.
 

@@ -38,6 +38,7 @@ Use:
   - record real proof gaps.
 - **Plan**
   - create small reviewable Build Steps;
+  - give each step one primary review question;
   - give each step `Done When`.
 
 Do not create a separate Context artifact.

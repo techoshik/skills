@@ -55,6 +55,16 @@ When an upstream decision is wrong:
 - route it to Idea/Prototype/Plan;
 - do not improvise inside Build.
 
+When planned proof becomes impossible or materially different:
+
+- return to Plan;
+- update the Proof section;
+- record the remaining gap;
+- wait for explicit approval;
+- then resume Build.
+
+Do not silently downgrade proof.
+
 After each Build Step:
 
 - update `04-build.md`;

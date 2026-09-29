@@ -16,6 +16,22 @@ It captures development-system lessons that may deserve permanent improvement du
 - poor Build Step boundaries;
 - recurring code-quality/architecture friction.
 
+Also log reusable friction that may affect future work again:
+
+- required test environment unavailable;
+- emulator/device setup blocks verification;
+- project-wide checks blocked by existing errors;
+- unclear or missing convention;
+- repeated agent misunderstanding;
+- tooling/setup makes a normal lifecycle step difficult;
+- recurring manual verification work.
+
+The friction does not need to be caused by the current feature.
+
+A Cycle Log entry does not mean it must be fixed now.
+
+It means Finalize → Improve should review it.
+
 Do not log:
 
 - product requirements;
