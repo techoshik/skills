@@ -6,7 +6,7 @@ and #required-compactness-pass. Remove this comment before presentation. -->
 ## 1. <Build Step>
 
 - **Outcome:** <One narrow runnable behavior>
-- **Covers:** <Approved requirement links>
+- **Covers:** <Approved Expected Outcome and relevant requirement links>
 
 ### Specification
 

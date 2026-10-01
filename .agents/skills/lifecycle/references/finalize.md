@@ -6,7 +6,18 @@ Reconcile → Verify → Synchronize → Improve → Clean → Close.
 
 Read [Coverage and Completion](completeness.md), [Code Review](code-review.md), [Project Rules](guidelines.md), and [Cycle Log](cycle-log.md). The coordinator owns the assessment under models.md.
 
-Load full Idea success/scope, Prototype decisions/assets, Plan steps/checks, Build results/evidence, complete Cycle Log, full branch/worktree diff, and relevant permanent docs. This phase requires complete intent and change coverage, not only the current step.
+- **Full lifecycle input**
+  - Idea: Goal, What Will Change, Expected Outcomes, and scope decisions.
+  - Existing cycles: Key Results remain the earlier acceptance source.
+  - Prototype: decisions and assets.
+  - Plan: every step and check.
+  - Build: results and evidence.
+  - Cycle Log: all entries.
+- **Full project input**
+  - Complete branch/worktree diff.
+  - Relevant permanent documentation.
+
+This phase requires complete intent and change coverage, not only the current step.
 
 ## Reconcile
 
@@ -14,7 +25,12 @@ Apply Branch Reconciliation in completeness.md. Create a compact Change Inventor
 
 ## Verify
 
-Create one complete Verification Checklist in `05-finalize.md`, using success criteria, Prototype decisions, every Plan check, Build evidence, actual changes, and resulting regressions. The user must be able to exercise the whole development change from this file without reopening prior phase artifacts.
+- **Checklist:** Create one complete Verification Checklist in `05-finalize.md`.
+- **Sources**
+  - Approved Expected Outcomes and proposed changes.
+  - Prototype decisions and every Plan check.
+  - Build evidence, actual changes, and resulting regressions.
+- **Usability:** The user can exercise the whole development change from this file without reopening earlier artifacts.
 
 Each item identifies module/feature, actor/setup, action, expected outcome, proof method, actual result/status, and evidence. Group by area if useful. Cover applicable UI, access/revocation, cross-module flows, compatibility/migration, integrations/dependencies, and documentation. Use authorized isolated/staging data for destructive or stateful checks.
 

@@ -33,7 +33,7 @@ On resume, verify recorded approval against current artifacts. Changed decisions
 
 | Invalidated decision | Owner |
 | --- | --- |
-| Problem, goal, key results, Idea scope decision | Idea |
+| Problem, goal, proposed product changes, expected outcomes, Idea scope decision | Idea |
 | Behavior or experience discovered through prototyping | Prototype |
 | Technical specification, sequence, actions, verification plan | Plan |
 | Implementation or conformance | Build |
@@ -42,7 +42,7 @@ Update the owning artifact and regain affected approval. Record a fact once and 
 
 ## Phase boundaries
 
-- **Idea:** Need and observable success; implementation design belongs later.
+- **Idea:** Need, concrete product changes, and verifiable expected outcomes; implementation design belongs later.
 - **Prototype:** Resolve uncertainty with the cheapest concrete representation, or record `Not needed` with a reason.
 - **Plan:** Inspect the existing system and define small, immediately testable steps.
 - **Build:** Implement and verify one approved step.

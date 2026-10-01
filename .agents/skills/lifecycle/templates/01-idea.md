@@ -12,11 +12,24 @@ and #required-compactness-pass. Remove this comment before presentation. -->
 
 ## Goal
 
-- <Intended outcome>
+- **Goal:** <Affected users + capability to enable + essential scope boundary>
 
-## Key Results
+## What Will Change
 
-- <Observable success>
+- **<Capability>**
+  - <Add, modify, or remove this product behavior>
+  - <Difference from current behavior, when useful>
+
+## Expected Outcomes
+
+- **EO-01 — <Independently verifiable behavior>**
+  - **Actor / Context:** <Relevant user or system context>
+  - **Given:** <Relevant starting conditions>
+  - **When:** <Action or event>
+  - **Then:** <Observable result>
+
+<!-- Repeat for applicable permitted, denied, failure, and preservation outcomes.
+Keep setup commands and proof methods in Plan. Omit unnecessary fields. -->
 
 ## Decisions
 

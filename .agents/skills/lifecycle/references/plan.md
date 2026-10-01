@@ -4,7 +4,13 @@ Inspect the existing system and define the smallest safe sequence of reviewable 
 
 ## Required reading
 
-Read [Project Rules](guidelines.md) and [Coverage and Completion](completeness.md). Load approved Idea and approved Prototype (including `Not needed`), then relevant code, docs, config, tests, dependencies, and integrations.
+Read [Project Rules](guidelines.md) and [Coverage and Completion](completeness.md).
+
+- **Approved input**
+  - Idea: What Will Change, Expected Outcomes, and relevant decisions.
+  - Existing cycles: Key Results remain the earlier acceptance source.
+  - Prototype: approved decisions or approved Not needed verdict.
+- **Project context:** Relevant code, docs, config, tests, dependencies, and integrations.
 
 ## Research and design
 

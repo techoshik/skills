@@ -6,7 +6,19 @@ During Plan, inspect credible failures in access/revocation, data validity/parti
 
 ## Requirement coverage
 
-Before Plan presentation, map every approved success criterion/Idea/Prototype requirement and applicable safeguard to an owning step and Verify check. Use stable labels/links and a compact Covers line. Related requirements may share proof when it establishes each. Record approved exclusions/deferments and keep unresolved coverage visible. Confirm every capability meets [Small-Step Boundary](plan.md#small-step-boundary) and has immediate Test Now instructions.
+Before Plan presentation:
+
+- **Coverage**
+  - Map every approved Expected Outcome, proposed change, Prototype requirement, and applicable safeguard to an owning step and Verify check.
+  - Treat existing Key Results as the earlier acceptance source.
+  - Use stable labels/links and a compact Covers line.
+  - Share proof only when it establishes every related requirement.
+- **Scope**
+  - Record approved exclusions and deferments.
+  - Keep unresolved coverage visible.
+- **Immediate testing**
+  - Confirm each capability meets [Small-Step Boundary](plan.md#small-step-boundary).
+  - Include its Test Now instructions.
 
 ## Impact preflight
 
