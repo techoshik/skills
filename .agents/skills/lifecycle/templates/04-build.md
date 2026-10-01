@@ -1,40 +1,34 @@
-<!-- Apply ../references/artifacts.md and its required compactness pass; remove this comment from the finished document. -->
-
 # Build
 
 ## 1. <Build Step>
 
 ### Result
 
-- **<Behavior>:** <Actual implemented outcome>.
+- **<Behavior>:** <Actual implemented outcome>
 
 ### Verification
 
-- **Test Now:** <Link to this step's Plan Verify instructions>.
-- [ ] **Test Now result:** <Observed outcome or pending human check>.
-- [ ] **<Check>:** <Expected outcome>.
-  - **Result:** <Observed outcome or pending>.
-  - **Evidence:** <Test, output, or observation link when verified>.
-
-<!-- Example after verification:
-- [x] **Restart:** Saved token restored.
-  - **Result:** Passed.
-  - **Evidence:** Link to the passing restart test result.
--->
+- **Test Now:** <Link to current Plan step instructions>
+- [ ] **<Check>:** <Expected outcome>
+  - **Result:** <Observed outcome or pending>
+  - **Evidence:** <Actual test output or recorded observation>
 
 ### Code Review
 
-- **Scope:** <Reviewed changes>.
-- **Standards:** <Findings or no findings>.
-- **Specification:** <Findings or no findings>.
+- **Scope:** <Reviewed changes>
+- **Standards:** <Findings or no findings>
+- **Specification:** <Findings or no findings>
 
 ### Changes from Plan
 
-- … <!-- only when relevant -->
+- <Approved deviation and approval reference>
 
 ### Gaps
 
-- **Check:** <Requirement/check reference>.
-- **Reason:** <Why verification is blocked>.
-- **Risk:** <What remains uncertain>.
-- **Acceptance:** Pending / <Explicit user acceptance reference>.
+- **Check:** <Unmet requirement/check>
+- **Reason:** <Why unverified>
+- **Risk:** <Remaining uncertainty>
+- **Acceptance:** Pending / <Explicit gap acceptance reference>
+
+<!-- Repeat for completed steps only. Keep checks unchecked until observed;
+accepted gaps remain unchecked. Omit unused sections; remove instructions. -->

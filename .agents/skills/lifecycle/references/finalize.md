@@ -1,239 +1,45 @@
-# Phase 5 — Finalize
+# Finalize
 
-## Responsibility
+Reconcile → Verify → Synchronize → Improve → Clean → Close.
 
-Reconcile the approved lifecycle with the actual branch, verify the complete development change, synchronize permanent truth, preserve reusable learning, clean temporary work, and close development.
+## Required reading
 
-## Principle
+Read [Coverage and Completion](completeness.md), [Code Review](code-review.md), [Project Rules](guidelines.md), and [Cycle Log](cycle-log.md). The coordinator owns the assessment under models.md.
 
-> **Reconcile → Verify → Synchronize → Improve → Clean → Close**
+Load full Idea success/scope, Prototype decisions/assets, Plan steps/checks, Build results/evidence, complete Cycle Log, full branch/worktree diff, and relevant permanent docs. This phase requires complete intent and change coverage, not only the current step.
 
-## Boundary
+## Reconcile
 
-Follow the [development boundary](framework.md#development-boundary).
+Apply Branch Reconciliation in completeness.md. Create a compact Change Inventory: verified base, changed behaviors/areas, owning work, exclusions, and consequential unplanned changes. Resolve unplanned changes through their owning phase before closure; checklist inclusion does not approve them.
 
-## 1. Reconcile
+## Verify
 
-Start from:
+Create one complete Verification Checklist in `05-finalize.md`, using success criteria, Prototype decisions, every Plan check, Build evidence, actual changes, and resulting regressions. The user must be able to exercise the whole development change from this file without reopening prior phase artifacts.
 
-- Idea Goal + Key Results;
-- Prototype-owned decisions;
-- Plan Build Steps;
-- every step's Verify checks;
-- Build results;
-- complete branch diff against its base;
-- current working-tree changes, if any.
+Each item identifies module/feature, actor/setup, action, expected outcome, proof method, actual result/status, and evidence. Group by area if useful. Cover applicable UI, access/revocation, cross-module flows, compatibility/migration, integrations/dependencies, and documentation. Use authorized isolated/staging data for destructive or stateful checks.
 
-Apply [Branch Reconciliation](completeness.md#branch-reconciliation).
+Carry valid step proof forward. Rerun only invalidated proof/relevant regressions; add whole-change checks that step proof cannot establish. Build remains responsible for immediate capability testing. Include special Test Setup only when needed. Apply Evidence, Proof Limits, and Gap Acceptance; pending/accepted-gap checks remain unchecked.
 
-Create a compact `Change Inventory`.
+Keep development-time checks within the framework's Development Boundary; deployment/release/post-merge work is external, not a development proof gap. Use Diagnosis for unexplained failures and Return to the owner for defects. Complete full-change Code Review before closure.
 
-The inventory answers:
+## Synchronize
 
-> **What changed that may need verification?**
+After sufficient verification, update module, support/user, and other permanent sources to current verified behavior; remove obsolete claims. Accepted proof gaps must remain explicit where relevant.
 
-Prefer changed behaviours/areas.
+## Improve
 
-Do not dump raw filenames when they do not help verification.
+Review all reusable Cycle Log, implementation, environment, and verification friction. Promote through Rule Promotion, intentionally defer, or dismiss with a reason. Preserve only evidence-backed reusable learning; no improvement is required merely to fill this section.
 
-### Unplanned Changes
+### Architecture improvements
 
-Branch changes are evidence of scope.
+For observed ownership/navigation/caller-complexity/testability friction, inspect code, history, domain language, and prior decisions. Propose the smallest improvement with affected responsibility/files, evidence, change, compatibility/migration risk, and verification of benefit. Check whether removing an abstraction spreads complexity. Flag established-decision conflicts; consequential refactors require approval and an owning Plan. Broader work belongs to a separate lifecycle.
 
-They are not automatically approved requirements.
+## Clean
 
-If the actual branch contains a consequential change not represented by the approved lifecycle:
+Apply Safe Cleanup only after decisions and evidence are preserved. Remove owned temporary code/assets and obsolete leftovers. Retain the active workspace through Finalize review; its later archive/removal requires explicit confirmation.
 
-- flag it as unplanned;
-- do not legitimize it by silently adding it to the checklist;
-- route it to the owning phase;
-- resolve whether to approve, change, or remove it;
-- regain the required approval before closing Finalize.
+## Close
 
-## 2. Verify
+Ready for Finalize approval only when intent/diff are reconciled, consequential unplanned changes resolved, required checks passed or gaps explicitly accepted, permanent truth synchronized, useful learning disposed of, owned temporary work cleaned, and no consequential development issue remains.
 
-Create one complete `Verification Checklist` inside `05-finalize.md`.
-
-Do not create a separate verification file.
-
-Build the checklist from:
-
-- Idea success criteria;
-- Prototype decisions that affect behaviour;
-- Plan step Verify checks;
-- Build verification/evidence;
-- Change Inventory;
-- relevant regression risk created by the branch.
-
-### Checklist Rules
-
-- One check per line.
-- Make the action and expected result clear.
-- Organize by area when the list is long.
-- Carry already-proven checks forward with their evidence references.
-
-Finalize is not the first verification of individual capabilities.
-
-Rerun step checks only when later changes invalidate their proof or a relevant regression remains.
-
-Add whole-change checks where individual step evidence cannot prove the combined behavior.
-- Apply the [evidence rules](artifacts.md#evidence) before marking `[x]`.
-- Keep pending development checks as `[ ]`.
-- Add newly discovered checks from actual branch changes.
-- Do not add deployment/release/post-merge checks.
-
-The user should be able to verify the whole development change from this one file without reopening every earlier lifecycle artifact.
-
-### Test Setup
-
-Add `Test Setup` only when verification requires special:
-
-- users/roles;
-- data;
-- accounts;
-- configuration;
-- environment preparation.
-
-Omit it when unnecessary.
-
-### Gaps
-
-Record only development-time verification that could not be completed.
-
-Apply [Gap Acceptance](completeness.md#gap-acceptance).
-
-Do not hide a gap.
-
-Do not describe post-development deployment/release work as a verification gap.
-
-Use [Diagnosis](diagnosis.md) when the cause of a verification failure is unclear.
-
-### Failure Routing
-
-If verification reveals:
-
-- implementation defect → Build;
-- technical/step/verification-plan defect → Plan;
-- behaviour/experience defect → Prototype;
-- problem/goal/success defect → Idea.
-
-Update the owning artifact.
-
-Regain approval when required.
-
-Complete [Lifecycle Code Review](code-review.md) for the reconciled change before closing development.
-
-## 3. Synchronize
-
-After intended behaviour is sufficiently verified:
-
-- update module docs;
-- update support/user docs;
-- update other permanent sources when needed;
-- remove statements that are no longer true.
-
-Permanent docs describe current verified behaviour.
-
-They do not describe intended-but-unverified behaviour.
-
-## 4. Improve
-
-Review:
-
-- Cycle Log;
-- Build friction;
-- environment limitations;
-- verification blockers;
-- missing/unclear conventions;
-- repeated agent mistakes;
-- lifecycle friction.
-
-Apply the [Cycle Log feedback loop](cycle-log.md#feedback-loop).
-
-Promote only reusable learning.
-
-Possible destinations:
-
-- project guideline/checker;
-- lifecycle skill;
-- architecture/process guidance.
-
-Do not change process merely to fill this section.
-
-Consequential process changes require explicit user approval before applying.
-
-Ask:
-
-> **Could this problem reasonably affect future work again?**
-
-If yes:
-
-- preserve it as reusable learning;
-- recommend its permanent home;
-- fix it only when appropriate and approved.
-
-If no:
-
-- make no permanent process change.
-
-### Architecture Improvements
-
-For evidence-backed architecture friction:
-
-- Start with the affected responsibility and observed failure.
-- Inspect nearby code and relevant change history.
-- Read existing domain terms and architecture decisions.
-- Check whether understanding one responsibility requires excessive navigation.
-- Check whether callers must understand unnecessary internal details.
-- Check whether the real failure is difficult to exercise through a supported interface.
-- Prefer the smallest change that improves ownership, clarity, or testability.
-- Ask whether removing an abstraction eliminates complexity or merely spreads it across callers.
-
-A proposal must identify:
-
-- affected files and responsibility;
-- observed friction;
-- proposed change;
-- compatibility and migration risk;
-- verification that demonstrates the benefit.
-
-Flag conflicts with established decisions explicitly.
-
-Generic design preferences do not override project standards.
-
-Consequential refactors require approval and an owning Plan before implementation.
-
-Defer broader work to a separate lifecycle when it exceeds the approved change.
-
-## 5. Clean
-
-Complete [Safe Cleanup](completeness.md#safe-cleanup).
-
-After useful learning is preserved:
-
-- remove prototype/debug/temporary code;
-- remove obsolete TODOs;
-- remove experiments;
-- remove accidental leftovers;
-- retain evidence only when it has durable value.
-
-## 6. Close
-
-Confirm:
-
-- lifecycle intent and branch changes are reconciled;
-- consequential unplanned changes are resolved;
-- required development checks are completed or explicitly accepted as gaps;
-- permanent docs match verified reality;
-- approved process learning is preserved;
-- temporary work is cleaned;
-- no consequential development issue remains.
-
-Set:
-
-- `Complete` when development can close;
-- `Blocked` when unresolved development work remains.
-
-Present Finalize result.
-
-Wait for explicit user approval before closing the lifecycle.
+Record readiness or blockers in `05-finalize.md`; update index to Awaiting Approval when ready, Blocked otherwise. Present Finalize through the phase handoff. Mark the lifecycle Complete only after explicit Finalize approval.

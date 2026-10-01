@@ -1,54 +1,54 @@
-<!-- Apply ../references/artifacts.md and its required compactness pass; remove this comment from the finished document. -->
-
 # Finalize
 
 ## Change Inventory
 
-- **Base:** <Verified comparison base>.
-- **<Area>:** <Change and owning work reference>.
+- **Base:** <Verified comparison base>
+- **<Area>:** <Actual change and approved owner>
+- **Exclusions:** <Unrelated work and reason, if applicable>
 
 ## Test Setup
 
-- … <!-- only when needed -->
+- <Special shared roles/fixtures/environment, only when needed>
 
 ## Verification Checklist
 
-- [ ] **<Area / check>:** <Expected outcome>.
-  - **Result:** <Observed outcome or pending>.
-  - **Evidence:** <Test, output, or observation link when verified>.
-
-<!-- Example after verification:
-- [x] **Viewer / Save:** Save disabled.
-  - **Result:** Passed for the viewer account.
-  - **Evidence:** Link to the recorded viewer check.
--->
+- [ ] **<Module / feature>:** <Action → expected result>
+  - **Setup:** <Actor, permissions, fixtures; link shared setup when applicable>
+  - **Proof:** <Method, exact entry point/command>
+  - **Result:** <Observed outcome/status or pending>
+  - **Evidence:** <Actual output or recorded observation>
 
 ## Code Review
 
-- **Scope:** <Reviewed changes>.
-- **Standards:** <Findings or no findings>.
-- **Specification:** <Findings or no findings>.
+- **Scope:** <Full reconciled development change>
+- **Standards:** <Findings or no findings>
+- **Specification:** <Findings or no findings>
 
 ## Gaps
 
-- **Check:** <Requirement/check reference>.
-- **Reason:** <Why verification is blocked>.
-- **Risk:** <What remains uncertain>.
-- **Acceptance:** Pending / <Explicit user acceptance reference>.
+- **Check:** <Unmet requirement/check>
+- **Reason:** <Why unverified>
+- **Risk:** <Remaining uncertainty>
+- **Acceptance:** Pending / <Explicit gap acceptance reference>
 
 ## Synchronize
 
-- …
+- <Permanent source and actual update>
 
 ## Improve
 
-- … <!-- only when reusable learning exists -->
+- <Reusable learning, approved action/deferment/dismissal, evidence>
 
 ## Clean
 
-- **Preserved:** <Permanent decisions and retained evidence>.
-- **Removed:** <Owned temporary artifacts>.
+- **Preserved:** <Permanent decisions and accessible evidence>
+- **Removed:** <Owned temporary artifacts>
 
 ## Close
 
-- **Status:** Complete / Blocked
+- **Readiness:** Ready for approval / Blocked
+- **Reason:** <Remaining blocker, only if present>
+
+<!-- Checklist covers complete approved intent AND actual branch/worktree changes.
+Keep pending/accepted-gap checks unchecked. Remove empty sections/instructions.
+Mark the lifecycle Complete only after explicit Finalize approval. -->

@@ -1,29 +1,29 @@
-<!-- Apply ../references/artifacts.md and its required compactness pass; remove this comment from the finished document. -->
-
 # Idea
 
 ## Problem / Opportunity
 
-- **User:** …
-- **Problem:** …
-- **Impact:** …
-- **Evidence:** <Observed need or explicit assumption>.
+- **User:** <Affected actor>
+- **Problem:** <Current difficulty>
+- **Impact:** <Why it matters>
+- **Evidence:** <Observation or explicit assumption>
 
 ## Goal
 
-- …
+- <Intended outcome>
 
 ## Key Results
 
-- …
+- <Observable success>
 
 ## Decisions
 
-- **<Scope decision>:** <Decision>.
-  - **Why:** <Need or safeguard it serves>.
+- **<Scope decision>:** <Decision>
+  - **Why:** <Need or safeguard>
 
 ## Open Questions
 
-- **Question:** …
-  - **Depends on:** … <!-- only when a prerequisite remains unresolved -->
-- **Not yet specified:** … <!-- only for in-scope uncertainty not yet precise -->
+- **Question:** <Consequential decision>
+  - **Depends on:** <Unresolved prerequisite, if present>
+
+<!-- Omit empty sections; use Not yet specified only for in-scope uncertainty
+that cannot yet be phrased. Remove instructions before presentation. -->

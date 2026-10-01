@@ -1,53 +1,27 @@
-<!-- Apply ../references/artifacts.md and its required compactness pass; remove this comment from the finished document. -->
-
 # Plan
 
 ## 1. <Build Step>
 
-<!-- Default: one capability. For an approved UI Preview or Prerequisite exception,
-add Type, Reason, Testable Now, Unavailable, and Enables fields; remove this comment. -->
-
-- **Outcome:** <One narrow runnable behavior>.
-- **Covers:** <Links to approved requirements>.
+- **Outcome:** <One narrow runnable behavior>
+- **Covers:** <Approved requirement links>
 
 ### Specification
 
-- **<Requirement>:** <Short value>.
+- **<Requirement>:** <Technical truth>
 
 ### Build
 
-- …
+- <Concrete implementation action>
 
 ### Verify
 
-- **Setup:** <Actor, fixtures, environment>.
-- **Open / Run:** <Entry point or command>.
-- **Action:** <Reviewer action>.
-- **Expected:** <Observable outcome>.
-- [ ] **Test Now:** <Run the above path and confirm the expected outcome>.
-- [ ] **<Requirement reference>:** <Check and expected outcome>.
+- **Setup:** <Actor, permissions, fixtures, environment>
+- **Open / Run:** <Exact entry point or command>
+- **Action:** <Reviewer action>
+- **Expected:** <Observable outcome>
+- [ ] **Test Now:** <Exercise the path above>
+- [ ] **<Requirement>:** <Automated/boundary/failure check and expected result>
 
-## 2. <Build Step>
-
-<!-- Default: one capability. For an approved UI Preview or Prerequisite exception,
-add Type, Reason, Testable Now, Unavailable, and Enables fields; remove this comment. -->
-
-- **Outcome:** <One narrow runnable behavior>.
-- **Covers:** <Links to approved requirements>.
-
-### Specification
-
-- **<Requirement>:** <Short value>.
-
-### Build
-
-- …
-
-### Verify
-
-- **Setup:** <Actor, fixtures, environment>.
-- **Open / Run:** <Entry point or command>.
-- **Action:** <Reviewer action>.
-- **Expected:** <Observable outcome>.
-- [ ] **Test Now:** <Run the above path and confirm the expected outcome>.
-- [ ] **<Requirement reference>:** <Check and expected outcome>.
+<!-- Repeat the step structure as needed. For UI Preview/Prerequisite exceptions,
+include Type, Reason, Testable Now, Unavailable, and Enables.
+Read ../references/plan.md; remove these instructions before presentation. -->

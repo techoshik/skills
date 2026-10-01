@@ -1,153 +1,66 @@
-# Lifecycle Framework
+# Lifecycle contract
 
-## Governing Principle
-
-> **Build the minimum necessary thing that creates meaningful value — correctly, visibly, and in conformance with the project.**
-
-## Lifecycle
-
-1. **Idea** — What do we want and why?
-2. **Prototype** — What uncertainty needs something concrete?
-3. **Plan** — What are the reviewable steps, and for each step what must be true, what will we build, and how will we verify it?
-4. **Build** — Can we implement and verify this Build Step correctly and in conformance?
-5. **Finalize** — Does the actual branch match the approved lifecycle, and is development complete?
-
-Follow [Model Coordination](models.md) for main-chat selection and delegated execution.
+Build the minimum complete change that creates meaningful value and conforms to the project.
 
 ## Authority
 
-- **Process:** Lifecycle framework and phase references.
-- **Active decisions:** Approved phase artifacts.
-- **Product truth:** `docs/modules/`.
-- **Engineering standards:** Project guidelines.
-- **User instructions:** Support/user docs.
+- User instructions and explicit overrides govern scope and authorization.
+- This file owns phase boundaries, approval, and decision ownership.
+- Phase references own execution; approved artifacts own active decisions.
+- Project guidelines own engineering standards; module docs own current product truth.
+- Support/user docs own user-facing instructions. Inspect source conflicts before asking for a consequential decision.
 
-Resolve source conflicts with the owning phase.
+## Approval gate
 
-Ask the user when a consequential decision remains.
+Stop after every phase and completed Build Step. Present the reviewable result using [Approval Presentation](artifacts.md#approval-presentation), then wait for explicit approval. Silence is not approval.
 
-## Approval Gate
+### Build gate
 
-Always stop at:
+- Plan approval authorizes Step 1; completed Step N approval authorizes Step N+1.
+- Finish implementation, verification, review, and recording for the current step before requesting approval.
+- Start the authorized step directly; no additional pre-step approval is needed.
+- Keep future steps untouched while awaiting approval.
+- After all steps are approved, present Build completion and obtain approval before Finalize.
+- Requested corrections stay in the current phase/step until presented again.
 
-- the end of every phase;
-- the end of every **completed** Build Step.
+## Approval state
 
-Then:
+`00-lifecycle.md` records Last Approved, Approval Evidence (message reference or dated quotation), and Next Authorized Action. Set the next action to `None` while awaiting approval.
 
-- present the result using [Approval Presentation](artifacts.md#approval-presentation);
-- wait for explicit user approval;
-- continue only after approval.
+On resume, verify recorded approval against current artifacts. Changed decisions make affected approval stale; regain approval before affected work continues. Inspect history before asking about missing approval.
 
-Silence is not approval.
+## Return to the owner
 
-### Build Gate
+| Invalidated decision | Owner |
+| --- | --- |
+| Problem, goal, key results, Idea scope decision | Idea |
+| Behavior or experience discovered through prototyping | Prototype |
+| Technical specification, sequence, actions, verification plan | Plan |
+| Implementation or conformance | Build |
 
-Plan approval authorizes Build Step 1.
+Update the owning artifact and regain affected approval. Record a fact once and link its owner. Consequential product, architecture, scope, or verification choices require a decision before implementation; inspected local choices and mechanical consequences use agent judgment.
 
-Do not ask for a second approval before starting it.
+## Phase boundaries
 
-Approval of completed Step N authorizes Step N+1.
+- **Idea:** Need and observable success; implementation design belongs later.
+- **Prototype:** Resolve uncertainty with the cheapest concrete representation, or record `Not needed` with a reason.
+- **Plan:** Inspect the existing system and define small, immediately testable steps.
+- **Build:** Implement and verify one approved step.
+- **Finalize:** Reconcile the entire development change and prepare closure.
 
-Implement, verify, review, and record only the current step before presenting it.
+Small changes may resolve phases quickly. Create only work that serves the phase responsibility.
 
-Do not batch future steps while waiting for approval.
+## Development boundary
 
-Do not ask for a separate pre-step approval.
+Lifecycle ends after Finalize approval. Include available development verification and authorized development-time staging checks. Deployment, release, merge/post-merge checks, and external handoff reviews are outside this lifecycle. Lifecycle approval grants no production access or deployment permission.
 
-Stop during execution only when a consequential choice, conflict, or upstream change requires approval.
+## Phase handoff
 
-If changes are requested:
+Before leaving a phase or presenting a Build Step:
 
-- stay in the current phase or Build Step;
-- update the work;
-- present it again.
+1. Capture settled decisions/results in its artifact; remove superseded points.
+2. Sweep for reusable friction using [Cycle Log](cycle-log.md).
+3. Update the index and approval state.
+4. Apply [artifact writing](artifacts.md) and present the result.
 
-## Approval State
-
-Record approval state in `00-lifecycle.md`:
-
-- **Last Approved:** Exact phase or Build Step; `None` initially.
-- **Approval Evidence:** User message reference or concise dated quotation.
-- **Next Authorized Action:** Action permitted by that approval; `None` while awaiting approval.
-
-On resume, confirm the recorded approval still applies to the current artifacts.
-
-If decisions changed after approval, mark affected approval stale.
-
-Obtain renewed approval before continuing affected work.
-
-When approval cannot be established, inspect available history first.
-
-Ask the user only if it remains unresolved.
-
-## Completion Checks
-
-Apply [coverage and completion checks](completeness.md) at their specified phases.
-
-## Phase Rules
-
-### Phases are responsibilities
-
-- A tiny issue may pass through a phase quickly.
-- Prototype may be `Not needed`.
-- Never invent work to fill a phase.
-
-### Return to the owner
-
-If later reality invalidates earlier work:
-
-- Problem / Goal / Key Results → Idea.
-- Behaviour / experience → Prototype.
-- Build Step Specification / Build actions / Verify plan / build sequence → Plan.
-- Implementation / conformance → Build.
-
-Update the owning artifact.
-
-Do not hide the change in a later phase.
-
-### One fact, one owner
-
-Reference the owning source.
-
-Do not duplicate durable truth.
-
-## Additions and Minimum Scope
-
-Use the [Why Loop](questioning.md#why-loop) before proposing consequential additions.
-
-Apply [Minimum Complete Solution](completeness.md#minimum-complete-solution) when defining implementation scope.
-
-Keep the existing phase and Build Step approval gates.
-
-## Working Depth vs Artifact Depth
-
-> **Think deeply. Record minimally.**
-
-Investigation may include:
-
-- many questions;
-- repository inspection;
-- alternatives;
-- prototypes;
-- experiments;
-- tests.
-
-Artifacts keep only:
-
-- finalized decisions;
-- meaningful risks;
-- consequential open questions;
-- verification needed to trust the work;
-- information needed to resume or continue.
-
-For document writing and the required pre-presentation pass, follow [artifacts.md](artifacts.md).
-
-## Development Boundary
-
-The lifecycle ends when development is finalized and approved.
-
-- Include verification available while development remains under lifecycle control.
-- Development-time staging checks may be included when authorized.
-- Deployment, release, merge/post-merge checks, and external handoff reviews remain outside this lifecycle.
-- Lifecycle approval does not authorize production access or deployment.
+Keep durable state in files so a later chat can resume without rereading the conversation.

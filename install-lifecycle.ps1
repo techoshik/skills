@@ -84,12 +84,33 @@ if (-not (Test-Path -LiteralPath $BlockFile -PathType Leaf)) {
     throw "Missing managed AGENTS.md block: $BlockFile"
 }
 
+# Validate managed markers before changing any target project.
+function Test-AgentsMarkers {
+    param([string]$AgentsFile)
+    if (-not (Test-Path -LiteralPath $AgentsFile -PathType Leaf)) { return }
+    $State = 0
+    $Seen = $false
+    foreach ($Line in [System.IO.File]::ReadAllLines($AgentsFile)) {
+        if ($Line.Contains('<!-- lifecycle:start -->')) {
+            if ($State -ne 0 -or $Seen) { throw "Malformed Lifecycle markers: $AgentsFile" }
+            $State = 1
+            $Seen = $true
+        } elseif ($Line.Contains('<!-- lifecycle:end -->')) {
+            if ($State -ne 1) { throw "Malformed Lifecycle markers: $AgentsFile" }
+            $State = 2
+        }
+    }
+    if ($State -eq 1) { throw "Incomplete Lifecycle markers: $AgentsFile" }
+}
+
 function Install-Project {
     param([string]$Path)
 
     $ProjectRoot = (Resolve-Path -LiteralPath $Path).Path
     $TargetSkills = Join-Path $ProjectRoot '.agents/skills'
     $AgentsFile = Join-Path $ProjectRoot 'AGENTS.md'
+
+    Test-AgentsMarkers -AgentsFile $AgentsFile
 
     New-Item -ItemType Directory -Force -Path `
         $TargetSkills, `
@@ -111,7 +132,7 @@ function Install-Project {
     if (-not $SameSkillsDirectory) {
         # Replace installed Lifecycle skills so removed source files cannot linger.
         Get-ChildItem -LiteralPath $TargetSkills -Directory -Force |
-            Where-Object { $_.Name -like 'lifecycle*' } |
+            Where-Object { $_.Name -like 'lifecycle*' -and (Test-Path (Join-Path $_.FullName 'SKILL.md')) } |
             Remove-Item -Recurse -Force
     }
 
@@ -155,6 +176,10 @@ function Install-Project {
     Write-Output "Installed $Installed Lifecycle skill(s) into $TargetSkills"
     Write-Output 'Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist'
     Write-Output "Updated the managed Lifecycle section in $AgentsFile"
+}
+
+foreach ($Path in $ProjectPaths) {
+    Test-AgentsMarkers -AgentsFile (Join-Path $Path 'AGENTS.md')
 }
 
 foreach ($Path in $ProjectPaths) {

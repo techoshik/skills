@@ -1,24 +1,22 @@
-<!-- Apply ../references/artifacts.md and its required compactness pass; remove this comment from the finished document. -->
-
-# Module Name
+# <Module name>
 
 ## Goal
 
-- …
+- <Responsibility>
 
 ## Rules
 
-- …
+- <Current verified invariant>
 
 ## Features
 
-### Feature Name — Responsibility
+### <Feature> — <Responsibility>
 
-- Capability.
-- Capability.
+- <Current verified capability>
 
 ## Future Work
 
-- **Opportunity**
-  - Why it matters.
-  - Status: Future / Deferred.
+- **<Opportunity>:** <Why it matters; Future / Deferred>
+
+<!-- Use existing project conventions. Link owning standards and user docs;
+omit empty sections and cycle history. Remove these instructions. -->

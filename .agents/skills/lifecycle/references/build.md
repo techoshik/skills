@@ -1,307 +1,41 @@
-# Phase 4 — Build
+# Build
 
-## Responsibility
+Implement, verify, review, and record only the current authorized step.
 
-Execute the approved Plan one small, reviewable Build Step at a time.
+## Required reading
 
-For each step:
+Read [Project Rules](guidelines.md), [Coverage and Completion](completeness.md), and [Code Review](code-review.md). Load index approval state, the approved current Plan step, relevant upstream decisions, affected module docs, applicable rules, and nearby implementations. Use [Model Coordination](models.md) for implementation and independent review.
 
-> **Build → Verify → Record → Approve**
+## Preflight
 
-## Approval Rule
+Before edits, apply Impact Preflight in completeness.md. Establish the step's Specification, actions, checks, Test Now path, governing rules, existing implementation pattern, and affected files/callers. Resolve consequential missing/conflicting conventions, architecture choices, extra requirements, or plan conflicts through their owner before coding. Mechanical imports, wiring, and required call-site updates need no separate decision.
 
-Follow the [approval gate](framework.md#approval-gate).
+## TDD — hard rule for testable behaviour
 
-Before presenting a completed step, update `04-build.md`.
+Work one behavior through RED → GREEN → REFACTOR before starting the next:
 
-## Principles
+1. Write and run the smallest useful failing test; confirm it fails for the intended reason.
+2. Implement the minimum behavior; run and confirm GREEN.
+3. Refactor within approved responsibility while keeping tests green.
 
-> **Follow the plan. Follow the project. Never silently invent.**
+Test through the relevant supported interface with independent expected outcomes and a plausible regression to catch. Follow project fixtures/mocks/placement/naming. Prefer real behavior at the tested interface; use approved substitutes at isolation boundaries. Mocked integration cannot prove the real service/permission boundary. Avoid implementation-mirroring tests, decorative-only tests, and wrappers/injection added solely for generic preferences.
 
-> **Deliver one small, immediately testable capability at a time.**
+## Deliver and verify
 
-> **Test first when behaviour is testable.**
+- Complete current Specification/actions with established patterns; preserve unrelated work and future steps.
+- Run every available planned check and the Test Now path; record actual results under Evidence and Proof Limits.
+- Keep human checks pending until observed or explicitly accepted as gaps. Give exact interaction instructions when human action is needed.
+- If later work is needed to run this capability, return to Plan; honor only explicitly approved preview/prerequisite exceptions.
+- If verification changes materially, follow [Verification Changes](plan.md#verification-changes-during-build).
+- For unresolved defects/performance failures, read [Diagnosis](diagnosis.md).
+- Complete Code Review, fix in-scope defects, and rerun affected checks. Confirm compilation/runnability when practical.
 
-> **The agent may suggest beyond the Plan, but must not implement beyond the Plan without approval.**
+## Record and present
 
-## Preflight — Before Every Build Step
+Update `04-build.md` with actual Result, Verification/evidence, separate Standards and Specification review outcomes, and relevant approved deviations/gaps. Link Plan/Test Now rather than copying planned work. Apply Gap Acceptance before claiming the step complete; implementation defects remain work to fix.
 
-Complete [Impact Preflight](completeness.md#impact-preflight).
+Finish the [phase handoff](framework.md#phase-handoff) for the current step and follow the Build gate. If implementation reveals several independent responsibilities, return to Plan and split remaining work.
 
-Before writing code, answer:
+## Complete when
 
-1. What Build Step am I executing?
-2. What does its Specification require?
-3. What Build actions are approved?
-4. What Verify checks are planned?
-5. Which project rules apply?
-6. Which established implementation am I following?
-7. What files/classes/components should change?
-8. Is there a consequential choice I would have to guess?
-
-If #8 is yes:
-
-> **Stop and ask before coding.**
-
-### Hard Gates
-
-- Missing consequential rule → ask.
-- Consequential rule conflict → ask.
-- Missing convention with consequential impact → ask.
-- Ordinary local choice → use inspected patterns and implementation judgment.
-- New architectural decision → ask.
-- Extra requirement → suggest and ask.
-- Unrelated improvement → suggest; do not implement.
-- Plan conflicts with project reality → stop and surface it.
-
-Do not invent project-wide conventions.
-
-## Build Unit
-
-A Build Step delivers one narrow behavior under [Small-Step Boundary](plan.md#small-step-boundary).
-
-It may contain several tightly related files.
-
-It must remain reviewable as one unit.
-
-Do not build the whole feature in one giant step.
-
-## Immediately Testable Delivery
-
-Follow the approved [Vertical Build Step](plan.md#vertical-build-steps).
-
-Run the step's Test Now path before presenting its outcome.
-
-Record actual results and evidence beside that step.
-
-When human interaction is needed, present the exact Test Now instructions.
-
-Keep the human check pending until observed or explicitly accepted as a gap.
-
-Do not implement a later step to make the current capability testable.
-
-If the step depends on unfinished future work, return to Plan.
-
-Honor explicit preview and prerequisite exceptions without claiming connected feature proof.
-
-## TDD — Hard Rule for Testable Behaviour
-
-Use:
-
-> **RED → GREEN → REFACTOR**
-
-For each testable behaviour:
-
-1. Write the failing test.
-2. Run it.
-3. Confirm RED.
-4. Write the minimum implementation.
-5. Run it.
-6. Confirm GREEN.
-7. Refactor.
-8. Keep tests green.
-
-Typical mapping:
-
-- pure logic → unit test;
-- use cases/repositories/controllers → unit tests;
-- state transitions → state/controller tests;
-- UI behaviour → widget/component tests;
-- complete journeys → integration tests when justified.
-
-Tests must:
-
-- Observe behavior through the relevant supported interface.
-- Use expected outcomes independent of the implementation.
-- Catch a plausible behavioral regression.
-- Follow project fixture, mock, placement, and naming rules.
-
-Work one behavior through RED and GREEN before starting the next.
-
-Avoid tests that merely mirror implementation structure.
-
-Use project-approved mocks or local substitutes at boundaries that need isolation.
-
-Prefer real behavior at the interface under test.
-
-A mocked integration does not prove the real service or permission boundary.
-
-Avoid adding dependency injection or wrappers solely to follow a generic preference.
-
-Do not force meaningless tests for purely decorative details.
-
-If test placement/naming/mock conventions are unclear:
-
-- inspect existing examples;
-- if still consequentially unclear, ask.
-
-## Build Process
-
-### 1. Prepare
-
-- Read the current Plan step.
-- Read:
-  - Specification;
-  - Build;
-  - Verify.
-- Read applicable rules.
-- Inspect nearby patterns.
-- Complete Preflight.
-
-### 2. Test First
-
-For testable behaviour:
-
-- create the smallest useful failing test;
-- confirm RED.
-
-### 3. Implement
-
-- Execute only the current step's Build actions.
-- Follow its Specification.
-- Follow project conventions.
-- Reuse established patterns.
-- Do not implement future steps early.
-- Do not add unrelated refactors.
-
-### 4. Refactor
-
-- Improve only within the approved responsibility.
-- Keep tests green.
-- Do not broaden scope.
-
-### 5. Verify
-
-Run every planned Verify check that can be completed now.
-
-Apply [Proof Limits](completeness.md#proof-limits) and [Gap Acceptance](completeness.md#gap-acceptance).
-
-Record results using [Evidence](artifacts.md#evidence):
-
-- passed checks;
-- pending human checks;
-- blocked checks and their reason.
-
-If the planned verification itself must materially change:
-
-- return to Plan;
-- update the owning `Verify` section;
-- get explicit approval;
-- then resume Build.
-
-Do not silently downgrade verification.
-
-### 6. Conformance Check
-
-Complete [Lifecycle Code Review](code-review.md).
-
-Before presenting the step:
-
-- planned implementation is complete;
-- applicable Verify checks pass or remain visibly pending;
-- completion requires explicit acceptance of any required verification gap;
-- project conventions are followed;
-- no unrelated code changed;
-- no unapproved behaviour/architecture appeared;
-- app remains compilable/runnable when practical.
-
-If implementation expanded into multiple independent responsibilities:
-
-- stop;
-- return to Plan;
-- split the remaining work appropriately.
-
-### 7. Record
-
-Update `04-build.md`.
-
-Record only actual outcome:
-
-- Result;
-- Verification;
-- Code Review scope and outcome;
-- Changes from Plan, only when relevant;
-- Gaps, only when relevant.
-
-Do not copy the Plan into Build.
-
-### 8. Approval Gate
-
-Finish implementation, Test Now verification, review, and recording for the current step only.
-
-Keep pending checks visible under the gap acceptance rules.
-
-Present the completed Build Step.
-
-Wait for explicit user approval.
-
-Do not start the next Build Step before approval.
-
-After approval:
-
-- start the next planned step directly;
-- do not ask for another pre-step approval.
-
-## Diagnosis
-
-For unresolved bugs or performance regressions, use [Diagnosis](diagnosis.md).
-
-## Discoveries
-
-When implementation exposes a consequential unknown:
-
-1. state the discovery;
-2. explain why it matters;
-3. recommend options when useful;
-4. wait for approval before implementing the choice.
-
-Route invalidated decisions back to:
-
-- Idea;
-- Prototype;
-- Plan.
-
-## Mechanical Consequences
-
-Do not interrupt for deterministic consequences such as:
-
-- required imports;
-- compiler-required wiring;
-- obvious call-site updates;
-- boilerplate governed by a clear project convention.
-
-The gate is for consequential choices.
-
-## Build Artifact Purpose
-
-`04-build.md` answers:
-
-> **What actually happened in each completed Build Step, and what was verified?**
-
-It is not another Plan.
-
-Do not add planned work before it has been built.
-
-## Build vs Finalize
-
-Build asks:
-
-> **Is this Build Step implemented, verified, and conforming?**
-
-Finalize asks:
-
-> **Does the complete branch match the approved lifecycle, and is development complete?**
-
-## Complete When
-
-- Every Build Step is approved.
-- Every Build Step satisfies its Specification.
-- Planned Build actions are complete.
-- Verify checks pass or have explicitly accepted verification gaps.
-- Testable behaviour used TDD.
-- Project conventions are followed.
-- No consequential unapproved decision remains.
-
-Present Build completion.
-
-Wait for explicit user approval before Finalize.
+Every step is implemented, conforming, verified (or has explicitly accepted proof gaps), and approved; testable behavior used TDD; no consequential unapproved choice remains. Present Build completion and obtain approval before Finalize.

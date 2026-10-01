@@ -1,137 +1,44 @@
 # Development Lifecycle Skills
 
-This repository contains reusable Lifecycle skills and installers. They make projects Lifecycle-ready without overwriting product knowledge.
+A portable development system: **Idea → Prototype → Plan → Build → Finalize**.
 
-Five phases:
+| Phase | Responsibility |
+| --- | --- |
+| Idea | Need, minimum scope, observable success |
+| Prototype | Concrete evidence for uncertainty, or justified Not needed |
+| Plan | Small runnable steps with Specification, Build, Verify |
+| Build | One authorized step, immediate testing, review, actual evidence |
+| Finalize | Full-branch reconciliation, verification, permanent truth, closure |
 
-> **Idea → Prototype → Plan → Build → Finalize**
+Explicit approval is required after each phase and completed Build Step. [Framework](.agents/skills/lifecycle/references/framework.md) owns the exact approval/ownership contract; [Model Coordination](.agents/skills/lifecycle/references/models.md) owns Sol/Luna roles and unavailable-capability handling.
 
-## Responsibilities
+## Reading without waste
 
-- **Idea** — understand what we want and define observable success.
-- **Prototype** — make uncertainty concrete when discussion is insufficient.
-- **Plan** — define one narrow runnable behavior per step, with exact Test Now instructions.
-- **Build** — implement, test, review, and record one approved step; wait for approval before the next.
-- **Finalize** — verify, synchronize permanent truth, improve from real learning, clean, and close.
+Start at [lifecycle/SKILL.md](.agents/skills/lifecycle/SKILL.md). Each phase entry requires the shared contract, model roles, writing rules, and its own procedure. Procedures point to required and conditionally triggered references. Reuse unchanged sources already read; load all applicable project rules. Finalize deliberately reads complete intent and branch changes.
 
-## Model selection
+Each rule has one reference owner. Templates shape artifacts without duplicating procedures. External companion skills are not required.
 
-Select **GPT-6.1 Sol** for the main Lifecycle chat.
-
-The coordinator delegates approved Build Steps and focused code reviews to **GPT-6 Luna** when model-selectable subagents are available.
-
-Sol owns Finalize reconciliation and completion assessment.
-
-Skills cannot automatically switch the main chat model.
-
-See [Model Coordination](.agents/skills/lifecycle/references/models.md).
-
-## Approval
-
-Always stop after every phase and every Build Step. Present the result and wait for explicit user approval before continuing; never infer approval from silence.
-
-## Active workspace
-
-```text
-docs/lifecycle/<change-name>/
-├── 00-lifecycle.md
-├── 01-idea.md
-├── 02-prototype.md
-├── 03-plan.md
-├── 04-build.md
-├── 05-finalize.md
-├── cycle-log.md
-└── prototype/          # optional
-```
-
-Lifecycle documents follow the writing rules and required compactness pass in [artifacts.md](.agents/skills/lifecycle/references/artifacts.md). Process ownership remains in [framework.md](.agents/skills/lifecycle/references/framework.md).
-
-## Self-contained process
-
-Lifecycle includes requirement discovery, research criteria, prototype handling, TDD, diagnosis, code review, and completion checks.
-
-No third-party skill installation or loading is required.
-
-Project-specific standards remain authoritative.
-
-## Install into a project
-
-From this repository:
+## Install or update
 
 ```bash
 ./install-lifecycle.sh /path/to/project
-```
-
-To install into all projects listed in the ignored root file `.lifecycle-projects`, run without a project path:
-
-```bash
-./install-lifecycle.sh
-```
-
-Use [`.lifecycle-projects.example`](.lifecycle-projects.example) as the list-file format: one existing project path per line, with blank lines and `#` comments ignored. Relative paths resolve from the list file's directory.
-
-An explicit list file is also supported:
-
-```bash
 ./install-lifecycle.sh --projects-file /path/to/projects-file
-```
-
-Only existing listed project directories are processed. Missing entries are skipped with a warning and are never created. PowerShell uses `-ProjectsFile <path>`; no arguments use `.lifecycle-projects` at the installer root.
-
-If the repository itself is the target project:
-
-```bash
 ./install-lifecycle.sh .
 ```
 
-On Windows PowerShell:
+No arguments use ignored `.lifecycle-projects` at the installer root. See [.lifecycle-projects.example](.lifecycle-projects.example): one path per line, blank/comment lines ignored, relative paths based on the list directory. Missing project directories are skipped and never created.
+
+PowerShell equivalents:
 
 ```powershell
 .\install-lifecycle.ps1 C:\path\to\project
+.\install-lifecycle.ps1 -ProjectsFile C:\path\to\projects-file
 ```
 
-The installer is idempotent. It:
+Run the installer again after updating this repository. `VERSION` and Git tags identify releases.
 
-- copies only directories named `lifecycle*` that contain `SKILL.md`;
-- creates `.agents/skills/` and the Lifecycle documentation directories, including `docs/guidelines/`;
-- creates or updates only the marked Lifecycle section in `AGENTS.md`.
+## Ownership and preservation
 
-It leaves unrelated skills, project documentation, `CONTEXT.md`, engineering guidelines, module content, backlog content, and active lifecycle work alone.
+Installers replace managed `lifecycle*` skill directories containing `SKILL.md`, update only the marked Lifecycle block in `AGENTS.md`, and ensure `docs/lifecycle`, `docs/guidelines`, `docs/modules`, and `docs/backlog` exist. Self-install preserves source skills. Unrelated skills and project-owned content remain intact; malformed managed markers are rejected before target changes.
 
-## Project-owned files
-
-The installer manages only the reusable system pieces:
-
-```text
-project/
-├── .agents/skills/lifecycle*/
-├── docs/lifecycle/
-├── docs/guidelines/
-├── docs/modules/
-├── docs/backlog/
-└── AGENTS.md  # only the marked Lifecycle block
-```
-
-The project owns the contents created during actual development. The installer does not generate guideline files, generic context, module documents, backlog items, or active cycle artifacts.
-
-Active lifecycle workspaces are normally committed while a change is in progress so developers, branches, and phase chats can share state. Developers working alone may add `docs/lifecycle/` to `.gitignore` when they do not need that continuity in version control.
-
-During Finalize, preserve durable knowledge in its permanent home before cleanup: module docs for current product behaviour, support/user docs for user-facing instructions, project guidelines or checkers for reusable engineering conventions, and Lifecycle skills for reusable process lessons. Archive or remove completed workspaces only after explicit user confirmation.
-
-Before Plan, Build, and Finalize, Lifecycle loads the project sources and rules relevant to that phase. The installer does not guess project technologies or create generic rules such as `flutter.md`, `react.md`, or `cloud-functions.md`.
-
-## Updating
-
-Pull a newer repository version and run the installer again:
-
-```bash
-git pull --ff-only
-./install-lifecycle.sh /path/to/project
-```
-
-Use `VERSION` and Git tags to identify stable releases:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
+During work, create index/phase/Cycle Log artifacts under `docs/lifecycle/<change>/` using the included templates; add prototype assets only when useful. Permanent product, user, engineering, and process knowledge goes to its authoritative owner during Finalize. Archive/remove a completed cycle workspace only after explicit confirmation. Installation does not generate or migrate project knowledge, active work, or technology-specific rules.

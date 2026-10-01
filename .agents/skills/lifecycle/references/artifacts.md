@@ -1,145 +1,37 @@
-# Lifecycle Artifact Writing
+# Artifact writing
 
-## Purpose
+Lifecycle files are compact working memory, not transcripts. Think deeply; record only decisions, consequential reasons, risks, checks, and information needed to resume.
 
-Lifecycle files are compact working memory.
+## Writing rules
 
-They help:
+- Group by responsibility using short headings, labeled bullets, and at most one supporting bullet level.
+- Give each point one clear meaning. Separate conditions and outcomes when combining them obscures the requirement.
+- Keep necessary technical contracts and proof limits; link the owning source instead of copying it.
+- Put lengthy evidence and runbooks behind links when only the conclusion affects review.
+- Remove empty sections, instructional comments, and superseded statements. Templates provide shape, not mandatory filler.
 
-- the current conversation stay aligned;
-- another session resume quickly;
-- the next phase receive only what it needs.
+## Required compactness pass
 
-They are not transcripts.
-
-## Writing Rules
-
-- **Goal:** Zero unnecessary cognitive load.
-- **Clarity:** Readers understand each point on the first read.
-- **Line:** One idea or requirement per bullet.
-- **Length:** Short sentences or clearer fragments.
-- **Structure:** Replace prose paragraphs with a short section label and bullets.
-- **Labels:** Prefer short labels with short values, especially in Specifications.
-- **Conditions:** Separate conditions, exceptions, and outcomes into distinct bullets.
-- **Hierarchy:** Use sections and at most one level of supporting bullets.
-- **Relevance:** Keep only what affects the current decision, action, risk, verification, or handoff.
-- **Detail:** Link lengthy evidence or runbooks when reviewers only need the conclusion.
-- **Meaning:** Preserve necessary technical contracts, constraints, and proof limits.
-- **Ownership:** Link the owning source instead of repeating its content.
-- **Maintenance:** Remove empty sections and superseded statements.
-
-## Specification Example
-
-Bad:
-
-```md
-### Specification
-
-- The Save button allows editors to save valid changes, remains disabled for viewers, and shows a retryable error if saving fails while keeping the entered values.
-```
-
-Good:
-
-```md
-### Specification
-
-- **Editor:** Save enabled for valid changes.
-- **Viewer:** Save disabled.
-- **Save failure:** Retryable error shown.
-- **Save failure:** Entered values retained.
-```
-
-Labels should describe the actual requirement.
-
-Templates provide shape, not mandatory content.
-
-## Required Compactness Pass
-
-Before presenting any lifecycle or permanent document produced by Lifecycle:
-
-- Read the complete document once.
-- Split every bullet that needs rereading.
-- Split every bullet containing multiple points.
-- Replace remaining prose paragraphs with labeled sections and bullets.
-- Remove repetition and explanations that do not affect the current review.
-- Link supporting detail that belongs outside the primary document.
-- Check that shortening preserved necessary technical meaning.
-- Remove unused template sections and instructional comments.
-
-Finish only when each point is understandable on the first read.
+Before presenting a lifecycle or permanent document produced by Lifecycle, read the whole document. Split points that need rereading; turn long prose into short labeled points. Remove repetition and unrelated explanations. Link supporting detail and verify that shortening preserved requirements and proof limits.
 
 ## Evidence
 
-- Keep evidence beside the check it supports.
-- Mark a check complete only after observing the expected result.
-- Record the actual result.
-- Link the test, command output, or manual observation supporting it.
-- A method name alone is not evidence.
-- Keep automated proof distinct from pending human checks.
+Keep evidence beside its check. Mark `[x]` only after observing the expected result on the current implementation. Record actual result and a test result, command output, or manual observation reference; a command/test name alone is not proof. Keep automated, human, pending, blocked, and unrun results distinguishable.
 
-Example format; replace placeholders with observed evidence:
+Apply [Proof Limits](completeness.md#proof-limits) and [Gap Acceptance](completeness.md#gap-acceptance) before claiming completion.
 
-```md
-- [x] **Restart:** Saved token restored.
-  - **Result:** Passed.
-  - **Evidence:** <test or recorded observation link>.
-```
+## Approval presentation
 
-## Approval Presentation
+Present the result, owning artifact link, material gaps, and exact phase/step approval requested. For Build, link its Test Now instructions and identify pending human checks. Keep detailed requirements and evidence in the artifact.
 
-After the required compactness pass, present:
+## Index and permanent documents
 
-- **Result:** What is ready for review.
-- **Gaps:** Material limitations, only when present.
-- **Document:** Link to the owning artifact.
-- **Test Now:** For Build, link directly to the current step's instructions and state what remains for human verification.
-- **Approval:** Name the phase or completed Build Step being approved.
-
-Keep the request short.
-
-Let the linked artifact carry the detailed requirements and evidence.
-
-## Open Questions
-
-Only keep questions that can materially change the current phase.
-
-Remove a question when it is resolved.
-
-Move the decision to its owning section.
+- `00-lifecycle.md` contains state and navigation: change title, phase/status, approval state, existing artifact links, relevant permanent sources.
+- Include current step only during Build; branch/module only when they clarify context.
+- Keep scope and decision reasons in their owning phase artifact.
+- Permanent docs describe current verified truth, not cycle history or intended but unverified behavior.
+- Open Questions contain only consequential unresolved decisions; move settled answers to their owner.
 
 ## Mermaid
 
-Use Mermaid only when relationships are clearer visually.
-
-Useful forms:
-
-- flowchart;
-- state diagram;
-- sequence diagram;
-- dependency graph.
-
-The diagram supports the artifact.
-
-Exact decisions remain as short written points.
-
-## Lifecycle Index
-
-`00-lifecycle.md` holds state and navigation only.
-
-- Use the change name as its title.
-- Keep phase, status, and [approval state](framework.md#approval-state).
-- Include the current Build Step only during Build.
-- Include branch or module only when they clarify context.
-- Link existing phase artifacts as they are created.
-- Link relevant permanent sources only.
-- Keep reasons and scope decisions in their owning phase artifact.
-
-## Permanent Documents
-
-Apply these writing rules and the required compactness pass to module/support/process documents produced by Lifecycle.
-
-Permanent documents describe current truth.
-
-Lifecycle documents describe the active change.
-
-Do not copy lifecycle history into permanent documentation.
+Use flow, state, sequence, or dependency diagrams when relationships become easier to scan. Keep exact decisions in text. Simple lists and linear steps usually need no diagram.

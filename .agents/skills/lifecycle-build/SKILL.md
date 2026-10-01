@@ -1,89 +1,15 @@
 ---
 name: lifecycle-build
-description: "Use after Plan approval to execute one Build Step at a time, verify it, record the actual result, and request approval only after the completed step is reviewable."
+description: After Plan approval, implement, verify, and review one authorized Build Step before requesting its approval.
 ---
 
 # Build
 
-## Phase Question
+Read these required sources unless their unchanged contents are already loaded:
 
-> **Can we implement and verify the current Build Step correctly without guessing or drifting from the project?**
+1. [Framework](../lifecycle/references/framework.md): authority, approval, ownership, handoff.
+2. [Model Coordination](../lifecycle/references/models.md): coordinator and worker roles.
+3. [Artifact Writing](../lifecycle/references/artifacts.md): compact documents and evidence.
+4. [Build procedure](../lifecycle/references/build.md): execution, required task sources, conditional references, completion.
 
-Read:
-
-- `../lifecycle/references/framework.md`
-- `../lifecycle/references/models.md`
-- `../lifecycle/references/artifacts.md`
-- `../lifecycle/references/build.md`
-- `../lifecycle/references/code-review.md`
-- `../lifecycle/references/guidelines.md`
-- `../lifecycle/references/cycle-log.md`
-
-Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
-
-Load:
-
-- `00-lifecycle.md`;
-- approved `03-plan.md`;
-- current Build Step:
-  - Specification;
-  - Build;
-  - Verify;
-- only relevant Idea/Prototype decisions;
-- affected module docs;
-- every applicable engineering rule;
-- nearby established implementations.
-
-Follow the [Build approval gate](../lifecycle/references/framework.md#build-gate).
-
-Complete Preflight and [Impact Preflight](../lifecycle/references/completeness.md#impact-preflight) before editing.
-
-Delegate approved implementation and focused review using [Model Coordination](../lifecycle/references/models.md#delegation).
-
-## Non-negotiable
-
-- Do not invent consequential conventions.
-- Do not silently broaden scope.
-- Do not implement an unapproved architectural/product decision.
-- Suggestions are welcome.
-- Consequential extra implementation requires approval.
-- Implement one Build Step at a time.
-- Use TDD for testable behaviour.
-- Deliver the approved vertical capability.
-- Run its Test Now path.
-- Honor explicit preview or prerequisite exceptions.
-- Follow the step Specification.
-- Perform the step Verify checks.
-
-When something unexpected requires a **consequential choice**:
-
-- stop;
-- explain;
-- recommend;
-- ask.
-
-Use [decision ownership](../lifecycle/references/framework.md#return-to-the-owner) when upstream decisions change.
-
-If a planned Verify check must materially change:
-
-- return to Plan;
-- update the step;
-- regain approval;
-- then resume Build.
-
-Apply [Proof Limits](../lifecycle/references/completeness.md#proof-limits) and [Gap Acceptance](../lifecycle/references/completeness.md#gap-acceptance).
-
-Complete [Lifecycle Code Review](../lifecycle/references/code-review.md) before presenting each Build Step.
-
-After completing and verifying each Build Step:
-
-- update `04-build.md`;
-- run the Cycle Log sweep;
-- update `00-lifecycle.md`;
-- present the completed result;
-- wait for explicit user approval.
-
-When all Build Steps are approved:
-
-- present Build completion;
-- wait for explicit user approval before Finalize.
+Read `00-lifecycle.md` and establish authorization. Execute this phase only; load every reference required by its procedure or current condition. Create/update the [phase artifact](../lifecycle/templates/04-build.md). Follow the framework handoff before presenting approval.

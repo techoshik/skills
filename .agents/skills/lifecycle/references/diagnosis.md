@@ -1,54 +1,17 @@
-# Bug and Performance Diagnosis
+# Diagnosis
 
-## Feedback Loop
+## Reproduce
 
-Use when a reported defect or regression needs investigation.
+Establish exact symptom and expected behavior. Before production-code edits, run the cheapest repeatable check reaching the failing path: existing test, development request, replay, or focused harness. Prefer fast deterministic reproduction; record intermittent frequency/conditions and redact sensitive evidence.
 
-- Identify the user's exact symptom and expected behavior.
-- Build the cheapest repeatable check that distinguishes failure from success.
-- Run it before changing production code.
-- Prefer an existing test, development request, replay, or focused harness.
-- Confirm it reaches the actual failing path.
-- Make it fast and deterministic where practical.
-- For intermittent failures, record reproduction frequency and conditions.
-- Redact secrets and sensitive data in captured evidence.
+If unavailable, record attempts and missing evidence/access, distinguish hypotheses from causes, request only needed information/authorization, and keep the proof gap visible.
 
-If reproduction is unavailable:
+## Isolate
 
-- Record attempts and missing access or evidence.
-- Distinguish hypotheses from confirmed causes.
-- Request only the information or authorization needed to proceed.
-- Keep the reproduction gap visible.
+Minimize the scenario while retaining the original for final verification. Consider competing causes and observable predictions; vary one relevant factor and use targeted inspection/instrumentation. Mark temporary instrumentation for cleanup. Measure performance baseline before optimization.
 
-## Isolate the Cause
+## Fix and prove
 
-- Minimize the scenario while preserving the observed failure.
-- Keep the original scenario for final verification.
-- Consider competing causes before committing to one explanation.
-- State the observable prediction for each plausible hypothesis.
-- Change one relevant variable at a time.
-- Use targeted inspection or instrumentation to distinguish hypotheses.
-- Label temporary instrumentation so cleanup can find it.
-- For performance issues, measure a baseline before optimizing.
+Idea owns symptom/impact/success; Prototype owns experiments; Plan owns fix/regression proof; Build implements; Finalize checks the full change. Diagnosis preserves these approval gates.
 
-## Phase Ownership
-
-- **Idea:** Establish the symptom, impact, and expected outcome.
-- **Prototype:** Use a focused experiment when needed to establish the cause.
-- **Plan:** Define the approved fix and regression proof.
-- **Build:** Fix within the approved step and verify the behavior.
-- **Finalize:** Recheck the complete journey and preserve useful learning.
-
-Diagnosis does not bypass phase or scope approval.
-
-## Fix and Verify
-
-- Turn the reproducer into a regression test where the actual failure can be exercised.
-- Follow the [Build TDD loop](build.md#tdd--hard-rule-for-testable-behaviour).
-- If the available test cannot reach the failure, record the proof limitation.
-- Use the [gap acceptance rules](completeness.md#gap-acceptance) for missing required verification.
-- Rerun the original scenario after the fix.
-- For performance fixes, compare against the baseline using the same conditions.
-- Check affected regressions.
-- Remove temporary instrumentation after preserving needed evidence.
-- Record the confirmed cause and the fix briefly.
+Turn reproduction into a regression test reaching the actual failure and use [behavioral TDD](build.md#tdd--hard-rule-for-testable-behaviour). Record limitations under Proof Limits/Gap Acceptance when the test cannot reach it. Rerun original scenario and affected regressions; compare performance under baseline conditions. Preserve cause/fix evidence, then remove instrumentation.

@@ -1,103 +1,20 @@
-# Phase 1 — Idea
-
-## Responsibility
-
-Understand what deserves attention, what should become true, and how success will be recognized.
-
-## Principle
-
-> **The conversation explores. The Idea document remembers.**
-
-Ask as much as necessary.
-
-Document as little as necessary.
-
-For a reported defect, use [Diagnosis](diagnosis.md) to establish its exact symptom and reproduction needs.
-
-## Scope Discovery
-
-Complete [Inspect Before Asking](questioning.md#inspect-before-asking).
-
-Apply the [Why Loop](questioning.md#why-loop).
-
-Use [Decision Dependencies](questioning.md#decision-dependencies) to order questions.
-
-Apply [Language and Scenario Checks](questioning.md#language-and-scenario-checks).
-
-Use [Persistent Questioning](questioning.md#persistent-questioning) for consequential gaps.
-
-Capture the resulting need, minimum scope, and reasons for scope decisions.
-
-Keep the questioning transcript out of the artifact.
-
-Identify safety and correctness needs without designing their implementation here.
-
-## Working Method
-
-> **Discuss → Confirm → Write → Continue**
-
-- Start from any raw:
-  - feature;
-  - request;
-  - issue;
-  - bug;
-  - improvement;
-  - opportunity.
-- Question broadly before narrowing.
-- Surface:
-  - hidden scenarios;
-  - contradictions;
-  - assumptions;
-  - missing thinking.
-- Capture a point when it is sufficiently discussed and confirmed.
-- Replace outdated points when decisions change.
-- On resume:
-  - read `01-idea.md`;
-  - continue from unresolved questions.
-- Do not design:
-  - architecture;
-  - storage;
-  - APIs;
-  - file structure;
-  - code.
-
-## Artifact
-
-Use:
-
-```md
 # Idea
 
-## Problem / Opportunity
-- ...
+Define what deserves attention, what should become true, and how success will be recognized.
 
-## Goal
-- ...
+## Required reading
 
-## Key Results
-- ...
+Read [Decision Discovery](questioning.md). For a reported defect, also read [Diagnosis](diagnosis.md) to establish symptom and reproduction needs.
 
-## Decisions
-- **<Scope decision>:** <Decision>.
-  - **Why:** <Need or safeguard it serves>.
+## Work
 
-## Open Questions
-- ...
-```
+1. Inspect relevant product facts and discuss the need before narrowing scope.
+2. Resolve hidden scenarios, contradictions, safeguards, and consequential assumptions through discovery.
+3. Capture confirmed points continuously in `01-idea.md`: Problem / Opportunity, Goal, Key Results, Decisions, and unresolved Open Questions.
+4. Tie minimum scope and exclusions to their reasons. Make key results observable without false precision.
 
-Key Results should be observable or measurable when practical.
+Keep architecture, storage, APIs, file layout, and implementation design for later phases. Resume from recorded decisions and unresolved questions.
 
-Do not force fake precision.
+## Complete when
 
-## Complete When
-
-- Problem / Opportunity is understood.
-- Goal is clear.
-- Minimum scope has a reason tied to the goal or an applicable safeguard.
-- Consequential assumptions have a validation or acceptance decision.
-- Key Results make success recognizable.
-- No meaningful unanswered branch can materially change them.
-
-Present Idea.
-
-Wait for explicit user approval before Prototype.
+Problem, goal, minimum scope, safeguards, and recognizable success are clear. Consequential assumptions have validation or acceptance decisions. No unanswered branch can materially change these outcomes. Finish the [phase handoff](framework.md#phase-handoff).

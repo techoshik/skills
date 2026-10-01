@@ -113,6 +113,20 @@ fi
 
 project_paths=("${existing_project_paths[@]}")
 
+# Validate managed markers before changing a target project.
+validate_agents_file() {
+  local agents_file="$1"
+  [[ -f "$agents_file" ]] || return 0
+  if ! awk '
+    /<!-- lifecycle:start -->/ { if (state != 0 || seen) exit 1; state = 1; seen = 1; next }
+    /<!-- lifecycle:end -->/ { if (state != 1) exit 1; state = 2; next }
+    END { if (state == 1) exit 1 }
+  ' "$agents_file"; then
+    echo "AGENTS.md has malformed managed Lifecycle markers; refusing to modify project: $agents_file" >&2
+    return 1
+  fi
+}
+
 update_agents_file() {
   local agents_file="$1"
   local temporary_file
@@ -122,15 +136,6 @@ update_agents_file() {
     cp "$BLOCK_FILE" "$agents_file"
     rm -f "$temporary_file"
     return
-  fi
-
-  local start_count end_count
-  start_count="$(grep -cF '<!-- lifecycle:start -->' "$agents_file" || true)"
-  end_count="$(grep -cF '<!-- lifecycle:end -->' "$agents_file" || true)"
-  if [[ "$start_count" -ne "$end_count" ]]; then
-    rm -f "$temporary_file"
-    echo "AGENTS.md has an incomplete managed Lifecycle block; refusing to modify it: $agents_file" >&2
-    return 1
   fi
 
   awk -v block_file="$BLOCK_FILE" '
@@ -175,6 +180,7 @@ install_project() {
   project_root="$(cd -- "$project_path" && pwd)"
   local target_skills="$project_root/.agents/skills"
   local agents_file="$project_root/AGENTS.md"
+  validate_agents_file "$agents_file"
   mkdir -p "$target_skills" \
     "$project_root/docs/lifecycle" \
     "$project_root/docs/guidelines" \
@@ -201,7 +207,10 @@ install_project() {
 
   if [[ "$same_skills_directory" -eq 0 ]]; then
     # Replace installed Lifecycle skills so removed source files cannot linger.
-    find "$target_skills" -mindepth 1 -maxdepth 1 -type d -name 'lifecycle*' -exec rm -rf {} +
+    for target_dir in "$target_skills"/lifecycle*/; do
+      [[ -d "$target_dir" && -f "$target_dir/SKILL.md" ]] || continue
+      rm -rf "$target_dir"
+    done
   fi
 
   local installed=0
@@ -227,6 +236,11 @@ install_project() {
   echo "Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist"
   echo "Updated the managed Lifecycle section in $agents_file"
 }
+
+# Reject malformed markers across the list before any project installation.
+for project_path in "${project_paths[@]}"; do
+  validate_agents_file "$project_path/AGENTS.md"
+done
 
 for project_path in "${project_paths[@]}"; do
   install_project "$project_path"

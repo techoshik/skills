@@ -1,97 +1,23 @@
-# Project Rules and Engineering Guidelines
+# Project rules
 
-## Source of Truth
+Project owns what its standards are; Lifecycle owns when to read them. Discover actual filenames, technology, layout, architecture, and test conventions from the project.
 
-Project-specific standards belong in permanent project guidance.
+## Load applicable rules
 
-Lifecycle skills define **when** to read rules.
+Plan inspects rules and nearby patterns before design. Build reads every applicable rule before each step; Finalize reads conformance and verification rules for the full change. Identify touched technologies/layers, then confirm placement, names, responsibilities, dependencies, structure, and test conventions.
 
-The project defines **what** the rules are.
+Before creating/moving files, find the owner and governing rule, inspect a conforming neighbor, and check whether an existing file already owns the responsibility. Project-required separation remains authoritative. Copy conventions into Plan only when they change design, sequence, risk, or proof.
 
-Never assume:
+Consequential missing/contradictory rules require a decision; local choices determined by approved plans or inspected patterns use judgment under the framework contract.
 
-- filenames;
-- folder structure;
-- class types;
-- frameworks;
-- naming;
-- architecture;
-- test conventions.
+## Rule promotion
 
-## Plan
+A rule gap is missing, ambiguous, contradictory, or repeatedly missed guidance.
 
-Plan inspects relevant rules and existing patterns.
+1. Identify the observed failure, affected scope, and authoritative owner: project guideline/checker for project standards; lifecycle skill for portable process.
+2. Propose the smallest durable clarification/enforcement and obtain explicit approval for consequential process changes. Existing authorization for that exact change is sufficient.
+3. Apply authorized safety/correctness fixes while the broader gap remains visible; a local correction alone does not close an unresolved rule gap.
+4. Update the owner and affected consumers/templates; extend a deterministic checker when practical.
+5. Apply the rule and rerun affected checks/tests/journeys. Log decision, owner, scope, and evidence in Cycle Log.
 
-Do not copy stable conventions into Plan unless they affect:
-
-- technical design;
-- build order;
-- risk;
-- proof.
-
-## Build — Mandatory Preflight
-
-Also complete [Impact Preflight](completeness.md#impact-preflight).
-
-Before every Build Step:
-
-1. Identify touched technologies/layers.
-2. Find every applicable rule.
-3. Read the rules.
-4. Inspect nearby established patterns.
-5. Confirm:
-   - placement;
-   - naming;
-   - architecture/layer;
-   - dependency direction;
-   - structure;
-   - test conventions.
-
-If a **consequential** convention is missing, unclear, or contradictory:
-
-> **Stop and ask. Do not invent it.**
-
-Ordinary local implementation choices do not require interruption after inspecting relevant rules and patterns.
-
-This includes cases where:
-
-- the Plan already determines the outcome;
-- an existing rule/pattern clearly determines the choice;
-- the change is a mechanical consequence of approved work.
-
-## File Decisions
-
-Before creating or moving a file:
-
-- Confirm the owning responsibility.
-- Find the project rule governing its path and name.
-- Inspect the nearest conforming implementation.
-- Check whether an existing file already owns the responsibility.
-- Add a file only when the approved work or project structure requires it.
-
-Review these decisions with [Standards Review](code-review.md#standards-review).
-
-## Suggestions vs Authority
-
-The agent may:
-
-- explain a discovery;
-- explain why it matters;
-- recommend an option.
-
-The agent must not implement an unapproved consequential change outside the Plan.
-
-> **Permission to suggest is not permission to implement.**
-
-## Finalize — Promote Real Learning
-
-When real work exposes a reusable rule gap:
-
-- propose the durable improvement;
-- get explicit user approval;
-- update the authoritative guideline/checker;
-- rerun relevant checks when current work changes.
-
-Update lifecycle skills only for portable process learning.
-
-Do not change guidance merely because Finalize contains Improve.
+Close the gap through promotion or an explicitly approved exception. Preserve unrelated legacy violations as migration debt/future work rather than expanding scope. Shared skills contain portable process only; project names, paths, conventions, and cycle records remain in their project.

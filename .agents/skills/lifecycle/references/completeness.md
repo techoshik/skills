@@ -1,148 +1,35 @@
-# Coverage and Completion Checks
+# Coverage and completion
 
-## Requirement Coverage
+## Minimum complete solution
 
-Before presenting Plan:
+During Plan, inspect credible failures in access/revocation, data validity/partial writes, privacy, dependency failure/recovery, concurrency/retries, compatibility/migrations, and resource bounds/performance. Investigate applicable risks only. Put necessary safeguards in their owning step Specification and checks; tie each to a concrete failure path. Avoid speculative future infrastructure.
 
-- Account for every approved Idea success criterion.
-- Account for every approved behavior requirement in Idea and Prototype.
-- Account for applicable safeguards identified during planning.
-- Link each requirement to its owning Build Step.
-- Link each step requirement to a Verify check.
-- Use source links or stable labels instead of repeating requirements.
-- Record explicit scope decisions for deferred or excluded requirements.
-- Obtain user approval for any change to approved scope.
-- Keep unresolved coverage visible until it is resolved.
-- Confirm each capability step meets [Small-Step Boundary](plan.md#small-step-boundary).
-- Confirm its Test Now path works before later steps are implemented.
+## Requirement coverage
 
-Use a compact `Covers` line inside each step.
+Before Plan presentation, map every approved success criterion/Idea/Prototype requirement and applicable safeguard to an owning step and Verify check. Use stable labels/links and a compact Covers line. Related requirements may share proof when it establishes each. Record approved exclusions/deferments and keep unresolved coverage visible. Confirm every capability meets [Small-Step Boundary](plan.md#small-step-boundary) and has immediate Test Now instructions.
 
-A check may cover several related requirements when it proves each one.
+## Impact preflight
 
-## Minimum Complete Solution
+Before each Build edit, read applicable rules and inspect changed interfaces/callers, constructors/mocks/tests, data compatibility, permissions/failures, integrations/dependencies, required generated outputs/migrations, and potentially invalidated evidence. Inspect applicable areas only; record consequential findings with the owning step, not routine inspection logs.
 
-During Plan, inspect applicable risks before finalizing scope:
+## Proof limits
 
-- **Access:** Unauthorized actors or revoked permissions.
-- **Data:** Invalid input, broken invariants, or partial writes.
-- **Privacy:** Sensitive data in storage, logs, or responses.
-- **Failures:** Errors, unavailable dependencies, or recovery paths.
-- **Concurrency:** Duplicate requests, retries, or conflicting updates.
-- **Compatibility:** Existing callers, persisted data, or migrations.
-- **Resources:** Bounds, cleanup, or performance that affects the intended use.
+Match evidence to the actual claim and current implementation. Distinguish static, unit, mocked, real integration, and human proof. Analyzer success does not establish runtime behavior, authorization, migrations, or deployment. Rerun checks when subsequent changes invalidate evidence or leave a relevant regression; otherwise reuse valid proof. Skipped, unrun, blocked, and pending checks stay unchecked.
 
-Use the actual change and project context to identify credible failure paths.
+## Gap acceptance
 
-Record only applicable requirements and meaningful unresolved risks.
+For each required unavailable check, record Check/reference, Reason, Risk, and Acceptance (`Pending` or explicit user acceptance reference). General phase/step approval and silence do not accept gaps. Accepted gaps remain unchecked. Complete only after required checks pass or their missing proof is explicitly accepted. Known implementation defects require correction or an approved upstream scope change; they are not proof gaps.
 
-Avoid speculative infrastructure for hypothetical future features.
+## Branch reconciliation
 
-For each necessary safeguard:
+During Finalize, establish the comparison base explicitly. Inspect all base-to-HEAD changed paths and commits, staged/unstaged changes, and relevant untracked files. Group generated/format-only churn without hiding behavior. Map every relevant change to approved intent and checks; separate/preserve unrelated pre-existing work. Record explicit exclusions and reasons. Route consequential unplanned changes to their owner instead of treating the diff as approval.
 
-- Tie it to a concrete failure path.
-- Place it in the owning step Specification.
-- Add a Verify check that exercises the boundary or failure.
+Before closure, every approved requirement and relevant change needs proof, explicit gap acceptance, or an approved scope exclusion.
 
-Reducing scope must preserve a complete supported user journey.
+## Safe cleanup
 
-Known implementation defects are not verification gaps.
+Confirm temporary work belongs to this cycle. Transfer useful decisions and retain evidence with resolving references before removing owned prototype/debug/experiment/obsolete leftovers. Preserve unrelated/user work. Archive or remove the completed lifecycle workspace only after explicit user confirmation; keep approval/evidence records accessible until then.
 
-Resolve them before completion, or return to the owning phase for an explicit scope decision.
+## Deterministic checks
 
-## Impact Preflight
-
-Before editing a Build Step:
-
-- Read every applicable project rule.
-- Inspect changed interfaces and their callers.
-- Inspect affected constructors, mocks, and tests.
-- Inspect data contracts and compatibility implications.
-- Inspect permissions and failure paths affected by the change.
-- Inspect integration and dependency boundaries.
-- Identify required generated outputs or migrations when applicable.
-- Check which existing evidence may become invalid.
-
-Investigate applicable areas only.
-
-Record consequential findings in the owning step.
-
-Keep routine inspection out of the review document.
-
-## Proof Limits
-
-Before marking a check complete:
-
-- Match the evidence to the check's actual claim.
-- Confirm the evidence applies to the current implementation.
-- Rerun affected checks when later changes invalidate their evidence.
-- Keep static, unit, integration, and human proof distinct.
-- Keep skipped, blocked, and unrun checks unchecked.
-
-A clean analyzer does not prove runtime behavior or authorization.
-
-Use [Evidence](artifacts.md#evidence) for recording format.
-
-## Gap Acceptance
-
-For each required check that cannot be completed:
-
-- **Check:** Link to the unmet verification requirement.
-- **Reason:** Why it remains unverified.
-- **Risk:** What the missing proof leaves uncertain.
-- **Acceptance:** Pending, or a reference to explicit user acceptance.
-
-Present incomplete work with its gap visible.
-
-Phase or step approval accepts a gap only when the user explicitly accepts that gap.
-
-Silence and general approval are not gap acceptance.
-
-Accepted gaps remain unchecked.
-
-Before marking a Build Step or development Complete:
-
-- Complete each required check, or obtain explicit acceptance of its gap.
-- Resolve required implementation work; gap acceptance covers missing proof only.
-
-## Branch Reconciliation
-
-During Finalize:
-
-- Identify the comparison base explicitly.
-- Inspect every changed path from that base to HEAD.
-- Inspect staged and unstaged changes.
-- Inspect relevant untracked files.
-- Group generated or formatting changes without hiding behavioral changes.
-- Map each relevant change to approved work and verification.
-- Identify unrelated pre-existing work separately.
-- Preserve unrelated work.
-- Record explicit exclusions with their reason.
-- Route consequential unplanned changes to their owning phase.
-
-Before closing, account for every approved requirement and every relevant change.
-
-Each must have proof, an explicitly accepted verification gap, or an approved scope exclusion.
-
-## Safe Cleanup
-
-Before removing temporary work:
-
-- Confirm it belongs to the current lifecycle.
-- Transfer useful decisions to their permanent owner.
-- Preserve evidence needed for completed checks.
-- Confirm retained evidence references will still resolve.
-- Preserve unrelated files and user work.
-- Remove only artifacts whose useful content has been preserved.
-
-## Deterministic Checks
-
-Use existing project checkers wherever they can enforce applicable rules.
-
-When repeated omissions justify a new checker:
-
-- Propose the smallest useful check.
-- Obtain approval for consequential process changes.
-- Validate that it catches the omission.
-
-Checkers supplement requirement coverage and human approval.
+Use existing project checkers for applicable rules. When repeated omissions justify a new checker, follow [Rule Promotion](guidelines.md#rule-promotion); prove it catches the observed failure. Checkers supplement coverage and human approval.
