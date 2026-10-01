@@ -7,4 +7,8 @@
 - Not feature decisions.
 - Format: `[Phase] Difficulty — Impact`
 
+<!-- For reusable findings, follow ../references/cycle-log.md#feedback-loop.
+Link evidence and the smallest proposed prevention check only when useful.
+Remove these instructions from the finished document. -->
+
 ## Entries

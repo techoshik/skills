@@ -84,6 +84,20 @@ Record unresolved findings as blockers, not a clean review.
 
 Do not claim full conformance when required sources or review scope were unavailable.
 
+## Workflow Feedback
+
+After correcting an avoidable finding:
+
+- Check whether unclear requirements contributed.
+- Check whether validation could have caught it sooner.
+- Check whether missing domain language or instructions contributed.
+- Check whether architecture made the correct path difficult to find or test.
+- Distinguish observed causes from untested explanations.
+
+Use the [Cycle Log feedback loop](cycle-log.md#feedback-loop) for reusable findings.
+
+A mistake does not automatically justify a new rule or refactor.
+
 ## Record
 
 Record the review scope and outcome briefly in Build or Finalize.

@@ -50,6 +50,34 @@ Prefer one concise entry:
 
 Add evidence only when it helps Finalize make a real improvement decision.
 
+## Feedback Loop
+
+For avoidable mistakes or repeated friction:
+
+- Link the observed finding or correction as evidence.
+- Identify the contributing gap when the evidence supports it.
+- Keep unconfirmed causes labeled as hypotheses.
+- Recommend the smallest durable improvement.
+- Record how its effectiveness can be checked.
+
+Possible destinations:
+
+- **Requirement gap:** Owning Specification or acceptance criteria.
+- **Validation gap:** Test or deterministic check.
+- **Language gap:** Existing domain documentation.
+- **Instruction gap:** Authoritative project guideline.
+- **Architecture friction:** Focused proposal under [Architecture Improvements](finalize.md#architecture-improvements).
+
+After an approved improvement:
+
+- Check that it catches or prevents the observed failure.
+- Confirm it preserves required behavior.
+- If effectiveness needs future runs, record it as unverified.
+
+Log only actionable, reusable learning.
+
+Do not expand scope merely to close a log entry.
+
 ## Sweep
 
 Before leaving each phase and before completing each Build Step, ask:

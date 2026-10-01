@@ -142,6 +142,8 @@ Review:
 - repeated agent mistakes;
 - lifecycle friction.
 
+Apply the [Cycle Log feedback loop](cycle-log.md#feedback-loop).
+
 Promote only reusable learning.
 
 Possible destinations:
@@ -167,6 +169,35 @@ If yes:
 If no:
 
 - make no permanent process change.
+
+### Architecture Improvements
+
+For evidence-backed architecture friction:
+
+- Start with the affected responsibility and observed failure.
+- Inspect nearby code and relevant change history.
+- Read existing domain terms and architecture decisions.
+- Check whether understanding one responsibility requires excessive navigation.
+- Check whether callers must understand unnecessary internal details.
+- Check whether the real failure is difficult to exercise through a supported interface.
+- Prefer the smallest change that improves ownership, clarity, or testability.
+- Ask whether removing an abstraction eliminates complexity or merely spreads it across callers.
+
+A proposal must identify:
+
+- affected files and responsibility;
+- observed friction;
+- proposed change;
+- compatibility and migration risk;
+- verification that demonstrates the benefit.
+
+Flag conflicts with established decisions explicitly.
+
+Generic design preferences do not override project standards.
+
+Consequential refactors require approval and an owning Plan before implementation.
+
+Defer broader work to a separate lifecycle when it exceeds the approved change.
 
 ## 5. Clean
 
