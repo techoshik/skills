@@ -28,7 +28,16 @@ For each important uncertainty:
 4. Exercise realistic scenarios/edge cases.
 5. Question what it reveals.
 6. Refine until resolved.
-7. Capture the decision immediately.
+7. Capture the Prototype-owned conclusion immediately.
+
+Prototype Decisions contain only conclusions discovered or confirmed because of prototyping.
+
+- Do not repeat Idea-owned decisions.
+- Reference Idea when context is needed.
+- If Prototype changes an Idea-owned decision:
+  - return to Idea;
+  - update the owning point;
+  - regain approval.
 
 Allowed forms include:
 
@@ -43,12 +52,6 @@ If no prototype adds value:
 - record `Not needed — <reason>`;
 - present it;
 - wait for explicit approval before Plan.
-
-If Prototype changes Goal/Key Results:
-
-- return to Idea;
-- update it;
-- regain approval.
 
 Run the Cycle Log sweep.
 

@@ -2,17 +2,15 @@
 
 ## Responsibility
 
-Understand the existing system, specify the technical change, choose trustworthy proof, and create the safest reviewable build sequence.
+Understand the existing system and create the safest reviewable build sequence.
+
+Each Build Step owns:
+
+> **Specification → Build → Verify**
 
 ## Principle
 
-> **Understand → Specify → Prove → Plan**
-
-Inspect before deciding.
-
-Specify before sequencing.
-
-Choose proof before Build.
+> **Plan by reviewable responsibility, not by document section or file.**
 
 ## 1. Understand
 
@@ -27,58 +25,9 @@ Choose proof before Build.
   - dependencies.
 - Find reuse, constraints, and established patterns.
 - Do not create a separate Context artifact.
-- Record project facts only when they affect:
-  - specification;
-  - build order;
-  - risk;
-  - proof.
+- Record project facts only when they affect a Build Step.
 
-## 2. Specify
-
-Write the technical summary of what must be true when the change is complete.
-
-Include only what Build needs without guessing:
-
-- responsibilities/ownership;
-- state/data changes;
-- flows/interactions;
-- interfaces/contracts;
-- important edge cases;
-- existing reuse;
-- migration/compatibility/rollout when relevant.
-
-Specification is the finished technical picture.
-
-It is not the implementation order.
-
-## 3. Prove
-
-Choose the **cheapest trustworthy proof** before Build.
-
-For each important Goal, Key Result, contract, or risky behaviour:
-
-- state the proof;
-- use the lowest-cost proof that can actually establish it;
-- record any proof gap that cannot be closed reasonably.
-
-Examples:
-
-- pure behaviour → unit test;
-- state/UI behaviour → widget/component test;
-- cross-layer contract → integration test;
-- complete user journey → end-to-end/integration test;
-- visual/experience match → human acceptance;
-- performance → measurement against an agreed threshold.
-
-A cheaper proof is not acceptable when it cannot establish the claim.
-
-A proof gap must be explicit.
-
-Do not silently treat an unproved claim as verified.
-
-## 4. Plan
-
-Break the specification into **Build Steps**.
+## 2. Create Build Steps
 
 A Build Step is one coherent responsibility that can be:
 
@@ -89,91 +38,131 @@ A Build Step is one coherent responsibility that can be:
 Rules:
 
 - several tightly related files may belong to one step;
-- do not use one-file-per-step mechanically;
-- do not generate the full feature in one giant step;
+- do not split mechanically by file;
+- do not split mechanically by layer;
+- do not generate the whole feature in one giant step;
 - prefer early reviewable feedback.
 
-### UI-first default
+Each step should have one primary review responsibility.
+
+If independently judging the step requires several unrelated responsibilities:
+
+- split the step.
+
+## 3. Specification
+
+Inside each Build Step, `Specification` states:
+
+> **What must be true when this step is complete?**
+
+Include only technical truth Build needs without guessing.
+
+Examples:
+
+- ownership/responsibility;
+- state/data behaviour;
+- flows/interactions;
+- interfaces/contracts;
+- important edge cases;
+- required compatibility;
+- established reuse.
+
+A specification has one owner.
+
+If a later step depends on a rule established earlier:
+
+- reference the owning step;
+- do not repeat the same specification.
+
+Specification is not a task list.
+
+## 4. Build
+
+Inside each Build Step, `Build` states:
+
+> **What must the agent change?**
+
+Rules:
+
+- one action per line;
+- use short bullets;
+- keep tightly related actions in the same step;
+- do not bury several changes in one sentence.
+
+Use optional `Deferred`, `Depends`, or `Risk` only when they materially help execution.
+
+## 5. Verify
+
+Inside each Build Step, `Verify` states:
+
+> **How will we know this step is correct?**
+
+Rules:
+
+- one check per line;
+- make each check concrete;
+- prefer observable outcomes;
+- choose the cheapest trustworthy verification;
+- use tests, static checks, measurements, or human verification as appropriate.
+
+Examples:
+
+- pure behaviour → unit test;
+- state/UI behaviour → widget/component test;
+- cross-layer contract → integration test;
+- complete journey → integration/end-to-end test when justified;
+- visual/experience behaviour → human verification;
+- performance → measurement against an agreed threshold.
+
+Do not use weaker evidence when it cannot establish the claim.
+
+These checks become inputs to:
+
+- Build Step verification;
+- Finalize's complete verification checklist.
+
+## UI-first Default
 
 When meaningful UI exists:
 
-- prefer the first Build Step as UI + presentation contract;
+- prefer an early Build Step with UI + presentation contract;
 - use fake/dummy/in-memory data when useful;
 - include relevant visible states;
 - avoid premature backend integration.
 
 Do not force backend/domain/database models into the first step unless the UI truly requires them.
 
-A common later order is:
-
-- application logic;
-- data/infrastructure;
-- server/API;
-- integration.
-
-Use project reality and dependencies to decide the actual order.
-
-## Build Step Reviewability
-
-Each Build Step should have one primary review question.
-
-Ask:
-
-> **What is the main thing the user needs to judge after this step?**
-
-If one step requires independent review of several responsibilities:
-
-- split the step;
-- keep tightly coupled files together when they represent one responsibility.
-
-Do not split mechanically by:
-
-- file;
-- layer;
-- frontend/backend boundary.
-
-Split by reviewable responsibility.
-
-## UI-first Deviation
-
 When meaningful UI exists but a separate UI-first step is not appropriate:
 
-- record one short reason in the Plan.
+- record one short reason in the relevant step.
 
 Example:
 
 ```md
+### Specification
 - **UI-first:** Not separated.
   - Existing control depends directly on established application state.
 ```
 
 Do not add this note when no meaningful UI exists.
 
-## Proof Changes During Build
+## Verification Changes During Build
 
-If planned proof becomes impossible or materially different:
+If a planned `Verify` check becomes impossible or materially different:
 
-- stop before treating the affected Build Step as complete;
+- stop before treating the affected step as complete;
 - return to Plan;
-- update the Proof section;
+- update that step's `Verify`;
 - record:
-  - unavailable proof;
+  - unavailable check;
   - reason;
-  - substitute proof, if any;
+  - substitute check, if any;
   - remaining gap.
 - present the updated Plan;
 - wait for explicit user approval;
-- then continue Build.
+- then resume Build.
 
-Never silently replace planned proof with weaker evidence.
-
-## Done When
-
-Every Build Step has an observable `Done When`.
-
-It proves the step is complete enough to continue.
-
-It does not replace Finalize's whole-change proof.
+Never silently replace planned verification with weaker evidence.
 
 ## Artifact
 
@@ -182,39 +171,49 @@ Use:
 ```md
 # Plan
 
-## Specification
+## 1. <Build Step>
+
+### Specification
 - ...
 
-## Proof
-- **<Outcome>**
-  - Proof: ...
-  - Gap: ...  # only when real
-
-## Build Plan
-
-### 1. <Build Step>
-- **Build:** ...
-- **Done When:**
-  - ...
-
-## Open Questions
+### Build
 - ...
+
+### Verify
+- [ ] ...
+
+## 2. <Build Step>
+
+### Specification
+- ...
+
+### Build
+- ...
+
+### Verify
+- [ ] ...
 ```
 
-Use `Depends` or `Risk` only when useful.
+Add optional subsections only when useful.
 
-Use Mermaid only when dependencies are clearer visually.
+Add `## Open Questions` only while consequential planning questions remain.
+
+Remove it when they are resolved.
 
 ## Complete When
 
-- Technical solution is clear.
-- Proof is defined for important claims.
-- Real proof gaps are explicit.
+- Existing-system constraints are understood.
 - Build order is clear.
-- Every Build Step is reviewable.
-- Every Build Step has useful `Done When`.
+- Every Build Step is one reviewable responsibility.
+- Every Build Step has a clear Specification.
+- Every Build Step has readable Build actions.
+- Every Build Step has concrete Verify checks.
 - No consequential technical/build-sequence question remains.
 
 Present Plan.
 
 Wait for explicit user approval before Build.
+
+That approval authorizes Build Step 1.
+
+Do not request a second pre-step approval.

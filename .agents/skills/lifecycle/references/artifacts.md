@@ -25,7 +25,7 @@ They are not transcripts.
   - decisions;
   - action;
   - risk;
-  - proof.
+  - verification.
 - Omit empty headings.
 - Remove outdated statements when decisions change.
 - Reference another source instead of copying it.
@@ -74,7 +74,7 @@ Example:
 
 ```md
 - **Token survives restart**
-  - Proof: integration test.
+  - Verification: integration test.
 ```
 
 ## Open Questions

@@ -1,23 +1,29 @@
 # Plan
 
-## Specification
+## 1. <Build Step>
+
+### Specification
 
 - …
 
-## Proof
-
-- **<Outcome>**
-  - Proof: …
-  - Gap: … <!-- only when real -->
-
-## Build Plan
-
-### 1. <Build Step>
-
-- **Build:** …
-- **Done When:**
-  - …
-
-## Open Questions
+### Build
 
 - …
+
+### Verify
+
+- [ ] …
+
+## 2. <Build Step>
+
+### Specification
+
+- …
+
+### Build
+
+- …
+
+### Verify
+
+- [ ] …

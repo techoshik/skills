@@ -29,7 +29,7 @@ flowchart LR
     B -. behaviour wrong .-> P
     B -. goal wrong .-> I
     F -. implementation issue .-> B
-    F -. technical design issue .-> L
+    F -. technical plan issue .-> L
     F -. behaviour issue .-> P
     F -. goal issue .-> I
 ```
@@ -39,7 +39,7 @@ flowchart LR
 Always stop:
 
 - after every phase;
-- after every Build Step.
+- after every **completed** Build Step.
 
 Then:
 
@@ -48,6 +48,19 @@ Then:
 - continue only after approval.
 
 Do not infer approval from silence.
+
+### Build Approval Semantics
+
+Plan approval authorizes Build Step 1.
+
+Do not ask for another approval before starting Step 1.
+
+After completed Step N is approved:
+
+- start Step N+1 directly;
+- do not ask for a second pre-step approval.
+
+Stop during a step only when a consequential choice, conflict, or required upstream change needs approval.
 
 If changes are requested:
 
@@ -106,7 +119,7 @@ Otherwise infer from approved artifacts:
 5. Run the Cycle Log sweep.
 6. Update `00-lifecycle.md`.
 7. Present the result.
-8. Wait for explicit user approval.
+8. Wait for explicit user approval when the lifecycle gate requires it.
 9. Continue only after approval.
 
 ## Ownership Routing
@@ -115,7 +128,7 @@ When later work changes earlier truth:
 
 - Problem / Goal / Key Results → Idea.
 - Behaviour / experience → Prototype.
-- Technical solution / proof / build sequence → Plan.
+- Build Step Specification / Build actions / Verify plan / build sequence → Plan.
 - Implementation / conformance → Build.
 
 Update the owning artifact.
@@ -128,7 +141,18 @@ Do not hide the change later.
 - Prototype → Idea + needed product/project context.
 - Plan → Idea + Prototype + relevant code/docs/config/tests/guidelines.
 - Build → current Plan step + applicable project rules + nearby patterns.
-- Finalize → planned proof + Build results + relevant permanent docs + Cycle Log.
+- Finalize → complete lifecycle intent + Build results + complete branch diff + relevant permanent docs + Cycle Log.
+
+## Finalize Boundary
+
+Finalize closes development.
+
+Do not extend lifecycle artifacts into:
+
+- deployment;
+- release;
+- merge/post-merge checks;
+- external review outside development control.
 
 ## Permanent Knowledge
 

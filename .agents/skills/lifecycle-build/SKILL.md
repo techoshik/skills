@@ -1,13 +1,13 @@
 ---
 name: lifecycle-build
-description: "Use after Plan to implement one approved Build Step at a time with strict project conformance, UI-first feedback when useful, and TDD for testable behaviour."
+description: "Use after Plan approval to execute one Build Step at a time, verify it, record the actual result, and request approval only after the completed step is reviewable."
 ---
 
 # Build
 
 ## Phase Question
 
-> **Can we implement the current Build Step correctly without guessing or drifting from the project?**
+> **Can we implement and verify the current Build Step correctly without guessing or drifting from the project?**
 
 Read:
 
@@ -22,12 +22,18 @@ Load:
 
 - `00-lifecycle.md`;
 - approved `03-plan.md`;
-- current Build Step;
-- current `Done When`;
+- current Build Step:
+  - Specification;
+  - Build;
+  - Verify;
 - only relevant Idea/Prototype decisions;
 - affected module docs;
 - every applicable engineering rule;
 - nearby established implementations.
+
+Plan approval already authorizes Build Step 1.
+
+Do not request approval before starting an already-approved Build Step.
 
 Complete Preflight before editing.
 
@@ -41,7 +47,8 @@ Complete Preflight before editing.
 - Implement one Build Step at a time.
 - Use TDD for testable behaviour.
 - Honor approved UI-first steps.
-- Check conformance and `Done When`.
+- Follow the step Specification.
+- Perform the step Verify checks.
 
 When something unexpected requires a **consequential choice**:
 
@@ -55,25 +62,24 @@ When an upstream decision is wrong:
 - route it to Idea/Prototype/Plan;
 - do not improvise inside Build.
 
-When planned proof becomes impossible or materially different:
+If a planned Verify check must materially change:
 
 - return to Plan;
-- update the Proof section;
-- record the remaining gap;
-- wait for explicit approval;
+- update the step;
+- regain approval;
 - then resume Build.
 
-Do not silently downgrade proof.
-
-After each Build Step:
+After completing and verifying each Build Step:
 
 - update `04-build.md`;
 - run the Cycle Log sweep;
 - update `00-lifecycle.md`;
-- present the step;
+- present the completed result;
 - wait for explicit user approval.
 
-Do not start the next Build Step before approval.
+Approval of completed Step N authorizes Step N+1.
+
+Do not ask for a separate pre-approval before starting the next already-planned step.
 
 When all Build Steps are approved:
 

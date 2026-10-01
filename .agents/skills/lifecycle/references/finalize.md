@@ -2,64 +2,148 @@
 
 ## Responsibility
 
-Prove the complete change, synchronize permanent truth, preserve reusable learning, clean temporary work, and close the cycle.
+Reconcile the approved lifecycle with the actual branch, verify the complete development change, synchronize permanent truth, preserve reusable learning, clean temporary work, and close development.
 
 ## Principle
 
-> **Verify → Synchronize → Improve → Clean → Close**
+> **Reconcile → Verify → Synchronize → Improve → Clean → Close**
 
-Do not Clean before Improve has decided whether temporary evidence contains reusable learning.
+## Boundary
 
-## 1. Verify
+Finalize ends the development lifecycle.
+
+It does not own:
+
+- deployment;
+- release decisions;
+- staging/production validation that can only happen after development;
+- merge/post-merge checks;
+- external review after the development branch is handed off.
+
+Do not put work in `05-finalize.md` that cannot be completed while development is still under the lifecycle's control.
+
+## 1. Reconcile
 
 Start from:
 
-- Idea Goal;
-- Idea Key Results;
-- Prototype decisions;
-- Plan Proof;
-- Build results.
+- Idea Goal + Key Results;
+- Prototype-owned decisions;
+- Plan Build Steps;
+- every step's Verify checks;
+- Build results;
+- complete branch diff against its base;
+- current working-tree changes, if any.
 
-Execute the planned proof.
+Create a compact `Change Inventory`.
 
-Also run applicable project-wide checks.
+The inventory answers:
 
-Verify the intended result.
+> **What changed that may need verification?**
 
-Do not verify only what the implementation happens to do.
+Prefer changed behaviours/areas.
 
-If a planned proof cannot run:
+Do not dump raw filenames when they do not help verification.
 
-- record why;
-- do not silently downgrade the claim;
-- surface the gap.
+### Unplanned Changes
 
-Route failures to:
+Branch changes are evidence of scope.
 
-- Build — implementation defect;
-- Plan — technical/proof/design defect;
-- Prototype — behaviour/experience defect;
-- Idea — problem/goal/success defect.
+They are not automatically approved requirements.
 
-## 2. Synchronize
+If the actual branch contains a consequential change not represented by the approved lifecycle:
 
-Only after verification passes:
+- flag it as unplanned;
+- do not legitimize it by silently adding it to the checklist;
+- route it to the owning phase;
+- resolve whether to approve, change, or remove it;
+- regain the required approval before closing Finalize.
+
+## 2. Verify
+
+Create one complete `Verification Checklist` inside `05-finalize.md`.
+
+Do not create a separate verification file.
+
+Build the checklist from:
+
+- Idea success criteria;
+- Prototype decisions that affect behaviour;
+- Plan step Verify checks;
+- Build verification/evidence;
+- Change Inventory;
+- relevant regression risk created by the branch.
+
+### Checklist Rules
+
+- One check per line.
+- Make the action and expected result clear.
+- Organize by area when the list is long.
+- Carry already-proven checks forward as `[x]`.
+- Keep pending development checks as `[ ]`.
+- Add newly discovered checks from actual branch changes.
+- Do not add deployment/release/post-merge checks.
+
+The user should be able to verify the whole development change from this one file without reopening every earlier lifecycle artifact.
+
+### Test Setup
+
+Add `Test Setup` only when verification requires special:
+
+- users/roles;
+- data;
+- accounts;
+- configuration;
+- environment preparation.
+
+Omit it when unnecessary.
+
+### Gaps
+
+Record only development-time verification that could not be completed.
+
+For each gap include:
+
+- what remains unverified;
+- why.
+
+Do not hide a gap.
+
+Do not describe post-development deployment/release work as a verification gap.
+
+### Failure Routing
+
+If verification reveals:
+
+- implementation defect → Build;
+- technical/step/verification-plan defect → Plan;
+- behaviour/experience defect → Prototype;
+- problem/goal/success defect → Idea.
+
+Update the owning artifact.
+
+Regain approval when required.
+
+## 3. Synchronize
+
+After intended behaviour is sufficiently verified:
 
 - update module docs;
 - update support/user docs;
 - update other permanent sources when needed;
 - remove statements that are no longer true.
 
-Permanent docs describe verified current behaviour.
+Permanent docs describe current verified behaviour.
 
 They do not describe intended-but-unverified behaviour.
 
-## 3. Improve
+## 4. Improve
 
 Review:
 
 - Cycle Log;
 - Build friction;
+- environment limitations;
+- verification blockers;
 - missing/unclear conventions;
 - repeated agent mistakes;
 - lifecycle friction.
@@ -76,19 +160,6 @@ Do not change process merely to fill this section.
 
 Consequential process changes require explicit user approval before applying.
 
-### Process Friction
-
-Review the Cycle Log for:
-
-- repeated problems;
-- environment limitations;
-- verification blockers;
-- missing conventions;
-- tooling friction;
-- agent mistakes.
-
-Do not dismiss an item only because it existed before the current change.
-
 Ask:
 
 > **Could this problem reasonably affect future work again?**
@@ -103,7 +174,7 @@ If no:
 
 - make no permanent process change.
 
-## 4. Clean
+## 5. Clean
 
 After useful learning is preserved:
 
@@ -113,16 +184,22 @@ After useful learning is preserved:
 - remove accidental leftovers;
 - retain evidence only when it has durable value.
 
-## 5. Close
+## 6. Close
 
 Confirm:
 
-- Goal/Key Results are proved;
-- important regressions are protected;
-- permanent docs match reality;
+- lifecycle intent and branch changes are reconciled;
+- consequential unplanned changes are resolved;
+- required development checks are completed or explicitly accepted as gaps;
+- permanent docs match verified reality;
 - approved process learning is preserved;
 - temporary work is cleaned;
-- no consequential issue remains.
+- no consequential development issue remains.
+
+Set:
+
+- `Complete` when development can close;
+- `Blocked` when unresolved development work remains.
 
 Present Finalize result.
 

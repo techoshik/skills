@@ -45,7 +45,7 @@ Never silently decide something that can materially change:
 - architecture/ownership;
 - data semantics;
 - build sequence;
-- acceptance/proof.
+- acceptance/verification.
 
 Give a recommendation when a meaningful choice needs one, but the user's decision remains theirs.
 

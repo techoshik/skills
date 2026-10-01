@@ -2,7 +2,32 @@
 
 ## Responsibility
 
-Implement the approved Plan one small, reviewable Build Step at a time while strictly following project rules and validated decisions.
+Execute the approved Plan one small, reviewable Build Step at a time.
+
+For each step:
+
+> **Build → Verify → Record → Approve**
+
+## Approval Rule
+
+Plan approval authorizes Build Step 1.
+
+Do not ask the user to approve an already-approved Build Step before implementing it.
+
+After a Build Step is implemented and verified:
+
+- update `04-build.md`;
+- present the completed result;
+- wait for explicit user approval.
+
+Approval of completed Step N authorizes Step N+1.
+
+Stop before completion only when:
+
+- a consequential choice is required;
+- the Plan conflicts with project reality;
+- an upstream decision must change;
+- the planned verification must materially change.
 
 ## Principles
 
@@ -18,14 +43,16 @@ Implement the approved Plan one small, reviewable Build Step at a time while str
 
 Before writing code, answer:
 
-1. What exactly am I building?
-2. What is this step's `Done When`?
-3. Which project rules apply?
-4. Which established implementation am I following?
-5. What files/classes/components should change?
-6. Is there a consequential choice I would have to guess?
+1. What Build Step am I executing?
+2. What does its Specification require?
+3. What Build actions are approved?
+4. What Verify checks are planned?
+5. Which project rules apply?
+6. Which established implementation am I following?
+7. What files/classes/components should change?
+8. Is there a consequential choice I would have to guess?
 
-If #6 is yes:
+If #8 is yes:
 
 > **Stop and ask before coding.**
 
@@ -43,7 +70,7 @@ Do not invent project-wide conventions.
 
 ## Build Unit
 
-A **Build Step** is one coherent responsibility.
+A Build Step is one coherent responsibility.
 
 It may contain several tightly related files.
 
@@ -53,14 +80,14 @@ Do not build the whole feature in one giant step.
 
 ## UI-first Default
 
-For meaningful UI work, prefer an early Build Step containing:
+For meaningful UI work, follow the approved UI-first step when present.
+
+Typical contents:
 
 - UI/component(s);
 - presentation state/model;
 - fake/dummy/in-memory data or provider;
 - relevant visible states.
-
-Use this only when it improves early review.
 
 Backend-only work uses the shortest relevant path.
 
@@ -101,19 +128,25 @@ If test placement/naming/mock conventions are unclear:
 ### 1. Prepare
 
 - Read the current Plan step.
-- Read its `Done When`.
+- Read:
+  - Specification;
+  - Build;
+  - Verify.
 - Read applicable rules.
 - Inspect nearby patterns.
 - Complete Preflight.
 
 ### 2. Test First
 
-- Create the smallest useful failing test.
-- Confirm RED.
+For testable behaviour:
+
+- create the smallest useful failing test;
+- confirm RED.
 
 ### 3. Implement
 
-- Implement only the approved Build Step.
+- Execute only the current step's Build actions.
+- Follow its Specification.
 - Follow project conventions.
 - Reuse established patterns.
 - Do not implement future steps early.
@@ -125,42 +158,67 @@ If test placement/naming/mock conventions are unclear:
 - Keep tests green.
 - Do not broaden scope.
 
-### 5. Check
+### 5. Verify
+
+Run every planned Verify check that can be completed now.
+
+Record:
+
+- passed checks;
+- pending human checks;
+- blocked checks and their reason.
+
+If the planned verification itself must materially change:
+
+- return to Plan;
+- update the owning `Verify` section;
+- get explicit approval;
+- then resume Build.
+
+Do not silently downgrade verification.
+
+### 6. Conformance Check
 
 Before presenting the step:
 
-- relevant tests/checks pass;
-- `Done When` passes;
+- planned implementation is complete;
+- applicable Verify checks pass or have an explicit gap;
 - project conventions are followed;
 - no unrelated code changed;
 - no unapproved behaviour/architecture appeared;
 - app remains compilable/runnable when practical.
 
-### 6. Reviewability Check
+If implementation expanded into multiple independent responsibilities:
 
-Before presenting a Build Step:
-
-- confirm it still has one primary review question;
-- if implementation expanded into multiple independent responsibilities:
-  - stop;
-  - return to Plan;
-  - split the remaining work appropriately.
-
-If planned proof cannot be executed:
-
+- stop;
 - return to Plan;
-- update the Proof strategy;
-- get explicit approval before continuing.
+- split the remaining work appropriately.
 
-Do not silently downgrade proof inside Build.
+### 7. Record
 
-### 7. Approval Gate
+Update `04-build.md`.
+
+Record only actual outcome:
+
+- Result;
+- Verification;
+- Changes from Plan, only when relevant;
+- Gaps, only when relevant.
+
+Do not copy the Plan into Build.
+
+### 8. Approval Gate
 
 Present the completed Build Step.
 
 Wait for explicit user approval.
 
 Do not start the next Build Step before approval.
+
+After approval:
+
+- start the next planned step directly;
+- do not ask for another pre-step approval.
 
 ## Discoveries
 
@@ -188,22 +246,33 @@ Do not interrupt for deterministic consequences such as:
 
 The gate is for consequential choices.
 
+## Build Artifact Purpose
+
+`04-build.md` answers:
+
+> **What actually happened in each completed Build Step, and what was verified?**
+
+It is not another Plan.
+
+Do not add planned work before it has been built.
+
 ## Build vs Finalize
 
 Build asks:
 
-> **Is this Build Step correct and conforming?**
+> **Is this Build Step implemented, verified, and conforming?**
 
 Finalize asks:
 
-> **Does the complete change fulfil the original promise?**
+> **Does the complete branch match the approved lifecycle, and is development complete?**
 
 ## Complete When
 
 - Every Build Step is approved.
-- Every Build Step satisfies `Done When`.
+- Every Build Step satisfies its Specification.
+- Planned Build actions are complete.
+- Verify checks are passed or have explicit development-time gaps.
 - Testable behaviour used TDD.
-- Relevant tests/checks pass.
 - Project conventions are followed.
 - No consequential unapproved decision remains.
 

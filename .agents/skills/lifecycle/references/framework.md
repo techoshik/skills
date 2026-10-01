@@ -8,16 +8,16 @@
 
 1. **Idea** — What do we want and why?
 2. **Prototype** — What uncertainty needs something concrete?
-3. **Plan** — How exactly should we build and prove it here?
-4. **Build** — Can we implement this Build Step correctly and in conformance?
-5. **Finalize** — Does the complete result fulfil the promise, and what durable truth should remain?
+3. **Plan** — What are the reviewable steps, and for each step what must be true, what will we build, and how will we verify it?
+4. **Build** — Can we implement and verify this Build Step correctly and in conformance?
+5. **Finalize** — Does the actual branch match the approved lifecycle, and is development complete?
 
 ## Approval Gate
 
 Always stop at:
 
 - the end of every phase;
-- the end of every Build Step.
+- the end of every **completed** Build Step.
 
 Then:
 
@@ -26,6 +26,18 @@ Then:
 - continue only after approval.
 
 Silence is not approval.
+
+### Build Gate
+
+Plan approval authorizes Build Step 1.
+
+Do not ask for a second approval before starting it.
+
+Approval of completed Step N authorizes Step N+1.
+
+Do not ask for a separate pre-step approval.
+
+Stop during execution only when a consequential choice, conflict, or upstream change requires approval.
 
 If changes are requested:
 
@@ -47,7 +59,7 @@ If later reality invalidates earlier work:
 
 - Problem / Goal / Key Results → Idea.
 - Behaviour / experience → Prototype.
-- Technical solution / proof / build sequence → Plan.
+- Build Step Specification / Build actions / Verify plan / build sequence → Plan.
 - Implementation / conformance → Build.
 
 Update the owning artifact.
@@ -78,7 +90,13 @@ Artifacts keep only:
 - finalized decisions;
 - meaningful risks;
 - consequential open questions;
-- proof needed to trust the work;
+- verification needed to trust the work;
 - information needed to resume or continue.
 
 Follow `artifacts.md` for writing conventions.
+
+## Development Boundary
+
+The lifecycle ends when development is finalized and approved.
+
+Deployment, release, merge/post-merge checks, and external review outside development control are not lifecycle artifact responsibilities.

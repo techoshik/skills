@@ -1,13 +1,13 @@
 ---
 name: lifecycle-plan
-description: "Use after Idea/Prototype to inspect the existing project, specify the technical solution, choose proof, and create small reviewable Build Steps."
+description: "Use after Idea/Prototype to inspect the existing project and create small reviewable Build Steps, each with its own Specification, Build actions, and Verify checks."
 ---
 
 # Plan
 
 ## Phase Question
 
-> **How exactly will we build and prove this correctly in the existing system?**
+> **How exactly will we build and verify this change in the existing system?**
 
 Read:
 
@@ -24,31 +24,45 @@ Load:
 - approved/not-needed `02-prototype.md`;
 - only relevant project sources.
 
-Use:
+First understand the existing system:
 
-> **Understand → Specify → Prove → Plan**
+- inspect code/docs/config/tests/guidelines;
+- discover reuse, constraints, dependencies, patterns.
 
-- **Understand**
-  - inspect code/docs/config/tests/guidelines;
-  - discover reuse, constraints, dependencies, patterns.
-- **Specify**
-  - define the technical result.
-- **Prove**
-  - choose the cheapest trustworthy proof;
-  - record real proof gaps.
-- **Plan**
-  - create small reviewable Build Steps;
-  - give each step one primary review question;
-  - give each step `Done When`.
+Then create small reviewable Build Steps.
 
-Do not create a separate Context artifact.
+For every Build Step use:
 
-Do not repeat product decisions owned by Idea/Prototype.
+> **Specification → Build → Verify**
+
+- **Specification**
+  - what must be true when this step is complete;
+  - keep each technical truth with one owning step;
+  - reference earlier steps instead of duplicating rules.
+- **Build**
+  - concrete implementation actions;
+  - one action per line.
+- **Verify**
+  - concrete checks that establish the step;
+  - one check per line;
+  - choose the cheapest trustworthy verification.
+
+Do not create:
+
+- a separate Context artifact;
+- a top-level Specification section;
+- a top-level Proof/Verification Plan section;
+- a separate Build Plan heading;
+- a `Review` subsection.
 
 When meaningful UI exists:
 
 - prefer an early UI + presentation-state Build Step;
 - use fake/dummy data when useful.
+
+If meaningful UI is not separated:
+
+- record one short reason in the relevant step.
 
 Do not hard-code a universal layer order.
 
@@ -73,3 +87,7 @@ Update `00-lifecycle.md`.
 Present the Plan.
 
 Wait for explicit user approval before Build.
+
+Plan approval authorizes Build Step 1.
+
+Do not ask for another approval before starting Step 1.

@@ -1,28 +1,32 @@
 # Finalize
 
-## Verify
+## Change Inventory
 
-- **Goal / Key Results:** Pass / Blocked
-- **Proof:** …
-- **Gaps:** … <!-- only when real -->
-- **Issues:** …
+- …
+
+## Test Setup
+
+- … <!-- only when needed -->
+
+## Verification Checklist
+
+- [ ] …
+
+## Gaps
+
+- … <!-- only when real -->
 
 ## Synchronize
 
-- **Module Docs:** …
-- **Support/User Docs:** …
-- **Other Permanent Sources:** …
+- …
 
 ## Improve
 
-- **Finding**
-  - Action: …
-  - Home: …
-  - Status: …
+- … <!-- only when reusable learning exists -->
 
 ## Clean
 
-- **Temporary Artifacts:** …
+- …
 
 ## Close
 

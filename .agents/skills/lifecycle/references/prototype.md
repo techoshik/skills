@@ -23,7 +23,7 @@ Not production.
 5. Test important edge cases.
 6. Discuss what the artifact revealed.
 7. Refine while meaningful uncertainty remains.
-8. Capture decisions continuously.
+8. Capture Prototype-owned conclusions continuously.
 
 ## Prototype Options
 
@@ -48,6 +48,30 @@ If no prototype adds value:
 - present it;
 - wait for approval before Plan.
 
+## Decision Ownership
+
+Prototype Decisions contain only conclusions discovered or confirmed through prototyping.
+
+Do not repeat decisions already owned by Idea.
+
+When Idea context is needed:
+
+- reference Idea;
+- do not copy the same decision.
+
+If Prototype changes an Idea-owned point:
+
+- return to Idea;
+- update the owning point;
+- regain approval before continuing.
+
+This includes:
+
+- Problem / Opportunity;
+- Goal;
+- Key Results;
+- Idea-owned Decisions.
+
 ## Rules
 
 - State the question before building.
@@ -56,10 +80,6 @@ If no prototype adds value:
 - Expose relevant state/behaviour.
 - Do not polish what cannot answer the question.
 - Stop when the question is answered.
-- If Prototype invalidates Idea:
-  - return to Idea;
-  - update it;
-  - regain approval.
 
 ## Artifact
 
@@ -80,6 +100,11 @@ Use:
 ## Open Questions
 - ...
 ```
+
+Follow the global artifact rule:
+
+- omit empty headings;
+- remove resolved Open Questions.
 
 Keep prototype assets under `prototype/` when useful.
 

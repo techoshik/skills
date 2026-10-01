@@ -1,13 +1,13 @@
 ---
 name: lifecycle-finalize
-description: "Use after Build to prove the complete promise, synchronize permanent documentation, improve the development system from real learning, clean temporary evidence, and close the cycle."
+description: "Use after Build to reconcile the approved lifecycle with the actual branch, create one complete development verification checklist, synchronize permanent truth, preserve reusable learning, clean temporary work, and close development."
 ---
 
 # Finalize
 
 ## Phase Question
 
-> **Is the complete change truly done, and what durable truth or learning should remain?**
+> **Does the actual branch match the approved lifecycle, and is development complete?**
 
 Read:
 
@@ -21,30 +21,70 @@ Read:
 Load:
 
 - Idea Goal + Key Results;
-- Prototype decisions/artifacts;
-- Plan specification + proof + Build Steps;
-- Build results;
+- Prototype-owned decisions/artifacts;
+- Plan Build Steps and their Verify checks;
+- Build results and verification;
+- complete branch diff against its base;
+- current working-tree changes, if any;
 - relevant permanent docs;
 - complete Cycle Log;
 - project verification/conformance rules.
 
 Execute:
 
-> **Verify → Synchronize → Improve → Clean → Close**
+> **Reconcile → Verify → Synchronize → Improve → Clean → Close**
 
-Do not Clean before Improve has decided whether temporary evidence contains reusable learning.
+Finalize is development-only.
+
+Do not add:
+
+- deployment tasks;
+- release decisions;
+- staging/production requirements;
+- merge/post-merge checks;
+- work that can only happen after development is handed off.
+
+### Reconcile
+
+Create a compact Change Inventory from:
+
+- approved lifecycle intent;
+- actual branch changes.
+
+Branch changes are evidence of scope.
+
+They are not automatically approved requirements.
+
+If the branch contains an unplanned consequential change:
+
+- flag it;
+- route it to the owning phase;
+- resolve it before closing development.
 
 ### Verify
 
-- execute the planned proof;
-- check Goal + Key Results;
-- compare important behaviour with Prototype;
-- run relevant regression/build/static checks;
-- include human acceptance when proof requires it.
+Create the complete verification checklist inside `05-finalize.md`.
+
+Use:
+
+- Idea success criteria;
+- Prototype decisions;
+- every Plan step's Verify checks;
+- Build verification/evidence;
+- actual branch changes;
+- relevant regressions implied by those changes.
+
+Carry already-proven checks forward as completed.
+
+Keep pending development checks unchecked.
+
+Add Test Setup only when special setup is needed.
+
+Record development-time verification gaps explicitly.
 
 ### Synchronize
 
-After verification passes:
+After intended behaviour is sufficiently verified:
 
 - update module docs;
 - update support/user docs;
@@ -69,11 +109,20 @@ Consequential process changes require explicit user approval before applying.
 
 ### Clean
 
-Remove temporary evidence only after useful learning is preserved.
+Remove temporary work only after useful learning is preserved.
 
 ### Close
 
-Confirm no consequential issue remains.
+Development is Complete only when:
+
+- approved intent and branch changes are reconciled;
+- consequential unplanned changes are resolved;
+- required development verification is complete or explicitly accepted as a gap;
+- permanent truth is synchronized;
+- useful process learning is preserved;
+- temporary work is cleaned.
+
+Otherwise mark development Blocked.
 
 Update:
 

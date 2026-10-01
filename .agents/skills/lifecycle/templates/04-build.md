@@ -1,15 +1,20 @@
 # Build
 
-## Status
+## 1. <Build Step>
 
-- **Current Step:** …
-- **State:** In Progress / Complete / Blocked
-- **Next:** …
+### Result
 
-## Step 1 — <name>
+- …
 
-- **Result:** Pass / Blocked
-- **Tests:** RED → GREEN / other evidence
-- **Done When:** Pass / Blocked
-- **Conformance:** Pass / Blocked
-- **Deviation:** … <!-- only when relevant -->
+### Verification
+
+- [x] …
+- [ ] … <!-- only when pending -->
+
+### Changes from Plan
+
+- … <!-- only when relevant -->
+
+### Gaps
+
+- … <!-- only when relevant -->
