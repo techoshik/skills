@@ -1,3 +1,5 @@
+<!-- Apply ../references/artifacts.md and its required compactness pass; remove this comment from the finished document. -->
+
 # Prototype
 
 ## Questions

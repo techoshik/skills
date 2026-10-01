@@ -76,6 +76,8 @@ If a later step depends on a rule established earlier:
 
 Specification is not a task list.
 
+Use the [Specification example](artifacts.md#specification-example) for its writing format.
+
 ## 4. Build
 
 Inside each Build Step, `Build` states:
@@ -174,7 +176,8 @@ Use:
 ## 1. <Build Step>
 
 ### Specification
-- ...
+
+- **<Requirement>:** <Short value>.
 
 ### Build
 - ...
@@ -185,7 +188,8 @@ Use:
 ## 2. <Build Step>
 
 ### Specification
-- ...
+
+- **<Requirement>:** <Short value>.
 
 ### Build
 - ...
@@ -200,6 +204,10 @@ Add `## Open Questions` only while consequential planning questions remain.
 
 Remove it when they are resolved.
 
+## Coverage Check
+
+Before presenting Plan, apply [Requirement Coverage](completeness.md#requirement-coverage).
+
 ## Complete When
 
 - Existing-system constraints are understood.
@@ -208,12 +216,11 @@ Remove it when they are resolved.
 - Every Build Step has a clear Specification.
 - Every Build Step has readable Build actions.
 - Every Build Step has concrete Verify checks.
+- Approved requirements have complete step and check coverage.
 - No consequential technical/build-sequence question remains.
 
 Present Plan.
 
 Wait for explicit user approval before Build.
 
-That approval authorizes Build Step 1.
-
-Do not request a second pre-step approval.
+Follow the [Build gate](framework.md#build-gate).

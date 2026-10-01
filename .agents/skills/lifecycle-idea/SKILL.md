@@ -18,6 +18,8 @@ Read:
 - `../lifecycle/references/cycle-log.md`
 - `../lifecycle/references/companion-skills.md`
 
+Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
+
 Use deep questioning when needed.
 
 Treat discussion as a design tree.
@@ -65,4 +67,4 @@ Update `00-lifecycle.md`.
 
 Present the Idea.
 
-Wait for explicit user approval before Prototype.
+Apply the [approval gate](../lifecycle/references/framework.md#approval-gate).

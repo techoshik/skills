@@ -18,6 +18,8 @@ Read:
 - `../lifecycle/references/cycle-log.md`
 - `../lifecycle/references/companion-skills.md`
 
+Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
+
 Load:
 
 - approved `01-idea.md`;
@@ -80,14 +82,12 @@ If planning invalidates Goal/Key Results:
 
 - return to Idea.
 
+Complete [Requirement Coverage](../lifecycle/references/completeness.md#requirement-coverage).
+
 Run the Cycle Log sweep.
 
 Update `00-lifecycle.md`.
 
 Present the Plan.
 
-Wait for explicit user approval before Build.
-
-Plan approval authorizes Build Step 1.
-
-Do not ask for another approval before starting Step 1.
+Apply the [approval gate](../lifecycle/references/framework.md#approval-gate).

@@ -1,3 +1,5 @@
+<!-- Apply ../references/artifacts.md and its required compactness pass; remove this comment from the finished document. -->
+
 # Lifecycle
 
 - **Type:** Module / Feature / Fix / Improvement
@@ -7,7 +9,9 @@
 - **Current Phase:** 01 Idea
 - **Status:** In Progress
 - **Current Build Step:** …
-- **Next:** …
+- **Last Approved:** None
+- **Approval Evidence:** None
+- **Next Authorized Action:** …
 - **Suggested Chat Title:** [Phase] - [Change]
 
 ## Artifacts

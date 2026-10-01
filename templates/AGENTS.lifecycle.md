@@ -17,7 +17,7 @@
   - `CONTEXT.md` — project/domain language when available
   - Project engineering guidelines remain authoritative.
 
-- Keep lifecycle artifacts compact: one idea per line, short bullets, one fact per owner, and references instead of duplication.
+- Before writing or presenting Lifecycle documents, follow `.agents/skills/lifecycle/references/artifacts.md`.
 - The user owns priority and approval. Lifecycle owns process.
 
 <!-- lifecycle:end -->

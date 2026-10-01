@@ -31,6 +31,8 @@ Do not copy stable conventions into Plan unless they affect:
 
 ## Build — Mandatory Preflight
 
+Also complete [Impact Preflight](completeness.md#impact-preflight).
+
 Before every Build Step:
 
 1. Identify touched technologies/layers.
@@ -49,7 +51,9 @@ If a **consequential** convention is missing, unclear, or contradictory:
 
 > **Stop and ask. Do not invent it.**
 
-Ordinary implementation judgment does not require interruption when:
+Ordinary local implementation choices do not require interruption after inspecting relevant rules and patterns.
+
+This includes cases where:
 
 - the Plan already determines the outcome;
 - an existing rule/pattern clearly determines the choice;

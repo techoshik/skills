@@ -18,6 +18,8 @@ Read:
 - `../lifecycle/references/cycle-log.md`
 - `../lifecycle/references/companion-skills.md`
 
+Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
+
 Load:
 
 - `00-lifecycle.md`;
@@ -31,11 +33,9 @@ Load:
 - every applicable engineering rule;
 - nearby established implementations.
 
-Plan approval already authorizes Build Step 1.
+Follow the [Build approval gate](../lifecycle/references/framework.md#build-gate).
 
-Do not request approval before starting an already-approved Build Step.
-
-Complete Preflight before editing.
+Complete Preflight and [Impact Preflight](../lifecycle/references/completeness.md#impact-preflight) before editing.
 
 ## Non-negotiable
 
@@ -57,10 +57,7 @@ When something unexpected requires a **consequential choice**:
 - recommend;
 - ask.
 
-When an upstream decision is wrong:
-
-- route it to Idea/Prototype/Plan;
-- do not improvise inside Build.
+Use [decision ownership](../lifecycle/references/framework.md#return-to-the-owner) when upstream decisions change.
 
 If a planned Verify check must materially change:
 
@@ -69,6 +66,8 @@ If a planned Verify check must materially change:
 - regain approval;
 - then resume Build.
 
+Apply [Proof Limits](../lifecycle/references/completeness.md#proof-limits) and [Gap Acceptance](../lifecycle/references/completeness.md#gap-acceptance).
+
 After completing and verifying each Build Step:
 
 - update `04-build.md`;
@@ -76,10 +75,6 @@ After completing and verifying each Build Step:
 - update `00-lifecycle.md`;
 - present the completed result;
 - wait for explicit user approval.
-
-Approval of completed Step N authorizes Step N+1.
-
-Do not ask for a separate pre-approval before starting the next already-planned step.
 
 When all Build Steps are approved:
 

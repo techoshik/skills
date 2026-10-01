@@ -17,6 +17,8 @@ Read:
 - `references/guidelines.md`
 - `references/companion-skills.md`
 
+Before presenting a document, complete the [required compactness pass](references/artifacts.md#required-compactness-pass).
+
 ## Lifecycle
 
 ```mermaid
@@ -34,54 +36,14 @@ flowchart LR
     F -. goal issue .-> I
 ```
 
-## Approval
+## Shared Rules
 
-Always stop:
-
-- after every phase;
-- after every **completed** Build Step.
-
-Then:
-
-- present the result;
-- wait for explicit user approval;
-- continue only after approval.
-
-Do not infer approval from silence.
-
-### Build Approval Semantics
-
-Plan approval authorizes Build Step 1.
-
-Do not ask for another approval before starting Step 1.
-
-After completed Step N is approved:
-
-- start Step N+1 directly;
-- do not ask for a second pre-step approval.
-
-Stop during a step only when a consequential choice, conflict, or required upstream change needs approval.
-
-If changes are requested:
-
-- stay in the current phase/step;
-- update it;
-- present again.
-
-## Authority
-
-- Lifecycle skills = process authority.
-- Current phase artifacts = active-change decisions.
-- `docs/modules/` = permanent product/module truth.
-- `docs/guidelines/` = permanent engineering standards.
-- Support/user docs = permanent user-facing truth.
-- Companion skills = techniques only.
-
-When sources conflict:
-
-- do not silently choose;
-- route the conflict to the owning phase;
-- ask the user when a consequential decision remains.
+- [Authority](references/framework.md#authority)
+- [Approval gates](references/framework.md#approval-gate)
+- [Decision ownership](references/framework.md#return-to-the-owner)
+- [Development boundary](references/framework.md#development-boundary)
+- [Approval state](references/framework.md#approval-state)
+- [Coverage and completion](references/completeness.md)
 
 ## Workspace
 
@@ -122,18 +84,9 @@ Otherwise infer from approved artifacts:
 8. Wait for explicit user approval when the lifecycle gate requires it.
 9. Continue only after approval.
 
-## Ownership Routing
+## Decision Changes
 
-When later work changes earlier truth:
-
-- Problem / Goal / Key Results → Idea.
-- Behaviour / experience → Prototype.
-- Build Step Specification / Build actions / Verify plan / build sequence → Plan.
-- Implementation / conformance → Build.
-
-Update the owning artifact.
-
-Do not hide the change later.
+Update the owning artifact using [Return to the owner](references/framework.md#return-to-the-owner).
 
 ## Context Discipline
 
@@ -145,14 +98,7 @@ Do not hide the change later.
 
 ## Finalize Boundary
 
-Finalize closes development.
-
-Do not extend lifecycle artifacts into:
-
-- deployment;
-- release;
-- merge/post-merge checks;
-- external review outside development control.
+Follow the [development boundary](references/framework.md#development-boundary).
 
 ## Permanent Knowledge
 

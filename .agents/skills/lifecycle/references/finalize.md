@@ -10,17 +10,7 @@ Reconcile the approved lifecycle with the actual branch, verify the complete dev
 
 ## Boundary
 
-Finalize ends the development lifecycle.
-
-It does not own:
-
-- deployment;
-- release decisions;
-- staging/production validation that can only happen after development;
-- merge/post-merge checks;
-- external review after the development branch is handed off.
-
-Do not put work in `05-finalize.md` that cannot be completed while development is still under the lifecycle's control.
+Follow the [development boundary](framework.md#development-boundary).
 
 ## 1. Reconcile
 
@@ -33,6 +23,8 @@ Start from:
 - Build results;
 - complete branch diff against its base;
 - current working-tree changes, if any.
+
+Apply [Branch Reconciliation](completeness.md#branch-reconciliation).
 
 Create a compact `Change Inventory`.
 
@@ -78,7 +70,8 @@ Build the checklist from:
 - One check per line.
 - Make the action and expected result clear.
 - Organize by area when the list is long.
-- Carry already-proven checks forward as `[x]`.
+- Carry already-proven checks forward with their evidence references.
+- Apply the [evidence rules](artifacts.md#evidence) before marking `[x]`.
 - Keep pending development checks as `[ ]`.
 - Add newly discovered checks from actual branch changes.
 - Do not add deployment/release/post-merge checks.
@@ -101,10 +94,7 @@ Omit it when unnecessary.
 
 Record only development-time verification that could not be completed.
 
-For each gap include:
-
-- what remains unverified;
-- why.
+Apply [Gap Acceptance](completeness.md#gap-acceptance).
 
 Do not hide a gap.
 
@@ -175,6 +165,8 @@ If no:
 - make no permanent process change.
 
 ## 5. Clean
+
+Complete [Safe Cleanup](completeness.md#safe-cleanup).
 
 After useful learning is preserved:
 

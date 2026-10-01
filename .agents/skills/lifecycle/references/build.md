@@ -10,24 +10,9 @@ For each step:
 
 ## Approval Rule
 
-Plan approval authorizes Build Step 1.
+Follow the [approval gate](framework.md#approval-gate).
 
-Do not ask the user to approve an already-approved Build Step before implementing it.
-
-After a Build Step is implemented and verified:
-
-- update `04-build.md`;
-- present the completed result;
-- wait for explicit user approval.
-
-Approval of completed Step N authorizes Step N+1.
-
-Stop before completion only when:
-
-- a consequential choice is required;
-- the Plan conflicts with project reality;
-- an upstream decision must change;
-- the planned verification must materially change.
+Before presenting a completed step, update `04-build.md`.
 
 ## Principles
 
@@ -40,6 +25,8 @@ Stop before completion only when:
 > **The agent may suggest beyond the Plan, but must not implement beyond the Plan without approval.**
 
 ## Preflight — Before Every Build Step
+
+Complete [Impact Preflight](completeness.md#impact-preflight).
 
 Before writing code, answer:
 
@@ -59,8 +46,9 @@ If #8 is yes:
 ### Hard Gates
 
 - Missing consequential rule → ask.
-- Conflicting rules → ask.
-- Missing naming/placement/structure/test convention after inspection → ask.
+- Consequential rule conflict → ask.
+- Missing convention with consequential impact → ask.
+- Ordinary local choice → use inspected patterns and implementation judgment.
 - New architectural decision → ask.
 - Extra requirement → suggest and ask.
 - Unrelated improvement → suggest; do not implement.
@@ -162,7 +150,9 @@ For testable behaviour:
 
 Run every planned Verify check that can be completed now.
 
-Record:
+Apply [Proof Limits](completeness.md#proof-limits) and [Gap Acceptance](completeness.md#gap-acceptance).
+
+Record results using [Evidence](artifacts.md#evidence):
 
 - passed checks;
 - pending human checks;
@@ -271,7 +261,7 @@ Finalize asks:
 - Every Build Step is approved.
 - Every Build Step satisfies its Specification.
 - Planned Build actions are complete.
-- Verify checks are passed or have explicit development-time gaps.
+- Verify checks pass or have explicitly accepted verification gaps.
 - Testable behaviour used TDD.
 - Project conventions are followed.
 - No consequential unapproved decision remains.

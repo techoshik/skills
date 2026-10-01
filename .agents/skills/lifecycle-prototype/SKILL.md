@@ -18,6 +18,8 @@ Read:
 - `../lifecycle/references/cycle-log.md`
 - `../lifecycle/references/companion-skills.md`
 
+Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
+
 Load approved `01-idea.md`.
 
 For each important uncertainty:
@@ -59,4 +61,4 @@ Update `00-lifecycle.md`.
 
 Present the Prototype.
 
-Wait for explicit user approval before Plan.
+Apply the [approval gate](../lifecycle/references/framework.md#approval-gate).

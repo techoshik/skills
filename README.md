@@ -32,7 +32,7 @@ docs/lifecycle/<change-name>/
 └── prototype/          # optional
 ```
 
-Lifecycle artifacts are compact working memory: one idea per line, short bullets and sentences, one fact per owner, and references instead of duplication. See `.agents/skills/lifecycle/references/artifacts.md` and `.agents/skills/lifecycle/references/framework.md`.
+Lifecycle documents follow the writing rules and required compactness pass in [artifacts.md](.agents/skills/lifecycle/references/artifacts.md). Process ownership remains in [framework.md](.agents/skills/lifecycle/references/framework.md).
 
 ## Companion skills
 

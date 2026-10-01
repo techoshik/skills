@@ -12,6 +12,19 @@
 4. **Build** — Can we implement and verify this Build Step correctly and in conformance?
 5. **Finalize** — Does the actual branch match the approved lifecycle, and is development complete?
 
+## Authority
+
+- **Process:** Lifecycle framework and phase references.
+- **Active decisions:** Approved phase artifacts.
+- **Product truth:** `docs/modules/`.
+- **Engineering standards:** Project guidelines.
+- **User instructions:** Support/user docs.
+- **Companion skills:** Techniques only.
+
+Resolve source conflicts with the owning phase.
+
+Ask the user when a consequential decision remains.
+
 ## Approval Gate
 
 Always stop at:
@@ -21,7 +34,7 @@ Always stop at:
 
 Then:
 
-- present the result;
+- present the result using [Approval Presentation](artifacts.md#approval-presentation);
 - wait for explicit user approval;
 - continue only after approval.
 
@@ -44,6 +57,28 @@ If changes are requested:
 - stay in the current phase or Build Step;
 - update the work;
 - present it again.
+
+## Approval State
+
+Record approval state in `00-lifecycle.md`:
+
+- **Last Approved:** Exact phase or Build Step; `None` initially.
+- **Approval Evidence:** User message reference or concise dated quotation.
+- **Next Authorized Action:** Action permitted by that approval; `None` while awaiting approval.
+
+On resume, confirm the recorded approval still applies to the current artifacts.
+
+If decisions changed after approval, mark affected approval stale.
+
+Obtain renewed approval before continuing affected work.
+
+When approval cannot be established, inspect available history first.
+
+Ask the user only if it remains unresolved.
+
+## Completion Checks
+
+Apply [coverage and completion checks](completeness.md) at their specified phases.
 
 ## Phase Rules
 
@@ -93,10 +128,13 @@ Artifacts keep only:
 - verification needed to trust the work;
 - information needed to resume or continue.
 
-Follow `artifacts.md` for writing conventions.
+For document writing and the required pre-presentation pass, follow [artifacts.md](artifacts.md).
 
 ## Development Boundary
 
 The lifecycle ends when development is finalized and approved.
 
-Deployment, release, merge/post-merge checks, and external review outside development control are not lifecycle artifact responsibilities.
+- Include verification available while development remains under lifecycle control.
+- Development-time staging checks may be included when authorized.
+- Deployment, release, merge/post-merge checks, and external handoff reviews remain outside this lifecycle.
+- Lifecycle approval does not authorize production access or deployment.

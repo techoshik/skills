@@ -18,6 +18,8 @@ Read:
 - `../lifecycle/references/cycle-log.md`
 - `../lifecycle/references/companion-skills.md`
 
+Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
+
 Load:
 
 - Idea Goal + Key Results;
@@ -34,17 +36,11 @@ Execute:
 
 > **Reconcile → Verify → Synchronize → Improve → Clean → Close**
 
-Finalize is development-only.
-
-Do not add:
-
-- deployment tasks;
-- release decisions;
-- staging/production requirements;
-- merge/post-merge checks;
-- work that can only happen after development is handed off.
+Follow the [development boundary](../lifecycle/references/framework.md#development-boundary).
 
 ### Reconcile
+
+Apply [Branch Reconciliation](../lifecycle/references/completeness.md#branch-reconciliation).
 
 Create a compact Change Inventory from:
 
@@ -74,13 +70,13 @@ Use:
 - actual branch changes;
 - relevant regressions implied by those changes.
 
-Carry already-proven checks forward as completed.
+Carry checks forward using the [evidence rules](../lifecycle/references/artifacts.md#evidence).
 
 Keep pending development checks unchecked.
 
 Add Test Setup only when special setup is needed.
 
-Record development-time verification gaps explicitly.
+Apply [Proof Limits](../lifecycle/references/completeness.md#proof-limits) and [Gap Acceptance](../lifecycle/references/completeness.md#gap-acceptance).
 
 ### Synchronize
 
@@ -109,7 +105,7 @@ Consequential process changes require explicit user approval before applying.
 
 ### Clean
 
-Remove temporary work only after useful learning is preserved.
+Apply [Safe Cleanup](../lifecycle/references/completeness.md#safe-cleanup) before removing temporary work.
 
 ### Close
 
@@ -131,4 +127,4 @@ Update:
 
 Present Finalize.
 
-Wait for explicit user approval before closing the lifecycle.
+Apply the [approval gate](../lifecycle/references/framework.md#approval-gate).
