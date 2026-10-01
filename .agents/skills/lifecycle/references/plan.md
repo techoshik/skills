@@ -40,6 +40,13 @@ Every step contains Outcome, Covers links, then:
 
 Use the [Plan template](../templates/03-plan.md) and the [required artifact format](artifacts.md#required-format) for every step. Keep Specification and Verify within steps; omit separate Context, top-level Specification/verification plan, Build Plan, and Review sections.
 
+### Focused test selection
+
+- **Select:** Identify meaningful tests for changed business logic, access/data boundaries, and credible failure paths.
+- **Reuse:** Prefer existing coverage; add tests only when they protect a plausible regression.
+- **Timing:** Plan implementation first, then focused tests within the same step before approval, following [step-end testing](build.md#implement-then-test-the-step).
+- **Simple changes:** Use suitable existing tests, build/static checks, or observation when new tests add no meaningful proof.
+
 ### Test Now
 
 Within each Verify section provide Setup (actor/permissions, fixtures, environment), exact Open / Run entry point, Action, Expected outcome, and applicable automated/denial/failure checks. Provision needed fixtures/environment in this step or an approved prerequisite. For app capabilities, use the app with connected development services; for backend/tools, use the supported API/command. Static checks alone do not prove an app capability.

@@ -34,4 +34,5 @@ and #required-compactness-pass. Remove this comment before presentation. -->
 - **Acceptance:** Pending / <Explicit gap acceptance reference>
 
 <!-- Repeat for completed steps only. Keep checks unchecked until observed;
-accepted gaps remain unchecked. Omit unused sections; remove instructions. -->
+Record focused test coverage or why existing/other proof suffices.
+Complete step tests before requesting approval; accepted gaps remain unchecked. Omit unused sections; remove instructions. -->

@@ -14,3 +14,5 @@ Read these required sources unless their unchanged contents are already loaded:
 Read `00-lifecycle.md` and establish authorization. Execute this phase only; load every reference required by its procedure or current condition. Create/update the [phase artifact](../lifecycle/templates/04-build.md). Follow the framework handoff before presenting approval.
 
 For every document created or edited in this phase, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass) before presentation or handoff.
+
+Follow [step-end testing](../lifecycle/references/build.md#implement-then-test-the-step): implement first, then finish meaningful tests and verification before requesting the current step’s approval.

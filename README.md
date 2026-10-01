@@ -7,7 +7,7 @@ A portable development system: **Idea → Prototype → Plan → Build → Final
 | Idea | Need, minimum scope, observable success |
 | Prototype | Concrete evidence for uncertainty, or justified Not needed |
 | Plan | Small runnable steps with Specification, Build, Verify |
-| Build | One authorized step, immediate testing, review, actual evidence |
+| Build | Implement one step, then focused tests, immediate verification, review, and evidence |
 | Finalize | Full-branch reconciliation, verification, permanent truth, closure |
 
 Explicit approval is required after each phase and completed Build Step. [Framework](.agents/skills/lifecycle/references/framework.md) owns the exact approval/ownership contract.

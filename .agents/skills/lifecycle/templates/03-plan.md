@@ -18,6 +18,7 @@ and #required-compactness-pass. Remove this comment before presentation. -->
 ### Build
 
 - <Concrete implementation action>
+- <Add/extend meaningful tests after implementation, only when warranted>
 
 ### Verify
 
@@ -30,5 +31,6 @@ and #required-compactness-pass. Remove this comment before presentation. -->
 
 <!-- Repeat the step structure as needed. For UI Preview/Prerequisite exceptions,
 include Type, Reason, Testable Now, Unavailable, and Enables.
+Select focused tests using ../references/build.md#implement-then-test-the-step.
 Apply ../references/artifacts.md#required-format to Specification, Build, and Verify.
 Complete its compactness pass; remove these instructions before presentation. -->

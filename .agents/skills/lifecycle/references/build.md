@@ -10,15 +10,33 @@ Read [Project Rules](guidelines.md), [Coverage and Completion](completeness.md),
 
 Before edits, apply Impact Preflight in completeness.md. Establish the step's Specification, actions, checks, Test Now path, governing rules, existing implementation pattern, and affected files/callers. Resolve consequential missing/conflicting conventions, architecture choices, extra requirements, or plan conflicts through their owner before coding. Mechanical imports, wiring, and required call-site updates need no separate decision.
 
-## TDD — hard rule for testable behaviour
+## Implement, then test the step
 
-Work one behavior through RED → GREEN → REFACTOR before starting the next:
+Default sequence: **Implement → Focused tests → Verify → Review → Record → Approval**.
 
-1. Write and run the smallest useful failing test; confirm it fails for the intended reason.
-2. Implement the minimum behavior; run and confirm GREEN.
-3. Refactor within approved responsibility while keeping tests green.
+- **Implement first**
+  - Complete the current approved capability directly from its Specification and project rules.
+  - Keep refactoring within this responsibility; a mandatory failing-test cycle is not required.
+- **Focused tests before step approval**
+  - Reuse or extend existing tests before adding new ones.
+  - Cover changed business rules, permission boundaries, data mutations/invariants, and meaningful failure or recovery paths.
+  - Choose cases that catch plausible regressions and observe independent expected outcomes through a supported interface.
+  - Skip new tests for trivial wiring, decorative-only details, and assertions that merely mirror the implementation.
+  - Record why existing tests or another proof method suffice when no new tests are warranted.
+- **Test boundaries**
+  - Follow project fixture, mock, placement, and naming rules.
+  - Prefer real behavior at the tested interface; use approved substitutes where isolation is needed.
+  - Mocked tests do not establish real service or permission behavior.
+  - Add wrappers/injection only for an actual need or governing project rule.
+- **Bug fixes**
+  - Reproduce the failure before editing when practical, using an existing test, request, or observation.
+  - Add or extend meaningful regression coverage by the end of the step; reproduction need not start with a newly written failing test.
+- **Timing**
+  - Complete focused tests and planned verification within this step, before requesting its approval.
+  - Keep the approved Verify checks; changes follow Plan’s verification-change rule.
+  - Finalize checks the combined feature rather than receiving deferred step testing.
 
-Test through the relevant supported interface with independent expected outcomes and a plausible regression to catch. Follow project fixtures/mocks/placement/naming. Prefer real behavior at the tested interface; use approved substitutes at isolation boundaries. Mocked integration cannot prove the real service/permission boundary. Avoid implementation-mirroring tests, decorative-only tests, and wrappers/injection added solely for generic preferences.
+Use test-first development when explicitly requested or required by applicable project rules; it is not the shared default.
 
 ## Deliver and verify
 
@@ -38,7 +56,7 @@ Finish the [phase handoff](framework.md#phase-handoff) for the current step and 
 
 ## Complete when
 
-Every step is implemented, conforming, verified (or has explicitly accepted proof gaps), and approved; testable behavior used TDD; no consequential unapproved choice remains. Present Build completion and obtain approval before Finalize.
+Every step is implemented, conforming, verified (or has explicitly accepted proof gaps), and approved. Its meaningful test coverage is complete before approval; no consequential unapproved choice remains. Present Build completion and obtain approval before Finalize.
 
 ## Delegated work
 
