@@ -49,7 +49,9 @@ Delegate approved implementation and focused review using [Model Coordination](.
 - Consequential extra implementation requires approval.
 - Implement one Build Step at a time.
 - Use TDD for testable behaviour.
-- Honor approved UI-first steps.
+- Deliver the approved vertical capability.
+- Run its Test Now path.
+- Honor explicit preview or prerequisite exceptions.
 - Follow the step Specification.
 - Perform the step Verify checks.
 

@@ -10,8 +10,8 @@ Five phases:
 
 - **Idea** — understand what we want and define observable success.
 - **Prototype** — make uncertainty concrete when discussion is insufficient.
-- **Plan** — inspect the system, specify the technical change, choose proof, and create reviewable Build Steps.
-- **Build** — implement one approved Build Step at a time, follow project rules, and use TDD for testable behaviour.
+- **Plan** — define one narrow runnable behavior per step, with exact Test Now instructions.
+- **Build** — implement, test, review, and record one approved step; wait for approval before the next.
 - **Finalize** — verify, synchronize permanent truth, improve from real learning, clean, and close.
 
 ## Model selection

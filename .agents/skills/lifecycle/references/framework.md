@@ -49,6 +49,10 @@ Do not ask for a second approval before starting it.
 
 Approval of completed Step N authorizes Step N+1.
 
+Implement, verify, review, and record only the current step before presenting it.
+
+Do not batch future steps while waiting for approval.
+
 Do not ask for a separate pre-step approval.
 
 Stop during execution only when a consequential choice, conflict, or upstream change requires approval.

@@ -44,6 +44,7 @@ flowchart LR
 - [Development boundary](references/framework.md#development-boundary)
 - [Approval state](references/framework.md#approval-state)
 - [Coverage and completion](references/completeness.md)
+- [Small, testable Build Steps](references/plan.md#vertical-build-steps)
 
 ## Workspace
 

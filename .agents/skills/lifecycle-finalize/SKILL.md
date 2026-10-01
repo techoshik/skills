@@ -73,6 +73,10 @@ Use:
 - actual branch changes;
 - relevant regressions implied by those changes.
 
+Finalize consolidates valid step evidence and verifies whole-change regressions.
+
+Do not defer runnable capability checks from Build to Finalize.
+
 Carry checks forward using the [evidence rules](../lifecycle/references/artifacts.md#evidence).
 
 Keep pending development checks unchecked.

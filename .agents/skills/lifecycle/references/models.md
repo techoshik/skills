@@ -13,6 +13,10 @@ The coordinator retains ownership of lifecycle documents, approvals, and scope d
 
 ## Main Chat Selection
 
+This selection rule applies to the main coordinator chat only.
+
+Delegated Luna workers keep their assigned model and follow the supplied step or review scope.
+
 Select GPT-6.1 Sol in the main chat before starting or resuming Lifecycle.
 
 A skill cannot switch its own chat model.
@@ -34,7 +38,8 @@ When model-selectable subagents are available:
 - Spawn the implementer with `model: gpt-6-luna`.
 - Use a minimal task context that permits an explicit model override.
 - With `collaboration.spawn_agent`, use `fork_turns: none` and supply the context explicitly.
-- Provide the workspace path and approved step's Specification, Build, and Verify sources.
+- Provide the workspace path and approved step's Specification, Build, Verify, and Test Now sources.
+- Delegate only the current step; prohibit future-step implementation.
 - Provide applicable instruction, guideline, and module-document paths.
 - Provide existing changes to preserve and the allowed editing scope.
 - Require Preflight, TDD, and planned verification.

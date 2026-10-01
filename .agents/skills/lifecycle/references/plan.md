@@ -52,7 +52,9 @@ Do not ask for a second approval of the same settled choice.
 
 ## 2. Create Build Steps
 
-A Build Step is one coherent responsibility that can be:
+A Build Step delivers one narrow behavior using [Vertical Build Steps](#vertical-build-steps).
+
+It must be:
 
 - implemented;
 - reviewed;
@@ -66,7 +68,7 @@ Rules:
 - do not generate the whole feature in one giant step;
 - prefer early reviewable feedback.
 
-Each step should have one primary review responsibility.
+Each capability step must have one independently exercisable user or caller outcome.
 
 If independently judging the step requires several unrelated responsibilities:
 
@@ -146,30 +148,85 @@ These checks become inputs to:
 - Build Step verification;
 - Finalize's complete verification checklist.
 
-## UI-first Default
+## Vertical Build Steps
 
-When meaningful UI exists:
+Default to one small, complete capability per Build Step.
 
-- prefer an early Build Step with UI + presentation contract;
-- use fake/dummy/in-memory data when useful;
-- include relevant visible states;
-- avoid premature backend integration.
+- State the observable outcome before listing implementation work.
+- Include every layer required to exercise that outcome.
+- Include applicable authorization and failure handling.
+- Make the capability runnable without implementing a later step.
+- For app features, verify through the application with connected development services.
+- For backend or tooling work, verify through its supported API or command.
+- Reuse capabilities completed in earlier approved steps.
+- Reduce supported scope when a slice is too large.
+- Preserve a complete journey within that reduced scope.
 
-Do not force backend/domain/database models into the first step unless the UI truly requires them.
+### Small-Step Boundary
 
-When meaningful UI exists but a separate UI-first step is not appropriate:
+- One step delivers one narrowly stated behavior.
+- A shared screen, module, or deadline does not justify bundling capabilities.
+- If behaviors can be exercised and accepted separately, split them into separate steps.
+- Keep only cross-layer work needed for the current behavior.
+- Add later behaviors through later approved steps.
+- Split steps whose review requires several independent test journeys.
+- Do not bundle work to reduce step count or finish coding faster.
 
-- record one short reason in the relevant step.
+Related failure and authorization cases belong with the behavior they protect.
 
-Example:
+There is no target or maximum number of steps.
 
-```md
-### Specification
-- **UI-first:** Not separated.
-  - Existing control depends directly on established application state.
-```
+Prefer many small testable steps over fewer steps with delayed verification.
 
-Do not add this note when no meaningful UI exists.
+Backend → rules → UI is a layer sequence, not a default capability sequence.
+
+### Explicit Exceptions
+
+- **UI Preview:** Fake data may support an interaction review.
+- **Prerequisite:** Unavoidable technical groundwork may enable a later capability.
+
+For either exception, record:
+
+- step type;
+- why it cannot sensibly be part of a complete capability;
+- what is testable now;
+- what remains unavailable;
+- the capability step that completes the connection.
+
+A preview does not prove connected behavior or authorization.
+
+A prerequisite does not count as delivery of the later capability.
+
+Plan approval must explicitly include these exceptions.
+
+### Test Now
+
+Inside each step's Verify section, provide:
+
+- **Setup:** Actor, permissions, fixtures, and development environment needed.
+- **Open / Run:** Exact entry point or command.
+- **Action:** What the reviewer does.
+- **Expected:** Observable outcome.
+- **Checks:** Applicable denial, failure, and automated checks.
+
+Provision the required environment or fixtures within this step or an already approved prerequisite.
+
+Keep instructions beside the step; do not defer them to Finalize.
+
+Static checks alone do not establish an app-testable capability.
+
+Before presenting Plan, ask for every step:
+
+> Can the user exercise this stated outcome before any later step is built?
+
+If no, split by a smaller capability or identify an explicit exception.
+
+Example sequence:
+
+- **View team:** Connected list with assigned-shop access enforcement.
+- **Change password:** Permitted password change with error handling.
+- **Edit user:** Save supported edits and observe the result.
+- **Remove access:** Remove membership and verify access revocation.
 
 ## Verification Changes During Build
 
@@ -191,35 +248,7 @@ Never silently replace planned verification with weaker evidence.
 
 ## Artifact
 
-Use:
-
-```md
-# Plan
-
-## 1. <Build Step>
-
-### Specification
-
-- **<Requirement>:** <Short value>.
-
-### Build
-- ...
-
-### Verify
-- [ ] ...
-
-## 2. <Build Step>
-
-### Specification
-
-- **<Requirement>:** <Short value>.
-
-### Build
-- ...
-
-### Verify
-- [ ] ...
-```
+Use [the Plan template](../templates/03-plan.md).
 
 Add optional subsections only when useful.
 
@@ -245,6 +274,9 @@ Before presenting Plan, apply [Requirement Coverage](completeness.md#requirement
 - Every Build Step has a clear Specification.
 - Every Build Step has readable Build actions.
 - Every Build Step has concrete Verify checks.
+- Every step has a Test Now path.
+- Capability steps are runnable before later steps are built.
+- Preview and prerequisite exceptions are explicit.
 - Approved requirements have complete step and check coverage.
 - No consequential technical/build-sequence question remains.
 

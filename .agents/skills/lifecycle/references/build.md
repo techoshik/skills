@@ -18,7 +18,7 @@ Before presenting a completed step, update `04-build.md`.
 
 > **Follow the plan. Follow the project. Never silently invent.**
 
-> **UI first when meaningful UI exists.**
+> **Deliver one small, immediately testable capability at a time.**
 
 > **Test first when behaviour is testable.**
 
@@ -58,7 +58,7 @@ Do not invent project-wide conventions.
 
 ## Build Unit
 
-A Build Step is one coherent responsibility.
+A Build Step delivers one narrow behavior under [Small-Step Boundary](plan.md#small-step-boundary).
 
 It may contain several tightly related files.
 
@@ -66,18 +66,23 @@ It must remain reviewable as one unit.
 
 Do not build the whole feature in one giant step.
 
-## UI-first Default
+## Immediately Testable Delivery
 
-For meaningful UI work, follow the approved UI-first step when present.
+Follow the approved [Vertical Build Step](plan.md#vertical-build-steps).
 
-Typical contents:
+Run the step's Test Now path before presenting its outcome.
 
-- UI/component(s);
-- presentation state/model;
-- fake/dummy/in-memory data or provider;
-- relevant visible states.
+Record actual results and evidence beside that step.
 
-Backend-only work uses the shortest relevant path.
+When human interaction is needed, present the exact Test Now instructions.
+
+Keep the human check pending until observed or explicitly accepted as a gap.
+
+Do not implement a later step to make the current capability testable.
+
+If the step depends on unfinished future work, return to Plan.
+
+Honor explicit preview and prerequisite exceptions without claiming connected feature proof.
 
 ## TDD — Hard Rule for Testable Behaviour
 
@@ -193,7 +198,8 @@ Complete [Lifecycle Code Review](code-review.md).
 Before presenting the step:
 
 - planned implementation is complete;
-- applicable Verify checks pass or have an explicit gap;
+- applicable Verify checks pass or remain visibly pending;
+- completion requires explicit acceptance of any required verification gap;
 - project conventions are followed;
 - no unrelated code changed;
 - no unapproved behaviour/architecture appeared;
@@ -220,6 +226,10 @@ Record only actual outcome:
 Do not copy the Plan into Build.
 
 ### 8. Approval Gate
+
+Finish implementation, Test Now verification, review, and recording for the current step only.
+
+Keep pending checks visible under the gap acceptance rules.
 
 Present the completed Build Step.
 

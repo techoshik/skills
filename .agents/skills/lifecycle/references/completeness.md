@@ -13,6 +13,8 @@ Before presenting Plan:
 - Record explicit scope decisions for deferred or excluded requirements.
 - Obtain user approval for any change to approved scope.
 - Keep unresolved coverage visible until it is resolved.
+- Confirm each capability step meets [Small-Step Boundary](plan.md#small-step-boundary).
+- Confirm its Test Now path works before later steps are implemented.
 
 Use a compact `Covers` line inside each step.
 

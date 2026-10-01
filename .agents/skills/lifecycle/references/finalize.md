@@ -71,6 +71,12 @@ Build the checklist from:
 - Make the action and expected result clear.
 - Organize by area when the list is long.
 - Carry already-proven checks forward with their evidence references.
+
+Finalize is not the first verification of individual capabilities.
+
+Rerun step checks only when later changes invalidate their proof or a relevant regression remains.
+
+Add whole-change checks where individual step evidence cannot prove the combined behavior.
 - Apply the [evidence rules](artifacts.md#evidence) before marking `[x]`.
 - Keep pending development checks as `[ ]`.
 - Add newly discovered checks from actual branch changes.

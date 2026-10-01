@@ -33,7 +33,9 @@ First understand the existing system:
 
 Apply [Minimum Complete Solution](../lifecycle/references/completeness.md#minimum-complete-solution).
 
-Then create small reviewable Build Steps.
+Create one narrow, immediately testable behavior per Build Step.
+
+Split independently exercisable capabilities even when they share a module or screen.
 
 For every Build Step use:
 
@@ -59,16 +61,13 @@ Do not create:
 - a separate Build Plan heading;
 - a `Review` subsection.
 
-When meaningful UI exists:
+Use [Vertical Build Steps](../lifecycle/references/plan.md#vertical-build-steps).
 
-- prefer an early UI + presentation-state Build Step;
-- use fake/dummy data when useful.
+Require a [Test Now](../lifecycle/references/plan.md#test-now) path in every step.
 
-If meaningful UI is not separated:
+Keep preview and prerequisite exceptions explicit.
 
-- record one short reason in the relevant step.
-
-Do not hard-code a universal layer order.
+Use as many small steps as needed.
 
 Ask the user only for consequential choices/trade-offs not resolved by:
 

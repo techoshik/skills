@@ -51,6 +51,9 @@ Treat design preferences as judgment calls, not undocumented mandatory standards
 Check:
 
 - Every requirement assigned to the step is implemented.
+- The stated capability is runnable through its Test Now path.
+- It does not depend on unimplemented future steps.
+- Preview or prerequisite limitations match the approved exception.
 - Behavior matches the approved contract.
 - Normal, failure, and affected boundary scenarios are handled.
 - Necessary safeguards from [Minimum Complete Solution](completeness.md#minimum-complete-solution) are implemented.

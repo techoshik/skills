@@ -17,6 +17,8 @@
   - `CONTEXT.md` — project/domain language when available
   - Project engineering guidelines remain authoritative.
 
+- Plan and Build follow `.agents/skills/lifecycle/references/plan.md#vertical-build-steps`: one narrow behavior, immediate verification, then approval.
+
 - Before writing or presenting Lifecycle documents, follow `.agents/skills/lifecycle/references/artifacts.md`.
 - The user owns priority and approval. Lifecycle owns process.
 

@@ -10,6 +10,8 @@
 
 ### Verification
 
+- **Test Now:** <Link to this step's Plan Verify instructions>.
+- [ ] **Test Now result:** <Observed outcome or pending human check>.
 - [ ] **<Check>:** <Expected outcome>.
   - **Result:** <Observed outcome or pending>.
   - **Evidence:** <Test, output, or observation link when verified>.

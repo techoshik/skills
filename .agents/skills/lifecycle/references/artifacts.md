@@ -92,6 +92,7 @@ After the required compactness pass, present:
 - **Result:** What is ready for review.
 - **Gaps:** Material limitations, only when present.
 - **Document:** Link to the owning artifact.
+- **Test Now:** For Build, link directly to the current step's instructions and state what remains for human verification.
 - **Approval:** Name the phase or completed Build Step being approved.
 
 Keep the request short.
