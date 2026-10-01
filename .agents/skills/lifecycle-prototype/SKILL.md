@@ -12,6 +12,7 @@ description: "Use after Idea when something must be made concrete to resolve beh
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/models.md`
 - `../lifecycle/references/artifacts.md`
 - `../lifecycle/references/prototype.md`
 - `../lifecycle/references/questioning.md`

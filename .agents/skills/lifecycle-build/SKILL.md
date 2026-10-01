@@ -12,6 +12,7 @@ description: "Use after Plan approval to execute one Build Step at a time, verif
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/models.md`
 - `../lifecycle/references/artifacts.md`
 - `../lifecycle/references/build.md`
 - `../lifecycle/references/code-review.md`
@@ -36,6 +37,8 @@ Load:
 Follow the [Build approval gate](../lifecycle/references/framework.md#build-gate).
 
 Complete Preflight and [Impact Preflight](../lifecycle/references/completeness.md#impact-preflight) before editing.
+
+Delegate approved implementation and focused review using [Model Coordination](../lifecycle/references/models.md#delegation).
 
 ## Non-negotiable
 

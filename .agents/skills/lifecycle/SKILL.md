@@ -11,6 +11,7 @@ disable-model-invocation: true
 Read:
 
 - `references/framework.md`
+- `references/models.md`
 - `references/artifacts.md`
 - `references/questioning.md`
 - `references/cycle-log.md`

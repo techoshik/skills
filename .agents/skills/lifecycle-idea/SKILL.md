@@ -12,6 +12,7 @@ description: "Use first to deeply understand a feature, issue, request, bug, imp
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/models.md`
 - `../lifecycle/references/artifacts.md`
 - `../lifecycle/references/questioning.md`
 - `../lifecycle/references/idea.md`

@@ -12,6 +12,8 @@
 4. **Build** — Can we implement and verify this Build Step correctly and in conformance?
 5. **Finalize** — Does the actual branch match the approved lifecycle, and is development complete?
 
+Follow [Model Coordination](models.md) for main-chat selection and delegated execution.
+
 ## Authority
 
 - **Process:** Lifecycle framework and phase references.

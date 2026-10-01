@@ -12,6 +12,7 @@ description: "Use after Build to reconcile the approved lifecycle with the actua
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/models.md`
 - `../lifecycle/references/artifacts.md`
 - `../lifecycle/references/finalize.md`
 - `../lifecycle/references/code-review.md`
@@ -19,6 +20,8 @@ Read:
 - `../lifecycle/references/cycle-log.md`
 
 Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
+
+Sol owns Finalize assessment; use [Model Coordination](../lifecycle/references/models.md#finalize) for delegated checks.
 
 Load:
 

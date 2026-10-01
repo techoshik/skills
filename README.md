@@ -14,6 +14,18 @@ Five phases:
 - **Build** — implement one approved Build Step at a time, follow project rules, and use TDD for testable behaviour.
 - **Finalize** — verify, synchronize permanent truth, improve from real learning, clean, and close.
 
+## Model selection
+
+Select **GPT-6.1 Sol** for the main Lifecycle chat.
+
+The coordinator delegates approved Build Steps and focused code reviews to **GPT-6 Luna** when model-selectable subagents are available.
+
+Sol owns Finalize reconciliation and completion assessment.
+
+Skills cannot automatically switch the main chat model.
+
+See [Model Coordination](.agents/skills/lifecycle/references/models.md).
+
 ## Approval
 
 Always stop after every phase and every Build Step. Present the result and wait for explicit user approval before continuing; never infer approval from silence.

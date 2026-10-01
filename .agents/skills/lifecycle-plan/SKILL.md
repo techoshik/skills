@@ -12,6 +12,7 @@ description: "Use after Idea/Prototype to inspect the existing project and creat
 Read:
 
 - `../lifecycle/references/framework.md`
+- `../lifecycle/references/models.md`
 - `../lifecycle/references/artifacts.md`
 - `../lifecycle/references/plan.md`
 - `../lifecycle/references/guidelines.md`
