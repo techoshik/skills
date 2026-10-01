@@ -100,6 +100,8 @@ Do not hide a gap.
 
 Do not describe post-development deployment/release work as a verification gap.
 
+Use [Diagnosis](diagnosis.md) when the cause of a verification failure is unclear.
+
 ### Failure Routing
 
 If verification reveals:
@@ -112,6 +114,8 @@ If verification reveals:
 Update the owning artifact.
 
 Regain approval when required.
+
+Complete [Lifecycle Code Review](code-review.md) for the reconciled change before closing development.
 
 ## 3. Synchronize
 

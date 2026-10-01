@@ -15,7 +15,6 @@ Read:
 - `references/questioning.md`
 - `references/cycle-log.md`
 - `references/guidelines.md`
-- `references/companion-skills.md`
 
 Before presenting a document, complete the [required compactness pass](references/artifacts.md#required-compactness-pass).
 

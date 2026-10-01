@@ -19,7 +19,6 @@
 - **Product truth:** `docs/modules/`.
 - **Engineering standards:** Project guidelines.
 - **User instructions:** Support/user docs.
-- **Companion skills:** Techniques only.
 
 Resolve source conflicts with the owning phase.
 
@@ -106,6 +105,14 @@ Do not hide the change in a later phase.
 Reference the owning source.
 
 Do not duplicate durable truth.
+
+## Additions and Minimum Scope
+
+Use the [Why Loop](questioning.md#why-loop) before proposing consequential additions.
+
+Apply [Minimum Complete Solution](completeness.md#minimum-complete-solution) when defining implementation scope.
+
+Keep the existing phase and Build Step approval gates.
 
 ## Working Depth vs Artifact Depth
 

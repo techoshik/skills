@@ -16,7 +16,6 @@ Read:
 - `../lifecycle/references/plan.md`
 - `../lifecycle/references/guidelines.md`
 - `../lifecycle/references/cycle-log.md`
-- `../lifecycle/references/companion-skills.md`
 
 Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
 
@@ -30,6 +29,8 @@ First understand the existing system:
 
 - inspect code/docs/config/tests/guidelines;
 - discover reuse, constraints, dependencies, patterns.
+
+Apply [Minimum Complete Solution](../lifecycle/references/completeness.md#minimum-complete-solution).
 
 Then create small reviewable Build Steps.
 

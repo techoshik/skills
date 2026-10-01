@@ -34,9 +34,13 @@ docs/lifecycle/<change-name>/
 
 Lifecycle documents follow the writing rules and required compactness pass in [artifacts.md](.agents/skills/lifecycle/references/artifacts.md). Process ownership remains in [framework.md](.agents/skills/lifecycle/references/framework.md).
 
-## Companion skills
+## Self-contained process
 
-Companion skills provide techniques; they do not replace Lifecycle ownership, approved artifacts, or project rules. The Lifecycle references map useful techniques to each phase, including `grilling`, `prototype`, `domain-modeling`, `research`, `codebase-design`, `tdd`, `diagnosing-bugs`, `code-review`, and `writing-for-agents`.
+Lifecycle includes requirement discovery, research criteria, prototype handling, TDD, diagnosis, code review, and completion checks.
+
+No third-party skill installation or loading is required.
+
+Project-specific standards remain authoritative.
 
 ## Install into a project
 

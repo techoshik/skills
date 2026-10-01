@@ -14,9 +14,9 @@ Read:
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/artifacts.md`
 - `../lifecycle/references/finalize.md`
+- `../lifecycle/references/code-review.md`
 - `../lifecycle/references/guidelines.md`
 - `../lifecycle/references/cycle-log.md`
-- `../lifecycle/references/companion-skills.md`
 
 Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
 
@@ -77,6 +77,8 @@ Keep pending development checks unchecked.
 Add Test Setup only when special setup is needed.
 
 Apply [Proof Limits](../lifecycle/references/completeness.md#proof-limits) and [Gap Acceptance](../lifecycle/references/completeness.md#gap-acceptance).
+
+Complete [Lifecycle Code Review](../lifecycle/references/code-review.md) for the reconciled change.
 
 ### Synchronize
 

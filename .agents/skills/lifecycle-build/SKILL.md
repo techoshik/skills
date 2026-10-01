@@ -14,9 +14,9 @@ Read:
 - `../lifecycle/references/framework.md`
 - `../lifecycle/references/artifacts.md`
 - `../lifecycle/references/build.md`
+- `../lifecycle/references/code-review.md`
 - `../lifecycle/references/guidelines.md`
 - `../lifecycle/references/cycle-log.md`
-- `../lifecycle/references/companion-skills.md`
 
 Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
 
@@ -67,6 +67,8 @@ If a planned Verify check must materially change:
 - then resume Build.
 
 Apply [Proof Limits](../lifecycle/references/completeness.md#proof-limits) and [Gap Acceptance](../lifecycle/references/completeness.md#gap-acceptance).
+
+Complete [Lifecycle Code Review](../lifecycle/references/code-review.md) before presenting each Build Step.
 
 After completing and verifying each Build Step:
 

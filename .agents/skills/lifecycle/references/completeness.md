@@ -6,6 +6,7 @@ Before presenting Plan:
 
 - Account for every approved Idea success criterion.
 - Account for every approved behavior requirement in Idea and Prototype.
+- Account for applicable safeguards identified during planning.
 - Link each requirement to its owning Build Step.
 - Link each step requirement to a Verify check.
 - Use source links or stable labels instead of repeating requirements.
@@ -16,6 +17,36 @@ Before presenting Plan:
 Use a compact `Covers` line inside each step.
 
 A check may cover several related requirements when it proves each one.
+
+## Minimum Complete Solution
+
+During Plan, inspect applicable risks before finalizing scope:
+
+- **Access:** Unauthorized actors or revoked permissions.
+- **Data:** Invalid input, broken invariants, or partial writes.
+- **Privacy:** Sensitive data in storage, logs, or responses.
+- **Failures:** Errors, unavailable dependencies, or recovery paths.
+- **Concurrency:** Duplicate requests, retries, or conflicting updates.
+- **Compatibility:** Existing callers, persisted data, or migrations.
+- **Resources:** Bounds, cleanup, or performance that affects the intended use.
+
+Use the actual change and project context to identify credible failure paths.
+
+Record only applicable requirements and meaningful unresolved risks.
+
+Avoid speculative infrastructure for hypothetical future features.
+
+For each necessary safeguard:
+
+- Tie it to a concrete failure path.
+- Place it in the owning step Specification.
+- Add a Verify check that exercises the boundary or failure.
+
+Reducing scope must preserve a complete supported user journey.
+
+Known implementation defects are not verification gaps.
+
+Resolve them before completion, or return to the owning phase for an explicit scope decision.
 
 ## Impact Preflight
 

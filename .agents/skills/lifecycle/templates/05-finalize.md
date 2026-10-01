@@ -23,6 +23,12 @@
   - **Evidence:** Link to the recorded viewer check.
 -->
 
+## Code Review
+
+- **Scope:** <Reviewed changes>.
+- **Standards:** <Findings or no findings>.
+- **Specification:** <Findings or no findings>.
+
 ## Gaps
 
 - **Check:** <Requirement/check reference>.

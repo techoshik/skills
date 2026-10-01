@@ -59,6 +59,18 @@ This includes cases where:
 - an existing rule/pattern clearly determines the choice;
 - the change is a mechanical consequence of approved work.
 
+## File Decisions
+
+Before creating or moving a file:
+
+- Confirm the owning responsibility.
+- Find the project rule governing its path and name.
+- Inspect the nearest conforming implementation.
+- Check whether an existing file already owns the responsibility.
+- Add a file only when the approved work or project structure requires it.
+
+Review these decisions with [Standards Review](code-review.md#standards-review).
+
 ## Suggestions vs Authority
 
 The agent may:

@@ -1,37 +1,24 @@
 <!-- Apply ../references/artifacts.md and its required compactness pass; remove this comment from the finished document. -->
 
-# Lifecycle
+# <Change Name> — Lifecycle
 
-- **Type:** Module / Feature / Fix / Improvement
-- **Name:** …
-- **Module:** …
-- **Branch:** …
 - **Current Phase:** 01 Idea
-- **Status:** In Progress
-- **Current Build Step:** …
+- **Status:** In Progress / Awaiting Approval / Blocked / Complete
+- **Current Build Step:** … <!-- Build only -->
 - **Last Approved:** None
 - **Approval Evidence:** None
 - **Next Authorized Action:** …
-- **Suggested Chat Title:** [Phase] - [Change]
+- **Branch:** … <!-- only when needed to distinguish checkouts -->
+- **Module:** … <!-- only when ownership needs clarification -->
 
 ## Artifacts
 
-- **Idea:** 01-idea.md
-- **Prototype:** 02-prototype.md
-- **Plan:** 03-plan.md
-- **Build:** 04-build.md
-- **Finalize:** 05-finalize.md
-- **Cycle Log:** cycle-log.md
-- **Prototype Assets:** prototype/ (optional)
+<!-- Link existing artifacts only. Add phase artifacts as they are created. -->
+
+- **Idea:** [01-idea.md](01-idea.md)
 
 ## Permanent Sources
 
-- **Module Docs:** ../../modules/<module>.md
-- **Engineering Guidelines:** ../../guidelines/
-- **Support/User Docs:** <project-specific path>
+<!-- Keep only relevant existing source links; omit this section when unnecessary. -->
 
-## Notes
-
-- State/index only.
-- Keep it small.
-- Do not duplicate phase decisions.
+- **<Source>:** <Link>.

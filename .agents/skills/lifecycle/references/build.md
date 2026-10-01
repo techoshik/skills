@@ -104,6 +104,25 @@ Typical mapping:
 - UI behaviour → widget/component tests;
 - complete journeys → integration tests when justified.
 
+Tests must:
+
+- Observe behavior through the relevant supported interface.
+- Use expected outcomes independent of the implementation.
+- Catch a plausible behavioral regression.
+- Follow project fixture, mock, placement, and naming rules.
+
+Work one behavior through RED and GREEN before starting the next.
+
+Avoid tests that merely mirror implementation structure.
+
+Use project-approved mocks or local substitutes at boundaries that need isolation.
+
+Prefer real behavior at the interface under test.
+
+A mocked integration does not prove the real service or permission boundary.
+
+Avoid adding dependency injection or wrappers solely to follow a generic preference.
+
 Do not force meaningless tests for purely decorative details.
 
 If test placement/naming/mock conventions are unclear:
@@ -169,6 +188,8 @@ Do not silently downgrade verification.
 
 ### 6. Conformance Check
 
+Complete [Lifecycle Code Review](code-review.md).
+
 Before presenting the step:
 
 - planned implementation is complete;
@@ -192,6 +213,7 @@ Record only actual outcome:
 
 - Result;
 - Verification;
+- Code Review scope and outcome;
 - Changes from Plan, only when relevant;
 - Gaps, only when relevant.
 
@@ -209,6 +231,10 @@ After approval:
 
 - start the next planned step directly;
 - do not ask for another pre-step approval.
+
+## Diagnosis
+
+For unresolved bugs or performance regressions, use [Diagnosis](diagnosis.md).
 
 ## Discoveries
 

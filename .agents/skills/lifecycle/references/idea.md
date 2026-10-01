@@ -12,6 +12,26 @@ Ask as much as necessary.
 
 Document as little as necessary.
 
+For a reported defect, use [Diagnosis](diagnosis.md) to establish its exact symptom and reproduction needs.
+
+## Scope Discovery
+
+Complete [Inspect Before Asking](questioning.md#inspect-before-asking).
+
+Apply the [Why Loop](questioning.md#why-loop).
+
+Use [Decision Dependencies](questioning.md#decision-dependencies) to order questions.
+
+Apply [Language and Scenario Checks](questioning.md#language-and-scenario-checks).
+
+Use [Persistent Questioning](questioning.md#persistent-questioning) for consequential gaps.
+
+Capture the resulting need, minimum scope, and reasons for scope decisions.
+
+Keep the questioning transcript out of the artifact.
+
+Identify safety and correctness needs without designing their implementation here.
+
 ## Working Method
 
 > **Discuss → Confirm → Write → Continue**
@@ -58,7 +78,8 @@ Use:
 - ...
 
 ## Decisions
-- ...
+- **<Scope decision>:** <Decision>.
+  - **Why:** <Need or safeguard it serves>.
 
 ## Open Questions
 - ...
@@ -72,6 +93,8 @@ Do not force fake precision.
 
 - Problem / Opportunity is understood.
 - Goal is clear.
+- Minimum scope has a reason tied to the goal or an applicable safeguard.
+- Consequential assumptions have a validation or acceptance decision.
 - Key Results make success recognizable.
 - No meaningful unanswered branch can materially change them.
 

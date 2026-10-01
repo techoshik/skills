@@ -81,6 +81,27 @@ This includes:
 - Do not polish what cannot answer the question.
 - Stop when the question is answered.
 
+## Runnable Prototypes
+
+When the representation is executable:
+
+- Mark it clearly as temporary.
+- Follow project placement and routing conventions.
+- Provide a simple way to open or run it.
+- Use in-memory or isolated development data unless persistence is the question.
+- Keep real user data and production mutations out of the experiment.
+- Show the relevant state after each action.
+- Use domain language and realistic scenarios.
+- Reset scenarios to a known starting state when comparison matters.
+- Compare structural UI variants only when that answers the question.
+- Record the question, verdict, and supporting artifact reference.
+
+Prototype code is not production proof.
+
+Implement validated decisions through approved Plan and Build steps.
+
+Preserve useful decisions and evidence before [Safe Cleanup](completeness.md#safe-cleanup).
+
 ## Artifact
 
 Use:

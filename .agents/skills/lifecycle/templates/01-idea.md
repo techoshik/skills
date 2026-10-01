@@ -4,7 +4,10 @@
 
 ## Problem / Opportunity
 
-- …
+- **User:** …
+- **Problem:** …
+- **Impact:** …
+- **Evidence:** <Observed need or explicit assumption>.
 
 ## Goal
 
@@ -16,8 +19,11 @@
 
 ## Decisions
 
-- …
+- **<Scope decision>:** <Decision>.
+  - **Why:** <Need or safeguard it serves>.
 
 ## Open Questions
 
-- …
+- **Question:** …
+  - **Depends on:** … <!-- only when a prerequisite remains unresolved -->
+- **Not yet specified:** … <!-- only for in-scope uncertainty not yet precise -->

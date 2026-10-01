@@ -16,13 +16,18 @@ Read:
 - `../lifecycle/references/questioning.md`
 - `../lifecycle/references/idea.md`
 - `../lifecycle/references/cycle-log.md`
-- `../lifecycle/references/companion-skills.md`
 
 Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
 
-Use deep questioning when needed.
+Complete [Inspect Before Asking](../lifecycle/references/questioning.md#inspect-before-asking) before each round.
 
-Treat discussion as a design tree.
+Apply the [Why Loop](../lifecycle/references/questioning.md#why-loop).
+
+Use [Persistent Questioning](../lifecycle/references/questioning.md#persistent-questioning) until consequential gaps are resolved.
+
+Use [Decision Dependencies](../lifecycle/references/questioning.md#decision-dependencies) across discovery rounds.
+
+Apply [Language and Scenario Checks](../lifecycle/references/questioning.md#language-and-scenario-checks).
 
 Keep asking until no meaningful unanswered branch can materially change:
 

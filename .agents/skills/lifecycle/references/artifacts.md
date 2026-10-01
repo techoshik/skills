@@ -121,6 +121,18 @@ The diagram supports the artifact.
 
 Exact decisions remain as short written points.
 
+## Lifecycle Index
+
+`00-lifecycle.md` holds state and navigation only.
+
+- Use the change name as its title.
+- Keep phase, status, and [approval state](framework.md#approval-state).
+- Include the current Build Step only during Build.
+- Include branch or module only when they clarify context.
+- Link existing phase artifacts as they are created.
+- Link relevant permanent sources only.
+- Keep reasons and scope decisions in their owning phase artifact.
+
 ## Permanent Documents
 
 Apply these writing rules and the required compactness pass to module/support/process documents produced by Lifecycle.

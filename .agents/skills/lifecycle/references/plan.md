@@ -24,8 +24,31 @@ Each Build Step owns:
   - integrations;
   - dependencies.
 - Find reuse, constraints, and established patterns.
+- Apply [Minimum Complete Solution](completeness.md#minimum-complete-solution).
 - Do not create a separate Context artifact.
 - Record project facts only when they affect a Build Step.
+
+## Research and Design
+
+When a step depends on external technical facts:
+
+- Consult primary sources: official docs, source code, specifications, or first-party APIs.
+- Check facts against the relevant version and environment.
+- Link each consequential conclusion to its supporting source.
+- Distinguish source facts from inference and assumptions.
+- Record only findings that change the design, scope, risk, or verification.
+
+When designing or restructuring an interface:
+
+- Keep caller requirements small and explicit.
+- Keep responsibility with its existing owner where practical.
+- Hide internal complexity without adding unnecessary indirection.
+- Add abstractions only for an approved need or applicable project rule.
+- Choose a testing boundary that observes the required behavior.
+
+Plan approval includes the step's testing boundary.
+
+Do not ask for a second approval of the same settled choice.
 
 ## 2. Create Build Steps
 
@@ -203,6 +226,12 @@ Add optional subsections only when useful.
 Add `## Open Questions` only while consequential planning questions remain.
 
 Remove it when they are resolved.
+
+## Proposed Additions
+
+Apply the [Why Loop](questioning.md#why-loop) to consequential additions discovered during planning.
+
+Route scope or behavior changes to their owning phase before approval.
 
 ## Coverage Check
 

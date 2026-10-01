@@ -16,7 +16,6 @@ Read:
 - `../lifecycle/references/prototype.md`
 - `../lifecycle/references/questioning.md`
 - `../lifecycle/references/cycle-log.md`
-- `../lifecycle/references/companion-skills.md`
 
 Before presenting a document, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass).
 

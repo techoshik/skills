@@ -20,6 +20,12 @@
   - **Evidence:** Link to the passing restart test result.
 -->
 
+### Code Review
+
+- **Scope:** <Reviewed changes>.
+- **Standards:** <Findings or no findings>.
+- **Specification:** <Findings or no findings>.
+
 ### Changes from Plan
 
 - … <!-- only when relevant -->
