@@ -100,9 +100,22 @@ function Install-Project {
 
     $SameSkillsDirectory = ([System.IO.Path]::GetFullPath($SourceSkills) -eq [System.IO.Path]::GetFullPath($TargetSkills))
 
-    $Installed = 0
-    $SkillDirectories = Get-ChildItem -LiteralPath $SourceSkills -Directory -Force |
+    $SkillDirectories = @(Get-ChildItem -LiteralPath $SourceSkills -Directory -Force |
         Where-Object { $_.Name -like 'lifecycle*' -and (Test-Path (Join-Path $_.FullName 'SKILL.md')) }
+    )
+
+    if ($SkillDirectories.Count -eq 0) {
+        throw "No Lifecycle skills were found in $SourceSkills"
+    }
+
+    if (-not $SameSkillsDirectory) {
+        # Replace installed Lifecycle skills so removed source files cannot linger.
+        Get-ChildItem -LiteralPath $TargetSkills -Directory -Force |
+            Where-Object { $_.Name -like 'lifecycle*' } |
+            Remove-Item -Recurse -Force
+    }
+
+    $Installed = 0
 
     foreach ($SkillDirectory in $SkillDirectories) {
         if (-not $SameSkillsDirectory) {
@@ -114,10 +127,6 @@ function Install-Project {
         }
 
         $Installed++
-    }
-
-    if ($Installed -eq 0) {
-        throw "No Lifecycle skills were found in $SourceSkills"
     }
 
     $Block = [System.IO.File]::ReadAllText($BlockFile)

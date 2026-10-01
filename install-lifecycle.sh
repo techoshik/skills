@@ -186,14 +186,29 @@ install_project() {
     same_skills_directory=1
   fi
 
-  local installed=0
   local skill_dir skill_name target_dir
+  local skill_dirs=()
   for skill_dir in "$SOURCE_SKILLS"/lifecycle*/; do
     [[ -d "$skill_dir" ]] || continue
     [[ -f "$skill_dir/SKILL.md" ]] || continue
+    skill_dirs+=("$skill_dir")
+  done
 
+  if [[ "${#skill_dirs[@]}" -eq 0 ]]; then
+    echo "No Lifecycle skills were found in $SOURCE_SKILLS" >&2
+    return 1
+  fi
+
+  if [[ "$same_skills_directory" -eq 0 ]]; then
+    # Replace installed Lifecycle skills so removed source files cannot linger.
+    find "$target_skills" -mindepth 1 -maxdepth 1 -type d -name 'lifecycle*' -exec rm -rf {} +
+  fi
+
+  local installed=0
+  for skill_dir in "${skill_dirs[@]}"; do
     skill_name="$(basename "$skill_dir")"
     target_dir="$target_skills/$skill_name"
+
     if [[ "$same_skills_directory" -eq 0 ]]; then
       mkdir -p "$target_dir"
 
@@ -206,11 +221,6 @@ install_project() {
 
     installed=$((installed + 1))
   done
-
-  if [[ "$installed" -eq 0 ]]; then
-    echo "No Lifecycle skills were found in $SOURCE_SKILLS" >&2
-    return 1
-  fi
 
   update_agents_file "$agents_file"
   echo "Installed $installed Lifecycle skill(s) into $target_skills"
