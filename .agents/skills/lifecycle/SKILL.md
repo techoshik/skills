@@ -25,3 +25,5 @@ Infer state from approved artifacts/history only when the index is absent. Await
 ## Workspace
 
 Create artifacts as needed from `templates/`: index, phase artifacts, Cycle Log, optional prototype assets. Active artifacts normally stay committed for continuity; solo developers may choose to ignore them. Project-owned permanent sources remain authoritative. Follow the framework handoff and approval gates after each responsibility.
+
+For every document created or edited, apply the [required format and compactness pass](references/artifacts.md#required-format) before presentation or handoff.

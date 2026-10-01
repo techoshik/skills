@@ -1,3 +1,6 @@
+<!-- Required for the whole document: ../references/artifacts.md#required-format
+and #required-compactness-pass. Remove this comment before presentation. -->
+
 # Plan
 
 ## 1. <Build Step>
@@ -7,7 +10,10 @@
 
 ### Specification
 
-- **<Requirement>:** <Technical truth>
+- **<Single requirement>:** <Short technical truth>
+- **<Topic with several requirements>**
+  - <One requirement>
+  - <One condition, exception, or outcome>
 
 ### Build
 
@@ -24,4 +30,5 @@
 
 <!-- Repeat the step structure as needed. For UI Preview/Prerequisite exceptions,
 include Type, Reason, Testable Now, Unavailable, and Enables.
-Read ../references/plan.md; remove these instructions before presentation. -->
+Apply ../references/artifacts.md#required-format to Specification, Build, and Verify.
+Complete its compactness pass; remove these instructions before presentation. -->

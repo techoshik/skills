@@ -32,7 +32,7 @@ Every step contains Outcome, Covers links, then:
 - **Build:** Concrete changes, one action per line. Add dependency/deferred/risk detail only when execution needs it.
 - **Verify:** Concrete check and expected result per line. Choose the cheapest trustworthy proof: unit for pure logic, component for UI/state, integration for real boundaries, end-to-end for justified journeys, observation for experience, measurement for performance.
 
-Use the [Plan template](../templates/03-plan.md). Keep Specification and Verify within steps; omit separate Context, top-level Specification/verification plan, Build Plan, and Review sections.
+Use the [Plan template](../templates/03-plan.md) and the [required artifact format](artifacts.md#required-format) for every step. Keep Specification and Verify within steps; omit separate Context, top-level Specification/verification plan, Build Plan, and Review sections.
 
 ### Test Now
 

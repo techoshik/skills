@@ -16,6 +16,8 @@ Explicit approval is required after each phase and completed Build Step. [Framew
 
 Start at [lifecycle/SKILL.md](.agents/skills/lifecycle/SKILL.md). Each phase entry requires the shared contract, model roles, writing rules, and its own procedure. Procedures point to required and conditionally triggered references. Reuse unchanged sources already read; load all applicable project rules. Finalize deliberately reads complete intent and branch changes.
 
+The [document writing rules](.agents/skills/lifecycle/references/artifacts.md) apply to every created or edited document, including permanent docs and agent/process guidance.
+
 Each rule has one reference owner. Templates shape artifacts without duplicating procedures. External companion skills are not required.
 
 ## Install or update
