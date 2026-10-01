@@ -10,11 +10,11 @@ A portable development system: **Idea → Prototype → Plan → Build → Final
 | Build | One authorized step, immediate testing, review, actual evidence |
 | Finalize | Full-branch reconciliation, verification, permanent truth, closure |
 
-Explicit approval is required after each phase and completed Build Step. [Framework](.agents/skills/lifecycle/references/framework.md) owns the exact approval/ownership contract; [Model Coordination](.agents/skills/lifecycle/references/models.md) owns Sol/Luna roles and unavailable-capability handling.
+Explicit approval is required after each phase and completed Build Step. [Framework](.agents/skills/lifecycle/references/framework.md) owns the exact approval/ownership contract.
 
 ## Reading without waste
 
-Start at [lifecycle/SKILL.md](.agents/skills/lifecycle/SKILL.md). Each phase entry requires the shared contract, model roles, writing rules, and its own procedure. Procedures point to required and conditionally triggered references. Reuse unchanged sources already read; load all applicable project rules. Finalize deliberately reads complete intent and branch changes.
+Start at [lifecycle/SKILL.md](.agents/skills/lifecycle/SKILL.md). Each phase entry requires the shared contract, writing rules, and its own procedure. Procedures point to required and conditionally triggered references. Reuse unchanged sources already read; load all applicable project rules. Finalize deliberately reads complete intent and branch changes.
 
 The [document writing rules](.agents/skills/lifecycle/references/artifacts.md) apply to every created or edited document, including permanent docs and agent/process guidance.
 

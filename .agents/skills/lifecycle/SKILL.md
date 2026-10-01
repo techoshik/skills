@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Required entry
 
-Read [Framework](references/framework.md), [Model Coordination](references/models.md), and [Artifact Writing](references/artifacts.md). Resume from `docs/lifecycle/<change-name>/00-lifecycle.md` and verify approval state before choosing a phase.
+Read [Framework](references/framework.md) and [Artifact Writing](references/artifacts.md). Resume from `docs/lifecycle/<change-name>/00-lifecycle.md` and verify approval state before choosing a phase.
 
 ## Route
 

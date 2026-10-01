@@ -4,7 +4,7 @@ Implement, verify, review, and record only the current authorized step.
 
 ## Required reading
 
-Read [Project Rules](guidelines.md), [Coverage and Completion](completeness.md), and [Code Review](code-review.md). Load index approval state, the approved current Plan step, relevant upstream decisions, affected module docs, applicable rules, and nearby implementations. Use [Model Coordination](models.md) for implementation and independent review.
+Read [Project Rules](guidelines.md), [Coverage and Completion](completeness.md), and [Code Review](code-review.md). Load index approval state, the approved current Plan step, relevant upstream decisions, affected module docs, applicable rules, and nearby implementations.
 
 ## Preflight
 
@@ -39,3 +39,14 @@ Finish the [phase handoff](framework.md#phase-handoff) for the current step and 
 ## Complete when
 
 Every step is implemented, conforming, verified (or has explicitly accepted proof gaps), and approved; testable behavior used TDD; no consequential unapproved choice remains. Present Build completion and obtain approval before Finalize.
+
+## Delegated work
+
+When delegation is authorized:
+
+- Provide the current approved step, workspace, editing scope, project rules, and existing work to preserve.
+- Keep one writer for overlapping files; workers return consequential choices instead of approving or starting future work.
+- For a separate review, supply the finished diff, approved requirements, and standards with read-only scope.
+- Inspect returned changes and evidence; resolve in-scope findings and rerun affected checks before recording completion.
+
+Delegation is not a prerequisite for executing a phase or step.
