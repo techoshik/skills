@@ -4,7 +4,7 @@ Inspect the existing system and define the smallest safe sequence of reviewable 
 
 ## Required reading
 
-Read [Project Rules](guidelines.md) and [Coverage and Completion](completeness.md).
+Read [Project Rules](../../rules/guidelines.md) and [Coverage and Completion](../../rules/completeness.md).
 
 - **Approved input**
   - Idea: What Will Change, Expected Outcomes, and relevant decisions.
@@ -38,13 +38,13 @@ Every step contains Outcome, Covers links, then:
 - **Build:** Concrete changes, one action per line. Add dependency/deferred/risk detail only when execution needs it.
 - **Verify:** Concrete check and expected result per line. Choose the cheapest trustworthy proof: unit for pure logic, component for UI/state, integration for real boundaries, end-to-end for justified journeys, observation for experience, measurement for performance.
 
-Use the [Plan template](../templates/03-plan.md) and the [required artifact format](artifacts.md#required-format) for every step. Keep Specification and Verify within steps; omit separate Context, top-level Specification/verification plan, Build Plan, and Review sections.
+Use the [Plan template](../lifecycle/templates/03-plan.md) and the [required artifact format](../../rules/artifacts.md#required-format) for every step. Keep Specification and Verify within steps; omit separate Context, top-level Specification/verification plan, Build Plan, and Review sections.
 
 ### Focused test selection
 
 - **Select:** Identify meaningful tests for changed business logic, access/data boundaries, and credible failure paths.
 - **Reuse:** Prefer existing coverage; add tests only when they protect a plausible regression.
-- **Timing:** Plan implementation first, then focused tests within the same step before approval, following [step-end testing](build.md#implement-then-test-the-step).
+- **Timing:** Plan implementation first, then focused tests within the same step before approval, following [step-end testing](../lifecycle-build/procedure.md#implement-then-test-the-step).
 - **Simple changes:** Use suitable existing tests, build/static checks, or observation when new tests add no meaningful proof.
 
 ### Test Now
@@ -59,4 +59,4 @@ When planned verification becomes impossible or materially different, return to 
 
 ## Complete when
 
-Existing constraints and sequence are understood; every step has a narrow outcome, Specification, Build actions, concrete Verify/Test Now path, and explicit exceptions. Apply Requirement Coverage from completeness.md. Resolve consequential choices or return to their owning phase, then finish the [phase handoff](framework.md#phase-handoff).
+Existing constraints and sequence are understood; every step has a narrow outcome, Specification, Build actions, concrete Verify/Test Now path, and explicit exceptions. Apply Requirement Coverage from completeness.md. Resolve consequential choices or return to their owning phase, then finish the [phase handoff](../../rules/framework.md#phase-handoff).

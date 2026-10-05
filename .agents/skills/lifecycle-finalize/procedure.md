@@ -4,7 +4,7 @@ Reconcile → Verify → Synchronize → Improve → Clean → Close.
 
 ## Required reading
 
-Read [Coverage and Completion](completeness.md), [Code Review](code-review.md), [Project Rules](guidelines.md), and [Cycle Log](cycle-log.md). The agent running Finalize owns reconciliation and completion assessment.
+Read [Coverage and Completion](../../rules/completeness.md), [Code Review](../../rules/code-review.md), [Project Rules](../../rules/guidelines.md), and [Cycle Log](../../rules/cycle-log.md). The agent running Finalize owns reconciliation and completion assessment.
 
 - **Full lifecycle input**
   - Idea: Goal, What Will Change, Expected Outcomes, and scope decisions.

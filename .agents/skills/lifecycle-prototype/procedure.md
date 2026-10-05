@@ -9,7 +9,7 @@ Resolve important uncertainty that discussion alone cannot settle; prototype for
 3. Create only enough to answer it. Exercise realistic normal and edge scenarios, discuss observations, and refine while meaningful uncertainty remains.
 4. Capture question, verdict, supporting artifact, and Prototype-owned conclusions immediately in `02-prototype.md`.
 
-Read [Decision Discovery](questioning.md) when consequential choices remain. Link Idea-owned decisions; changed upstream decisions follow [Return to the owner](framework.md#return-to-the-owner).
+Read [Decision Discovery](../../rules/questioning.md) when consequential choices remain. Link Idea-owned decisions; changed upstream decisions follow [Return to the owner](../../rules/framework.md#return-to-the-owner).
 
 ## Runnable prototypes
 
@@ -19,4 +19,4 @@ Prototype code proves the experiment only. Production behavior is implemented th
 
 ## Complete when
 
-Every important uncertainty needing concrete evidence is resolved enough for Plan. If no prototype adds value, record `Not needed — <reason>`. Both outcomes require the [phase handoff](framework.md#phase-handoff) and approval before Plan.
+Every important uncertainty needing concrete evidence is resolved enough for Plan. If no prototype adds value, record `Not needed — <reason>`. Both outcomes require the [phase handoff](../../rules/framework.md#phase-handoff) and approval before Plan.

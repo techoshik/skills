@@ -4,7 +4,7 @@ Implement, verify, review, and record only the current authorized step.
 
 ## Required reading
 
-Read [Project Rules](guidelines.md), [Coverage and Completion](completeness.md), and [Code Review](code-review.md). Load index approval state, the approved current Plan step, relevant upstream decisions, affected module docs, applicable rules, and nearby implementations.
+Read [Project Rules](../../rules/guidelines.md), [Coverage and Completion](../../rules/completeness.md), and [Code Review](../../rules/code-review.md). Load index approval state, the approved current Plan step, relevant upstream decisions, affected module docs, applicable rules, and nearby implementations.
 
 ## Preflight
 
@@ -44,15 +44,15 @@ Use test-first development when explicitly requested or required by applicable p
 - Run every available planned check and the Test Now path; record actual results under Evidence and Proof Limits.
 - Keep human checks pending until observed or explicitly accepted as gaps. Give exact interaction instructions when human action is needed.
 - If later work is needed to run this capability, return to Plan; honor only explicitly approved preview/prerequisite exceptions.
-- If verification changes materially, follow [Verification Changes](plan.md#verification-changes-during-build).
-- For unresolved defects/performance failures, read [Diagnosis](diagnosis.md).
+- If verification changes materially, follow [Verification Changes](../lifecycle-plan/procedure.md#verification-changes-during-build).
+- For unresolved defects/performance failures, read [Diagnosis](../../rules/diagnosis.md).
 - Complete Code Review, fix in-scope defects, and rerun affected checks. Confirm compilation/runnability when practical.
 
 ## Record and present
 
 Update `04-build.md` with actual Result, Verification/evidence, separate Standards and Specification review outcomes, and relevant approved deviations/gaps. Link Plan/Test Now rather than copying planned work. Apply Gap Acceptance before claiming the step complete; implementation defects remain work to fix.
 
-Finish the [phase handoff](framework.md#phase-handoff) for the current step and follow the Build gate. If implementation reveals several independent responsibilities, return to Plan and split remaining work.
+Finish the [phase handoff](../../rules/framework.md#phase-handoff) for the current step and follow the Build gate. If implementation reveals several independent responsibilities, return to Plan and split remaining work.
 
 ## Complete when
 
