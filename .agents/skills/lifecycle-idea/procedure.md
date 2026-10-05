@@ -4,7 +4,7 @@ Define the intended product change clearly enough for someone outside the conver
 
 ## Required reading
 
-Read [Decision Discovery](questioning.md). For a reported defect, also read [Diagnosis](diagnosis.md) to establish symptom and reproduction needs.
+Read [Decision Discovery](../../rules/questioning.md). For a reported defect, also read [Diagnosis](../../rules/diagnosis.md) to establish symptom and reproduction needs.
 
 ## Work
 
@@ -44,4 +44,4 @@ For existing cycles, treat Key Results as the earlier acceptance source. Preserv
 - **Settled scope:** Minimum scope and safeguards have reasons; consequential assumptions have validation or acceptance decisions.
 - **Resolved uncertainty:** No unanswered branch can materially change these points.
 
-Finish the [phase handoff](framework.md#phase-handoff).
+Finish the [phase handoff](../../rules/framework.md#phase-handoff).

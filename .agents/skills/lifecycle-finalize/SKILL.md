@@ -5,12 +5,6 @@ description: After Build approval, reconcile the full branch and lifecycle, veri
 
 # Finalize
 
-Read these required sources unless their unchanged contents are already loaded:
-
-1. [Framework](../lifecycle/references/framework.md): authority, approval, ownership, handoff.
-2. [Artifact Writing](../lifecycle/references/artifacts.md): compact documents and evidence.
-3. [Finalize procedure](../lifecycle/references/finalize.md): execution, required task sources, conditional references, completion.
-
-Read `00-lifecycle.md` and establish authorization. Execute this phase only; load every reference required by its procedure or current condition. Create/update the [phase artifact](../lifecycle/templates/05-finalize.md). Follow the framework handoff before presenting approval.
-
-For every document created or edited in this phase, complete the [required compactness pass](../lifecycle/references/artifacts.md#required-compactness-pass) before presentation or handoff.
+1. Read [Finalize procedure](procedure.md) for phase-specific execution, required task sources, and completion criteria.
+2. Execute this phase only and create/update the [Finalize artifact](../lifecycle/templates/05-finalize.md).
+3. Remember to apply the framework handoff and compactness pass before presenting approval.

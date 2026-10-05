@@ -1,4 +1,4 @@
-<!-- Required for the whole document: ../references/artifacts.md#required-format
+<!-- Required for the whole document: ../../../rules/artifacts.md#required-format
 and #required-compactness-pass. Remove this comment before presentation. -->
 
 # Plan
@@ -31,6 +31,6 @@ and #required-compactness-pass. Remove this comment before presentation. -->
 
 <!-- Repeat the step structure as needed. For UI Preview/Prerequisite exceptions,
 include Type, Reason, Testable Now, Unavailable, and Enables.
-Select focused tests using ../references/build.md#implement-then-test-the-step.
-Apply ../references/artifacts.md#required-format to Specification, Build, and Verify.
+Select focused tests using ../../lifecycle-build/procedure.md#implement-then-test-the-step.
+Apply ../../../rules/artifacts.md#required-format to Specification, Build, and Verify.
 Complete its compactness pass; remove these instructions before presentation. -->
