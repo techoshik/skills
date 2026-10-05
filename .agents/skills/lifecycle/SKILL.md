@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Required entry
 
-Before executing ANY phase, you must have read and understood [Framework](references/framework.md) and [Artifact Writing](references/artifacts.md). Do not re-read them if you already have them in context. Resume from `docs/lifecycle/<change-name>/00-lifecycle.md` and verify approval state before choosing a phase.
+Before executing ANY phase, you must have read and understood [Framework](../../rules/framework.md) and [Artifact Writing](../../rules/artifacts.md). Do not re-read them if you already have them in context. Resume from `docs/lifecycle/<change-name>/00-lifecycle.md` and verify approval state before choosing a phase.
 
 ## Route
 
@@ -28,4 +28,4 @@ Infer state from approved artifacts/history only when `00-lifecycle.md` (the ind
 
 Create artifacts as needed from `templates/`: index, phase artifacts, Cycle Log, optional prototype assets. Active artifacts normally stay committed for continuity; solo developers may choose to ignore them. Project-owned permanent sources remain authoritative. Follow the framework handoff and approval gates after each responsibility.
 
-For every document created or edited, apply the [required format and compactness pass](references/artifacts.md#required-format) before presentation or handoff.
+For every document created or edited, apply the **required format and compactness pass** (detailed in the Artifact Writing rules) before presentation or handoff.
