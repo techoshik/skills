@@ -8,9 +8,11 @@ disable-model-invocation: true
 
 ## Required entry
 
-Read [Framework](references/framework.md) and [Artifact Writing](references/artifacts.md). Resume from `docs/lifecycle/<change-name>/00-lifecycle.md` and verify approval state before choosing a phase.
+Before executing ANY phase, you must have read and understood [Framework](references/framework.md) and [Artifact Writing](references/artifacts.md). Do not re-read them if you already have them in context. Resume from `docs/lifecycle/<change-name>/00-lifecycle.md` and verify approval state before choosing a phase.
 
 ## Route
+
+Determine the current state below. To enter a phase, use the `view_file` tool to read its corresponding `SKILL.md` file.
 
 | State | Read next |
 | --- | --- |
@@ -20,7 +22,7 @@ Read [Framework](references/framework.md) and [Artifact Writing](references/arti
 | Plan approved; Build not approved complete | [Build skill](../lifecycle-build/SKILL.md) |
 | Build approved; cycle open | [Finalize skill](../lifecycle-finalize/SKILL.md) |
 
-Infer state from approved artifacts/history only when the index is absent. Awaiting approval means present/resume the current result, not advance. Load one active procedure and every reference its conditions require; other phases stay unloaded. Reuse unchanged material already read in this session.
+Infer state from approved artifacts/history only when `00-lifecycle.md` (the index) is absent. Awaiting approval means present/resume the current result, not advance. Load one active procedure and every reference its conditions require; other phases stay unloaded. Reuse unchanged material already read in this session.
 
 ## Workspace
 
