@@ -17,7 +17,7 @@ Before Plan presentation:
   - Record approved exclusions and deferments.
   - Keep unresolved coverage visible.
 - **Immediate testing**
-  - Confirm each capability meets [Small-Step Boundary](plan.md#small-step-boundary).
+  - Confirm each capability meets [Small-Step Boundary](../../lifecycle-plan/procedure.md#small-step-boundary).
   - Include its Test Now instructions.
 
 ## Impact preflight

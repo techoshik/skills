@@ -14,7 +14,7 @@ Minimize the scenario while retaining the original for final verification. Consi
 
 Idea owns symptom/impact/success; Prototype owns experiments; Plan owns fix/regression proof; Build implements; Finalize checks the full change. Diagnosis preserves these approval gates.
 
-- **Regression coverage:** Add or extend a test reaching the actual failure when it provides meaningful protection, following [step-end testing](build.md#implement-then-test-the-step).
+- **Regression coverage:** Add or extend a test reaching the actual failure when it provides meaningful protection, following [step-end testing](../../lifecycle-build/procedure.md#implement-then-test-the-step).
 - **Proof limits:** Record limitations under Proof Limits/Gap Acceptance when the test cannot reach the failure.
 - **Original scenario:** Rerun it after the fix and check affected regressions.
 - **Performance:** Compare results under the baseline conditions.
