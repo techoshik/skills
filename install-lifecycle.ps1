@@ -68,12 +68,16 @@ if ($ExistingProjectPaths.Count -eq 0) {
 $ProjectPaths = $ExistingProjectPaths
 
 $CanonicalSkills = Join-Path $ScriptRoot 'skills'
+$CanonicalRules = Join-Path $ScriptRoot 'rules'
 $LegacySkills = Join-Path $ScriptRoot '.agents/skills'
+$LegacyRules = Join-Path $ScriptRoot '.agents/rules'
 
 if (Test-Path -LiteralPath $CanonicalSkills -PathType Container) {
     $SourceSkills = $CanonicalSkills
+    $SourceRules = $CanonicalRules
 } elseif (Test-Path -LiteralPath $LegacySkills -PathType Container) {
     $SourceSkills = $LegacySkills
+    $SourceRules = $LegacyRules
 } else {
     throw 'Could not find the Lifecycle skills directory.'
 }
@@ -108,12 +112,14 @@ function Install-Project {
 
     $ProjectRoot = (Resolve-Path -LiteralPath $Path).Path
     $TargetSkills = Join-Path $ProjectRoot '.agents/skills'
+    $TargetRules = Join-Path $ProjectRoot '.agents/rules'
     $AgentsFile = Join-Path $ProjectRoot 'AGENTS.md'
 
     Test-AgentsMarkers -AgentsFile $AgentsFile
 
     New-Item -ItemType Directory -Force -Path `
         $TargetSkills, `
+        $TargetRules, `
         (Join-Path $ProjectRoot 'docs/lifecycle'), `
         (Join-Path $ProjectRoot 'docs/guidelines'), `
         (Join-Path $ProjectRoot 'docs/modules'), `
@@ -150,6 +156,11 @@ function Install-Project {
         $Installed++
     }
 
+    if (-not $SameSkillsDirectory -and (Test-Path -LiteralPath $SourceRules -PathType Container)) {
+        Get-ChildItem -LiteralPath $SourceRules -Force |
+            Copy-Item -Destination $TargetRules -Recurse -Force
+    }
+
     $Block = [System.IO.File]::ReadAllText($BlockFile)
 
     if (-not (Test-Path -LiteralPath $AgentsFile -PathType Leaf)) {
@@ -174,6 +185,7 @@ function Install-Project {
     }
 
     Write-Output "Installed $Installed Lifecycle skill(s) into $TargetSkills"
+    Write-Output "Copied Lifecycle rules into $TargetRules"
     Write-Output 'Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist'
     Write-Output "Updated the managed Lifecycle section in $AgentsFile"
 }
