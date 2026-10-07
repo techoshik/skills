@@ -42,6 +42,7 @@ Use test-first development when explicitly requested or required by applicable p
 
 - Complete current Specification/actions with established patterns; preserve unrelated work and future steps.
 - Run every available planned check and the Test Now path; record actual results under Evidence and Proof Limits.
+- For UI steps, visually and interactively verify that the implemented code matches the approved HTML/Tailwind/JS prototypes. Document any unavoidable deviations.
 - Keep human checks pending until observed or explicitly accepted as gaps. Give exact interaction instructions when human action is needed.
 - If later work is needed to run this capability, return to Plan; honor only explicitly approved preview/prerequisite exceptions.
 - If verification changes materially, follow [Verification Changes](../lifecycle-plan/procedure.md#verification-changes-during-build).

@@ -32,7 +32,7 @@ Apply Branch Reconciliation in completeness.md. Create a compact Change Inventor
   - Build evidence, actual changes, and resulting regressions.
 - **Usability:** The user can exercise the whole development change from this file without reopening earlier artifacts.
 
-Each item identifies module/feature, actor/setup, action, expected outcome, proof method, actual result/status, and evidence. Group by area if useful. Cover applicable UI, access/revocation, cross-module flows, compatibility/migration, integrations/dependencies, and documentation. Use authorized isolated/staging data for destructive or stateful checks.
+Each item identifies module/feature, actor/setup, action, expected outcome, proof method, actual result/status, and evidence. Group by area if useful. Cover applicable UI (ensuring visual alignment with approved prototypes), access/revocation, cross-module flows, compatibility/migration, integrations/dependencies, and documentation. Use authorized isolated/staging data for destructive or stateful checks.
 
 Carry valid step proof forward. Rerun only invalidated proof/relevant regressions; add whole-change checks that step proof cannot establish. Build remains responsible for immediate capability testing. Include special Test Setup only when needed. Apply Evidence, Proof Limits, and Gap Acceptance; pending/accepted-gap checks remain unchecked.
 
@@ -52,7 +52,7 @@ For observed ownership/navigation/caller-complexity/testability friction, inspec
 
 ## Clean
 
-Apply Safe Cleanup only after decisions and evidence are preserved. Remove owned temporary code/assets and obsolete leftovers. Retain the active workspace through Finalize review; its later archive/removal requires explicit confirmation.
+Apply Safe Cleanup only after decisions and evidence are preserved. Remove owned temporary code/assets and obsolete leftovers. Specify whether the `prototype/` folder should be kept as permanent documentation or removed. Retain the active workspace through Finalize review; its later archive/removal requires explicit confirmation.
 
 ## Close
 

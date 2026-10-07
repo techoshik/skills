@@ -9,7 +9,7 @@ Read [Project Rules](../../rules/guidelines.md) and [Coverage and Completion](..
 - **Approved input**
   - Idea: What Will Change, Expected Outcomes, and relevant decisions.
   - Existing cycles: Key Results remain the earlier acceptance source.
-  - Prototype: approved decisions or approved Not needed verdict.
+  - Prototype: approved decisions, interactive HTML prototypes, or approved Not needed verdict.
 - **Project context:** Relevant code, docs, config, tests, dependencies, and integrations.
 
 ## Research and design
@@ -34,7 +34,7 @@ A UI Preview may use fake data; an unavoidable Prerequisite may enable later del
 
 Every step contains Outcome, Covers links, then:
 
-- **Specification:** What must be true: ownership, data/state, interactions, interfaces, edge cases, compatibility, and reuse as applicable. Each contract has one owning step; later steps link it.
+- **Specification:** What must be true: ownership, data/state, interactions, interfaces, edge cases, compatibility, and reuse as applicable. Each contract has one owning step; later steps link it. For UI features, derive component structures, CSS classes, and interaction states directly from the approved interactive prototypes in `prototype/`. Do not invent new UI designs here.
 - **Build:** Concrete changes, one action per line. Add dependency/deferred/risk detail only when execution needs it.
 - **Verify:** Concrete check and expected result per line. Choose the cheapest trustworthy proof: unit for pure logic, component for UI/state, integration for real boundaries, end-to-end for justified journeys, observation for experience, measurement for performance.
 

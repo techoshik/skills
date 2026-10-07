@@ -28,6 +28,7 @@ Keep architecture, storage, APIs, file layout, and implementation steps for late
   - Identify actor, relevant starting conditions, action/event, and expected observable result.
   - Include applicable denial, failure, preservation, and boundary outcomes.
   - For noninteractive changes, identify the relevant context/trigger and observable result without inventing an actor or false precision.
+  - If the change involves UI, identify the different data states (e.g., loading, empty, error, populated) that will need visual representation in the Prototype phase.
   - Split vague bundles such as “manage staff” into separately verifiable behaviors.
   - Use stable outcome labels so Plan and verification can link them.
 - **Decisions:** Scope boundaries, exclusions, and accepted trade-offs with concise reasons.
