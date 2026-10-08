@@ -236,11 +236,51 @@ install_project() {
   done
 
   if [[ "$same_skills_directory" -eq 0 && -d "$SOURCE_RULES" ]]; then
-    if command -v rsync >/dev/null 2>&1; then
-      rsync -a "$SOURCE_RULES/" "$target_rules/"
+    local flutter_dir=""
+    if [[ -f "$project_root/pubspec.yaml" ]]; then
+      flutter_dir="$project_root"
     else
-      cp -R "$SOURCE_RULES/." "$target_rules/"
+      for d in "$project_root"/*/; do
+        if [[ -f "${d}pubspec.yaml" ]]; then
+          flutter_dir="${d%/}"
+          break
+        fi
+      done
     fi
+
+    local functions_dir=""
+    if [[ -f "$project_root/functions/package.json" ]]; then
+      functions_dir="$project_root/functions"
+    elif [[ -f "$project_root/package.json" ]]; then
+      functions_dir="$project_root"
+    else
+      for d in "$project_root"/*/; do
+        if [[ -f "${d}package.json" ]]; then
+          functions_dir="${d%/}"
+          break
+        fi
+      done
+    fi
+
+    for rule_path in "$SOURCE_RULES"/*; do
+      [[ -e "$rule_path" ]] || continue
+      local rule_name
+      rule_name="$(basename "$rule_path")"
+
+      if [[ "$rule_name" == "architecture_flutter.md" ]]; then
+        if [[ -n "$flutter_dir" ]]; then
+          mkdir -p "$flutter_dir/.agents/rules"
+          cp -R "$rule_path" "$flutter_dir/.agents/rules/"
+        fi
+      elif [[ "$rule_name" == "architecture_cloud_functions.md" ]]; then
+        if [[ -n "$functions_dir" ]]; then
+          mkdir -p "$functions_dir/.agents/rules"
+          cp -R "$rule_path" "$functions_dir/.agents/rules/"
+        fi
+      else
+        cp -R "$rule_path" "$target_rules/"
+      fi
+    done
   fi
 
   update_agents_file "$agents_file"
