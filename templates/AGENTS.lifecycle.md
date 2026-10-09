@@ -1,5 +1,13 @@
 <!-- lifecycle:start -->
 
+## Context Efficiency
+
+- Reuse files and instructions already read in this conversation.
+- Reload only when files changed or the required details are unavailable.
+- Prefer targeted searches and line ranges over full-file reads.
+- Preserve the read-file list and key findings when summarizing context.
+- Keep command output concise; show detailed output only for relevant failures.
+
 ## Development Lifecycle
 
 For module, feature, fix, and product-development work, read `.agents/skills/lifecycle/SKILL.md` and follow its required reading and phase routing. Read the active `docs/lifecycle/<change>/00-lifecycle.md` before resuming.
