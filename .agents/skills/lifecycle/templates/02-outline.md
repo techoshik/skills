@@ -1,8 +1,8 @@
-# Plan
+# Outline
 
-- [ ] **Plan Approved** (Do not check this box until the user explicitly approves the entire plan before the Build phase begins).
+- [ ] **Outline Approved** (Do not check this box until the user explicitly approves the entire outline before the Execute phase begins).
 
-<!-- Agent Instruction: Structure the plan by iterating through each Expected Outcome (EO) from the Idea file. For each EO, break the implementation down into horizontal architectural Checkpoints (Models -> Mock UI -> Logic). You must complete and self-review each checkpoint before moving to the next. -->
+<!-- Agent Instruction: Structure the outline by iterating through each Expected Outcome (EO) from the Define file (01-define.md). For each EO, break the implementation down into horizontal architectural Checkpoints (Models -> Mock UI -> Logic). You must complete and self-review each checkpoint before moving to the next. -->
 
 ## [EO-ID] <Expected Outcome Name>
 
@@ -21,7 +21,7 @@ _Focus: Defining the structural contracts._
   - [ ] <Concrete implementation action 1>
   - [ ] <Concrete implementation action 2>
 - **Agent Self-Review:**
-  - [ ] Verify the models match this checkpoint's Architecture & Contracts in the Plan.
+  - [ ] Verify the models match this checkpoint's Architecture & Contracts in the Outline.
   - [ ] Verify the code complies with Freezed/DTO guidelines.
 - **User Verification:**
   - **Action:** <How the human will verify this step (e.g., Code Review)>
