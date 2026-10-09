@@ -13,7 +13,7 @@
 ## Type Safety & Enums
 
 - Prefer Dart Enums (with extensions/properties) over raw Strings for state, roles, and types to guarantee compile-time safety and exhaustiveness in `switch` statements.
-- When parsing JSON models (e.g. with Freezed/json_serializable), use `@Default` for new enum values to maintain backward compatibility with old local or backend data.
+- When parsing JSON models (e.g. with Freezed/json_serializable), use `@Default` for missing/null fields, and MUST use `@JsonKey(unknownEnumValue: Enum.fallback)` to explicitly handle unrecognized enum values from older/newer schemas.
 
 ## Folder Structure (`app/lib`)
 

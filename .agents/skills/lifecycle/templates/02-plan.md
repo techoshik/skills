@@ -2,6 +2,8 @@
 
 # Plan
 
+- [ ] **Plan Approved:** (Do not check this box until the user explicitly approves the entire plan before the Build phase begins).
+
 <!-- Agent Instruction: Structure the plan by iterating through each Expected Outcome (EO) from the Idea file. For each EO, break the implementation down into horizontal architectural Checkpoints (Models -> Mock UI -> Logic). You must complete and self-review each checkpoint before moving to the next. -->
 
 ## [EO-ID] <Expected Outcome Name>

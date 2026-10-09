@@ -29,14 +29,20 @@ You must iterate through each Expected Outcome, and break it down into strict ar
 - **Checkpoint 2:** UI Layout & States (Mocked data only, for visual/interaction verification)
 - **Checkpoint 3:** Repositories & Logic (Implement backend and REPLACE the mock data from Checkpoint 2 with live data)
 
+*Note: If an outcome does not require one of these layers (e.g., a pure backend fix doesn't need UI, or a pure visual tweak doesn't need Models/Logic), you must still list the Checkpoint in the plan, but mark it as `N/A - [Reason]` so it is explicitly skipped.*
+
 ## 5. The Friction Log
 If you struggle with ambiguous architectural guidelines or missing rules during the Plan phase, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. Do not stop planning to fix the rules, just log the friction.
 
 ## 6. Execution
 1. Read the provided `01-idea.md` document.
-2. Ask the user the architectural alignment questions.
+2. Ask the user architectural alignment questions ONLY if the Research Loop revealed ambiguities. If the pattern is clear, skip questioning.
 3. Use the provided [Plan Template](../lifecycle/templates/02-plan.md) to generate the implementation plan.
 4. Save the resulting plan as `02-plan.md`.
 
-## 7. Agent Self-Review
+## 7. Agent Self-Review & Human Handoff
 Ensure the generated plan explicitly instructs the agent to read the relevant `.agents/guidelines/` documents to self-verify its work during the Build phase.
+
+Once the plan is written, **STOP**. You must present the plan to the user for explicit approval. 
+- Once the user approves, you must check the `[ ] Plan Approved` box at the top of `02-plan.md`. 
+- Do not proceed or offer to start building until this box is checked.

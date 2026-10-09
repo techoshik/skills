@@ -37,7 +37,7 @@ When defining the `Expected Outcomes` in the template, you are strictly forbidde
 If you struggle with ambiguous product rules, missing context, or constraints during the Idea phase, you MUST document them by creating a `friction_log.md` file in the temporary `lifecycle` directory. Do not stop brainstorming to fix the rules, just log the friction.
 
 ## 5. Execution
-1. Ask the user the 3 questions to gather scope priorities.
+1. Present your Why Loop analysis. Ask clarifying questions ONLY if they are genuinely necessary to resolve ambiguity.
 2. Use the provided [Idea Template](../lifecycle/templates/01-idea.md).
 3. Save the resulting document as `01-idea.md` in the current project's lifecycle directory.
 4. Ask the user to review and approve the Idea before moving to the Plan phase.
