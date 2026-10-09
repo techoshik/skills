@@ -176,6 +176,89 @@ update_agents_file() {
   mv "$temporary_file" "$agents_file"
 }
 
+guideline_digest() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum | awk '{ print $1 }'
+  else
+    shasum -a 256 | awk '{ print $1 }'
+  fi
+}
+
+update_guideline() {
+  local source_file="$1" target_file="$2"
+  if [[ -L "$target_file" || ( -e "$target_file" && ! -f "$target_file" ) ]]; then
+    echo "Preserved guideline for review (not a regular file): $target_file" >&2
+    return
+  fi
+
+  local source_body content="" source_hash
+  source_body="$(cat "$source_file" && printf '.')"
+  source_body="${source_body%.}"
+  if [[ "$(printf '%s' "$source_body" | wc -c)" -ne "$(wc -c < "$source_file")" ]]; then
+    echo "Unsupported source guideline text encoding: $source_file" >&2
+    return 1
+  fi
+  source_body="${source_body//$'\r\n'/$'\n'}"
+  [[ "$source_body" == *$'\n' ]] || source_body+=$'\n'
+  source_hash="$(printf '%s' "$source_body" | guideline_digest)"
+  if [[ -f "$target_file" ]]; then
+    content="$(cat "$target_file" && printf '.')"
+    content="${content%.}"
+    if [[ "$(printf '%s' "$content" | wc -c)" -ne "$(wc -c < "$target_file")" ]]; then
+      echo "Preserved guideline for review (unsupported text encoding): $target_file" >&2
+      return
+    fi
+  fi
+
+  local start_prefix='<!-- lifecycle:guideline:start' end_prefix='<!-- lifecycle:guideline:end'
+  local end_marker='<!-- lifecycle:guideline:end -->'
+  local pattern='^(.*)<!-- lifecycle:guideline:start sha256=([0-9a-f]{64}) -->(.*)<!-- lifecycle:guideline:end -->(.*)$'
+  local prefix="" suffix="" body installed_hash newline=$'\n'
+  if [[ "$content" == *"$start_prefix"* || "$content" == *"$end_prefix"* ]]; then
+    if [[ "${content#*"$start_prefix"}" == *"$start_prefix"* ||
+          "${content#*"$end_prefix"}" == *"$end_prefix"* ]] || ! [[ "$content" =~ $pattern ]]; then
+      echo "Preserved guideline for review (malformed section markers): $target_file" >&2
+      return
+    fi
+    prefix="${BASH_REMATCH[1]}" installed_hash="${BASH_REMATCH[2]}"
+    body="${BASH_REMATCH[3]}" suffix="${BASH_REMATCH[4]}"
+    if [[ "$body" == $'\r\n'* ]]; then newline=$'\r\n'; fi
+    if [[ ( -n "$prefix" && "$prefix" != *$'\n' ) ||
+          "$body" != "$newline"* || "$body" != *$'\n' ||
+          ( -n "$suffix" && "$suffix" != $'\n'* && "$suffix" != $'\r\n'* ) ]]; then
+      echo "Preserved guideline for review (malformed section markers): $target_file" >&2
+      return
+    fi
+    body="${body#"$newline"}"
+    body="${body//$'\r\n'/$'\n'}"
+    if [[ "$(printf '%s' "$body" | guideline_digest)" != "$installed_hash" ]]; then
+      echo "Preserved guideline for review (manual edits inside Lifecycle section): $target_file" >&2
+      return
+    fi
+    [[ "$body" != "$source_body" ]] || return 0
+  else
+    [[ "$content" != *$'\r\n'* ]] || newline=$'\r\n'
+    prefix="$content"
+    if [[ -n "$prefix" ]]; then
+      [[ "$prefix" == *$'\n' ]] || prefix+="$newline"
+      prefix+="$newline"
+    fi
+    suffix="$newline"
+  fi
+
+  local block temporary_file
+  block="<!-- lifecycle:guideline:start sha256=$source_hash -->"$'\n'"$source_body$end_marker"
+  if [[ "$newline" == $'\r\n' ]]; then block="${block//$'\n'/$'\r\n'}"; fi
+  temporary_file="$(mktemp "$target_file.lifecycle.XXXXXX")"
+  if [[ -f "$target_file" ]]; then
+    cp -p "$target_file" "$temporary_file"
+  else
+    cp -p "$source_file" "$temporary_file"
+  fi
+  printf '%s' "$prefix$block$suffix" > "$temporary_file"
+  mv "$temporary_file" "$target_file"
+}
+
 install_project() {
   local project_path="$1"
   local project_root
@@ -236,23 +319,15 @@ install_project() {
   done
 
   if [[ "$same_skills_directory" -eq 0 && -d "$SOURCE_RULES" ]]; then
-    for rule_path in "$SOURCE_RULES"/*; do
-      [[ -e "$rule_path" ]] || continue
-      local rule_name
-      rule_name="$(basename "$rule_path")"
-      if [[ ! -f "$target_rules/$rule_name" ]]; then
-        cp -R "$rule_path" "$target_rules/"
-      fi
+    for rule_path in "$SOURCE_RULES"/*.md; do
+      [[ -f "$rule_path" ]] || continue
+      update_guideline "$rule_path" "$target_rules/$(basename "$rule_path")"
     done
-    local target_rules_legacy="$project_root/.agents/rules"
-    if [[ -d "$target_rules_legacy" ]]; then
-      rm -rf "$target_rules_legacy"
-    fi
   fi
 
   update_agents_file "$agents_file"
   echo "Installed $installed Lifecycle skill(s) into $target_skills"
-  echo "Copied Lifecycle guidelines into $target_rules"
+  echo "Processed Lifecycle guideline sections in $target_rules"
   echo "Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist"
   echo "Updated the managed Lifecycle section in $agents_file"
 }

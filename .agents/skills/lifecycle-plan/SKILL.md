@@ -32,7 +32,7 @@ You must iterate through each Expected Outcome, and break it down into strict ar
 - **Checkpoint 2:** UI Layout & States (Mocked data only, for visual/interaction verification)
 - **Checkpoint 3:** Repositories & Logic (Implement backend and REPLACE the mock data from Checkpoint 2 with live data)
 
-*Note: If an outcome does not require one of these layers (e.g., a pure backend fix doesn't need UI, or a pure visual tweak doesn't need Models/Logic), you must still list the Checkpoint in the plan, but mark it as `N/A - [Reason]` so it is explicitly skipped.*
+If an outcome does not require a layer, keep its checkpoint heading and replace the body with `N/A - [Reason]`. Plan approval approves this omission; skipped checkpoints need no actions, self-review, or checkpoint approval.
 
 ## 5. The Friction Log
 If you struggle with ambiguous architectural guidelines or missing rules during the Plan phase, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. Do not stop planning to fix the rules, just log the friction.

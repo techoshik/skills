@@ -107,6 +107,85 @@ function Test-AgentsMarkers {
     if ($State -eq 1) { throw "Incomplete Lifecycle markers: $AgentsFile" }
 }
 
+function Get-GuidelineHash {
+    param([string]$Text)
+    $Hasher = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        return [BitConverter]::ToString($Hasher.ComputeHash([Text.Encoding]::UTF8.GetBytes($Text))).Replace('-', '').ToLowerInvariant()
+    } finally {
+        $Hasher.Dispose()
+    }
+}
+
+function Update-Guideline {
+    param([string]$SourceFile, [string]$TargetFile)
+    if (Test-Path -LiteralPath $TargetFile) {
+        $Item = Get-Item -LiteralPath $TargetFile -Force
+        if ($Item.PSIsContainer -or ($Item.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            Write-Warning "Preserved guideline for review (not a regular file): $TargetFile"
+            return
+        }
+    }
+    $Encoding = [Text.UTF8Encoding]::new($false, $true)
+    $SourceBody = $Encoding.GetString([IO.File]::ReadAllBytes($SourceFile)).Replace("`r`n", "`n")
+    if (-not $SourceBody.EndsWith("`n")) { $SourceBody += "`n" }
+    $SourceHash = Get-GuidelineHash -Text $SourceBody
+    $Content = ''
+    if (Test-Path -LiteralPath $TargetFile -PathType Leaf) {
+        try {
+            $Content = $Encoding.GetString([IO.File]::ReadAllBytes($TargetFile))
+        } catch {
+            Write-Warning "Preserved guideline for review (could not read UTF-8 text): $TargetFile"
+            return
+        }
+    }
+    $Prefix = ''
+    $Suffix = ''
+    $Newline = "`n"
+    if ($Content.Contains('<!-- lifecycle:guideline:start') -or $Content.Contains('<!-- lifecycle:guideline:end')) {
+        $Match = [regex]::Match($Content, '(?s)^(.*)<!-- lifecycle:guideline:start sha256=([0-9a-f]{64}) -->(.*)<!-- lifecycle:guideline:end -->(.*)$')
+        if ([regex]::Matches($Content, '<!-- lifecycle:guideline:start').Count -ne 1 -or
+            [regex]::Matches($Content, '<!-- lifecycle:guideline:end').Count -ne 1 -or -not $Match.Success) {
+            Write-Warning "Preserved guideline for review (malformed section markers): $TargetFile"
+            return
+        }
+        $Prefix = $Match.Groups[1].Value
+        $InstalledHash = $Match.Groups[2].Value
+        $Body = $Match.Groups[3].Value
+        $Suffix = $Match.Groups[4].Value
+        if ($Body.StartsWith("`r`n")) { $Newline = "`r`n" }
+        if (($Prefix.Length -gt 0 -and -not $Prefix.EndsWith("`n")) -or
+            -not $Body.StartsWith($Newline) -or -not $Body.EndsWith("`n") -or
+            ($Suffix.Length -gt 0 -and -not $Suffix.StartsWith("`n") -and -not $Suffix.StartsWith("`r`n"))) {
+            Write-Warning "Preserved guideline for review (malformed section markers): $TargetFile"
+            return
+        }
+        $Body = $Body.Substring($Newline.Length).Replace("`r`n", "`n")
+        if ((Get-GuidelineHash -Text $Body) -ne $InstalledHash) {
+            Write-Warning "Preserved guideline for review (manual edits inside Lifecycle section): $TargetFile"
+            return
+        }
+        if ($Body -ceq $SourceBody) { return }
+    } else {
+        if ($Content.Contains("`r`n")) { $Newline = "`r`n" }
+        $Prefix = $Content
+        if ($Prefix.Length -gt 0) {
+            if (-not $Prefix.EndsWith("`n")) { $Prefix += $Newline }
+            $Prefix += $Newline
+        }
+        $Suffix = $Newline
+    }
+    $Block = "<!-- lifecycle:guideline:start sha256=$SourceHash -->`n${SourceBody}<!-- lifecycle:guideline:end -->"
+    $Block = $Block.Replace("`n", $Newline)
+    $TemporaryFile = Join-Path (Split-Path -Parent $TargetFile) ([IO.Path]::GetRandomFileName())
+    try {
+        [IO.File]::WriteAllText($TemporaryFile, $Prefix + $Block + $Suffix, [Text.UTF8Encoding]::new($false))
+        Move-Item -LiteralPath $TemporaryFile -Destination $TargetFile -Force
+    } finally {
+        if (Test-Path -LiteralPath $TemporaryFile) { Remove-Item -LiteralPath $TemporaryFile -Force }
+    }
+}
+
 function Install-Project {
     param([string]$Path)
 
@@ -157,15 +236,9 @@ function Install-Project {
     }
 
     if (-not $SameSkillsDirectory -and (Test-Path -LiteralPath $SourceRules -PathType Container)) {
-        Get-ChildItem -LiteralPath $SourceRules -Force | ForEach-Object {
+        Get-ChildItem -LiteralPath $SourceRules -Filter '*.md' -File -Force | ForEach-Object {
             $TargetFile = Join-Path $TargetRules $_.Name
-            if (-not (Test-Path -LiteralPath $TargetFile -PathType Leaf)) {
-                Copy-Item -LiteralPath $_.FullName -Destination $TargetRules -Recurse -Force
-            }
-        }
-        $TargetRulesLegacy = Join-Path $ProjectRoot '.agents/rules'
-        if (Test-Path -LiteralPath $TargetRulesLegacy -PathType Container) {
-            Remove-Item -LiteralPath $TargetRulesLegacy -Recurse -Force
+            Update-Guideline -SourceFile $_.FullName -TargetFile $TargetFile
         }
     }
 
@@ -193,7 +266,7 @@ function Install-Project {
     }
 
     Write-Output "Installed $Installed Lifecycle skill(s) into $TargetSkills"
-    Write-Output "Copied Lifecycle guidelines into $TargetRules"
+    Write-Output "Processed Lifecycle guideline sections in $TargetRules"
     Write-Output 'Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist'
     Write-Output "Updated the managed Lifecycle section in $AgentsFile"
 }

@@ -13,12 +13,15 @@
 *Focus: Defining the structural contracts.*
 
 - **Architecture & Contracts (The HOW):**
-  - `<file_path>`: <What is being added or modified?>
+  - `<file_path>`: <!-- Repeat applicable actions for each changed field; omit unused actions. -->
+    - **Add:** `<Model.field>` — <type (required/optional), default if any, validation>
+    - **Update:** `<Model.field>` — <before → after: type (required/optional), default if any, validation>
+    - **Delete:** `<Model.field>` — <existing type and default, if any>
 - **Build Actions:**
-  - <Concrete implementation action 1>
-  - <Concrete implementation action 2>
+  - [ ] <Concrete implementation action 1>
+  - [ ] <Concrete implementation action 2>
 - **Agent Self-Review:**
-  - [ ] Verify the models strictly match the required data shape in the Idea file.
+  - [ ] Verify the models match this checkpoint's Architecture & Contracts in the Plan.
   - [ ] Verify the code complies with Freezed/DTO guidelines.
 - **User Verification:**
   - **Action:** <How the human will verify this step (e.g., Code Review)>
@@ -31,7 +34,7 @@
 - **Architecture & Contracts (The HOW):**
   - `<file_path>`: <What widgets or state controllers are being built?>
 - **Build Actions:**
-  - <Concrete implementation action 1 (must use mock data)>
+  - [ ] <Concrete implementation action 1 (must use mock data)>
 - **Agent Self-Review:**
   - [ ] Read the guideline file at `.agents/guidelines/architecture_flutter.md` (specifically the Folder Structure and UI sections) and verify strict compliance.
   - [ ] Verify absolutely no real repository/backend calls are made in this checkpoint.
@@ -48,7 +51,7 @@
 - **Architecture & Contracts (The HOW):**
   - `<file_path>`: <What repositories or use cases are being built?>
 - **Build Actions:**
-  - <Concrete implementation action 1 (e.g., replace mock data with real database call)>
+  - [ ] <Concrete implementation action 1 (e.g., replace mock data with real database call)>
 - **Agent Self-Review:**
   - [ ] Read the guideline files at `.agents/guidelines/architecture_cloud_functions.md` and `.agents/guidelines/architecture_flutter.md` to verify the logic adheres to domain rules and correctly isolates Firestore from the UI.
   - [ ] Run applicable static checks.

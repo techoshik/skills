@@ -8,9 +8,9 @@ description: Run global tests, synchronize documentation, commit the feature, an
 The goal of this skill is to rapidly and safely integrate the completed feature into the codebase. Because the feature was already verified layer-by-layer during the Build phase, there is no need to write another heavy documentation file.
 
 ## 1. Entry Gate (MANDATORY)
-Before running any checks, you must read `02-plan.md` and verify that EVERY single `[ ] Checkpoint Approved` box is checked. 
-- If any checkpoint is unapproved, you must **STOP** and refuse to finalize. Instruct the user to finish the Build phase first.
-- Only proceed if the entire plan is marked as approved.
+Before running any checks, read `02-plan.md` and verify that `Plan Approved` and every applicable `Checkpoint Approved` box are checked.
+- If the plan or any applicable checkpoint is unapproved, **STOP** and request the missing approval before finalizing.
+- Ignore checkpoints marked `N/A`; plan approval already approves their omission, even if they still contain unchecked boxes.
 - Reconcile the complete change: run `git status` AND `git diff --name-only main...HEAD` (or equivalent base branch) to inspect all work done for this feature. Ensure you only stage/commit changes relevant to the Expected Outcomes, preserving unrelated changes.
 
 ## 2. Global Verification
