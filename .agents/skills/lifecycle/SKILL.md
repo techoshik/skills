@@ -1,31 +1,31 @@
 ---
 name: lifecycle
-description: Run the project's Idea → Prototype → Plan → Build → Finalize development lifecycle.
+description: Orchestrate the project's Idea → Plan → Build → Finalize development lifecycle.
 disable-model-invocation: true
 ---
 
-# Lifecycle
+# Lifecycle Orchestrator
 
-## Required entry
+The `lifecycle` skill is the master router for feature development. It ensures that features are strictly designed, planned, built, and finalized in the correct order.
 
-Before executing ANY phase, you must have read and understood [Framework](../../rules/framework.md) and [Artifact Writing](../../rules/artifacts.md). Do not re-read them if you already have them in context. Resume from `docs/lifecycle/<change-name>/00-lifecycle.md` and verify approval state before choosing a phase.
+## Required Entry
+Before executing ANY phase, you must understand the current state of the feature. Check the project's temporary `lifecycle` tracking directory.
 
 ## Route
+Determine the current state below. To enter a phase, read its corresponding `SKILL.md` file and execute its instructions exactly.
 
-Determine the current state below. To enter a phase, use the `view_file` tool to read its corresponding `SKILL.md` file.
-
-| State | Read next |
+| State | Action (Read Next) |
 | --- | --- |
-| No approved Idea | [Idea skill](../lifecycle-idea/SKILL.md) |
-| Idea approved; Prototype unresolved | [Prototype skill](../lifecycle-prototype/SKILL.md) |
-| Prototype approved, including Not needed; Plan incomplete | [Plan skill](../lifecycle-plan/SKILL.md) |
-| Plan approved; Build not approved complete | [Build skill](../lifecycle-build/SKILL.md) |
-| Build approved; cycle open | [Finalize skill](../lifecycle-finalize/SKILL.md) |
+| No `01-idea.md` exists | [Idea skill](../lifecycle-idea/SKILL.md) |
+| Idea approved; no `02-plan.md` exists | [Plan skill](../lifecycle-plan/SKILL.md) |
+| Plan approved; feature not yet fully built | [Build skill](../lifecycle-build/SKILL.md) |
+| Build approved; feature needs commit/cleanup | [Finalize skill](../lifecycle-finalize/SKILL.md) |
 
-Infer state from approved artifacts/history only when `00-lifecycle.md` (the index) is absent. Awaiting approval means present/resume the current result, not advance. Load one active procedure and every reference its conditions require; other phases stay unloaded. Reuse unchanged material already read in this session.
+## Workspace & Artifacts
+The temporary `lifecycle` tracking directory is used strictly for organizing the current feature being built. 
+- You do not need to create bloated index files.
+- The existence of an approved phase artifact (e.g., `01-idea.md`) is sufficient proof that the phase is complete.
+- Follow the hard stop-and-wait approval gates at the end of every phase before advancing to the next.
 
-## Workspace
-
-Create artifacts as needed from `templates/`: index, phase artifacts, Cycle Log, optional prototype assets. Active artifacts normally stay committed for continuity; solo developers may choose to ignore them. Project-owned permanent sources remain authoritative. Follow the framework handoff and approval gates after each responsibility.
-
-For every document created or edited, apply the **required format and compactness pass** (detailed in the Artifact Writing rules) before presentation or handoff.
+## Universal Rule: Continuous Improvement (Friction Logging)
+If you struggle with missing rules, ambiguous guidelines, or unexpected technical roadblocks during **ANY phase** (Idea, Plan, or Build), you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. Do not stop your work to fix the rules, just log the friction and keep going. The Finalize phase will resolve it.

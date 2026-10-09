@@ -1,25 +1,31 @@
-<!-- Required for the whole document: ../../../rules/artifacts.md#required-format
-and #required-compactness-pass. Remove this comment before presentation. -->
+# Module: <Module Name>
 
-# <Module name>
+## Domain Purpose
+*<1-2 sentences explaining the high-level business capability of this domain (e.g., "Manages everything related to job applications and matching").>*
 
-## Goal
+## Entities
+*<List the core business entities owned by this module.>*
+- **<Entity Name>**: <High-level description of what this represents in the real world.>
 
-- <Responsibility>
+## Core Business Rules
+*<Global rules that apply to the ENTIRE module. Agents must NEVER break these in any feature.>*
+- <Rule 1 (e.g., "A Worker cannot apply to a job if their profile is incomplete.")>
+- <Rule 2 (e.g., "Admins have full override rights on all status changes.")>
 
-## Rules
+## Features & Current State
+*<List the major features that have been built. Use human-readable names.>*
 
-- <Current verified invariant>
+- **<Feature Name>** (e.g., Job Details):
+  - **Capabilities (What it does):** 
+    - <e.g., "Displays job requirements and allows users to apply.">
+  - **Feature Acceptance Criteria:**
+    - <e.g., "The 'Apply' button must be hidden if the user has already applied.">
 
-## Features
+## Boundaries
+*<What is explicitly OUT of scope for this module? What other domains does it interact with?>*
+- <Boundary (e.g., "This module reads User profiles, but does NOT modify them.")>
+- <Boundary (e.g., "Relies on the Auth module for role verification.")>
 
-### <Feature> — <Responsibility>
-
-- <Current verified capability>
-
-## Future Work
-
-- **<Opportunity>:** <Why it matters; Future / Deferred>
-
-<!-- Use existing project conventions. Link owning standards and user docs;
-omit empty sections and cycle history. Remove these instructions. -->
+## Deferred / Future Scope
+*<List high-level business capabilities explicitly delayed for future versions.>*
+- <Deferred capability>

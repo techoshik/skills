@@ -3,43 +3,25 @@ and #required-compactness-pass. Remove this comment before presentation. -->
 
 # Idea
 
-## Problem / Opportunity
+## 1. Goal
 
-- **User:** <Affected actor>
-- **Problem:** <Current difficulty>
-- **Impact:** <Why it matters>
-- **Evidence:** <Observation or explicit assumption>
+- **Actor:** <Who is using this?>
+- **Objective:** <One sentence describing what they need to achieve>
 
-## Goal
+## 2. Scope (What Will Change)
 
-- **Goal:** <Affected users + capability to enable + essential scope boundary>
+- <Add, modify, or remove specific UI element or logic>
+- <Difference from current behavior, when useful>
 
-## What Will Change
+## 3. Constraints (Decisions)
 
-- **<Capability>**
-  - <Add, modify, or remove this product behavior>
-  - <Difference from current behavior, when useful>
+- <Explicitly state what NOT to do if the agent might over-engineer, or state required patterns>
 
-## Expected Outcomes
+## 4. Expected Outcomes (Micro-Stories)
 
-- **EO-01 — <Independently verifiable behavior>**
-  - **Actor / Context:** <Relevant user or system context>
-  - **Given:** <Relevant starting conditions>
-  - **When:** <Action or event>
-  - **Then:** <Observable result>
+- **EO-01 — <Behavior Name>**
+  - **Given:** <Starting condition/state>
+  - **When:** <User action or trigger>
+  - **Then:** <Exact observable result>
 
-<!-- Repeat for applicable permitted, denied, failure, and preservation outcomes.
-Keep setup commands and proof methods in Plan. Omit unnecessary fields. -->
-
-## Decisions
-
-- **<Scope decision>:** <Decision>
-  - **Why:** <Need or safeguard>
-
-## Open Questions
-
-- **Question:** <Consequential decision>
-  - **Depends on:** <Unresolved prerequisite, if present>
-
-<!-- Omit empty sections; use Not yet specified only for in-scope uncertainty
-that cannot yet be phrased. Remove instructions before presentation. -->
+<!-- Repeat EO block for permitted, denied, failure, and preservation outcomes. -->
