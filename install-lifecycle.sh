@@ -82,11 +82,11 @@ fi
 
 if [[ -d "$SCRIPT_DIR/skills" ]]; then
   SOURCE_SKILLS="$SCRIPT_DIR/skills"
-  SOURCE_RULES="$SCRIPT_DIR/rules"
+  SOURCE_RULES="$SCRIPT_DIR/guidelines"
 elif [[ -d "$SCRIPT_DIR/.agents/skills" ]]; then
   # Backward-compatible with this repository's current layout.
   SOURCE_SKILLS="$SCRIPT_DIR/.agents/skills"
-  SOURCE_RULES="$SCRIPT_DIR/.agents/rules"
+  SOURCE_RULES="$SCRIPT_DIR/.agents/guidelines"
 else
   echo "Could not find the Lifecycle skills directory." >&2
   exit 1
@@ -181,7 +181,7 @@ install_project() {
   local project_root
   project_root="$(cd -- "$project_path" && pwd)"
   local target_skills="$project_root/.agents/skills"
-  local target_rules="$project_root/.agents/rules"
+  local target_rules="$project_root/.agents/guidelines"
   local agents_file="$project_root/AGENTS.md"
   validate_agents_file "$agents_file"
   mkdir -p "$target_skills" \
@@ -269,13 +269,13 @@ install_project() {
 
       if [[ "$rule_name" == "architecture_flutter.md" ]]; then
         if [[ -n "$flutter_dir" ]]; then
-          mkdir -p "$flutter_dir/.agents/rules"
-          cp -R "$rule_path" "$flutter_dir/.agents/rules/"
+          mkdir -p "$flutter_dir/.agents/guidelines"
+          cp -R "$rule_path" "$flutter_dir/.agents/guidelines/"
         fi
       elif [[ "$rule_name" == "architecture_cloud_functions.md" ]]; then
         if [[ -n "$functions_dir" ]]; then
-          mkdir -p "$functions_dir/.agents/rules"
-          cp -R "$rule_path" "$functions_dir/.agents/rules/"
+          mkdir -p "$functions_dir/.agents/guidelines"
+          cp -R "$rule_path" "$functions_dir/.agents/guidelines/"
         fi
       else
         cp -R "$rule_path" "$target_rules/"
@@ -285,7 +285,7 @@ install_project() {
 
   update_agents_file "$agents_file"
   echo "Installed $installed Lifecycle skill(s) into $target_skills"
-  echo "Copied Lifecycle rules into $target_rules"
+  echo "Copied Lifecycle guidelines into $target_rules"
   echo "Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist"
   echo "Updated the managed Lifecycle section in $agents_file"
 }

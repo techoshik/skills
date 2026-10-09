@@ -68,9 +68,9 @@ if ($ExistingProjectPaths.Count -eq 0) {
 $ProjectPaths = $ExistingProjectPaths
 
 $CanonicalSkills = Join-Path $ScriptRoot 'skills'
-$CanonicalRules = Join-Path $ScriptRoot 'rules'
+$CanonicalRules = Join-Path $ScriptRoot 'guidelines'
 $LegacySkills = Join-Path $ScriptRoot '.agents/skills'
-$LegacyRules = Join-Path $ScriptRoot '.agents/rules'
+$LegacyRules = Join-Path $ScriptRoot '.agents/guidelines'
 
 if (Test-Path -LiteralPath $CanonicalSkills -PathType Container) {
     $SourceSkills = $CanonicalSkills
@@ -112,7 +112,7 @@ function Install-Project {
 
     $ProjectRoot = (Resolve-Path -LiteralPath $Path).Path
     $TargetSkills = Join-Path $ProjectRoot '.agents/skills'
-    $TargetRules = Join-Path $ProjectRoot '.agents/rules'
+    $TargetRules = Join-Path $ProjectRoot '.agents/guidelines'
     $AgentsFile = Join-Path $ProjectRoot 'AGENTS.md'
 
     Test-AgentsMarkers -AgentsFile $AgentsFile
@@ -190,13 +190,13 @@ function Install-Project {
             
             if ($RuleName -eq 'architecture_flutter.md') {
                 if ($null -ne $FlutterDir) {
-                    $DestDir = Join-Path $FlutterDir '.agents/rules'
+                    $DestDir = Join-Path $FlutterDir '.agents/guidelines'
                     New-Item -ItemType Directory -Force -Path $DestDir | Out-Null
                     Copy-Item -LiteralPath $_.FullName -Destination $DestDir -Recurse -Force
                 }
             } elseif ($RuleName -eq 'architecture_cloud_functions.md') {
                 if ($null -ne $FunctionsDir) {
-                    $DestDir = Join-Path $FunctionsDir '.agents/rules'
+                    $DestDir = Join-Path $FunctionsDir '.agents/guidelines'
                     New-Item -ItemType Directory -Force -Path $DestDir | Out-Null
                     Copy-Item -LiteralPath $_.FullName -Destination $DestDir -Recurse -Force
                 }
@@ -230,7 +230,7 @@ function Install-Project {
     }
 
     Write-Output "Installed $Installed Lifecycle skill(s) into $TargetSkills"
-    Write-Output "Copied Lifecycle rules into $TargetRules"
+    Write-Output "Copied Lifecycle guidelines into $TargetRules"
     Write-Output 'Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist'
     Write-Output "Updated the managed Lifecycle section in $AgentsFile"
 }
