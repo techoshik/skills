@@ -26,6 +26,8 @@ Once a checkpoint is complete and self-reviewed, you must edit the `02-plan.md` 
 If you struggle with missing rules, ambiguous guidelines, or unexpected technical roadblocks while building, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. Do not stop building to fix the rules, just log the friction and keep going.
 
 ## 5. Human Handoff
-After checking the boxes in `02-plan.md`, **STOP**. Prompt the user to verify the checkpoint using the instructions written in the `User Verification` section of the plan.
+After checking your self-review boxes in `02-plan.md`, **STOP**. Prompt the user to verify the checkpoint using the instructions written in the `User Verification` section of the plan.
 
-Do not proceed to the next checkpoint until the user explicitly approves.
+Do not proceed to the next checkpoint until the user explicitly approves. Once they approve, you must edit `02-plan.md` to check the `[ ] Checkpoint Approved` box before moving to the next checkpoint. 
+- If you are resumed in a new conversation, ALWAYS check for the `Checkpoint Approved` box. 
+- If it is unchecked, you must await approval or fix the user's requested changes before moving on.

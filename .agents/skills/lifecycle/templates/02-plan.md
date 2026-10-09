@@ -1,5 +1,4 @@
-<!-- Required for the whole document: ../../../rules/artifacts.md#required-format
-and #required-compactness-pass. Remove this comment before presentation. -->
+
 
 # Plan
 
@@ -21,6 +20,7 @@ and #required-compactness-pass. Remove this comment before presentation. -->
   - [ ] Verify the code complies with Freezed/DTO guidelines.
 - **User Verification:**
   - **Action:** <How the human will verify this step (e.g., Code Review)>
+  - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
 
 ### Checkpoint 2: UI Layout & States (Mocked)
 *Focus: Visual and interactive verification without backend logic.*
@@ -36,6 +36,7 @@ and #required-compactness-pass. Remove this comment before presentation. -->
   - **Open/Run:** <How to launch the specific screen>
   - **Action:** <What to click/type>
   - **Expected:** <What the UI should look like and how the mock state should react>
+  - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
 
 ### Checkpoint 3: Repositories & Logic
 *Focus: Wiring up the actual backend logic.*
@@ -49,5 +50,6 @@ and #required-compactness-pass. Remove this comment before presentation. -->
   - [ ] Run applicable static checks.
 - **User Verification:**
   - **Action:** <How the human will verify the live, end-to-end integration>
+  - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
 
 <!-- Repeat the entire Checkpoint sequence for the next Expected Outcome. -->

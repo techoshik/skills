@@ -1,5 +1,4 @@
-<!-- Required for the whole document: ../../../rules/artifacts.md#required-format
-and #required-compactness-pass. Remove this comment before presentation. -->
+
 
 # Idea
 
