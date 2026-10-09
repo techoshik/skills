@@ -2,6 +2,8 @@
 
 # Idea
 
+- [ ] **Idea Approved:** (Do not check this box until the user explicitly approves the scope and Expected Outcomes).
+
 ## 1. Goal
 
 - **Actor:** <Who is using this?>

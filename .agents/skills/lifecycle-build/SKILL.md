@@ -14,7 +14,7 @@ Before executing any code or analyzing checkpoints, you must read `02-plan.md` a
 
 ## 2. Execution Constraints (EXTREMELY IMPORTANT)
 You are strictly forbidden from executing multiple checkpoints at the same time. You must behave like a senior developer making granular, isolated commits.
-- **Rule 1:** Read `02-plan.md`. Identify the *very first* uncompleted Checkpoint.
+- **Rule 1:** Read `02-plan.md`. Identify the *very first* uncompleted Checkpoint. (If a Checkpoint is marked as `N/A`, it is considered skipped. You should physically check its boxes to clear it from the queue and move to the next valid Checkpoint).
 - **Rule 2:** Execute the Build Actions for that Checkpoint ONLY. Do NOT write code for the next checkpoint.
 - **Rule 3:** If the checkpoint involves Mock UI, do NOT connect it to the real database yet. Wait for the Logic checkpoint.
 
@@ -25,7 +25,8 @@ Before you declare the checkpoint "Done", you MUST execute the steps listed unde
 
 ## 4. The Interactive Checklist
 Since we do not use bloated tracking files, the `02-plan.md` document itself acts as your tracking file. 
-Once a checkpoint is complete and self-reviewed, you must edit the `02-plan.md` file and physically place an `x` in the markdown checkboxes for that specific checkpoint.
+Once a checkpoint is complete and self-reviewed, you must edit the `02-plan.md` file and physically place an `x` in the **implementation and self-review** markdown checkboxes for that specific checkpoint.
+- **WARNING:** Do NOT check the `[ ] Checkpoint Approved` box. That is strictly reserved for the human user.
 
 ## 5. The Friction Log
 If you struggle with missing rules, ambiguous guidelines, or unexpected technical roadblocks while building, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. 

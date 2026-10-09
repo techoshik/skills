@@ -238,8 +238,16 @@ install_project() {
   if [[ "$same_skills_directory" -eq 0 && -d "$SOURCE_RULES" ]]; then
     for rule_path in "$SOURCE_RULES"/*; do
       [[ -e "$rule_path" ]] || continue
-      cp -R "$rule_path" "$target_rules/"
+      local rule_name
+      rule_name="$(basename "$rule_path")"
+      if [[ ! -f "$target_rules/$rule_name" ]]; then
+        cp -R "$rule_path" "$target_rules/"
+      fi
     done
+    local target_rules_legacy="$project_root/.agents/rules"
+    if [[ -d "$target_rules_legacy" ]]; then
+      rm -rf "$target_rules_legacy"
+    fi
   fi
 
   update_agents_file "$agents_file"

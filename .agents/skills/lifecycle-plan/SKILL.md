@@ -7,8 +7,10 @@ description: After Idea approval, act as a Technical Architect to align on techn
 
 The goal of this skill is to take the Expected Outcomes (EO) from the Idea phase and break them down into extremely granular, reviewable implementation checkpoints.
 
-## 1. Required Inputs
-Before generating a plan, you must have an approved `01-idea.md` document containing the Micro-Stories/Expected Outcomes. If this does not exist, ask the user to complete the Idea phase first.
+## 1. Entry Gate (MANDATORY)
+Before generating a plan, you must have an approved `01-idea.md` document containing the Expected Outcomes. 
+- You must read `01-idea.md` and verify that the `[ ] Idea Approved` box is checked.
+- If it does not exist or is unchecked, **STOP** and ask the user to complete and approve the Idea phase first.
 
 ## 2. The Research Loop (MANDATORY)
 Before writing the plan or asking the user any questions, you must act as a Technical Lead and research the existing codebase, guidelines, and documentation.

@@ -158,7 +158,14 @@ function Install-Project {
 
     if (-not $SameSkillsDirectory -and (Test-Path -LiteralPath $SourceRules -PathType Container)) {
         Get-ChildItem -LiteralPath $SourceRules -Force | ForEach-Object {
-            Copy-Item -LiteralPath $_.FullName -Destination $TargetRules -Recurse -Force
+            $TargetFile = Join-Path $TargetRules $_.Name
+            if (-not (Test-Path -LiteralPath $TargetFile -PathType Leaf)) {
+                Copy-Item -LiteralPath $_.FullName -Destination $TargetRules -Recurse -Force
+            }
+        }
+        $TargetRulesLegacy = Join-Path $ProjectRoot '.agents/rules'
+        if (Test-Path -LiteralPath $TargetRulesLegacy -PathType Container) {
+            Remove-Item -LiteralPath $TargetRulesLegacy -Recurse -Force
         }
     }
 

@@ -1,24 +1,19 @@
 # Development Lifecycle Skills
 
-A portable development system: **Idea → Prototype → Plan → Build → Finalize**.
+A portable development system: **Idea → Plan → Build → Finalize**.
 
 | Phase | Responsibility |
 | --- | --- |
-| Idea | Need, minimum scope, observable success |
-| Prototype | Concrete evidence for uncertainty, or justified Not needed |
-| Plan | Small runnable steps with Specification, Build, Verify |
-| Build | Implement one step, then focused tests, immediate verification, review, and evidence |
-| Finalize | Full-branch reconciliation, verification, permanent truth, closure |
+| Idea | Need, minimum scope, observable success, Expected Outcomes |
+| Plan | Granular architectural checkpoints (Models, UI, Logic) |
+| Build | Implement one checkpoint, self-review, test, evidence, and human handoff |
+| Finalize | Full-branch reconciliation, verification, permanent truth, cleanup |
 
-Explicit approval is required after each phase and completed Build Step. [Framework](.agents/skills/lifecycle/references/framework.md) owns the exact approval/ownership contract.
+Explicit human approval is required after every phase and completed Build checkpoint.
 
 ## Reading without waste
 
-Start at [lifecycle/SKILL.md](.agents/skills/lifecycle/SKILL.md). Each phase entry requires the shared contract, writing rules, and its own procedure. Procedures point to required and conditionally triggered references. Reuse unchanged sources already read; load all applicable project rules. Finalize deliberately reads complete intent and branch changes.
-
-The [document writing rules](.agents/skills/lifecycle/references/artifacts.md) apply to every created or edited document, including permanent docs and agent/process guidance.
-
-Each rule has one reference owner. Templates shape artifacts without duplicating procedures. External companion skills are not required.
+Start at `lifecycle/SKILL.md`. Each phase entry contains its own constraints. Reuse unchanged sources already read; load all applicable project rules from `.agents/guidelines/`.
 
 ## Install or update
 
@@ -28,7 +23,7 @@ Each rule has one reference owner. Templates shape artifacts without duplicating
 ./install-lifecycle.sh .
 ```
 
-No arguments use ignored `.lifecycle-projects` at the installer root. See [.lifecycle-projects.example](.lifecycle-projects.example): one path per line, blank/comment lines ignored, relative paths based on the list directory. Missing project directories are skipped and never created.
+No arguments use ignored `.lifecycle-projects` at the installer root. See `.lifecycle-projects.example`: one path per line, blank/comment lines ignored, relative paths based on the list directory. Missing project directories are skipped and never created.
 
 PowerShell equivalents:
 
@@ -41,6 +36,6 @@ Run the installer again after updating this repository. `VERSION` and Git tags i
 
 ## Ownership and preservation
 
-Installers replace managed `lifecycle*` skill directories containing `SKILL.md`, update only the marked Lifecycle block in `AGENTS.md`, and ensure `docs/lifecycle`, `docs/guidelines`, `docs/modules`, and `docs/backlog` exist. Self-install preserves source skills. Unrelated skills and project-owned content remain intact; malformed managed markers are rejected before target changes.
+Installers replace managed `lifecycle*` skill directories containing `SKILL.md`, copy `guidelines` to `.agents/guidelines/` (without overwriting project-owned files), update the marked Lifecycle block in `AGENTS.md`, and clean up legacy rules. Unrelated skills and project-owned content remain intact.
 
-During work, create index/phase/Cycle Log artifacts under `docs/lifecycle/<change>/` using the included templates; add prototype assets only when useful. Permanent product, user, engineering, and process knowledge goes to its authoritative owner during Finalize. Archive/remove a completed cycle workspace only after explicit confirmation. Installation does not generate or migrate project knowledge, active work, or technology-specific rules.
+During work, tracking files (`01-idea.md`, `02-plan.md`, `friction_log.md`) are kept in a temporary `lifecycle` directory at the project root. These files act as the active context and checklist. Upon running Finalize, the temporary tracking files are safely deleted and committed alongside the completed feature. Permanent product, engineering, and process knowledge is updated directly in the project files.

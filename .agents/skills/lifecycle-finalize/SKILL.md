@@ -11,7 +11,7 @@ The goal of this skill is to rapidly and safely integrate the completed feature 
 Before running any checks, you must read `02-plan.md` and verify that EVERY single `[ ] Checkpoint Approved` box is checked. 
 - If any checkpoint is unapproved, you must **STOP** and refuse to finalize. Instruct the user to finish the Build phase first.
 - Only proceed if the entire plan is marked as approved.
-- Reconcile the complete change: run `git status` to inspect staged/unstaged/untracked work. Ensure you only stage changes relevant to the Expected Outcomes, preserving unrelated changes.
+- Reconcile the complete change: run `git status` AND `git diff --name-only main...HEAD` (or equivalent base branch) to inspect all work done for this feature. Ensure you only stage/commit changes relevant to the Expected Outcomes, preserving unrelated changes.
 
 ## 2. Global Verification
 You must ensure no regressions were introduced to the affected projects. 

@@ -17,9 +17,14 @@ Determine the current state below. To enter a phase, read its corresponding `SKI
 | State | Action (Read Next) |
 | --- | --- |
 | No `01-idea.md` exists | [Idea skill](../lifecycle-idea/SKILL.md) |
+| `01-idea.md` exists but lacks `[x] Idea Approved` | [Idea skill](../lifecycle-idea/SKILL.md) (Ask for approval) |
 | Idea approved; no `02-plan.md` exists | [Plan skill](../lifecycle-plan/SKILL.md) |
+| `02-plan.md` exists but lacks `[x] Plan Approved` | [Plan skill](../lifecycle-plan/SKILL.md) (Ask for approval) |
 | Plan approved; feature not yet fully built | [Build skill](../lifecycle-build/SKILL.md) |
 | Build approved; feature needs commit/cleanup | [Finalize skill](../lifecycle-finalize/SKILL.md) |
+
+## Approval Invalidation
+If the user modifies an already-approved document (e.g., changes outcomes in `01-idea.md` or alters the architecture in `02-plan.md`), you must un-check all dependent approval boxes. All affected work must be reconsidered and explicitly re-approved.
 
 ## Workspace & Artifacts
 The temporary `lifecycle` tracking directory is used strictly for organizing the current feature being built. 

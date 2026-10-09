@@ -39,5 +39,9 @@ If you struggle with ambiguous product rules, missing context, or constraints du
 ## 5. Execution
 1. Present your Why Loop analysis. Ask clarifying questions ONLY if they are genuinely necessary to resolve ambiguity.
 2. Use the provided [Idea Template](../lifecycle/templates/01-idea.md).
-3. Save the resulting document as `01-idea.md` in the current project's lifecycle directory.
-4. Ask the user to review and approve the Idea before moving to the Plan phase.
+3. Save the resulting document as `01-idea.md` in the current project's temporary `lifecycle` directory.
+
+## 6. Human Handoff
+Once the idea is written, **STOP**. You must present the feature scope to the user for explicit approval. 
+- Once the user approves, you must check the `[ ] Idea Approved` box at the top of `01-idea.md`. 
+- Do not proceed or offer to start planning until this box is checked.
