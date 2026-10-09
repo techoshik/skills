@@ -1,20 +1,20 @@
-
-
 # Plan
 
-- [ ] **Plan Approved:** (Do not check this box until the user explicitly approves the entire plan before the Build phase begins).
+- [ ] **Plan Approved** (Do not check this box until the user explicitly approves the entire plan before the Build phase begins).
 
 <!-- Agent Instruction: Structure the plan by iterating through each Expected Outcome (EO) from the Idea file. For each EO, break the implementation down into horizontal architectural Checkpoints (Models -> Mock UI -> Logic). You must complete and self-review each checkpoint before moving to the next. -->
 
 ## [EO-ID] <Expected Outcome Name>
-*Goal: <Brief summary of WHAT this outcome achieves>*
+
+_Goal: <Brief summary of WHAT this outcome achieves>_
 
 ### Checkpoint 1: Data Models & DTOs
-*Focus: Defining the structural contracts.*
+
+_Focus: Defining the structural contracts._
 
 - **Architecture & Contracts (The HOW):**
-  - `<file_path>`: <!-- Repeat applicable actions for each changed field; omit unused actions. -->
-    - **Add:** `<Model.field>` — <type (required/optional), default if any, validation>
+  - `<file_path>`: <!-- Repeat applicable actions for each new or modified model/field; omit unused actions. -->
+    - **Add:** `<Model or Model.field>` — <type (required/optional), default if any, validation>
     - **Update:** `<Model.field>` — <before → after: type (required/optional), default if any, validation>
     - **Delete:** `<Model.field>` — <existing type and default, if any>
 - **Build Actions:**
@@ -26,10 +26,11 @@
 - **User Verification:**
   - **Action:** <How the human will verify this step (e.g., Code Review)>
   - **Evidence:** <Record the actual test results or verification evidence here>
-  - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
+  - [ ] **Checkpoint Approved** (Do not check until the user explicitly approves)
 
 ### Checkpoint 2: UI Layout & States (Mocked)
-*Focus: Visual and interactive verification without backend logic.*
+
+_Focus: Visual and interactive verification without backend logic._
 
 - **Architecture & Contracts (The HOW):**
   - `<file_path>`: <What widgets or state controllers are being built?>
@@ -43,10 +44,11 @@
   - **Action:** <What to click/type>
   - **Expected:** <What the UI should look like and how the mock state should react>
   - **Evidence:** <Record the actual test results or verification evidence here>
-  - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
+  - [ ] **Checkpoint Approved** (Do not check until the user explicitly approves)
 
 ### Checkpoint 3: Repositories & Logic
-*Focus: Wiring up the actual backend logic.*
+
+_Focus: Wiring up the actual backend logic._
 
 - **Architecture & Contracts (The HOW):**
   - `<file_path>`: <What repositories or use cases are being built?>
@@ -58,6 +60,6 @@
 - **User Verification:**
   - **Action:** <How the human will verify the live, end-to-end integration>
   - **Evidence:** <Record the actual test results or verification evidence here>
-  - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
+  - [ ] **Checkpoint Approved** (Do not check until the user explicitly approves)
 
 <!-- Repeat the entire Checkpoint sequence for the next Expected Outcome. -->

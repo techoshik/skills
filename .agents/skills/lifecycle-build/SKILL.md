@@ -14,8 +14,8 @@ Before executing any code or analyzing checkpoints, you must read `02-plan.md` a
 
 ## 2. Execution Constraints (EXTREMELY IMPORTANT)
 You are strictly forbidden from executing multiple checkpoints at the same time. You must behave like a senior developer making granular, isolated commits.
-- **Rule 1:** Read `02-plan.md`. Identify the *very first* uncompleted applicable Checkpoint. Skip checkpoints marked `N/A` without changing any of their boxes; their omission was approved with the plan.
-- **Rule 2:** Execute the Build Actions for that Checkpoint ONLY. Do NOT write code for the next checkpoint.
+- **Rule 1:** Read `02-plan.md`. Identify the *first applicable checkpoint* where `[ ] Checkpoint Approved` is unchecked. (Skip checkpoints marked `N/A` without changing any of their boxes; their omission was approved with the plan).
+- **Rule 2:** Check its status: if its Build Actions or self-review boxes are incomplete, execute ONLY the remaining actions for that checkpoint. If both are already complete, do NOT write code for subsequent checkpoints; await user verification/approval or address requested fixes.
 - **Rule 3:** If the checkpoint involves Mock UI, do NOT connect it to the real database yet. Wait for the Logic checkpoint.
 
 ## 3. Agent Self-Review
@@ -26,7 +26,7 @@ Before you declare the checkpoint "Done", you MUST execute the steps listed unde
 ## 4. The Interactive Checklist
 Since we do not use bloated tracking files, the `02-plan.md` document itself acts as your tracking file. 
 Once a checkpoint is complete and self-reviewed, you must edit the `02-plan.md` file and physically place an `x` in the **implementation and self-review** markdown checkboxes for that specific checkpoint.
-- **Approval:** The user grants approval. The agent checks `Checkpoint Approved` only after the user's explicit approval.
+- **Approval:** Never check the `[ ] Checkpoint Approved` box on your own. You may check it only after the user explicitly grants approval in conversation.
 
 ## 5. The Friction Log
 If you struggle with missing rules, ambiguous guidelines, or unexpected technical roadblocks while building, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. 
@@ -38,4 +38,8 @@ After checking your self-review boxes in `02-plan.md`, **STOP**. Prompt the user
 
 Do not proceed to the next checkpoint until the user explicitly approves. Once they approve, you must edit `02-plan.md` to check the `[ ] Checkpoint Approved` box before moving to the next checkpoint. 
 - On resumption, find the first applicable checkpoint with `Checkpoint Approved` unchecked.
-- If its action or self-review boxes are incomplete, continue only that checkpoint. If both are complete, wait for approval or address the user's requested fixes before advancing.
+- If its action or self-review boxes are incomplete, continue only that checkpoint.
+- If both are complete:
+  - If the user explicitly approved, check the `[ ] Checkpoint Approved` box and advance to the next checkpoint.
+  - If the user requested fixes, address them, complete self-review, and re-prompt for verification.
+  - Otherwise, wait for the user's explicit approval before advancing.
