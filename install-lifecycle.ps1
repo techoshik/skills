@@ -157,52 +157,8 @@ function Install-Project {
     }
 
     if (-not $SameSkillsDirectory -and (Test-Path -LiteralPath $SourceRules -PathType Container)) {
-        $FlutterDir = $null
-        if (Test-Path -LiteralPath (Join-Path $ProjectRoot 'pubspec.yaml') -PathType Leaf) {
-            $FlutterDir = $ProjectRoot
-        } else {
-            $SubDirs = Get-ChildItem -LiteralPath $ProjectRoot -Directory -Force
-            foreach ($Dir in $SubDirs) {
-                if (Test-Path -LiteralPath (Join-Path $Dir.FullName 'pubspec.yaml') -PathType Leaf) {
-                    $FlutterDir = $Dir.FullName
-                    break
-                }
-            }
-        }
-
-        $FunctionsDir = $null
-        if (Test-Path -LiteralPath (Join-Path $ProjectRoot 'functions/package.json') -PathType Leaf) {
-            $FunctionsDir = Join-Path $ProjectRoot 'functions'
-        } elseif (Test-Path -LiteralPath (Join-Path $ProjectRoot 'package.json') -PathType Leaf) {
-            $FunctionsDir = $ProjectRoot
-        } else {
-            $SubDirs = Get-ChildItem -LiteralPath $ProjectRoot -Directory -Force
-            foreach ($Dir in $SubDirs) {
-                if (Test-Path -LiteralPath (Join-Path $Dir.FullName 'package.json') -PathType Leaf) {
-                    $FunctionsDir = $Dir.FullName
-                    break
-                }
-            }
-        }
-
         Get-ChildItem -LiteralPath $SourceRules -Force | ForEach-Object {
-            $RuleName = $_.Name
-            
-            if ($RuleName -eq 'architecture_flutter.md') {
-                if ($null -ne $FlutterDir) {
-                    $DestDir = Join-Path $FlutterDir '.agents/guidelines'
-                    New-Item -ItemType Directory -Force -Path $DestDir | Out-Null
-                    Copy-Item -LiteralPath $_.FullName -Destination $DestDir -Recurse -Force
-                }
-            } elseif ($RuleName -eq 'architecture_cloud_functions.md') {
-                if ($null -ne $FunctionsDir) {
-                    $DestDir = Join-Path $FunctionsDir '.agents/guidelines'
-                    New-Item -ItemType Directory -Force -Path $DestDir | Out-Null
-                    Copy-Item -LiteralPath $_.FullName -Destination $DestDir -Recurse -Force
-                }
-            } else {
-                Copy-Item -LiteralPath $_.FullName -Destination $TargetRules -Recurse -Force
-            }
+            Copy-Item -LiteralPath $_.FullName -Destination $TargetRules -Recurse -Force
         }
     }
 
