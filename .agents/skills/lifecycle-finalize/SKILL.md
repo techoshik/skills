@@ -11,6 +11,7 @@ The goal of this skill is to rapidly and safely integrate the completed feature 
 Before running any checks, you must read `02-plan.md` and verify that EVERY single `[ ] Checkpoint Approved` box is checked. 
 - If any checkpoint is unapproved, you must **STOP** and refuse to finalize. Instruct the user to finish the Build phase first.
 - Only proceed if the entire plan is marked as approved.
+- Reconcile the complete change: run `git status` to inspect staged/unstaged/untracked work. Ensure you only stage changes relevant to the Expected Outcomes, preserving unrelated changes.
 
 ## 2. Global Verification
 You must ensure no regressions were introduced to the affected projects. 
@@ -24,7 +25,9 @@ Briefly check if the newly implemented Expected Outcomes require an update to th
 
 ## 4. The Improvement Loop
 Before asking for human approval, you must check if a `friction_log.md` file exists in the temporary `lifecycle` directory. 
-- If the agent struggled with missing or ambiguous rules during any phase, you must edit the relevant `.agents/guidelines/` files or `SKILL.md` files to permanently fix the ambiguity so future agents don't make the same mistake.
+- If the agent struggled with missing or ambiguous rules during any phase, carefully evaluate the recorded evidence.
+- Choose the correct permanent owner (`.agents/guidelines/` files or `SKILL.md` files) and edit it to permanently fix the ambiguity.
+- You may defer or dismiss a friction entry if the evidence does not support rewriting a global rule.
 - If the `friction_log.md` does not exist, do nothing.
 
 ## 5. Human Approval (MANDATORY)

@@ -22,6 +22,7 @@
   - [ ] Verify the code complies with Freezed/DTO guidelines.
 - **User Verification:**
   - **Action:** <How the human will verify this step (e.g., Code Review)>
+  - **Evidence:** <Record the actual test results or verification evidence here>
   - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
 
 ### Checkpoint 2: UI Layout & States (Mocked)
@@ -38,6 +39,7 @@
   - **Open/Run:** <How to launch the specific screen>
   - **Action:** <What to click/type>
   - **Expected:** <What the UI should look like and how the mock state should react>
+  - **Evidence:** <Record the actual test results or verification evidence here>
   - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
 
 ### Checkpoint 3: Repositories & Logic
@@ -52,6 +54,7 @@
   - [ ] Run applicable static checks.
 - **User Verification:**
   - **Action:** <How the human will verify the live, end-to-end integration>
+  - **Evidence:** <Record the actual test results or verification evidence here>
   - [ ] **Checkpoint Approved:** (Do not check until the user explicitly approves)
 
 <!-- Repeat the entire Checkpoint sequence for the next Expected Outcome. -->

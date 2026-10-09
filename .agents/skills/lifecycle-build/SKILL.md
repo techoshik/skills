@@ -28,7 +28,9 @@ Since we do not use bloated tracking files, the `02-plan.md` document itself act
 Once a checkpoint is complete and self-reviewed, you must edit the `02-plan.md` file and physically place an `x` in the markdown checkboxes for that specific checkpoint.
 
 ## 5. The Friction Log
-If you struggle with missing rules, ambiguous guidelines, or unexpected technical roadblocks while building, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. Do not stop building to fix the rules, just log the friction and keep going.
+If you struggle with missing rules, ambiguous guidelines, or unexpected technical roadblocks while building, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. 
+- Do not stop building to fix the rules, just log the friction and keep going.
+- **Exception:** If an unresolved requirement or impossible verification step completely BLOCKS development, you must **STOP** and ask the user for a decision or replan before continuing dependent work.
 
 ## 6. Human Handoff
 After checking your self-review boxes in `02-plan.md`, **STOP**. Prompt the user to verify the checkpoint using the instructions written in the `User Verification` section of the plan.

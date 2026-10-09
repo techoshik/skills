@@ -21,6 +21,7 @@ Do NOT generate the `02-plan.md` document immediately. If the research loop reve
 - Ask 1 to 2 technical questions (using Radio buttons or Checkboxes).
 - E.g., *"Should this search input be a reusable widget in `core/` or specific to this feature?"*
 - E.g., *"Should we filter the users locally in Dart to save Firestore reads, or query Firestore directly?"*
+- **Uncertainty:** If discussion cannot resolve a design or technical question, you may propose creating a small prototype or spike in a scratch file before finalizing the plan.
 
 ## 4. Planning Constraints (The Matrix)
 Once technical decisions are aligned, you must **never** plan to build an entire feature (Models, UI, and Database) in a single step. 
