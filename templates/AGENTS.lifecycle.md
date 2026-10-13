@@ -1,5 +1,9 @@
 <!-- lifecycle:start -->
 
+## Required Code Review
+
+For every code change, including follow-up fixes, complete the [pre-handoff review](.agents/guidelines/architecture_common.md#pre-handoff-review) before declaring the work ready or requesting approval. This review supplements the lifecycle checkpoint checks.
+
 ## Context Efficiency
 
 - Reuse files and instructions already read in this conversation.
