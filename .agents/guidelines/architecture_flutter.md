@@ -3,9 +3,29 @@
 ## Model-Driven UI & Dumb Presentational Widgets
 
 - **No UI Logic in Widgets:** Widgets MUST act strictly as dumb renderers. UI widgets MUST NOT contain raw string manipulations, conditional status mapping, or date/time formatting inline. All display logic, computed properties, and formatting MUST be encapsulated in domain models (via getters, methods, or enum extensions).
-  - *Example:* Instead of formatting a `Role` string inside a `Text` widget, add a `String get displayName` getter or enum extension to the `Role` model.
+  - _Example:_ Instead of formatting a `Role` string inside a `Text` widget, add a `String get displayName` getter or enum extension to the `Role` model.
 - **Dumb Presentational Widgets:** Child and section widgets MUST be dumb `StatelessWidget` renderers. They MUST NOT call `ref.watch`, `ref.read`, or import feature controllers or use cases. They MUST receive only plain domain models, primitives, and callback handlers (`VoidCallback`, `ValueChanged<T>`). This decouples UI from state management, simplifies isolated testing, and enables UI catalog tooling (e.g., Widgetbook).
 - **Single Controller Entry Point:** Only the root feature entry widget (`<feature>_page.dart` for routed screens or `<feature>_view.dart` for composite embedded views) is permitted to watch feature controllers and orchestrate state down to dumb children.
+
+## Widget Lifecycle & State Management: StatelessWidget & HookWidget Only
+
+- **`StatefulWidget` is STRICTLY PROHIBITED:** Creating Flutter `StatefulWidget` and `State` classes is strictly prohibited across the codebase. Manual lifecycle overrides (`initState`, `dispose`, `didUpdateWidget`, etc.) introduce boilerplate, resource leaks, and synchronization bugs.
+- **Strict Two-Option Widget Rule:** Every widget MUST be implemented using one of the following two options:
+  1. **Option 1 — `StatelessWidget` (When There Is No Local State):**
+     - Use for all dumb presentational components, section cards, and views that do not manage local mutable state, controllers, or subscriptions.
+     - Receives all models and event callbacks via constructor parameters.
+  2. **Option 2 — `HookWidget` / `HookConsumerWidget` (When Handling Local State, Controllers, or Subscriptions):**
+     - Use whenever a component manages local mutable state, form input controllers, focus nodes, animations, tab controllers, or subscription/timer lifecycles.
+     - Use `HookWidget` for components that need hooks without direct Riverpod `WidgetRef` access.
+     - Use `HookConsumerWidget` for components that need both hooks and Riverpod provider observation (`WidgetRef ref`).
+- **Declarative Resource & Lifecycle Management via Hooks:** Always leverage Flutter Hooks rather than manual instantiation and disposal:
+  - Text editing controllers: `useTextEditingController()` (NEVER manually instantiate `TextEditingController()` or call `.dispose()`).
+  - Local transient state: `useState<T>(initialValue)`.
+  - Memoized keys and objects: `useMemoized(() => GlobalKey<FormState>())`.
+  - Focus nodes: `useFocusNode()`.
+  - Side effects, timers, streams, or listeners: `useEffect(...)` (return a cleanup callback to cancel or dispose).
+  - Tab and scroll controllers: `useTabController(...)`, `useScrollController()`.
+- **Automatic Resource Cleanup:** Hooks automatically bind to the underlying element's lifecycle and cleanly dispose all controllers, timers, and subscriptions upon widget unmount, eliminating manual `.dispose()` boilerplate and memory leak risks.
 
 ## Component Organization & File Size (The 4-Tier Widget Placement Rule)
 
