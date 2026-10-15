@@ -1,31 +1,29 @@
 # Module: <Module Name>
 
-## Domain Purpose
-*<1-2 sentences explaining the high-level business capability of this domain (e.g., "Manages everything related to job applications and matching").>*
+## 1. Purpose
+<1–2 plain-English sentences explaining what business domain this module owns and why it exists.>
 
-## Entities
-*<List the core business entities owned by this module.>*
-- **<Entity Name>**: <High-level description of what this represents in the real world.>
+## 2. Key Concepts & Entities
+*Core business concepts owned by this module. Cross-reference `GLOSSARY.md` for shared project terms.*
+- **<Concept / Entity>**: <What this represents in the real world and its role in this module.>
+- **<Concept / Entity>**: <Description and relation to other concepts.>
 
-## Core Business Rules
-*<Global rules that apply to the ENTIRE module. Agents must NEVER break these in any feature.>*
-- <Rule 1 (e.g., "A Worker cannot apply to a job if their profile is incomplete.")>
-- <Rule 2 (e.g., "Admins have full override rights on all status changes.")>
+## 3. Core Business Rules
+*Non-negotiable domain rules. Agents must NEVER violate these in any feature or PR.*
+- <Rule 1: State or lifecycle rule (e.g., "Draft records have no workflow status until activated.")>
+- <Rule 2: Validation or permission rule (e.g., "Cannot activate without all required roles assigned.")>
+- <Rule 3: Security or data rule (e.g., "All mutations must execute via backend Cloud Functions.")>
 
-## Features & Current State
-*<List the major features that have been built. Use human-readable names.>*
+## 4. Features & Current State
+*The single source of truth for all built capabilities. Update this section after completing Refine for each feature.*
 
-- **<Feature Name>** (e.g., Job Details):
-  - **Capabilities (What it does):** 
-    - <e.g., "Displays job requirements and allows users to apply.">
-  - **Feature Acceptance Criteria:**
-    - <e.g., "The 'Apply' button must be hidden if the user has already applied.">
+### <Feature Name>
+*<1-sentence summary of the feature and its primary entry route (e.g. `/cases`).>*
+- **<Sub-Feature / View>:** <Description of views, tables, or cards and their data density.>
+- **<Sub-Feature / Filters & Search>:** <Specific filter dropdowns, search inputs, pills, or sorting options.>
+- **<Sub-Feature / Actions>:** <Key buttons, dialogs, drawers, or state change actions available to users.>
 
-## Boundaries
-*<What is explicitly OUT of scope for this module? What other domains does it interact with?>*
-- <Boundary (e.g., "This module reads User profiles, but does NOT modify them.")>
-- <Boundary (e.g., "Relies on the Auth module for role verification.")>
-
-## Deferred / Future Scope
-*<List high-level business capabilities explicitly delayed for future versions.>*
-- <Deferred capability>
+## 5. Scope & Dependencies
+- **Dependencies:** <What other modules, services, or design systems this module consumes (e.g., reads Auth for user identity, uses Design System components).>
+- **Out of Scope:** <What this module explicitly delegates to other domains (e.g., does not handle billing; delegates to Billing module).>
+- **Deferred:** <Planned future capabilities explicitly postponed.>

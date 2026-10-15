@@ -1,36 +1,57 @@
 ---
 name: lifecycle
-description: Orchestrate the project's Define → Outline → Execute → Refine (DOER) development lifecycle.
+description: Master orchestrator and router for the development lifecycle (Define → Outline → Execute → Refine).
 disable-model-invocation: true
 ---
 
 # Lifecycle Orchestrator
 
-The `lifecycle` skill is the master router for feature development. It ensures that features are strictly defined, outlined, executed, and refined in the correct order based on the **DOER** framework.
+The `lifecycle` skill is the master router for feature development. It ensures work progresses through a disciplined, reviewable pipeline: **Define (`01`) → Outline (`02`) → Execute (`03`) → Refine (`04`)**.
 
-## Required Entry
-Before executing ANY phase, you must understand the current state of the feature. Check the project's temporary `lifecycle` tracking directory.
+## 1. Single Source of Truth for Status
+All project status and approvals are tracked exclusively in **`03-execute.md`**.
+- Do NOT search for or add approval checkboxes in `01-define.md`, `02-outline.md`, or `04-refine.md`.
+- `03-execute.md` is initialized at the start of the feature and tracks every phase and checkpoint using 4 allowed statuses:
+  - ⚪ `Todo`: Not started yet.
+  - 🟡 `In Progress`: Actively being worked on and self-reviewed by the agent.
+  - 🟠 `User Review`: Agent completed the work and self-review; **waiting for user review & approval**.
+  - 🟢 `Done`: User explicitly tested and approved in chat.
 
-## Route
-Determine the current state below. To enter a phase, read its corresponding `SKILL.md` file and execute its instructions exactly.
+## 2. Context Hygiene
+Do NOT load or read all phase skills at once. Check `03-execute.md` to determine the current state, then read **only** that specific phase's `SKILL.md` file.
 
-| State | Action (Read Next) |
-| --- | --- |
-| No `01-define.md` exists | [Define skill](../lifecycle-define/SKILL.md) |
-| `01-define.md` exists but lacks `[x] Define Approved` | [Define skill](../lifecycle-define/SKILL.md) (Ask for approval) |
-| Define approved; no `02-outline.md` exists | [Outline skill](../lifecycle-outline/SKILL.md) |
-| `02-outline.md` exists but lacks `[x] Outline Approved` | [Outline skill](../lifecycle-outline/SKILL.md) (Ask for approval) |
-| Outline approved; feature not yet fully built | [Execute skill](../lifecycle-execute/SKILL.md) |
-| Execution complete; feature needs verification/commit/cleanup | [Refine skill](../lifecycle-refine/SKILL.md) |
+## 3. Phase Routing
 
-## Approval Invalidation
-If the user modifies an already-approved document (e.g., changes outcomes in `01-define.md` or alters the architecture in `02-outline.md`), you must un-check all dependent approval boxes. All affected work must be reconsidered and explicitly re-approved.
+| Current Status in `03-execute.md` | Next Action | Phase Skill to Read |
+| :--- | :--- | :--- |
+| No `01-define.md` exists (Define is `Todo` or `In Progress`) | Work on feature definition | [`lifecycle-define`](../lifecycle-define/SKILL.md) |
+| `Phase 1: Define` is `User Review` | **STOP**; wait for user approval | [`lifecycle-define`](../lifecycle-define/SKILL.md) |
+| `Phase 1: Define` is `Done`; no `02-outline.md` exists | Work on architecture outline | [`lifecycle-outline`](../lifecycle-outline/SKILL.md) |
+| `Phase 2: Outline` is `User Review` | **STOP**; wait for user approval | [`lifecycle-outline`](../lifecycle-outline/SKILL.md) |
+| `Phase 2: Outline` is `Done`; checkpoints in `Todo`/`In Progress` | Execute next single checkpoint | [`lifecycle-execute`](../lifecycle-execute/SKILL.md) |
+| Checkpoint is `User Review` | **STOP**; wait for user approval | [`lifecycle-execute`](../lifecycle-execute/SKILL.md) |
+| All checkpoints are `Done`; `Phase 4: Refine` is `Todo`/`In Progress` | Run global review & handoff | [`lifecycle-refine`](../lifecycle-refine/SKILL.md) |
+| `Phase 4: Refine` is `User Review` | **STOP**; wait for user sign-off | [`lifecycle-refine`](../lifecycle-refine/SKILL.md) |
 
-## Workspace & Artifacts
-The temporary `lifecycle` tracking directory is used strictly for organizing the current feature being built. 
-- You do not need to create bloated index files.
-- The existence of an approved phase artifact (e.g., `01-define.md`) is sufficient proof that the phase is complete.
-- Follow the hard stop-and-wait approval gates at the end of every phase before advancing to the next.
+## 4. The 4 Lifecycle Artifacts
+All active tracking files live in `lifecycle/` at the project root and are safely deleted upon completing Refine:
+- **`01-define.md`** (Define): Problem, Outcome, Success Criteria, List of Changes, Out of Scope, Decisions (accompanied by an interactive `prototype.html` for UI features).
+- **`02-outline.md`** (Outline): Sequential Milestones, Vertical Slices, File Changes, Self-Review, Verification.
+- **`03-execute.md`** (Execute): The single source of truth status dashboard.
+- **`04-refine.md`** (Refine): Full-branch code review, global verification, PR details, and friction log.
 
-## Universal Rule: Continuous Improvement (Friction Logging)
-If you struggle with missing rules, ambiguous guidelines, or unexpected technical roadblocks during **ANY phase** (Define, Outline, or Execute), you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. Do not stop your work to fix the rules, just log the friction and keep going. The Refine phase will resolve it.
+## 5. Human Approval Law (INVIOLABLE)
+- **The user owns approval; the agent owns execution.**
+- The agent is **strictly forbidden** from marking any phase or checkpoint as `Done` on its own.
+- When an action is complete and self-reviewed, the agent updates status to `User Review` in `03-execute.md` and **STOPS**. It must wait for explicit human approval in chat before marking `Done` and advancing to the next task.
+
+## 6. Approval Invalidation
+If the user modifies an already-approved document (e.g. changing scope in `01-define.md` or architecture in `02-outline.md`):
+- Reset dependent phase statuses in `03-execute.md` back to `In Progress` or `Todo`.
+- Re-evaluate affected work and obtain explicit re-approval before continuing.
+
+## 7. Continuous Friction Logging
+If you encounter unexpected roadblocks, ambiguous guidelines, or technical bugs during **ANY phase**:
+- Do not stop to rewrite global rules mid-task.
+- Immediately append the issue to **`04-refine.md`** under `## 4. Friction & Lessons Learned`.
+- Continue execution. The Refine phase will permanently resolve the issue.

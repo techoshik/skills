@@ -1,26 +1,30 @@
-# Define
+# Define: <Feature or Module Name>
 
-- [ ] **Define Approved** (Do not check this box until the user explicitly approves the scope and Expected Outcomes).
+> **Interactive Prototype:** [prototype.html](./prototype.html) <!-- Required for UI features (use [prototype/index.html](./prototype/index.html) for multi-screen modules); omit for pure backend -->
 
 ## 1. Goal
 
-- **Actor:** <Who is using this?>
-- **Objective:** <One sentence describing what they need to achieve>
+- **Problem:** <What is the current state, and why is it a problem?>
+- **Outcome:** <What should be true when the work is complete?>
 
-## 2. Scope (What Will Change)
+## 2. Success Criteria
 
-- <Add, modify, or remove specific UI element or logic>
-- <Difference from current behavior, when useful>
+- <Observable, measurable condition of success 1>
+- <Observable, measurable condition of success 2>
 
-## 3. Constraints (Decisions)
+## 3. List of Changes
 
-- <Explicitly state what NOT to do if the agent might over-engineer, or state required patterns>
+### <Screen / Area / Subsystem>
+- **<Add | Update | Remove | Fix>:** <Short description of the specific change>
 
-## 4. Expected Outcomes (Micro-Stories)
+## 4. Out of Scope
 
-- **EO-01 — <Behavior Name>**
-  - **Given:** <Starting condition/state>
-  - **When:** <User action or trigger>
-  - **Then:** <Exact observable result>
+- **<Excluded Feature>:** <Why it is excluded or deferred for this iteration>
 
-<!-- Repeat EO block for permitted, denied, failure, and preservation outcomes. -->
+## 5. Decisions
+
+### Technical
+- **<Decision Topic>:** <Security, performance, API contract, or architecture decision>
+
+### Business Logic
+- **<Rule Topic>:** <Core domain rule, state dependency, or validation behavior>

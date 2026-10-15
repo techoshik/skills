@@ -1,45 +1,75 @@
 ---
 name: lifecycle-execute
-description: Execute exactly ONE checkpoint from the 02-outline.md file, perform self-review, check the boxes, and stop for human approval (DOER: Execute).
+description: Execute exactly ONE checkpoint from 02-outline.md at a time, perform automated self-review, update 03-execute.md to User Review, and stop for human approval (DOER: Execute).
 ---
 
 # Execute
 
-The goal of this skill is to **Execute** the implementation outline precisely as designed in the `02-outline.md` artifact (Phase E of DOER).
+The goal of this skill is to **Execute** the implementation outline precisely as designed in the `02-outline.md` artifact (Phase 3 of the DOER lifecycle). Your mission is to build one vertical story slice at a time, run automated self-review, update the status dashboard, and stop for human testing.
 
-## 1. Entry Gate (MANDATORY)
-Before executing any code or analyzing checkpoints, you must read `02-outline.md` and verify that the `[ ] Outline Approved` box at the very top of the file is checked (e.g., `[x] Outline Approved`).
-- If this box is unchecked, you must **STOP** and refuse to execute. Ask the user to approve the outline (`lifecycle-outline`) first.
-- Only proceed when the user's explicit outline approval is recorded in that box.
+---
 
-## 2. Execution Constraints (EXTREMELY IMPORTANT)
-You are strictly forbidden from executing multiple checkpoints at the same time. You must behave like a senior developer making granular, isolated commits.
-- **Rule 1:** Read `02-outline.md`. Identify the *first applicable checkpoint* where `[ ] Checkpoint Approved` is unchecked. (Skip checkpoints marked `N/A` without changing any of their boxes; their omission was approved with the outline).
-- **Rule 2:** Check its status: if its Build Actions or self-review boxes are incomplete, execute ONLY the remaining actions for that checkpoint. If both are already complete, do NOT write code for subsequent checkpoints; await user verification/approval or address requested fixes.
-- **Rule 3:** If the checkpoint involves Mock UI, do NOT connect it to the real database yet. Wait for the Logic checkpoint.
+## 1. Entry Gate (Strict Status Check)
 
-## 3. Agent Self-Review
-Before you declare the checkpoint "Done", you MUST execute the steps listed under **Agent Self-Review** in the outline.
-- If the outline tells you to read a guideline file in `.agents/guidelines/`, you must physically use your file reading tool to open it, read it, and ensure your code complies.
-- Fix any issues you find during this self-review silently before presenting to the user.
+Before executing any code:
+1. Open `lifecycle/03-execute.md`.
+2. Verify that **`Phase 2: Outline` is marked `Done`**.
+3. Verify that `lifecycle/02-outline.md` exists and contains defined checkpoints.
+4. **STOP if unapproved:** If `Phase 2: Outline` is not `Done`, do not write any production code. Instruct the user to complete and approve Outline first.
 
-## 4. The Interactive Checklist
-Since we do not use bloated tracking files, the `02-outline.md` document itself acts as your tracking file. 
-Once a checkpoint is complete and self-reviewed, you must edit the `02-outline.md` file and physically place an `x` in the **implementation and self-review** markdown checkboxes for that specific checkpoint.
-- **Approval:** Never check the `[ ] Checkpoint Approved` box on your own. You may check it only after the user explicitly grants approval in conversation.
+---
 
-## 5. The Friction Log
-If you struggle with missing rules, ambiguous guidelines, or unexpected technical roadblocks while executing, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. 
-- Do not stop executing to fix the rules, just log the friction and keep going.
-- **Exception:** If an unresolved requirement or impossible verification step completely BLOCKS development, you must **STOP** and ask the user for a decision or replan before continuing dependent work.
+## 2. Tool & Git Boundaries (INVIOLABLE)
 
-## 6. Human Handoff
-After checking your self-review boxes in `02-outline.md`, **STOP**. Prompt the user to verify the checkpoint using the instructions written in the `User Verification` section of the outline.
+- **Strict Git Ban:** The agent is **strictly forbidden** from running `git add`, `git commit`, `git reset`, `git restore --staged`, or any git staging/committing commands. The user owns 100% of git commits and staging!
+- **Strict Build Tool Ban:** The agent is **strictly forbidden** from running `build_runner`. The user owns code generation.
 
-Do not proceed to the next checkpoint until the user explicitly approves. Once they approve, you must edit `02-outline.md` to check the `[ ] Checkpoint Approved` box before moving to the next checkpoint. 
-- On resumption, find the first applicable checkpoint with `Checkpoint Approved` unchecked.
-- If its action or self-review boxes are incomplete, continue only that checkpoint.
-- If both are complete:
-  - If the user explicitly approved, check the `[ ] Checkpoint Approved` box and advance to the next checkpoint.
-  - If the user requested fixes, address them, complete self-review, and re-prompt for verification.
-  - Otherwise, wait for the user's explicit approval before advancing.
+---
+
+## 3. The Single Checkpoint Law (Strict Isolation)
+
+You are strictly forbidden from executing multiple checkpoints in the same turn. Behave like a senior engineer submitting granular, isolated, reviewable increments:
+
+1. **Identify the Active Checkpoint:** In `lifecycle/03-execute.md`, find the first checkpoint with status `Todo` or `In Progress`.
+2. **Set In Progress:** Update its status in `lifecycle/03-execute.md` to **`In Progress`**.
+3. **Execute Only This Slice:** Implement *only* the file changes listed under `- [ ] <file_path>:` for this specific checkpoint in `02-outline.md`. Do not touch subsequent checkpoints.
+4. **Check Implementation Boxes:** Once code changes are written, update `02-outline.md` to check the file change boxes (`- [x] <file_path>:`).
+
+---
+
+## 4. Active 3-Part Self-Review (MANDATORY)
+
+Before presenting the checkpoint to the user, you MUST execute the 3 self-review steps specified in `02-outline.md`:
+
+1. **Guideline Verification:** Physically inspect the referenced `.agents/guidelines/<guideline>.md` file using your file viewing tool. Verify that your implementation strictly satisfies the architectural constraints (e.g. single controller, no direct database calls in widgets, state immutability).
+2. **Static Analysis:** Run the exact command listed in the checkpoint (e.g., `flutter analyze <path>`). It must report **0 issues**. Fix any linter or compiler warnings silently before proceeding.
+3. **Automated Tests (Highest Natural Seam):** Run the exact test command listed in the checkpoint (e.g., `flutter test <path>`). Tests must pass **100% cleanly**.
+4. **Check Self-Review Boxes:** Once all 3 pass, update `02-outline.md` to mark the self-review checkboxes:
+   - `- [x] **Guidelines:** Verified against ...`
+   - `- [x] **Static Analysis:** ... reports 0 issues.`
+   - `- [x] **Tests:** ... passes cleanly.`
+
+---
+
+## 5. Friction Logging
+
+If you encounter unexpected bugs, ambiguous guidelines, or tooling quirks while executing:
+- Do not stop executing to rewrite global project rules.
+- Append the issue immediately to `lifecycle/04-refine.md` under `## 4. Friction & Lessons Learned`.
+- **Exception:** If an unresolved technical blocker or impossible verification step completely halts progress, **STOP** and ask the user for clarification before continuing.
+
+---
+
+## 6. Human Handoff (Approval Gate)
+
+1. Update the current checkpoint's status in `lifecycle/03-execute.md` to **`User Review`**.
+2. Present a concise review summary in chat:
+   - **What was built:** The specific files modified and capabilities delivered.
+   - **Self-Review Proof:** Confirmation that static analysis has 0 issues and automated tests passed.
+   - **Human Verification Steps:** Present the exact `Action` and `Expected` instructions from the checkpoint's `Verification` block so the user can test in the running app/browser.
+3. **STOP AND WAIT.** The agent is strictly forbidden from marking any checkpoint `Done` on its own.
+4. **On User Approval:**
+   - When the user tests and explicitly approves in chat, update that checkpoint's status in `lifecycle/03-execute.md` to **`Done`**.
+   - Check `lifecycle/03-execute.md` for remaining checkpoints:
+     - If more checkpoints remain: Proceed to the next checkpoint (mark `In Progress` and repeat).
+     - If all checkpoints are `Done`: Read the master [`lifecycle`](../lifecycle/SKILL.md) skill to route to **Phase 4: Refine**.

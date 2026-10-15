@@ -1,51 +1,131 @@
 ---
 name: lifecycle-outline
-description: After Define approval, act as a Technical Architect to align on technical decisions, then outline the implementation checkpoints (DOER: Outline).
+description: After Define approval, act as a Technical Architect to research codebase patterns, resolve technical ambiguities, and outline vertical story slices into reviewable checkpoints (DOER: Outline).
 ---
 
 # Outline
 
-The goal of this skill is to take the Expected Outcomes (EO) from the Define phase and **Outline** them into extremely granular, reviewable implementation checkpoints (Phase O of DOER).
+The goal of this skill is to act as a Principal Architect and Technical Lead to **Outline** the approved requirements into granular, reviewable, vertically-sliced implementation checkpoints (Phase 2 of the DOER lifecycle). Your mission is to research codebase conventions, resolve technical ambiguities, and author a rock-solid `02-outline.md` artifact.
 
-## 1. Entry Gate (MANDATORY)
-Before generating an outline, you must have an approved `01-define.md` document containing the Expected Outcomes. 
-- You must read `01-define.md` and verify that the `[ ] Define Approved` box is checked.
-- If it does not exist or is unchecked, **STOP** and ask the user to complete and approve the Define phase (`lifecycle-define`) first.
+---
 
-## 2. The Research Loop (MANDATORY)
-Before writing the outline or asking the user any questions, you must act as a Technical Lead and research the existing codebase, guidelines, and documentation.
-- If you find an established architectural pattern that perfectly answers how the feature should be built, **do not ask the user a redundant question**. Apply the pattern directly.
-- If the documentation is ambiguous, outdated, or there are multiple conflicting patterns, you must gather this context to present to the user.
+## 1. Entry Gate (Strict Status Check)
 
-## 3. The Architectural Alignment Loop
-Do NOT generate the `02-outline.md` document immediately. If the research loop revealed technical ambiguities or multiple valid ways to build a feature (e.g., local UI filtering vs. backend Firestore querying):
-- You must ask the user multiple-choice questions to align on the architecture.
-- Ask 1 to 2 technical questions (using Radio buttons or Checkboxes).
-- E.g., *"Should this search input be a reusable widget in `core/` or specific to this feature?"*
-- E.g., *"Should we filter the users locally in Dart to save Firestore reads, or query Firestore directly?"*
-- **Uncertainty:** If discussion cannot resolve a design or technical question, you may propose creating a small prototype or spike in a scratch file before finalizing the outline.
+Before generating or modifying the outline:
+1. Open `lifecycle/03-execute.md`.
+2. Verify that **`Phase 1: Define` is marked `Done`**.
+3. Verify that both `lifecycle/01-define.md` and the settled UI prototype (`lifecycle/prototype/index.html` or `prototype.html`) exist.
+4. **STOP if unapproved:** If `Phase 1: Define` is not `Done`, do not proceed. Instruct the user to complete and approve the Define phase first.
 
-## 4. Planning Constraints (The Matrix)
-Once technical decisions are aligned, you must **never** outline building an entire feature (Models, UI, and Database) in a single step. 
-You must iterate through each Expected Outcome, and break it down into strict architectural checkpoints:
-- **Checkpoint 1:** Data Models & DTOs
-- **Checkpoint 2:** UI Layout & States (Mocked data only, for visual/interaction verification)
-- **Checkpoint 3:** Repositories & Logic (Implement backend and REPLACE the mock data from Checkpoint 2 with live data)
+---
 
-If an outcome does not require a layer, keep its checkpoint heading and replace the body with `N/A - [Reason]`. Approving the outline confirms this omission; skipped checkpoints need no actions, self-review, or checkpoint approval.
+## 2. Autonomous Architectural Research
 
-## 5. The Friction Log
-If you struggle with ambiguous architectural guidelines or missing rules during the Outline phase, you MUST document them by creating or appending to a `friction_log.md` file in the temporary `lifecycle` directory. Do not stop outlining to fix the rules, just log the friction.
+Before asking questions or drafting the outline, autonomously investigate the codebase:
+- **Existing Architecture & Patterns:** Inspect existing modules, state management patterns (controllers, providers, stores), data repositories, and router tables.
+- **Guideline Audit:** Read relevant project guidelines in `.agents/guidelines/` (e.g., framework conventions, state management rules, security rules).
+- **Domain Ubiquitous Language:** Read `GLOSSARY.md` to ensure all new class names, enums, DTOs, and functions strictly adhere to established project terminology.
+- **Grounded in the Prototype:** Inspect the settled prototype in `lifecycle/prototype/`. Every screen, filter, drawer, button, and state that was visually validated in Define must map directly to concrete architectural components.
 
-## 6. Execution
-1. Read the provided `01-define.md` document.
-2. Ask the user architectural alignment questions ONLY if the Research Loop revealed ambiguities. If the pattern is clear, skip questioning.
-3. Use the provided [Outline Template](../lifecycle/templates/02-outline.md) to generate the implementation outline.
-4. Save the resulting outline as `02-outline.md`.
+---
 
-## 7. Agent Self-Review & Human Handoff
-Ensure the generated outline explicitly instructs the agent to read the relevant `.agents/guidelines/` documents to self-verify its work during the Execute phase.
+## 3. Technical Alignment (Frontier Questions)
 
-Once the outline is written, **STOP**. You must present the outline to the user for explicit approval. 
-- Once the user approves, you must check the `[ ] Outline Approved` box at the top of `02-outline.md`. 
-- Do not proceed or offer to start executing until this box is checked.
+- **Facts Belong to the Agent:** If an established codebase pattern or guideline clearly dictates how the feature must be built, **apply it directly**. Do not ask redundant questions.
+- **Decisions Belong to the User:** If the research reveals multiple valid technical approaches or trade-offs (e.g., client-side filtering vs. server-side query, cached state vs. live stream, Cloud Function mutation vs. direct write):
+  - Formulate targeted questions using the **recommendation-first** format:
+
+```markdown
+❓ **Q1 - <Technical Decision Topic>**: <Context, options, and trade-offs>
+
+➡️ **Recommendation**: <Your recommended architectural approach and rationale>
+```
+
+  - **Word each question so that typing "yes" accepts the recommendation.**
+
+---
+
+## 4. Vertical Story Slicing & Tracer Bullets (MANDATORY)
+
+### The Death of Horizontal Layering
+- **Strictly Forbidden:** Never slice work into horizontal technical layers (e.g., "Checkpoint 1: Models & DTOs", "Checkpoint 2: Mocked UI", "Checkpoint 3: Repositories & Real Data").
+- Horizontal layering forces throwaway mock code, creates untestable intermediate states, and delays human verification.
+
+### Tracer-Bullet Vertical Slices
+Break the implementation down into **Sequential Milestones** (`## Milestone X`), each delivering an independent capability. Inside each Milestone, construct **Vertical Story Slices** (`### Checkpoint X.Y`):
+- **Cuts Through All Layers:** Every checkpoint cuts a narrow but COMPLETE path through all layers (models, state/controller, UI widgets, and repository/API calls). Data flows end-to-end; no temporary mock layers.
+- **Sized for a Single Context Window:** Each checkpoint must be sized so that an agent can implement, analyze, test, and self-review it within a **single turn / context window** (typically touching 2 to 5 related files). If a slice touches too many files or spans multiple complex behaviors, split it into smaller vertical checkpoints.
+- **Ordered by Dependency:** Checkpoints must be ordered sequentially so that blockers complete first.
+
+### Prefactoring: "Make the Change Easy, Then Make the Easy Change"
+If implementing a feature requires refactoring messy existing code, splitting a congested controller, or reorganizing shared utilities:
+- **Do NOT bundle heavy refactoring into the feature slice.**
+- Create an explicit **Prefactoring Checkpoint** at the beginning of the milestone to clean the path *before* building the new capability.
+
+### Wide Refactors: The Expand–Contract Pattern
+If an architectural change has a wide blast radius (e.g. renaming a core database field, changing a shared model consumed across 20+ files, or updating a global API contract):
+- Never attempt to migrate the entire codebase in a single massive slice.
+- Sequence it using **Expand–Contract**:
+  1. **Expand:** Add the new field/class/method beside the old one so nothing breaks.
+  2. **Migrate:** Update call sites in focused batches across checkpoints.
+  3. **Contract:** Remove the deprecated legacy code once no callers remain.
+
+---
+
+## 5. Checkpoint Anatomy (`02-outline.md`)
+
+Every checkpoint must adhere strictly to [Outline Template](../lifecycle/templates/02-outline.md):
+
+1. **`Goal`**: A single clear sentence defining the observable outcome of the slice.
+2. **`Changes` (File-Anchored Checklist)**:
+   - List every file to be created or modified using `- [ ] <file_path>:`.
+   - Specify exact class names, methods, enums, parameters, or schema changes.
+   - **Inline Decisions from Prototypes:** If the interactive prototype (`lifecycle/prototype/`) settled exact state shapes, enum values, validation regexes, or calculation logic, inline those exact code shapes directly into the Changes section.
+3. **`Self-Review` (Automated & Guideline Verification)**:
+   - `- [ ] **Guidelines:** Verified against .agents/guidelines/<guideline>.md:` (2–3 explicit architectural constraints to verify).
+   - `- [ ] **Static Analysis:** <command, e.g. flutter analyze path/>` reports 0 issues.
+   - `- [ ] **Tests (Highest Natural Seam):** <command, e.g. flutter test path/>` passes cleanly.
+     - *Testing Seam Rule:* Avoid brittle tests that mock internal private functions. Test at the **highest natural seam** (e.g., testing the Feature Controller with realistic domain actions). Tests must assert external observable behavior, not implementation trivia.
+4. **`Verification` (Human Testing Gate)**:
+   - **`Action:`** Step-by-step instructions for the user to trigger or test this slice in the running app/browser.
+   - **`Expected:`** Exact observable result or behavior confirming success.
+
+---
+
+## 6. Synchronizing the Execute Dashboard (`03-execute.md`)
+
+When `02-outline.md` is drafted, you MUST immediately populate `lifecycle/03-execute.md`:
+1. Set `Phase 2: Outline` status to **`User Review`**.
+2. Add every checkpoint from `02-outline.md` into the dashboard table with status **`Todo`**:
+
+```markdown
+# Execution Dashboard: <Feature Name>
+
+| Task / Checkpoint | Status |
+| :--- | :--- |
+| Phase 1: Define | Done |
+| Phase 2: Outline | User Review |
+| Checkpoint 1.1: <Vertical Slice 1 Name> | Todo |
+| Checkpoint 1.2: <Vertical Slice 2 Name> | Todo |
+| Checkpoint 2.1: <Vertical Slice 3 Name> | Todo |
+| Phase 4: Refine | Todo |
+```
+
+---
+
+## 7. Friction Logging
+
+If you encounter conflicting architectural guidelines, missing documentation, or tooling quirks during Outline:
+- Do not stop outlining to rewrite global rules.
+- Append the issue immediately to `lifecycle/04-refine.md` under `## 4. Friction & Lessons Learned`.
+
+---
+
+## 8. Human Handoff (Approval Gate)
+
+1. Save `02-outline.md` in the `lifecycle/` directory.
+2. Present `02-outline.md` to the user in chat, highlighting key architectural decisions and the milestone sequence.
+3. **STOP.** Do not start executing Checkpoint 1.1 or modify any production code until the user explicitly approves in chat.
+4. Once the user approves:
+   - Update `Phase 2: Outline` status in `lifecycle/03-execute.md` to **`Done`**.
+   - Read the master [`lifecycle`](../lifecycle/SKILL.md) skill to route to Phase 3: Execute.

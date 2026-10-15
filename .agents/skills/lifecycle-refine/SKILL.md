@@ -1,40 +1,104 @@
 ---
 name: lifecycle-refine
-description: Run global tests, synchronize documentation, resolve friction logs, commit the feature, and clean up temporary lifecycle files (DOER: Refine).
+description: Conduct full-branch two-axis code review, global test verification, documentation & PR synthesis, guideline evolution from friction logs, and clean up temporary lifecycle files (DOER: Refine).
 ---
 
 # Refine
 
-The goal of this skill is to **Refine** and safely integrate the completed feature into the codebase (Phase R of DOER). Because the feature was already verified layer-by-layer during the Execute phase, there is no need to write another heavy documentation file.
+The goal of this skill is to **Refine** and safely integrate the completed feature into the codebase (Phase 4 of the DOER lifecycle). Your mission is to audit the full branch diff along two distinct axes (Standards and Spec), run global verification, generate a polished Pull Request description, evolve permanent project guidelines from logged friction, and clean up the temporary workspace.
 
-## 1. Entry Gate (MANDATORY)
-Before running any checks, read `02-outline.md` and verify that `Outline Approved` and every applicable `Checkpoint Approved` box are checked.
-- If the outline or any applicable checkpoint is unapproved, you must **STOP** and refuse to refine. Instruct the user to complete the Execute phase (`lifecycle-execute`) first.
-- Ignore checkpoints marked `N/A`; their omission was approved with the outline, even if they still contain unchecked boxes.
-- Reconcile the complete change: run `git status` AND `git diff --name-only main...HEAD` (or equivalent base branch) to inspect all work done for this feature. Ensure you only stage/commit changes relevant to the Expected Outcomes, preserving unrelated changes.
+---
 
-## 2. Global Verification
-You must ensure no regressions were introduced to the affected projects. 
-- Identify which sub-projects were modified (e.g., `app/`, `functions/`).
-- Use your terminal tools to run the appropriate static analysis commands in the correct directories (e.g., `flutter analyze` inside `app/`, or `npm run lint` inside `functions/`).
-- Use your terminal tools to run unit tests (if applicable) in the affected directories.
-- If any global checks fail, you must stop and fix them before proceeding.
+## 1. Entry Gate (Strict Status Check)
 
-## 3. Documentation Synchronization
-Briefly check if the newly implemented Expected Outcomes require an update to the project's permanent documentation (e.g., `README.md`). If they do, update them directly. 
+Before refining:
+1. Open `lifecycle/03-execute.md`.
+2. Verify that **all checkpoints are marked `Done`**.
+3. **STOP if unapproved:** If any checkpoint is still `Todo`, `In Progress`, or `User Review`, do not proceed. Instruct the user to complete and approve the Execute phase first.
+4. Set `Phase 4: Refine` status in `lifecycle/03-execute.md` to **`In Progress`**.
 
-## 4. The Improvement Loop
-Before asking for human approval, you must check if a `friction_log.md` file exists in the temporary `lifecycle` directory. 
-- If the agent struggled with missing or ambiguous rules during any phase, carefully evaluate the recorded evidence.
-- Choose the correct permanent owner (`.agents/guidelines/` files or `SKILL.md` files) and edit it to permanently fix the ambiguity.
-- You may defer or dismiss a friction entry if the evidence does not support rewriting a global rule.
-- If the `friction_log.md` does not exist, do nothing.
+---
 
-## 5. Human Approval (MANDATORY)
-After running verification, updating documentation, and applying any guideline improvements from the Friction Log, you must **STOP** and present the results to the user. Do not commit anything yet. Wait for the user to review the test results, documentation, and guideline improvements.
+## 2. Two-Axis Full-Branch Code Review
 
-## 6. Commit & Cleanup
-Once the user explicitly approves the final state:
-1. Safely delete the temporary `lifecycle` tracking directory (which contains the `define`, `outline`, and execution tracking markdown files), as they are no longer needed.
-2. Stage all approved changes (which will now include the deletion of the tracking directory).
-3. Commit the changes using a clean, descriptive commit message based on the Expected Outcomes listed in `01-define.md`.
+Inspect the complete branch diff against the base branch using `git diff <base-branch>...HEAD` (or `git status` / `git diff HEAD~<N>`). Review the changes across two separate, un-merged axes:
+
+### Axis 1: Standards & Hygiene
+- **Diff Hygiene:** Check for leftover debug statements (`print`, `console.log`, `debugger`), commented-out code, and unintended whitespace or formatting edits.
+- **Guideline Compliance:** Audit touched files against `.agents/guidelines/` for consistent conventions across all checkpoints.
+- **Code Smells:** Look for Fowler smells:
+  - *Duplicated Code:* Logic copy-pasted across multiple hunks.
+  - *Primitive Obsession:* Naked strings/ints used where a domain enum or value object belongs.
+  - *Feature Envy:* Methods reaching across boundaries instead of living on the owning state/controller.
+  - *Speculative Generality:* Unused parameters or speculative hooks not required by the feature.
+
+### Axis 2: Spec Faithfulness
+- Re-read `lifecycle/01-define.md`.
+- **Success Criteria Re-Check:** Verify that every single Success Criterion is 100% satisfied by the integrated code. Ensure intermediate refactors did not accidentally break earlier outcomes.
+- **Scope Creep Audit:** Ensure no un-requested behavior or rogue functionality slipped into the branch.
+
+*Check the review boxes under `## 1. Full-Branch Code Review & Diff Audit` in `lifecycle/04-refine.md`.*
+
+---
+
+## 3. Global Verification & Infrastructure
+
+Run project-wide checks to guarantee no regressions were introduced to the repository:
+
+1. **Static Analysis:** Run the global linter across all affected projects/packages (e.g. `flutter analyze`, `npm run lint`). It must report **0 errors/warnings**.
+2. **Automated Test Suites:** Run all affected test suites. Ensure **100% passing tests**.
+3. **Database & Cloud Infrastructure:**
+   - Verify composite indexes (e.g., `firestore.indexes.json`).
+   - Verify database migrations or schema files (or mark "N/A" if greenfield/unmodified).
+   - Verify security rules for any newly introduced endpoints or collections.
+
+*Check the verification boxes under `## 2. Global Verification & Infrastructure` in `lifecycle/04-refine.md`.*
+
+---
+
+## 4. Documentation & PR Synthesis
+
+1. **Permanent Documentation:** Update `README.md` or `GLOSSARY.md` if the feature introduced new domain terminology, environment variables, or module architectures.
+2. **Pull Request Synthesis:** Complete `## 3. Documentation & Pull Request` in `lifecycle/04-refine.md`:
+   - **PR Title:** Semantic title `<type>(<scope>): <summary>` matching the List of Changes.
+   - **Summary:** Concise bullets describing the business outcome and primary affordances.
+   - **Key Changes:** Area-by-area breakdown of files and subsystems modified.
+   - **Verification:** Concrete proof that the feature works (passing test results, analyzer output, manual steps).
+   - **Merge Danger & Blast Radius:** One-way vs. Two-way door assessment, schema/migration risks.
+
+---
+
+## 5. The Guideline Improvement Loop (Friction to Wisdom)
+
+Inspect `## 4. Friction & Lessons Learned` in `lifecycle/04-refine.md`:
+1. If unexpected roadblocks, ambiguities, or bugs were logged during Define, Outline, or Execute:
+   - Carefully evaluate the root cause.
+   - **Permanent Rule Evolution:** Choose the permanent owner and edit the file:
+     - Update `.agents/guidelines/<guideline>.md` if an architectural standard or coding rule was missing or ambiguous.
+     - Update `GLOSSARY.md` if domain terminology caused confusion.
+     - Add a custom linter rule or automated test if a mechanical bug was caught late.
+   - Record the permanent resolution under each friction entry in `04-refine.md`.
+2. If no friction occurred, state *"None recorded"*.
+
+---
+
+## 6. Human Handoff (Approval Gate)
+
+1. Update `Phase 4: Refine` status in `lifecycle/03-execute.md` to **`User Review`**.
+2. Present `lifecycle/04-refine.md` to the user in chat:
+   - Highlight the Two-Axis review findings.
+   - Highlight passing global verification and test runs.
+   - Highlight any permanent `.agents/guidelines/` updates made.
+   - Present the copy-paste ready PR title and description.
+3. **STOP AND WAIT.** Do not delete files or commit code. Wait for the user's explicit sign-off in chat.
+
+---
+
+## 7. Workspace Cleanup (Upon Approval)
+
+Once the user explicitly reviews and approves the Refine phase in chat:
+1. Update `Phase 4: Refine` in `lifecycle/03-execute.md` to **`Done`**.
+2. **Safely delete the temporary `lifecycle/` directory** (`rm -rf lifecycle/`) as all four phases are officially complete.
+3. Inform the user:
+   > *"All lifecycle phases are complete and verified. The temporary `lifecycle/` directory has been cleaned up. The repository is clean and ready for you to stage and commit using the generated PR title and description."*
+4. **Strict Boundary Reminder:** Never run `git add`, `git commit`, or `git reset`. Staging and committing are 100% owned by the user.
