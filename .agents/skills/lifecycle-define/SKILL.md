@@ -52,6 +52,9 @@ The goal of this skill is to act as a proactive Product Manager and Systems Inve
 ### Clearing the Fog of War & Out-of-Scope Delineation
 - Pin down the **Destination** (`Problem` + `Outcome`).
 - Probe undiscovered territory ("fog of war"): failure states, empty states, edge cases, permission limits, and lifecycle edge-conditions.
+- **Out of Scope vs. Invariants:** Distinguish clearly between deferred roadmap items and active system guardrails:
+  - *Out of Scope (`## 5. Out of Scope`):* Features or capabilities deferred or excluded from this iteration (the agent writes zero code for these).
+  - *System Invariants (`## 6. Decisions`):* Negative-space constraints the implementation must actively prevent (e.g., no double-submission during in-flight saves, no orphaned child records).
 - Ruthlessly partition what belongs in this iteration versus what sits beyond the destination. Anything deferred or excluded MUST be explicitly recorded in `## 5. Out of Scope` with a clear rationale.
 
 ---
@@ -106,7 +109,7 @@ Generate `lifecycle/01-define.md` adhering strictly to [Define Template](../life
 - **`## 5. Out of Scope`**: Every deferred, excluded, or explicitly rejected capability with its rationale (`**<Excluded Feature>:** <Reason>`).
 - **`## 6. Decisions`**:
   - `### Technical`: Architecture, security rules, data schemas, API contracts.
-  - `### Business Logic`: Domain rules, validation gates, lifecycle state rules.
+  - `### Business Logic`: Domain rules, system invariants / guardrails (what the system must actively prevent), and validation gates. If complex thresholds, formulas, or multi-condition rules exist, use a concise Boundary Truth Table (Input → Output) instead of paragraphs of fuzzy text.
 
 ### Step 4: Build the Interactive HTML UI Prototype (MANDATORY for UI Features)
 Whenever a feature involves user interface changes, you must construct a rapid, self-contained HTML prototype that explores **three distinct design variants (Variant A, Variant B, Variant C)**.
@@ -143,14 +146,15 @@ Whenever a feature involves user interface changes, you must construct a rapid, 
      - **Screen Switcher:** `[ 1. Cases List ]  [ 2. Case Details ]  [ 3. Create Case ]` (direct screen jumping).
    - **In-Flow Realistic Links:** Clicking a table row/card in `01-list.html` navigates to `02-details.html` within that same variant; clicking "Back" returns to `01-list.html`.
 
-4. **Surface All Controls & Affordances (The Filter & Action Lie Detector):**
+4. **Surface All Controls & Affordances (The 5-State & Action Lie Detector):**
    - Render the complete layout, headers, cards, tables, and drawers described in the requirements.
    - **Explicit Filters & Actions:** Include all search inputs, filter pills, dropdowns, sort bars, and action menus. Never gloss over secondary controls.
-   - **State Switching:** Include simple clickable buttons to toggle between states:
-     - Populated / Active view
-     - Empty state (no data / no filter matches)
-     - Error / Validation failure state
-     - Dialogs, drawers, or confirmation modals
+   - **The 5-State UI Guarantee:** Include clickable buttons or view toggles to verify the 5 essential UI states:
+     - *1. Populated:* Standard active view with realistic sample data.
+     - *2. Empty:* Zero-data state with a clear actionable call-to-action (CTA).
+     - *3. Loading:* Skeleton shimmer or spinner view.
+     - *4. Error:* Validation failure banner or full card with a retry action.
+     - *5. Extreme / Edge:* Overflows, long text strings (wrapping vs. ellipsis), dialogs, drawers, or confirmation modals.
 
 5. **The Visual Gap Audit:**
    - As you build and interact with the prototype across screens, actively look for gaps: *Are filter resets obvious? Does navigating to Details expose missing attributes? Where do primary vs secondary actions live?*
@@ -175,10 +179,11 @@ If you encounter missing guidelines, ambiguous existing code, or architectural f
 Once the visual models, prototype, and `01-define.md` are drafted, execute this structured review loop:
 
 ### Step 1: Autonomous Gap Self-Audit
-Before asking the user, the agent conducts an internal audit of the visual models and prototype against `01-define.md`:
+Before asking the user, the agent conducts an internal audit of the visual models, prototype, and `01-define.md`:
 - For bug fixes: Does the dual-path diagram clearly explain the root failure and the exact guardrail placed?
 - For state machines/flows: Are there dead-end states, missing error routes, or unhandled transitions?
-- For UI prototypes: Did we include clear/reset buttons, realistic empty states, error banners, and close affordances?
+- For UI prototypes (The 5-State Audit): Did we explicitly account for Populated, Empty with CTA, Loading, Error with retry, and Extreme/overflow states?
+- For business logic & decisions: Are complex thresholds, formulas, or multi-condition rules represented as concise Boundary Truth Tables rather than ambiguous prose?
 *Any gaps spotted during construction must be patched immediately in the visual model/prototype and updated in `01-define.md`.*
 
 ### Step 2: Present to User with Targeted Probes

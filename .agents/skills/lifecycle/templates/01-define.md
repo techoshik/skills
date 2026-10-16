@@ -66,4 +66,10 @@ stateDiagram-v2
 - **<Decision Topic>:** <Security, performance, API contract, or architecture decision>
 
 ### Business Logic
-- **<Rule Topic>:** <Core domain rule, state dependency, or validation behavior>
+- **<Rule Topic>:** <Core domain rule, system invariant / guardrail, or validation behavior>
+<!-- Optional: If complex thresholds, formulas, or multi-condition rules exist, use a concise Boundary Truth Table instead of long paragraphs:
+- **<Rule Name>:**
+  | Condition A | Condition B | Expected Result | Rule / Edge Case |
+  | :--- | :---: | :---: | :--- |
+  | ... | ... | ... | ... |
+-->
