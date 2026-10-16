@@ -154,7 +154,7 @@ Whenever a feature involves user interface changes, you must construct a rapid, 
 ### Step 5: Friction Logging
 If you encounter missing guidelines, ambiguous existing code, or architectural friction during Define:
 - Do not stop to rewrite global project rules.
-- Append the issue immediately to `lifecycle/04-refine.md` under `## 4. Friction & Lessons Learned`.
+- Append the issue immediately to `lifecycle/04-refine.md` under `## 3. Friction & Lessons Learned`.
 
 ---
 

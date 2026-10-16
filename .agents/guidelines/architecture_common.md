@@ -23,6 +23,17 @@ Before writing or refactoring any code block, agents MUST explicitly execute the
 - **Fail-Closed Security Invariants:** Security-critical identifiers (e.g., `agencyId`, authenticated user ID, tenant keys, and role permissions) and mandatory domain constraints MUST NEVER use permissive fallback defaults. Any malformed, missing, or unrecognized value on a protected field MUST fail closed immediately with an explicit validation error.
 - If a data model change breaks compatibility, implement a migration or compatibility layer in the model parsing phase.
 
+## File Sizing & Single Responsibility: The 500-Line Soft Ceiling
+
+To maintain maintainability, context window hygiene, and clean architectural boundaries:
+- **The 500-Line Soft Ceiling:** Handwritten code files (controllers, services, repositories, models, or views) SHOULD NOT exceed ~500 lines of code. When a file approaches or crosses this limit, it is an architectural signal to evaluate for splitting.
+- **Natural Seam Splitting (Never Arbitrary Math):** Split along natural domain or architectural boundaries:
+  - *UI / Views:* Extract distinct modal dialogs, bottom sheets, filter panels, or complex card items into dedicated sub-widgets.
+  - *Controllers / State:* Extract sub-domain logic into focused delegates, services, or separate sub-controllers (e.g., splitting a monolithic `CaseController` to delegate filtering or exports).
+  - *Models:* Split nested DTOs or multi-entity definitions into their own files.
+  - *Never Micro-Split:* Do not extract trivial 10–20 line helpers or simple widgets purely to shave line counts.
+- **Exclusions:** Code-generated files (`*.g.dart`, `*.freezed.dart`, mock files) are exempt.
+
 ## Universal Error Handling & Validation
 
 - **Functional Error Handling:** Repositories and use cases MUST use explicit success/failure result types (`Either<PlatformFailure, T>` in Dart/Flutter, typed result/failure objects in Cloud Functions), adhering to the platform's error contract. Application code MUST NOT throw unhandled exceptions across architectural layer boundaries.

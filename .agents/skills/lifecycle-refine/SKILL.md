@@ -19,13 +19,14 @@ Before refining:
 
 ---
 
-## 2. Two-Axis Full-Branch Code Review
+## 2. Two-Axis Full-Branch Code Review (Internal Agent Audit)
 
-Inspect the complete branch diff against the base branch using `git diff <base-branch>...HEAD` (or `git status` / `git diff HEAD~<N>`). Review the changes across two separate, un-merged axes:
+Before drafting deliverables, inspect the complete branch diff against the base branch using `git diff <base-branch>...HEAD` (or `git status` / `git diff HEAD~<N>`). Review the changes across two separate, un-merged axes. Fix any issues silently before moving forward; do NOT write procedural checkboxes into markdown artifacts:
 
 ### Axis 1: Standards & Hygiene
 - **Diff Hygiene:** Check for leftover debug statements (`print`, `console.log`, `debugger`), commented-out code, and unintended whitespace or formatting edits.
 - **Guideline Compliance:** Audit touched files against `.agents/guidelines/` for consistent conventions across all checkpoints.
+- **File Sizing Audit (500-Line Soft Ceiling):** Verify that no modified or newly created non-generated file exceeds ~500 lines without natural architectural decomposition (sub-widgets or sub-controllers).
 - **Code Smells:** Look for Fowler smells:
   - *Duplicated Code:* Logic copy-pasted across multiple hunks.
   - *Primitive Obsession:* Naked strings/ints used where a domain enum or value object belongs.
@@ -37,13 +38,11 @@ Inspect the complete branch diff against the base branch using `git diff <base-b
 - **Success Criteria Re-Check:** Verify that every single Success Criterion is 100% satisfied by the integrated code. Ensure intermediate refactors did not accidentally break earlier outcomes.
 - **Scope Creep Audit:** Ensure no un-requested behavior or rogue functionality slipped into the branch.
 
-*Check the review boxes under `## 1. Full-Branch Code Review & Diff Audit` in `lifecycle/04-refine.md`.*
-
 ---
 
-## 3. Global Verification & Infrastructure
+## 3. Global Verification & Infrastructure (Internal Agent Prerequisite)
 
-Run project-wide checks to guarantee no regressions were introduced to the repository:
+Run project-wide checks to guarantee no regressions were introduced to the repository. Resolve any issues before drafting `04-refine.md`:
 
 1. **Static Analysis:** Run the global linter across all affected projects/packages (e.g. `flutter analyze`, `npm run lint`). It must report **0 errors/warnings**.
 2. **Automated Test Suites:** Run all affected test suites. Ensure **100% passing tests**.
@@ -52,25 +51,25 @@ Run project-wide checks to guarantee no regressions were introduced to the repos
    - Verify database migrations or schema files (or mark "N/A" if greenfield/unmodified).
    - Verify security rules for any newly introduced endpoints or collections.
 
-*Check the verification boxes under `## 2. Global Verification & Infrastructure` in `lifecycle/04-refine.md`.*
-
 ---
 
-## 4. Documentation & PR Synthesis
+## 4. Documentation & PR Synthesis (`04-refine.md`)
 
-1. **Permanent Documentation:** Update `README.md` or `GLOSSARY.md` if the feature introduced new domain terminology, environment variables, or module architectures.
-2. **Pull Request Synthesis:** Complete `## 3. Documentation & Pull Request` in `lifecycle/04-refine.md`:
+Now author `lifecycle/04-refine.md` focusing strictly on high-value user deliverables:
+
+1. **Pull Request Synthesis:** Complete `## 1. Pull Request Details` in `lifecycle/04-refine.md`:
    - **PR Title:** Semantic title `<type>(<scope>): <summary>` matching the List of Changes.
    - **Summary:** Concise bullets describing the business outcome and primary affordances.
    - **Key Changes:** Area-by-area breakdown of files and subsystems modified.
    - **Verification:** Concrete proof that the feature works (passing test results, analyzer output, manual steps).
-   - **Merge Danger & Blast Radius:** One-way vs. Two-way door assessment, schema/migration risks.
+2. **Permanent Updates:** Complete `## 2. Permanent Updates` in `lifecycle/04-refine.md`:
+   - Note any `.agents/guidelines/` files updated, new domain terms added to `GLOSSARY.md`, or README updates made (or mark "None needed").
 
 ---
 
 ## 5. The Guideline Improvement Loop (Friction to Wisdom)
 
-Inspect `## 4. Friction & Lessons Learned` in `lifecycle/04-refine.md`:
+Inspect `## 3. Friction & Lessons Learned` in `lifecycle/04-refine.md`:
 1. If unexpected roadblocks, ambiguities, or bugs were logged during Define, Outline, or Execute:
    - Carefully evaluate the root cause.
    - **Permanent Rule Evolution:** Choose the permanent owner and edit the file:
@@ -78,7 +77,7 @@ Inspect `## 4. Friction & Lessons Learned` in `lifecycle/04-refine.md`:
      - Update `GLOSSARY.md` if domain terminology caused confusion.
      - Add a custom linter rule or automated test if a mechanical bug was caught late.
    - Record the permanent resolution under each friction entry in `04-refine.md`.
-2. If no friction occurred, state *"None recorded"*.
+2. If no friction occurred across the task, state *"None recorded"*.
 
 ---
 

@@ -33,7 +33,14 @@ You are strictly forbidden from executing multiple checkpoints in the same turn.
 1. **Identify the Active Checkpoint:** In `lifecycle/03-execute.md`, find the first checkpoint with status `Todo` or `In Progress`.
 2. **Set In Progress:** Update its status in `lifecycle/03-execute.md` to **`In Progress`**.
 3. **Execute Only This Slice:** Implement *only* the file changes listed under `- [ ] <file_path>:` for this specific checkpoint in `02-outline.md`. Do not touch subsequent checkpoints.
-4. **Check Implementation Boxes:** Once code changes are written, update `02-outline.md` to check the file change boxes (`- [x] <file_path>:`).
+4. **Execution Strategy (Context Hygiene):**
+   - **Direct Execution:** For small slices (1–2 files), execute directly within the current context.
+   - **Worker Sub-Agent Delegation (Recommended for multi-file slices or long sessions):**
+     - Invoke a sub-agent (`TypeName: 'self'`, `Role: 'Checkpoint Worker'`, `Workspace: 'inherit'`).
+     - Prompt includes: the exact checkpoint definition from `02-outline.md`, referenced guidelines, and strict bans (no `git add/commit`, no `build_runner`).
+     - The sub-agent implements code, runs static analysis, runs tests, checks boxes in `02-outline.md`, and reports back.
+     - The sub-agent terminates, keeping the main context clean.
+5. **Check Implementation Boxes:** Once code changes are written, update `02-outline.md` to check the file change boxes (`- [x] <file_path>:`).
 
 ---
 
@@ -41,9 +48,9 @@ You are strictly forbidden from executing multiple checkpoints in the same turn.
 
 Before presenting the checkpoint to the user, you MUST execute the 3 self-review steps specified in `02-outline.md`:
 
-1. **Guideline Verification:** Physically inspect the referenced `.agents/guidelines/<guideline>.md` file using your file viewing tool. Verify that your implementation strictly satisfies the architectural constraints (e.g. single controller, no direct database calls in widgets, state immutability).
+1. **Guideline Verification:** Physically inspect the referenced `.agents/guidelines/<guideline>.md` file using your file viewing tool. Verify that your implementation strictly satisfies the architectural constraints (e.g. single controller, no direct database calls in widgets, state immutability, and the **500-Line Soft Ceiling** — no modified or created file balloons past ~500 lines without extracting natural sub-widgets or sub-controllers).
 2. **Static Analysis:** Run the exact command listed in the checkpoint (e.g., `flutter analyze <path>`). It must report **0 issues**. Fix any linter or compiler warnings silently before proceeding.
-3. **Automated Tests (Highest Natural Seam):** Run the exact test command listed in the checkpoint (e.g., `flutter test <path>`). Tests must pass **100% cleanly**.
+3. **Automated Tests (Highest Natural Seam):** Run the exact test command listed in the checkpoint (e.g., `flutter test <path>`). Tests must run fast at the logic seam and pass **100% cleanly**. Never write or maintain shallow UI tests that only assert static text or widget presence.
 4. **Check Self-Review Boxes:** Once all 3 pass, update `02-outline.md` to mark the self-review checkboxes:
    - `- [x] **Guidelines:** Verified against ...`
    - `- [x] **Static Analysis:** ... reports 0 issues.`
@@ -55,7 +62,7 @@ Before presenting the checkpoint to the user, you MUST execute the 3 self-review
 
 If you encounter unexpected bugs, ambiguous guidelines, or tooling quirks while executing:
 - Do not stop executing to rewrite global project rules.
-- Append the issue immediately to `lifecycle/04-refine.md` under `## 4. Friction & Lessons Learned`.
+- Append the issue immediately to `lifecycle/04-refine.md` under `## 3. Friction & Lessons Learned`.
 - **Exception:** If an unresolved technical blocker or impossible verification step completely halts progress, **STOP** and ask the user for clarification before continuing.
 
 ---

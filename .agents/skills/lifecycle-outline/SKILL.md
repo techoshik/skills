@@ -26,6 +26,7 @@ Before asking questions or drafting the outline, autonomously investigate the co
 - **Guideline Audit:** Read relevant project guidelines in `.agents/guidelines/` (e.g., framework conventions, state management rules, security rules).
 - **Domain Ubiquitous Language:** Read `GLOSSARY.md` to ensure all new class names, enums, DTOs, and functions strictly adhere to established project terminology.
 - **Grounded in the Prototype:** Inspect the settled prototype in `lifecycle/prototype/`. Every screen, filter, drawer, button, and state that was visually validated in Define must map directly to concrete architectural components.
+- **Research Sub-Agent (Context Hygiene):** If investigating existing architecture requires reading 10+ files or tracing complex dependency graphs, delegate the search to a `research` subagent. The subagent inspects the files and returns a concise brief, keeping the main context pristine for high-precision outlining.
 
 ---
 
@@ -59,6 +60,7 @@ Break the implementation down into **Sequential Milestones** (`## Milestone X`),
 
 ### Prefactoring: "Make the Change Easy, Then Make the Easy Change"
 If implementing a feature requires refactoring messy existing code, splitting a congested controller, or reorganizing shared utilities:
+- **The 500-Line Ceiling Trigger:** When inspecting existing files to modify, if a target file is already **>400–500 lines** (or adding this feature will push it past 500 lines), do NOT pile more code into it. Schedule an explicit **Prefactoring Checkpoint** at the start of the milestone to split it along natural domain/widget seams *before* building the new capability.
 - **Do NOT bundle heavy refactoring into the feature slice.**
 - Create an explicit **Prefactoring Checkpoint** at the beginning of the milestone to clean the path *before* building the new capability.
 
@@ -85,7 +87,9 @@ Every checkpoint must adhere strictly to [Outline Template](../lifecycle/templat
    - `- [ ] **Guidelines:** Verified against .agents/guidelines/<guideline>.md:` (2–3 explicit architectural constraints to verify).
    - `- [ ] **Static Analysis:** <command, e.g. flutter analyze path/>` reports 0 issues.
    - `- [ ] **Tests (Highest Natural Seam):** <command, e.g. flutter test path/>` passes cleanly.
-     - *Testing Seam Rule:* Avoid brittle tests that mock internal private functions. Test at the **highest natural seam** (e.g., testing the Feature Controller with realistic domain actions). Tests must assert external observable behavior, not implementation trivia.
+     - **Strict Ban on Shallow UI Tests:** NEVER write tests that merely assert static widget existence, static labels, colors, or layout positioning (`find.text('Submit')`, `find.byType(Container)`). They are brittle, slow, and provide zero regression protection. Only write UI-level tests when there is genuine **dynamic UI logic** (e.g. conditional rendering based on state, form validation triggers, disabled button states during loading).
+     - **Checkpoint Testing Seam (Fast & Headless):** Checkpoint tests must execute in sub-seconds at the controller/state/viewmodel seam with mocked I/O. Visual appearance and layout are verified by the human at the `Verification` gate.
+     - **Milestone-Level Instrumented/Integration Tests:** Heavy UI flow tests, widget pump integration, or instrumented device tests belong at the **end of the Milestone** (as a dedicated final checkpoint or milestone verification). Waiting until the milestone is complete prevents brittle test rewrites while intermediate checkpoints mutate the UI.
 4. **`Verification` (Human Testing Gate)**:
    - **`Action:`** Step-by-step instructions for the user to trigger or test this slice in the running app/browser.
    - **`Expected:`** Exact observable result or behavior confirming success.
@@ -117,7 +121,7 @@ When `02-outline.md` is drafted, you MUST immediately populate `lifecycle/03-exe
 
 If you encounter conflicting architectural guidelines, missing documentation, or tooling quirks during Outline:
 - Do not stop outlining to rewrite global rules.
-- Append the issue immediately to `lifecycle/04-refine.md` under `## 4. Friction & Lessons Learned`.
+- Append the issue immediately to `lifecycle/04-refine.md` under `## 3. Friction & Lessons Learned`.
 
 ---
 
