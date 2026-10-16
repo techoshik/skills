@@ -36,6 +36,13 @@ The goal of this skill is to act as a proactive Product Manager and Systems Inve
 
 - **Word questions so that a user typing "yes" accepts your recommended answer.** This minimizes cognitive overhead and accelerates alignment.
 
+### Visual Language & The Dual-Audience Law
+- **Mental Compilation Tax:** Reading raw text forces human reviewers to act as a compiler—parsing text, mentally constructing data flow or UI hierarchy, simulating edge cases, and only then searching for gaps. Visual models (Mermaid diagrams) externalize this mental compiler, freeing human cognitive bandwidth to focus 100% on gap detection and edge-case verification.
+- **The Dual-Audience Law (INVIOLABLE):**
+  - **Visual Models are for Human Review:** They verify intent, user journeys, state transitions, and bug fix logic during review.
+  - **Text Specifications are the Technical Ground Truth for Agents:** Downstream agents (in Outline and Execute) must execute strictly against `## 4. List of Changes`, `## 6. Decisions`, and file-anchored checkpoints. Agents are strictly forbidden from treating high-level diagrams as an implementation shortcut to bypass detailed technical contracts.
+- **Modular Sub-Flows (No Spaghetti Diagrams):** When planning multi-feature initiatives or entire modules, NEVER dump all logic into a single monolithic diagram. Decompose into focused sub-flows matching each feature or sub-journey (5–10 nodes max per diagram).
+
 ### UI Prototyping as the Visual Gap Detector
 - Written requirements often suffer from "invisible gaps" (e.g., missing filter controls, forgotten sort options, absent empty states, awkward action placements).
 - Building an interactive UI prototype is the **earliest, cheapest point to catch these gaps visually** and resolve them before outlining architecture.
@@ -45,7 +52,7 @@ The goal of this skill is to act as a proactive Product Manager and Systems Inve
 ### Clearing the Fog of War & Out-of-Scope Delineation
 - Pin down the **Destination** (`Problem` + `Outcome`).
 - Probe undiscovered territory ("fog of war"): failure states, empty states, edge cases, permission limits, and lifecycle edge-conditions.
-- Ruthlessly partition what belongs in this iteration versus what sits beyond the destination. Anything deferred or excluded MUST be explicitly recorded in `## 4. Out of Scope` with a clear rationale.
+- Ruthlessly partition what belongs in this iteration versus what sits beyond the destination. Anything deferred or excluded MUST be explicitly recorded in `## 5. Out of Scope` with a clear rationale.
 
 ---
 
@@ -89,10 +96,15 @@ _Avoid_: <Synonyms, outdated terminology, or confusing alternatives>
 ### Step 3: Author `01-define.md`
 Generate `lifecycle/01-define.md` adhering strictly to [Define Template](../lifecycle/templates/01-define.md):
 - **`## 1. Goal`**: Concise `Problem` (current pain point) and `Outcome` (what is true upon completion).
-- **`## 2. Success Criteria`**: 2–4 observable, measurable conditions that confirm the feature works end-to-end.
-- **`## 3. List of Changes`**: Grouped by screen/area, each item prefixed with `**Add:**`, `**Update:**`, `**Remove:**`, or `**Fix:**`.
-- **`## 4. Out of Scope`**: Every deferred, excluded, or explicitly rejected capability with its rationale (`**<Excluded Feature>:** <Reason>`).
-- **`## 5. Decisions`**:
+- **`## 2. Visual Models (Human Review Aid)`**: Focused Mermaid diagram(s) tailored to the task type:
+  - *Bug Fixes:* Dual-path flowchart (`flowchart TD`) contrasting `[❌ Current (Buggy) Behavior]` vs `[✅ Proposed Fix]` to pinpoint the exact failure point and guardrail.
+  - *Workflows / Logic / Backend:* State machine (`stateDiagram-v2`) or decision flowchart showing states, transitions, error states, and edge-case exits.
+  - *Multi-Feature / Full Modules:* Separate modular sub-flows (`### Flow 1: ...`, `### Flow 2: ...`) matching each feature area (never one giant spaghetti diagram).
+  - *UI Screen Transitions:* Macro diagram of screens, sheets, and dialog flows complementing the interactive HTML prototype.
+- **`## 3. Success Criteria`**: 2–4 observable, measurable conditions that confirm the feature works end-to-end.
+- **`## 4. List of Changes`**: Grouped by screen/area, each item prefixed with `**Add:**`, `**Update:**`, `**Remove:**`, or `**Fix:**`.
+- **`## 5. Out of Scope`**: Every deferred, excluded, or explicitly rejected capability with its rationale (`**<Excluded Feature>:** <Reason>`).
+- **`## 6. Decisions`**:
   - `### Technical`: Architecture, security rules, data schemas, API contracts.
   - `### Business Logic`: Domain rules, validation gates, lifecycle state rules.
 
@@ -146,7 +158,7 @@ Whenever a feature involves user interface changes, you must construct a rapid, 
 
 6. **Combine & Consolidate (Mix & Match):**
    - The user can review all 3 variants and mix & match (e.g., *"Take the filter bar from Variant A, and the card layout from Variant B"*).
-   - The agent consolidates the winning combination into the final settled prototype and updates `01-define.md` (`## 3. List of Changes` and `## 5. Decisions`) to lock in the agreed UX.
+   - The agent consolidates the winning combination into the final settled prototype and updates `01-define.md` (`## 4. List of Changes` and `## 6. Decisions`) to lock in the agreed UX.
 
 7. **Reference in Define:** Link the prototype at the top of `lifecycle/01-define.md`:
    - `> **Interactive Prototype:** [prototype/index.html](./prototype/index.html)` (or `[prototype.html](./prototype.html)`)
@@ -160,28 +172,28 @@ If you encounter missing guidelines, ambiguous existing code, or architectural f
 
 ## 4. Human Handoff & Prototype Review Loop
 
-Once the prototype and `01-define.md` are drafted, execute this structured review loop:
+Once the visual models, prototype, and `01-define.md` are drafted, execute this structured review loop:
 
 ### Step 1: Autonomous Gap Self-Audit
-Before asking the user, the agent conducts an internal audit of the prototype against `01-define.md`:
-- Did we include clear/reset buttons for all search and filter bars?
-- Did we render realistic empty states (zero search results, no active cases)?
-- Are error banners, validation warnings, and confirmation dialogs explicitly mocked?
-- Are back buttons, close affordances, and breadcrumbs present?
-*Any gaps spotted during construction must be patched immediately in the prototype and updated in `01-define.md`.*
+Before asking the user, the agent conducts an internal audit of the visual models and prototype against `01-define.md`:
+- For bug fixes: Does the dual-path diagram clearly explain the root failure and the exact guardrail placed?
+- For state machines/flows: Are there dead-end states, missing error routes, or unhandled transitions?
+- For UI prototypes: Did we include clear/reset buttons, realistic empty states, error banners, and close affordances?
+*Any gaps spotted during construction must be patched immediately in the visual model/prototype and updated in `01-define.md`.*
 
 ### Step 2: Present to User with Targeted Probes
 1. Update `Phase 1: Define` status in `lifecycle/03-execute.md` to **`User Review`**.
-2. Present `01-define.md`, the prototype link (`lifecycle/prototype/index.html` or `lifecycle/prototype.html`), and any `GLOSSARY.md` changes.
+2. Present `01-define.md` (pointing out the `## 2. Visual Models` for quick visual verification), the prototype link (for UI features), and any `GLOSSARY.md` changes.
 3. Explicitly report:
+   - **Visual Model Summary:** Briefly highlight the behavioral flow, state transitions, or bug fix contrast depicted in the diagram.
    - **Gaps Already Patched:** Highlight any edge-case states, missing filters, or dialogs the agent proactively added.
    - **Structured Review Questions:**
-     1. *Variant Selection:* "Which variant (A, B, or C) do you prefer, or would you like to combine specific elements (e.g., Header from A, List layout from B)?"
-     2. *Missing Controls / Gaps:* "Looking at the screens, are there any filters, actions, columns, or buttons missing from the views?"
-     3. *Navigation & Transitions:* "Does the screen-to-screen flow feel natural, or should any modal/drawer be a full page (or vice versa)?"
+     1. *Visual / Flow Accuracy:* "Does the visual model (and/or prototype) match your mental model of the flow, or are there edge cases/steps missing?"
+     2. *Variant Selection (for UI):* "Which variant (A, B, or C) do you prefer, or would you like to combine specific elements?"
+     3. *Missing Controls / Gaps:* "Looking at the screens/flows, are there any filters, actions, columns, or buttons missing from the views?"
 
 ### Step 3: Consolidate & Close the Loop
-1. **Incorporate Feedback:** If the user requests tweaks or combines elements, update the prototype to the final consolidated state and synchronize `01-define.md` (`## 3. List of Changes` and `## 5. Decisions`).
+1. **Incorporate Feedback:** If the user requests tweaks or combines elements, update the visual models and prototype to the final consolidated state and synchronize `01-define.md` (`## 4. List of Changes` and `## 6. Decisions`).
 2. **Approval Gate:** The agent **STOPS** and waits for the user's explicit sign-off in chat.
 3. **Transition to Outline:**
    - Once approved, update `Phase 1: Define` status in `lifecycle/03-execute.md` to **`Done`**.

@@ -35,7 +35,7 @@ Do NOT load or read all phase skills at once. Check `03-execute.md` to determine
 
 ## 4. The 4 Lifecycle Artifacts
 All active tracking files live in `lifecycle/` at the project root and are safely deleted upon completing Refine:
-- **`01-define.md`** (Define): Problem, Outcome, Success Criteria, List of Changes, Out of Scope, Decisions (accompanied by an interactive `prototype.html` for UI features).
+- **`01-define.md`** (Define): Problem, Outcome, Visual Models, Success Criteria, List of Changes, Out of Scope, Decisions (accompanied by an interactive `prototype.html` for UI features).
 - **`02-outline.md`** (Outline): Sequential Milestones, Vertical Slices, File Changes, Self-Review, Verification.
 - **`03-execute.md`** (Execute): The single source of truth status dashboard.
 - **`04-refine.md`** (Refine): Pull Request synthesis, permanent guideline updates, and friction log.
