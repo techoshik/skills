@@ -82,11 +82,10 @@ fi
 
 if [[ -d "$SCRIPT_DIR/skills" ]]; then
   SOURCE_SKILLS="$SCRIPT_DIR/skills"
-  SOURCE_RULES="$SCRIPT_DIR/guidelines"
+  SOURCE_RULES="$SCRIPT_DIR/rules"
 elif [[ -d "$SCRIPT_DIR/.agents/skills" ]]; then
-  # Backward-compatible with this repository's current layout.
   SOURCE_SKILLS="$SCRIPT_DIR/.agents/skills"
-  SOURCE_RULES="$SCRIPT_DIR/.agents/guidelines"
+  SOURCE_RULES="$SCRIPT_DIR/.agents/rules"
 else
   echo "Could not find the Lifecycle skills directory." >&2
   exit 1
@@ -264,13 +263,13 @@ install_project() {
   local project_root
   project_root="$(cd -- "$project_path" && pwd)"
   local target_skills="$project_root/.agents/skills"
-  local target_rules="$project_root/.agents/guidelines"
+  local target_rules="$project_root/.agents/rules"
   local agents_file="$project_root/AGENTS.md"
   validate_agents_file "$agents_file"
   mkdir -p "$target_skills" \
     "$target_rules" \
     "$project_root/docs/lifecycle" \
-    "$project_root/docs/guidelines" \
+    "$project_root/docs/rules" \
     "$project_root/docs/modules" \
     "$project_root/docs/backlog"
 
@@ -327,8 +326,8 @@ install_project() {
 
   update_agents_file "$agents_file"
   echo "Installed $installed Lifecycle skill(s) into $target_skills"
-  echo "Processed Lifecycle guideline sections in $target_rules"
-  echo "Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist"
+  echo "Processed Lifecycle rule sections in $target_rules"
+  echo "Ensured docs/lifecycle, docs/rules, docs/modules, and docs/backlog exist"
   echo "Updated the managed Lifecycle section in $agents_file"
 }
 

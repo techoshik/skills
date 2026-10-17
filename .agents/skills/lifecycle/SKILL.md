@@ -38,7 +38,7 @@ All active tracking files live in `lifecycle/` at the project root and are safel
 - **`01-define.md`** (Define): Problem, Outcome, Visual Models, Success Criteria, List of Changes, Out of Scope, Decisions (accompanied by an interactive `prototype.html` for UI features).
 - **`02-outline.md`** (Outline): Sequential Milestones, Vertical Slices, File Changes, Self-Review, Verification.
 - **`03-execute.md`** (Execute): The single source of truth status dashboard.
-- **`04-refine.md`** (Refine): Pull Request synthesis, permanent guideline updates, and friction log.
+- **`04-refine.md`** (Refine): Pull Request synthesis, permanent rule updates, and friction log.
 
 ## 5. Human Approval Law (INVIOLABLE)
 - **The user owns approval; the agent owns execution.**
@@ -51,7 +51,7 @@ If the user modifies an already-approved document (e.g. changing scope in `01-de
 - Re-evaluate affected work and obtain explicit re-approval before continuing.
 
 ## 7. Continuous Friction Logging
-If you encounter unexpected roadblocks, ambiguous guidelines, or technical bugs during **ANY phase**:
+If you encounter unexpected roadblocks, ambiguous rules, or technical bugs during **ANY phase**:
 - Do not stop to rewrite global rules mid-task.
 - Immediately append the issue to **`04-refine.md`** under `## 3. Friction & Lessons Learned`.
 - Continue execution. The Refine phase will permanently resolve the issue.
@@ -62,5 +62,5 @@ To prevent context rot and maintain high reasoning precision throughout long tas
 - **Worker Sub-Agents (Fresh Context Execution):**
   - *Outline Research:* May spawn a `research` sub-agent to explore 10+ codebase files, returning a concise architectural summary without cluttering main context.
   - *Checkpoint Execution:* May spawn a `self` worker sub-agent with `Workspace: 'inherit'` to implement a specific vertical checkpoint, run static analysis and tests, and report back. The sub-agent's tool clutter is discarded upon completion.
-  - *Refine Audit:* May spawn an auditor sub-agent to review the full-branch diff against guidelines with unbiased "fresh eyes".
+  - *Refine Audit:* May spawn an auditor sub-agent to review the full-branch diff against rules with unbiased "fresh eyes".
 - **Strict Boundary Inheritance:** All sub-agents strictly inherit the project boundaries: **NEVER run git staging/committing (`git add/commit`)** and **NEVER run `build_runner`**.

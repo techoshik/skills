@@ -13,7 +13,7 @@ The goal of this skill is to act as a proactive Product Manager and Systems Inve
 
 ### Facts Belong to the Agent; Decisions Belong to the User
 - **Never ask the user a question you could answer by inspecting the code.**
-- Before asking questions, autonomously investigate the repository: directory structures, existing data models, database schemas, API contracts, and project guidelines.
+- Before asking questions, autonomously investigate the repository: directory structures, existing data models, database schemas, API contracts, and project architectural rules.
 - If you need a fact to frame a question, research it first. Present questions only about **business decisions, UX priorities, product trade-offs, and behavioral boundaries**.
 
 ### The Design Tree & Frontier Interviewing
@@ -86,7 +86,7 @@ _Avoid_: <Synonyms, outdated terminology, or confusing alternatives>
 2. Inspect the repository:
    - Existing codebase patterns, data models, and conventions.
    - Any existing `GLOSSARY.md` to speak the project's domain language.
-   - Relevant project guidelines in `.agents/guidelines/`.
+   - Relevant project rules in `.agents/rules/`.
 
 ### Step 2: Grilling & Requirements Discovery
 1. Present your initial synthesis of the feature goal (`Problem` and `Outcome`).
@@ -168,7 +168,7 @@ Whenever a feature involves user interface changes, you must construct a rapid, 
    - `> **Interactive Prototype:** [prototype/index.html](./prototype/index.html)` (or `[prototype.html](./prototype.html)`)
 
 ### Step 5: Friction Logging
-If you encounter missing guidelines, ambiguous existing code, or architectural friction during Define:
+If you encounter missing rules, ambiguous existing code, or architectural friction during Define:
 - Do not stop to rewrite global project rules.
 - Append the issue immediately to `lifecycle/04-refine.md` under `## 3. Friction & Lessons Learned`.
 

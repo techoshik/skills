@@ -23,7 +23,7 @@ Before generating or modifying the outline:
 
 Before asking questions or drafting the outline, autonomously investigate the codebase:
 - **Existing Architecture & Patterns:** Inspect existing modules, state management patterns (controllers, providers, stores), data repositories, and router tables.
-- **Guideline Audit:** Read relevant project guidelines in `.agents/guidelines/` (e.g., framework conventions, state management rules, security rules).
+- **Rule & Architecture Audit:** Read relevant project rules in `.agents/rules/` (e.g., universal architectural rules, framework conventions, state management rules, security invariants).
 - **Domain Ubiquitous Language:** Read `GLOSSARY.md` to ensure all new class names, enums, DTOs, and functions strictly adhere to established project terminology.
 - **Visual Models vs. Technical Ground Truth (Dual-Audience Law):** Inspect any Mermaid diagrams in `01-define.md` to quickly grasp the overarching behavioral intent and edge-case boundaries. However, remember the **Dual-Audience Law**: the diagram is a human review aid. Your architectural checkpoints must be grounded strictly in `## 4. List of Changes`, `## 6. Decisions`, and codebase patterns—never assume implementation details solely from high-level diagram boxes.
 - **Grounded in the Prototype:** Inspect the settled prototype in `lifecycle/prototype/`. Every screen, filter, drawer, button, and state that was visually validated in Define must map directly to concrete architectural components.
@@ -84,8 +84,12 @@ Every checkpoint must adhere strictly to [Outline Template](../lifecycle/templat
    - List every file to be created or modified using `- [ ] <file_path>:`.
    - Specify exact class names, methods, enums, parameters, or schema changes.
    - **Inline Decisions from Prototypes:** If the interactive prototype (`lifecycle/prototype/`) settled exact state shapes, enum values, validation regexes, or calculation logic, inline those exact code shapes directly into the Changes section.
-3. **`Self-Review` (Automated & Guideline Verification)**:
-   - `- [ ] **Guidelines:** Verified against .agents/guidelines/<guideline>.md:` (2–3 explicit architectural constraints to verify).
+3. **`Self-Review` (Mandatory Rules & Verification)**:
+   - Every checkpoint MUST specify explicit rule compliance checkboxes:
+     - `- [ ] **Rules Compliance:**`
+       - `- [ ] **Direct Client SDK First:** <Verify Client SDK usage; 0 CRUD Cloud Functions created>`
+       - `- [ ] **500-Line Soft Ceiling:** <Verify files stay within ~500 lines>`
+       - `- [ ] **Architecture Invariants:** Verified against .agents/rules/<rule>.md:` (2–3 explicit architectural constraints for this specific slice).
    - `- [ ] **Static Analysis:** <command, e.g. flutter analyze path/>` reports 0 issues.
    - `- [ ] **Tests (Highest Natural Seam):** <command, e.g. flutter test path/>` passes cleanly.
      - **Strict Ban on Shallow UI Tests:** NEVER write tests that merely assert static widget existence, static labels, colors, or layout positioning (`find.text('Submit')`, `find.byType(Container)`). They are brittle, slow, and provide zero regression protection. Only write UI-level tests when there is genuine **dynamic UI logic** (e.g. conditional rendering based on state, form validation triggers, disabled button states during loading).

@@ -1,4 +1,8 @@
-# Common Architectural Guidelines
+# Universal Architecture Rules & System Invariants
+
+> [!IMPORTANT]
+> **MANDATORY ARCHITECTURAL RULES — NOT ADVISORY GUIDELINES**
+> Every requirement in this document is a strict, non-negotiable system invariant. Code that violates these rules (such as bypassing Direct Client SDK access, breaking layer encapsulation, leaking persistence primitives into UI, or exceeding the 500-line limit) is considered broken and will be rejected at checkpoint review.
 
 These principles apply universally across all environments (Flutter frontend, Cloud Functions backend, scripts, and shared tooling).
 
@@ -22,6 +26,23 @@ Before writing or refactoring any code block, agents MUST explicitly execute the
 - **Defensive Schema Parsing:** Backward-compatible fields (e.g., newly introduced optional properties) MUST specify safe defaults or fallbacks when parsing older schema revisions.
 - **Fail-Closed Security Invariants:** Security-critical identifiers (e.g., `agencyId`, authenticated user ID, tenant keys, and role permissions) and mandatory domain constraints MUST NEVER use permissive fallback defaults. Any malformed, missing, or unrecognized value on a protected field MUST fail closed immediately with an explicit validation error.
 - If a data model change breaks compatibility, implement a migration or compatibility layer in the model parsing phase.
+
+## Direct Firebase Client SDK First (Cloud Functions Strictly on Exception)
+
+Applications follow a **Direct Firebase Client SDK First** architectural principle. Application clients (Flutter, Web) MUST interact directly with Firestore and Firebase Storage using the Client SDK, protected by server-side Firestore Security Rules (`firestore.rules`).
+
+1. **Direct Firebase SDK Default:**
+   - Standard CRUD operations (creating drafts, reading collections, updating editable records, discarding/deleting drafts, uploading attachments) MUST be performed directly via the client SDK.
+   - Do NOT wrap standard Firestore read/write operations in Cloud Functions. Cloud Functions add unnecessary cold start latency (1–3s), eliminate client offline caching/persistence, complicate test surfaces, and increase operational costs.
+   - **Security Invariant:** Firestore Security Rules execute exclusively on Google's backend infrastructure and CANNOT be bypassed by external scripts, curl, or malicious clients. Security rules MUST enforce tenant isolation (e.g., verifying active tenant or agency membership), lifecycle invariants (e.g., only draft records can be created or deleted directly), and immutable field integrity.
+
+2. **When Cloud Functions ARE Strictly Required (Exceptions):**
+   Creating or routing through a Cloud Function is ONLY permitted when one or more of the following technical requirements exist:
+   - **Centralized Sequence & Atomic Counters:** Operations that generate gap-free, sequential human-readable numbers (e.g., `C-001`, `INV-001`) from a shared counter where client-side generation risks collisions, gaps, or clock skew.
+   - **Private Secrets & External Third-Party APIs:** Operations that require secret credentials that must never be exposed to the client (e.g., Stripe payments, SendGrid/Twilio communications, external partner or government identity APIs).
+   - **Privileged State Transitions & Irreversible Lifecycle Locks:** Operations that freeze immutable snapshots of referenced entities across multiple collections (e.g., activating a record, locking a submission, or taking frozen snapshots of referenced schemas, forms, and profiles, and validating that prerequisite requirements are completed).
+   - **Asynchronous System Triggers & Webhooks:** Background jobs listening to system events (e.g., Storage file upload triggers, malware scanning, webhooks from third-party systems).
+   - **Complex Cross-Collection Aggregations Exceeding Security Rules Limits:** Security rules have a hard limit of 10 `get()` lookups per evaluation. Multi-document batch processing or deep cross-collection traversals beyond rules capability belong in Cloud Functions.
 
 ## File Sizing & Single Responsibility: The 500-Line Soft Ceiling
 

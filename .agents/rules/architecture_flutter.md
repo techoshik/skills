@@ -1,4 +1,8 @@
-# Flutter Architecture Guidelines
+# Flutter Architecture Rules & Invariants
+
+> [!IMPORTANT]
+> **MANDATORY FRONTEND RULES — STRICT ENFORCEMENT**
+> Every requirement in this document is a strict, non-negotiable architectural invariant. Creating `StatefulWidget`, exceeding the 500-line soft ceiling, embedding database/persistence queries in UI, or placing display logic in widgets is STRICTLY PROHIBITED. Checkpoints violating these rules will fail review.
 
 ## Model-Driven UI & Dumb Presentational Widgets
 

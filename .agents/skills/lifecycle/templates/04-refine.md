@@ -23,7 +23,7 @@
 
 ## 2. Permanent Updates
 
-- **Guidelines & Architecture:** <Path to updated .agents/guidelines/ file, or "None needed">
+- **Rules & Architecture:** <Path to updated .agents/rules/ file, or "None needed">
 - **Glossary & Domain Terms:** <Terms added to GLOSSARY.md, or "None needed">
 - **Project Documentation:** <README or docs updated, or "None needed">
 
@@ -40,4 +40,4 @@ Use DOER principles: Expected vs Actual, Root Cause, and what permanent rule to 
 - **Expected vs Actual:** <What was expected vs what happened>
 - **Root Cause:** <Why it occurred>
 - **Resolution:** <How it was handled locally>
-- **Guideline Update:** <File in .agents/guidelines/ or SKILL.md permanently updated>
+- **Rule Update:** <File in .agents/rules/ or SKILL.md permanently updated>

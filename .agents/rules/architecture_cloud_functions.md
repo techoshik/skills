@@ -1,4 +1,15 @@
-# Cloud Functions Architecture Guidelines
+# Cloud Functions Architecture Rules & Invariants
+
+> [!IMPORTANT]
+> **MANDATORY BACKEND RULES — STRICT ENFORCEMENT**
+> Creating Cloud Functions for standard CRUD operations is STRICTLY PROHIBITED. All Firestore reads/writes must use Client SDK backed by Security Rules unless satisfying the 5 explicit exception criteria defined in [architecture_common.md](architecture_common.md#direct-firebase-client-sdk-first-cloud-functions-strictly-on-exception). Checkpoints violating these rules will fail review.
+
+## Direct Firebase Client SDK First & Permitted Scope
+
+Per the project-wide principle in [architecture_common.md](architecture_common.md#direct-firebase-client-sdk-first-cloud-functions-strictly-on-exception), clients MUST communicate directly with Firestore and Firebase Storage via the Client SDK backed by Security Rules.
+
+- **CRUD Wrappers Prohibited:** Cloud Functions MUST NOT be created or used for standard get/set/update/delete operations or pass-through database wrappers.
+- **Strict Exception-Only Scope:** A Cloud Function callable, HTTP endpoint, or background trigger is ONLY permitted when fulfilling one of the architectural exception criteria defined in [architecture_common.md](architecture_common.md#direct-firebase-client-sdk-first-cloud-functions-strictly-on-exception) (centralized atomic sequence counters, private secrets / external APIs, privileged cross-collection lifecycle locks, asynchronous system triggers, or complex aggregations exceeding Security Rules limits).
 
 ## Strict Model Adherence & Remote Contract Literals
 

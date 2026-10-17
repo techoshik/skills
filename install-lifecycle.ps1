@@ -68,9 +68,9 @@ if ($ExistingProjectPaths.Count -eq 0) {
 $ProjectPaths = $ExistingProjectPaths
 
 $CanonicalSkills = Join-Path $ScriptRoot 'skills'
-$CanonicalRules = Join-Path $ScriptRoot 'guidelines'
+$CanonicalRules = Join-Path $ScriptRoot 'rules'
 $LegacySkills = Join-Path $ScriptRoot '.agents/skills'
-$LegacyRules = Join-Path $ScriptRoot '.agents/guidelines'
+$LegacyRules = Join-Path $ScriptRoot '.agents/rules'
 
 if (Test-Path -LiteralPath $CanonicalSkills -PathType Container) {
     $SourceSkills = $CanonicalSkills
@@ -191,7 +191,7 @@ function Install-Project {
 
     $ProjectRoot = (Resolve-Path -LiteralPath $Path).Path
     $TargetSkills = Join-Path $ProjectRoot '.agents/skills'
-    $TargetRules = Join-Path $ProjectRoot '.agents/guidelines'
+    $TargetRules = Join-Path $ProjectRoot '.agents/rules'
     $AgentsFile = Join-Path $ProjectRoot 'AGENTS.md'
 
     Test-AgentsMarkers -AgentsFile $AgentsFile
@@ -200,7 +200,7 @@ function Install-Project {
         $TargetSkills, `
         $TargetRules, `
         (Join-Path $ProjectRoot 'docs/lifecycle'), `
-        (Join-Path $ProjectRoot 'docs/guidelines'), `
+        (Join-Path $ProjectRoot 'docs/rules'), `
         (Join-Path $ProjectRoot 'docs/modules'), `
         (Join-Path $ProjectRoot 'docs/backlog') | Out-Null
 
@@ -266,8 +266,8 @@ function Install-Project {
     }
 
     Write-Output "Installed $Installed Lifecycle skill(s) into $TargetSkills"
-    Write-Output "Processed Lifecycle guideline sections in $TargetRules"
-    Write-Output 'Ensured docs/lifecycle, docs/guidelines, docs/modules, and docs/backlog exist'
+    Write-Output "Processed Lifecycle rule sections in $TargetRules"
+    Write-Output 'Ensured docs/lifecycle, docs/rules, docs/modules, and docs/backlog exist'
     Write-Output "Updated the managed Lifecycle section in $AgentsFile"
 }
 

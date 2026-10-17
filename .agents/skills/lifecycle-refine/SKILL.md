@@ -25,7 +25,7 @@ Before drafting deliverables, inspect the complete branch diff against the base 
 
 ### Axis 1: Standards & Hygiene
 - **Diff Hygiene:** Check for leftover debug statements (`print`, `console.log`, `debugger`), commented-out code, and unintended whitespace or formatting edits.
-- **Guideline Compliance:** Audit touched files against `.agents/guidelines/` for consistent conventions across all checkpoints.
+- **Rule Compliance:** Audit touched files against `.agents/rules/` for consistent conventions across all checkpoints.
 - **File Sizing Audit (500-Line Soft Ceiling):** Verify that no modified or newly created non-generated file exceeds ~500 lines without natural architectural decomposition (sub-widgets or sub-controllers).
 - **Code Smells:** Look for Fowler smells:
   - *Duplicated Code:* Logic copy-pasted across multiple hunks.
@@ -63,17 +63,17 @@ Now author `lifecycle/04-refine.md` focusing strictly on high-value user deliver
    - **Key Changes:** Area-by-area breakdown of files and subsystems modified.
    - **Verification:** Concrete proof that the feature works (passing test results, analyzer output, manual steps).
 2. **Permanent Updates:** Complete `## 2. Permanent Updates` in `lifecycle/04-refine.md`:
-   - Note any `.agents/guidelines/` files updated, new domain terms added to `GLOSSARY.md`, or README updates made (or mark "None needed").
+   - Note any `.agents/rules/` files updated, new domain terms added to `GLOSSARY.md`, or README updates made (or mark "None needed").
 
 ---
 
-## 5. The Guideline Improvement Loop (Friction to Wisdom)
+## 5. The Rule Improvement Loop (Friction to Wisdom)
 
 Inspect `## 3. Friction & Lessons Learned` in `lifecycle/04-refine.md`:
 1. If unexpected roadblocks, ambiguities, or bugs were logged during Define, Outline, or Execute:
    - Carefully evaluate the root cause.
    - **Permanent Rule Evolution:** Choose the permanent owner and edit the file:
-     - Update `.agents/guidelines/<guideline>.md` if an architectural standard or coding rule was missing or ambiguous.
+     - Update `.agents/rules/<rule>.md` if an architectural standard or coding rule was missing or ambiguous.
      - Update `GLOSSARY.md` if domain terminology caused confusion.
      - Add a custom linter rule or automated test if a mechanical bug was caught late.
    - Record the permanent resolution under each friction entry in `04-refine.md`.
@@ -87,7 +87,7 @@ Inspect `## 3. Friction & Lessons Learned` in `lifecycle/04-refine.md`:
 2. Present `lifecycle/04-refine.md` to the user in chat:
    - Highlight the Two-Axis review findings.
    - Highlight passing global verification and test runs.
-   - Highlight any permanent `.agents/guidelines/` updates made.
+   - Highlight any permanent `.agents/rules/` updates made.
    - Present the copy-paste ready PR title and description.
 3. **STOP AND WAIT.** Do not delete files or commit code. Wait for the user's explicit sign-off in chat.
 

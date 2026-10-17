@@ -44,15 +44,22 @@ You are strictly forbidden from executing multiple checkpoints in the same turn.
 
 ---
 
-## 4. Active 3-Part Self-Review (MANDATORY)
+## 4. Active 3-Part Self-Review (MANDATORY AT EVERY CHECKPOINT)
 
-Before presenting the checkpoint to the user, you MUST execute the 3 self-review steps specified in `02-outline.md`:
+Before presenting ANY checkpoint to the user, you MUST immediately execute the self-review steps specified in `02-outline.md` for this specific slice. Do NOT postpone rule verification to later checkpoints:
 
-1. **Guideline Verification:** Physically inspect the referenced `.agents/guidelines/<guideline>.md` file using your file viewing tool. Verify that your implementation strictly satisfies the architectural constraints (e.g. single controller, no direct database calls in widgets, state immutability, and the **500-Line Soft Ceiling** — no modified or created file balloons past ~500 lines without extracting natural sub-widgets or sub-controllers).
+1. **Rule Compliance Verification:** Physically inspect the referenced `.agents/rules/<rule>.md` file. Verify that your implementation strictly satisfies all architectural invariants:
+   - **Direct Client SDK First:** Direct Firestore/Storage Client SDK operations used; 0 Cloud Functions created for CRUD.
+   - **500-Line Soft Ceiling:** No modified or created file balloons past ~500 lines without extracting natural sub-widgets or sub-controllers.
+   - **Architecture Invariants:** Checkpoint-specific invariants verified (e.g. `StatefulWidget` is strictly prohibited; HookWidget/StatelessWidget only; display formatting in domain models; no DB primitives in UI).
+   - If any violation is detected, **FIX IT IMMEDIATELY** within this checkpoint before proceeding.
 2. **Static Analysis:** Run the exact command listed in the checkpoint (e.g., `flutter analyze <path>`). It must report **0 issues**. Fix any linter or compiler warnings silently before proceeding.
 3. **Automated Tests (Highest Natural Seam):** Run the exact test command listed in the checkpoint (e.g., `flutter test <path>`). Tests must run fast at the logic seam and pass **100% cleanly**. Never write or maintain shallow UI tests that only assert static text or widget presence.
-4. **Check Self-Review Boxes:** Once all 3 pass, update `02-outline.md` to mark the self-review checkboxes:
-   - `- [x] **Guidelines:** Verified against ...`
+4. **Check Self-Review Boxes:** Once all pass, update `02-outline.md` to mark the self-review checkboxes:
+   - `- [x] **Rules Compliance:**`
+     - `- [x] **Direct Client SDK First:** ...`
+     - `- [x] **500-Line Soft Ceiling:** ...`
+     - `- [x] **Architecture Invariants:** ...`
    - `- [x] **Static Analysis:** ... reports 0 issues.`
    - `- [x] **Tests:** ... passes cleanly.`
 
@@ -60,7 +67,7 @@ Before presenting the checkpoint to the user, you MUST execute the 3 self-review
 
 ## 5. Friction Logging
 
-If you encounter unexpected bugs, ambiguous guidelines, or tooling quirks while executing:
+If you encounter unexpected bugs, ambiguous rules, or tooling quirks while executing:
 - Do not stop executing to rewrite global project rules.
 - Append the issue immediately to `lifecycle/04-refine.md` under `## 3. Friction & Lessons Learned`.
 - **Exception:** If an unresolved technical blocker or impossible verification step completely halts progress, **STOP** and ask the user for clarification before continuing.
@@ -72,6 +79,7 @@ If you encounter unexpected bugs, ambiguous guidelines, or tooling quirks while 
 1. Update the current checkpoint's status in `lifecycle/03-execute.md` to **`User Review`**.
 2. Present a concise review summary in chat:
    - **What was built:** The specific files modified and capabilities delivered.
+   - **Rule Compliance Check:** Explicitly confirm the verified rule checkboxes for this checkpoint (e.g., Direct Client SDK First confirmed, 500-Line ceiling respected, Framework invariants satisfied).
    - **Self-Review Proof:** Confirmation that static analysis has 0 issues and automated tests passed.
    - **Human Verification Steps:** Present the exact `Action` and `Expected` instructions from the checkpoint's `Verification` block so the user can test in the running app/browser.
 3. **STOP AND WAIT.** The agent is strictly forbidden from marking any checkpoint `Done` on its own.
