@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lifecycle Prototype Hub</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 32px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+    }
+    p {
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .card h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+      color: var(--primary);
+    }
+    .card p {
+      font-size: 14px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+    section.flows {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+    }
+    section.flows h2 {
+      margin: 0 0 12px 0;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Lifecycle Prototype Hub: <Feature Name></h1>
+      <p>Interactive UI stress-testing and workflow validation before code implementation.</p>
+    </header>
+
+    <h2>Feature Prototypes</h2>
+    <div class="grid">
+      <!-- Feature Card Link -->
+      <a href="prototype/<feature>/index.html" class="card">
+        <h3>Feature: <Feature Name></h3>
+        <p>Interactive carousel comparing 3 divergent layout/workflow options with 5 state toggles.</p>
+        <span class="badge">Open Carousel Hub →</span>
+      </a>
+    </div>
+
+    <section class="flows">
+      <h2>Logic & Flows Reference</h2>
+      <p>Business logic, state transitions, and sequence diagrams are formally specified in <a href="01-requirements.md" style="color: var(--primary);">01-requirements.md</a>.</p>
+    </section>
+  </div>
+</body>
+</html>

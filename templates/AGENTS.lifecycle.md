@@ -22,12 +22,13 @@ All rules in `.agents/rules/` are **mandatory system invariants**, NOT optional 
 - Preserve the read-file list and key findings when summarizing context.
 - Keep command output concise; show detailed output only for relevant failures.
 
-## Development Lifecycle (DOER)
+## Development Lifecycle
 
-For module, feature, fix, and product-development work, read `.agents/skills/lifecycle/SKILL.md` and follow its required reading and phase routing (Define → Outline → Execute → Refine). 
+For module, feature, fix, and product-development work, read `.agents/skills/lifecycle/SKILL.md` and follow its sequential phase routing:
+**Brainstorm (`01`) → Prototype (`02`) → Roadmap (`03`) → Execute → Review → Finalize** (tracked in `lifecycle/00-status.md`; friction logged in `04-refine.md`).
 
-Stop after every phase and completed Execute Checkpoint for explicit user approval. The user owns priority and approval; Lifecycle owns process.
+Stop after every phase and completed Execute task for explicit user approval. The user owns priority and approval; Lifecycle owns process.
 
-Project sources: `.agents/rules/` for engineering standards and architecture rules. Active cycle tracking files belong in the temporary `lifecycle` directory and are deleted upon refinement.
+Project sources: `.agents/rules/` for engineering standards and architecture rules. Active cycle tracking files live in the temporary `lifecycle/` directory and are confirmed for cleanup upon Finalize.
 
 <!-- lifecycle:end -->

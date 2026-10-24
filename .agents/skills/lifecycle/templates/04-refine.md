@@ -1,43 +1,21 @@
-# Refine: <Feature or Module Name>
+# Process Refinement & Friction Log: <Feature Name>
 
-## 1. Pull Request Details
+> **Purpose:** Record any unexpected friction, ambiguous rules, tooling quirks, or rework loops encountered during **ANY phase**. In **Finalize**, these entries are systematically processed to permanently evolve `.agents/rules/` and upstream skill instructions ("Friction to Wisdom").
 
-- **PR Title:** `<type>(<scope>): <short summary matching List of Changes>`
-- **PR Description:**
+---
 
-  ```markdown
-  ### Summary
+## 1. Active Friction & Lessons Learned
 
-  - <Bullet 1 describing high-level capability>
-  - <Bullet 2 describing high-level capability>
+### Refinement Entry 1
+- **Phase/Task:** <Phase or Task Name where friction occurred>
+- **Problem:** <What went wrong, caused confusion, or led to a rework loop>
+- **Cause:** <Why it happened, e.g. ambiguous rule, undocumented framework quirk, missing step>
+- **Solution:** <Concrete rule or instruction update to prevent this in the future>
+- **Target File Updated:** <e.g. .agents/rules/flutter.md, Upstream Skill Sync, or Pending Finalize>
 
-  ### Key Changes
+---
 
-  - <Area 1>: <Key change>
-  - <Area 2>: <Key change>
-
-  ### Verification
-
-  - <Concrete proof: test output, analyzer clean, manual verification steps>
-  ```
-
-## 2. Permanent Updates
-
-- **Rules & Architecture:** <Path to updated .agents/rules/ file, or "None needed">
-- **Glossary & Domain Terms:** <Terms added to GLOSSARY.md, or "None needed">
-- **Project Documentation:** <README or docs updated, or "None needed">
-
-## 3. Friction & Lessons Learned
-
-<!--
-Append unexpected roadblocks, ambiguities, or bugs encountered during Define, Outline, or Execute.
-Use DOER principles: Expected vs Actual, Root Cause, and what permanent rule to update.
--->
-
-### <Issue Title>
-
-- **Phase:** <Define | Outline | Execute — Checkpoint X.X>
-- **Expected vs Actual:** <What was expected vs what happened>
-- **Root Cause:** <Why it occurred>
-- **Resolution:** <How it was handled locally>
-- **Rule Update:** <File in .agents/rules/ or SKILL.md permanently updated>
+## 2. Finalize Resolution Summary
+*(Populated during Finalize)*
+- **Rules Evolved:** <List of .agents/rules/ files updated>
+- **Upstream Skills Improved:** <List of lifecycle skills/templates refined>
