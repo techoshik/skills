@@ -34,7 +34,8 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
      - `git diff origin/main...HEAD` (or target base branch) to inspect all committed branch changes.
    - Cross-reference with all touchpoints declared in `lifecycle/03-roadmap.md`.
 4. **Spawn Auditor Sub-Agent (Recommended):**
-   - Delegate the heavy diff inspection to a fresh sub-agent (`TypeName: 'self'`, `Role: 'Branch Auditor'`) to keep main context clean for the handoff.
+   - If sub-agent delegation tools are available, delegate the heavy diff inspection to a fresh sub-agent (`TypeName: 'self'`, `Role: 'Branch Auditor'`) to keep the main conversation context clean for handoff.
+   - If sub-agent tools are not available in the active environment, conduct the audit directly while focusing strictly on diff touchpoints.
 
 > **➡️ Sign-off & Transition to Step 2:** All roadmap tasks are `Done`, branch footprint is fully mapped, and auditor is initialized.
 

@@ -24,20 +24,20 @@ DOCUMENT FORMATTING RULE (STRICT):
 - <Single crisp sentence stating the observable capability that works when this task finishes.>
 
 ### 2. Touchpoints
-- `<path/to/new_file.dart>`:
+- `<path/to/new_file.ext>`:
   - Create: <Class, widget, or service to create>
-- `<path/to/existing_file.dart>`:
+- `<path/to/existing_file.ext>`:
   - Add: <Specific method or state property to add>
   - Update: <Specific wiring, callback, or logic change>
   - Remove: <Deprecated helper or dead code, if applicable>
-- `<path/to/deprecated_file.dart>`:
+- `<path/to/deprecated_file.ext>`:
   - Delete: <1-line reason for file removal, or omit bullet if no files deleted>
 
 ### 3. Acceptance Criteria (Binary Verification)
 - [ ] **AC-1:** <Single binary testable condition>
 - [ ] **AC-2:** <Single binary testable condition>
-- [ ] **Static Analysis:** `<command, e.g. flutter analyze path/>` reports 0 issues.
-- [ ] **Automated Tests:** `<command, e.g. flutter test path/>` passes 100% cleanly (fast logic/controller seam tests; no shallow UI tests).
+- [ ] **Static Analysis:** `<command, e.g. flutter analyze, npm run lint, ruff check>` reports 0 issues.
+- [ ] **Automated Tests:** `<command, e.g. flutter test, npm test, pytest>` passes 100% cleanly (fast logic/controller seam tests; no shallow UI tests).
 
 ### 4. Business Rules
 - **BR-1 (`<Rule Name>`):** <Single-line domain or validation constraint for this slice>
@@ -47,8 +47,8 @@ DOCUMENT FORMATTING RULE (STRICT):
 - **Rule Files:**
   - `.agents/rules/<rule>.md`
 - **Task-Specific Invariants:**
-  - <1-line constraint 1, e.g. `StatelessWidget` / `HookWidget` only>
-  - <1-line constraint 2, e.g. Direct Client SDK First; keep file under ~500 lines>
+  - <1-line constraint 1, e.g. hook-only, server-side only, StatelessWidget/HookWidget>
+  - <1-line constraint 2, e.g. direct client SDK first, immutability; keep file under ~500 lines>
 
 ### 6. Human Verification Gate
 - **Action:**
@@ -66,9 +66,9 @@ DOCUMENT FORMATTING RULE (STRICT):
 - <Single crisp sentence stating the secondary flow or sub-component capability delivered.>
 
 ### 2. Touchpoints
-- `<path/to/new_file.dart>`:
+- `<path/to/new_file.ext>`:
   - Create: <Class/widget/method to add>
-- `<path/to/existing_file.dart>`:
+- `<path/to/existing_file.ext>`:
   - Update: <Specific symbol or behavior change>
 
 ### 3. Acceptance Criteria (Binary Verification)

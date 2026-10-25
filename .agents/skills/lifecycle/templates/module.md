@@ -35,14 +35,12 @@ DOCUMENT FORMATTING RULE (STRICT):
 ## 4. Features & Current State
 *Single source of truth for all built capabilities. Updated during Finalize.*
 
-### <Feature Name>
-- **Entry Route & Purpose:** `<e.g. /cases>` — <1-line summary>
-- **Views & Components:**
-  - `<View / Card / Table>`: <1-line description of displayed data>
-- **Filters & Search:**
-  - `<Filter / Sort Control>`: <1-line behavior>
-- **Actions & Dialogs:**
-  - `<Button / Modal / Drawer>`: <1-line state change or action triggered>
+### <Feature / Capability Name>
+- **Entry / Anchor:** `<e.g. Route /cases, or Service PaymentGateway>` — <1-line purpose>
+- **Primary Components / Handlers:**
+  - `<View, Controller, Service, or Worker>`: <1-line responsibility>
+- **Key Workflows & Interactions:**
+  - `<Action, Event, or API Call>`: <1-line state change or outcome triggered>
 
 ## 5. Key Architecture & File Touchpoints
 - **Module Root:** `<path/to/module>`

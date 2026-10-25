@@ -43,10 +43,9 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
    - Fully inspect all target files listed under `Touchpoints` and their immediate callers.
    - Read any specific rule files referenced under `Code Guidelines` (e.g. `.agents/rules/<rule>.md`).
 2. **Worker Sub-Agent Delegation (Context Hygiene):**
-   - For multi-file changes or test executions, spawn a fresh worker sub-agent (`TypeName: 'self'`, `Role: 'Task Worker'`).
-   - Pass the exact task specification, touchpoint list, guidelines, and safety boundaries (`no git add/commit`, `no watchers`).
-   - The worker sub-agent writes code, runs analyzer and tests, checks off the task's `Acceptance Criteria` boxes in `03-roadmap.md`, and returns a clean report.
-   - Raw compiler logs, repeated linter runs, and file churn stay quarantined inside the sub-agent.
+   - If sub-agent delegation tools are available in your environment, spawn a fresh worker sub-agent (`TypeName: 'self'`, `Role: 'Task Worker'`) for multi-file changes or test executions. Pass the exact task specification, touchpoint list, guidelines, and safety boundaries (`no git add/commit`, `no watchers`).
+   - If sub-agent delegation is not supported in the active environment, execute directly within the main session while maintaining strict context discipline.
+   - The executing worker writes code, runs analyzer and tests, checks off the task's `Acceptance Criteria` boxes in `03-roadmap.md`, and returns a clean report (keeping raw compiler chatter quarantined).
 
 > **➡️ Sign-off & Transition to Step 3:** Target files and caller contexts are understood; implementation begins.
 

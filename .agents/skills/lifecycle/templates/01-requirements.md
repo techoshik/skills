@@ -70,22 +70,22 @@ DOCUMENT FORMATTING RULE (STRICT):
   - Alternatives: <1-line summary of rejected option(s)>
   - Rationale: <1-line reason why the chosen approach wins>
 
-## 6. Glossary Updates (Staged)
-- **`<Domain Term>`:**
-  - <1-line unambiguous business definition (synced to `GLOSSARY.md` in Finalize)>
-  - Avoid: <Confusing synonyms to avoid>
-
-## 7. Deferred Requirements (Future Scope)
-- **`<Feature Idea>`:**
-  - <1-line reason why this is out of scope for now>
-
-## 8. Selected UI/UX Specification
+## 6. Selected UI/UX Specification
 *(Populated during Prototype after reviewing `02-prototype.html`)*
 - **Selected Variants:**
   - `<Screen / Component 1>`: <Chosen option or mix-and-match combination>
 - **Confirmed Interaction & Flow Details:**
   - <1-line locked UX/state behavior 1>
   - <1-line locked UX/state behavior 2>
+
+## 7. Glossary Updates (Staged)
+- **`<Domain Term>`:**
+  - <1-line unambiguous business definition (synced to `GLOSSARY.md` in Finalize)>
+  - Avoid: <Confusing synonyms to avoid>
+
+## 8. Deferred Requirements (Future Scope)
+- **`<Feature Idea>`:**
+  - <1-line reason why this is out of scope for now>
 
 ## 9. Open Items (Must be 100% empty at sign-off)
 - **Open Questions:**

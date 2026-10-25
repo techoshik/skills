@@ -46,7 +46,7 @@ Update project documentation using **1-fact-per-line nested sub-bullets** so fut
    - **Update `## 3. Core Business Rules & Domain Invariants`:** Append the finalized `BR-X` business rules from `## 4. Business Rules & Domain Invariants` in `01-requirements.md` (with 1-line invariant and enforcement sub-bullets).
    - **Update `## 4. Features & Current State`:** Add the new feature name, entry route, views, filters, and actions using short nested sub-bullets.
 2. **Domain Glossary (`GLOSSARY.md`):**
-   - Check `## 6. Glossary Updates (Staged)` in `01-requirements.md`.
+   - Check `## 7. Glossary Updates (Staged)` in `01-requirements.md`.
    - If new domain terms were staged, append them into `GLOSSARY.md` in alphabetical order with concise 1-line definitions.
 3. **Public Project Docs (`README.md`):**
    - Update `README.md` if the feature introduced new environment variables, public CLI flags, or setup instructions.

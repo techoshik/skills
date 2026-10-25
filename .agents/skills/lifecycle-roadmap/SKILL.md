@@ -68,13 +68,13 @@ Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templa
    - Underneath each file path, list 1-line sub-bullets starting with an imperative action verb and colon (`Create:`, `Add:`, `Update:`, `Remove:`, `Delete:`, `Fix:`).
 3. **Acceptance Criteria (Binary Verification Oracles):**
    - Binary pass/fail conditions (Exit Code 0 vs 1; True vs False; no subjective opinions).
-   - **Static Analysis Command:** Exact command (e.g. `flutter analyze <path>`) reporting 0 issues.
-   - **Fast Automated Tests:** Exact test command (e.g. `flutter test <path>`) executing fast logic/controller tests.
+   - **Static Analysis Command:** Exact command (e.g. `flutter analyze`, `npm run lint`, `ruff check`) reporting 0 issues.
+   - **Fast Automated Tests:** Exact test command (e.g. `flutter test`, `npm test`, `pytest`) executing fast logic/controller tests.
    - **Strict Ban on Shallow UI Tests:** Ban brittle tests that merely assert static text or widget presence (`find.text('Submit')`). Tests must verify business logic, state transitions, and dynamic conditions.
 4. **Business Rules:** One bullet per domain, validation, or permission invariant from `01-requirements.md` governing this slice.
 5. **Code Guidelines (Exception-Only):**
    - Reference specific `.agents/rules/<rule>.md` files under `Rule Files`.
-   - Under `Task-Specific Invariants`, list 1 constraint per sub-bullet for rules at risk in this slice (e.g. `StatelessWidget`/`HookWidget` only, `Direct Client SDK First`, 500-line limit).
+   - Under `Task-Specific Invariants`, list 1 constraint per sub-bullet for rules at risk in this slice (e.g. hook-only, server-side only, immutability, 500-line ceiling).
 6. **Human Verification Steps:**
    - **`Action:`** Numbered step-by-step instructions (1 action per line) for the user to trigger or test this slice in the running app.
    - **`Expected:`** 1-line sub-bullets stating the exact observable result confirming success.
@@ -88,7 +88,7 @@ Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templa
 When `03-roadmap.md` is drafted, synchronize `lifecycle/00-status.md`:
 
 1. Keep the standard phase rows (`Brainstorm`, `Prototype`, `Roadmap`).
-2. Replace the generic placeholder `| Execute | Todo |` row with a dedicated row for every roadmap task with status **`Todo`**:
+2. Replace the generic placeholder `| Execute | Todo |` row with a dedicated row for every roadmap task using a **concise task title** (2–4 words; keep table cells compact so tables don't wrap):
    ```markdown
    # Status Dashboard: <Feature Name>
 
@@ -97,9 +97,9 @@ When `03-roadmap.md` is drafted, synchronize `lifecycle/00-status.md`:
    | Brainstorm | Done |
    | Prototype | Done |
    | Roadmap | In Review |
-   | Task 1: <P1 Core Tracer Outcome> | Todo |
-   | Task 2: <P2 Secondary Flow Outcome> | Todo |
-   | Task 3: <P3 Edge Cases & Invariants> | Todo |
+   | Task 1: <Short Title> | Todo |
+   | Task 2: <Short Title> | Todo |
+   | Task 3: <Short Title> | Todo |
    | Review | Todo |
    | Finalize | Todo |
    ```

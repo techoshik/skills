@@ -109,11 +109,11 @@ Now that the full problem space is visible, draw the definitive scope line:
    - Finalize concrete requirements and acceptance criteria in `## 3. Requirements & Acceptance Criteria` (with 1-line capability behavior + binary `AC-X.Y` sub-bullets; no redundant `Behavior:` or `Acceptance Criteria:` wrapper labels).
    - Explicitly record all non-negotiable domain rules, calculation laws, and state constraints under `## 4. Business Rules & Domain Invariants` (with 1-line invariant and enforcement sub-bullets for each `BR-X`).
 2. **Define "Deferred Requirements" (Scope Containment):**
-   - Move secondary ideas, future enhancements, or out-of-scope capabilities discovered during brainstorming into `## 7. Deferred Requirements (Future Scope)` with a 1-line reason sub-bullet.
+   - Move secondary ideas, future enhancements, or out-of-scope capabilities discovered during brainstorming into `## 8. Deferred Requirements (Future Scope)` with a 1-line reason sub-bullet.
    - **Anti-Cheat Rule:** The agent is strictly forbidden from proposing to defer core requirements, error handling, or edge cases to avoid work. Deferral is only for distinct future capabilities.
 3. **Stage Domain Terminology:**
    - Challenge vague or overloaded words immediately (e.g. "account" vs. "workspace").
-   - Stage all agreed domain terms under `## 6. Glossary Updates (Staged)` in `01-requirements.md` (never mutate `GLOSSARY.md` on disk directly during Brainstorm; permanent sync occurs in `Finalize`).
+   - Stage all agreed domain terms under `## 7. Glossary Updates (Staged)` in `01-requirements.md` (never mutate `GLOSSARY.md` on disk directly during Brainstorm; permanent sync occurs in `Finalize`).
 
 > **➡️ Sign-off & Transition to Step 5:** Unambiguous scope boundary is locked; in-scope requirements and deferred items are cleanly partitioned.
 

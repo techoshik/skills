@@ -34,14 +34,12 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 3. **Directory Structure Setup:**
    ```text
    lifecycle/
-   ├── 02-prototype.html                  <-- Root Hub (Feature Carousels + Mermaid Flow Diagrams)
+   ├── 02-prototype.html                  <-- Root Hub (UI Carousels + Mermaid Flow Diagrams)
    └── prototype/
-       └── <feature>/
-           ├── index.html                 <-- Feature Carousel Hub (for UI features)
-           └── <unit>/                    <-- Substantive Component or Screen
-               ├── option-1.html          <-- Self-contained variant (<350 lines)
-               ├── option-2.html
-               └── option-3.html
+       └── <unit>/                        <-- Substantive Component or Screen
+           ├── option-1.html              <-- Self-contained variant (<350 lines)
+           ├── option-2.html
+           └── option-3.html
    ```
 
 > **➡️ Sign-off & Transition to Step 2:** `Brainstorm` is `Done`, target UI units and logic flows are identified, and directories are initialized.
@@ -53,7 +51,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 For each substantive UI unit (`<unit>`):
 
 1. **Author 3 Divergent Variants:**
-   - Create `option-1.html`, `option-2.html`, and `option-3.html` under `lifecycle/prototype/<feature>/<unit>/`.
+   - Create `option-1.html`, `option-2.html`, and `option-3.html` under `lifecycle/prototype/<unit>/`.
    - Keep files lightweight (`<350` lines each).
    - Ensure true layout/workflow divergence:
      - *Option 1:* Direct in-line / standard flow.
@@ -76,29 +74,14 @@ For each substantive UI unit (`<unit>`):
 
 ## Step 3: Hub Assembly & Flow Diagram Authoring (`02-prototype.html`)
 
-1. **Feature Carousel Hub (`lifecycle/prototype/<feature>/index.html`):**
-   - Embed the 3 options for each UI unit inside an interactive carousel using zero-dependency `<iframe>` containers:
-     ```html
-     <div class="carousel-container">
-       <h3>Component: User Card</h3>
-       <div class="controls">
-         <button onclick="showOption(1)">Option 1</button>
-         <button onclick="showOption(2)">Option 2</button>
-         <button onclick="showOption(3)">Option 3</button>
-         <button onclick="toggleSideBySide()">Compare Side-by-Side</button>
-       </div>
-       <iframe id="preview-frame" src="user-card/option-1.html"></iframe>
-       <div class="tradeoff-summary">
-         <p><strong>Option 1 Trade-off:</strong> Direct visibility, consumes more vertical space.</p>
-       </div>
-     </div>
-     ```
-2. **Root Launcher Hub & Mermaid Flow Diagrams (`lifecycle/02-prototype.html`):**
+1. **Root Hub Assembly (`lifecycle/02-prototype.html`):**
    - Initialize `lifecycle/02-prototype.html` from [Prototype Hub Template](../lifecycle/templates/02-prototype.html).
-   - Link all feature carousel hubs under **Feature Prototypes**.
-   - Under **Logic & Flows**, author modular Mermaid diagrams (`5–10` nodes max per sub-flow) for non-UI requirements, state machines, and bug-fix comparisons (`[❌ Current Behavior]` vs. `[✅ Proposed Fix]`) so the user can review both UI carousels and logic flows in one browser window.
+   - For each targeted UI unit, embed a `.carousel-container` with tab buttons that switch the preview iframe between `prototype/<unit>/option-1.html`, `option-2.html`, and `option-3.html`.
+2. **Modular Mermaid Flow Diagrams:**
+   - Under **Logic & State Flow Diagrams** in `02-prototype.html`, author modular Mermaid diagrams (`5–10` nodes max per sub-flow) for non-UI requirements, state machines, and bug-fix comparisons (`[❌ Current Behavior]` vs. `[✅ Proposed Fix]`).
+   - The user reviews both interactive UI carousels and logic flows in a single browser window.
 
-> **➡️ Sign-off & Transition to Step 4:** `02-prototype.html` and feature `index.html` open cleanly in any browser with all UI carousels and Mermaid flow diagrams rendered.
+> **➡️ Sign-off & Transition to Step 4:** `02-prototype.html` opens cleanly in any browser with all UI carousels and Mermaid flow diagrams rendered in one tab.
 
 ---
 

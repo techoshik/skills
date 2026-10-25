@@ -154,3 +154,4 @@ To prevent context rot and maintain high reasoning precision across long session
   - *Brainstorm Research:* Spawns a fresh research sub-agent to inspect 10+ codebase files/docs, returning a concise summary.
   - *Execute Task:* Spawns a fresh worker sub-agent per roadmap task to write code and run tests, returning only a diff summary and test proof.
   - *Review Audit:* Spawns a fresh auditor sub-agent to scan the full-branch diff against rules with unbiased eyes.
+*(When running in environments without sub-agent delegation tools, execute directly in the main session while maintaining strict context discipline).*
