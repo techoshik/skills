@@ -11,9 +11,10 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 
 ---
 
-## 0. Core Finalize Mindset: Permanent Truth & Clean Repo
+## 0. Core Finalize Mindset: Permanent Truth, Atomic Readability & Clean Repo
 
 - **Permanent Knowledge Over Ephemeral Notes:** The temporary `lifecycle/` folder will be deleted. Any architecture, rule, or glossary term not copied to permanent docs will be permanently lost.
+- **One Fact Per Line (No Paragraph Bullets):** When updating `docs/modules/<module>.md`, `GLOSSARY.md`, or `.agents/rules/`, break every concept, rule, and feature detail into **short nested sub-bullets (1 line = 1 atomic detail)**—never write multi-sentence paragraph bullets.
 - **Continuous Evolutionary Improvement:** Every mistake or friction logged in `04-refine.md` must either update `.agents/rules/` or produce an upstream skill improvement so the system permanently learns.
 - **Manual Git Boundary:** Never run `git add`, `git commit`, `git push`, or `gh pr create`. Staging, committing, and PR creation are 100% manual by the user.
 
@@ -38,19 +39,19 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 
 ## Step 2: Permanent Project Documentation Sync
 
-Update project documentation so future agents and humans understand the new capabilities:
+Update project documentation using **1-fact-per-line nested sub-bullets** so future agents and humans can skim and understand the module in seconds:
 
 1. **Module Documentation (`docs/modules/<module>.md`):**
    - Locate the target module file (or create from [Module Template](../lifecycle/templates/module.md) if this is a new module).
-   - **Update `## 3. Core Business Rules & Domain Invariants`:** Append the finalized `BR-X` business rules from `## 4. Business Rules & Domain Invariants` in `01-requirements.md`.
-   - **Update `## 4. Features & Current State`:** Add the new feature name, summary, views, filter capabilities, and key actions.
+   - **Update `## 3. Core Business Rules & Domain Invariants`:** Append the finalized `BR-X` business rules from `## 4. Business Rules & Domain Invariants` in `01-requirements.md` (with 1-line invariant and enforcement sub-bullets).
+   - **Update `## 4. Features & Current State`:** Add the new feature name, entry route, views, filters, and actions using short nested sub-bullets.
 2. **Domain Glossary (`GLOSSARY.md`):**
-   - Check `## 7. Glossary Updates (Staged)` in `01-requirements.md`.
-   - If new domain terms were staged, append them into `GLOSSARY.md` under alphabetical order with their agreed unambiguous definitions.
+   - Check `## 6. Glossary Updates (Staged)` in `01-requirements.md`.
+   - If new domain terms were staged, append them into `GLOSSARY.md` in alphabetical order with concise 1-line definitions.
 3. **Public Project Docs (`README.md`):**
    - Update `README.md` if the feature introduced new environment variables, public CLI flags, or setup instructions.
 
-> **➡️ Sign-off & Transition to Step 3:** Permanent module documentation and glossary are updated on disk.
+> **➡️ Sign-off & Transition to Step 3:** Permanent module documentation and glossary are updated on disk with 1-fact-per-line formatting.
 
 ---
 
@@ -62,7 +63,7 @@ Turn temporary friction into permanent wisdom so future agents never repeat the 
    - Inspect every entry in `lifecycle/04-refine.md`.
 2. **Target A: Project Rules (`.agents/rules/*.md`):**
    - If an entry solved code conventions, framework pitfalls, or architectural confusion:
-     - Update the relevant `.agents/rules/<rule>.md` file with a crisp, bulleted invariant.
+     - Update the relevant `.agents/rules/<rule>.md` file with a crisp, 1-line bulleted invariant.
      - In `04-refine.md`, update `Target File Updated: .agents/rules/<rule>.md`.
 3. **Target B: Lifecycle Skills Evolution & Upstream Sync:**
    - If an entry was caused by a lifecycle skill ambiguity, missing step, or gate confusion:
@@ -71,8 +72,8 @@ Turn temporary friction into permanent wisdom so future agents never repeat the 
        ```markdown
        ### 🔄 Upstream Skill Improvement
        - **Skill:** `<skill_name>`
-       - **Problem:** <What caused friction>
-       - **Recommended Upstream Fix:** <Concrete instruction change>
+       - **Problem:** <1-line description of what caused friction>
+       - **Recommended Upstream Fix:** <1-line concrete instruction change>
        ```
      - In `04-refine.md`, update `Target File Updated: Upstream Sync`.
 
@@ -88,12 +89,16 @@ Generate a complete, professional Pull Request description formatted in Markdown
 # 🚀 Pull Request: <Concise Feature Title>
 
 ## 1. Outcome Summary
-<2–3 sentences summarizing the user problem solved and observable outcome delivered.>
+- **Problem Solved:** <1-line root user or operational problem>
+- **Delivered Outcome:** <1-line summary of what works now>
 
 ## 2. Key Changes & File Touchpoints
-- **<Core Capability 1>:** <Brief summary of files changed, e.g. added new controller, repository methods>
-- **<Core Capability 2>:** <UI components, widgets, screens>
-- **Documentation & Rules:** Updated `docs/modules/<module>.md`, `GLOSSARY.md`, and `.agents/rules/<rule>.md`.
+- **<Core Capability 1>:**
+  - `<path/to/file>`: <1-line change summary>
+- **<Core Capability 2>:**
+  - `<path/to/file>`: <1-line change summary>
+- **Documentation & Rules:**
+  - Updated `docs/modules/<module>.md`, `GLOSSARY.md`, and `.agents/rules/<rule>.md`
 
 ## 3. Verification & Evidence
 - **Automated Tests:** `<test command>` passed 100% cleanly.
@@ -103,8 +108,8 @@ Generate a complete, professional Pull Request description formatted in Markdown
   2. <Action step 2> -> <Expected result>
 
 ## 4. Business Rules Enforced
-- <BR-1 summary>
-- <BR-2 summary>
+- **BR-1 (`<Rule Name>`):** <1-line invariant>
+- **BR-2 (`<Rule Name>`):** <1-line invariant>
 ```
 
 > **➡️ Sign-off & Transition to Step 5:** PR suite is generated in chat; manual git boundary is respected (no git commit or push commands run).

@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lifecycle Prototype Hub</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+  </script>
   <style>
     :root {
       --bg: #0f172a;
@@ -23,7 +27,7 @@
       line-height: 1.5;
     }
     .container {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
     }
     header {
@@ -87,16 +91,27 @@
       margin: 0 0 12px 0;
       font-size: 20px;
     }
+    .flow-card {
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .flow-card h3 {
+      margin: 0 0 12px 0;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>Lifecycle Prototype Hub: <Feature Name></h1>
-      <p>Interactive UI stress-testing and workflow validation before code implementation.</p>
+      <p>Interactive UI stress-testing and workflow diagrams before code implementation.</p>
     </header>
 
-    <h2>Feature Prototypes</h2>
+    <h2>Feature UI Prototypes</h2>
     <div class="grid">
       <!-- Feature Card Link -->
       <a href="prototype/<feature>/index.html" class="card">
@@ -107,8 +122,18 @@
     </div>
 
     <section class="flows">
-      <h2>Logic & Flows Reference</h2>
-      <p>Business logic, state transitions, and sequence diagrams are formally specified in <a href="01-requirements.md" style="color: var(--primary);">01-requirements.md</a>.</p>
+      <h2>Logic & State Flow Diagrams</h2>
+      <p>Modular flowcharts and state transitions (5–10 nodes max per sub-flow).</p>
+      <div class="flow-card">
+        <h3>Flow 1: <Sub-Flow or State Transition Name></h3>
+        <pre class="mermaid">
+flowchart TD
+  Start([Start]) --> Action[Perform Action]
+  Action --> Decision{Valid?}
+  Decision -- Yes --> Success([Success])
+  Decision -- No --> Error([Show Error])
+        </pre>
+      </div>
     </section>
   </div>
 </body>

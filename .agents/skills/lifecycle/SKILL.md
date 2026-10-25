@@ -1,20 +1,21 @@
 ---
 name: lifecycle
-description: Master orchestrator and router for the 7-phase development lifecycle (Brainstorm → Prototype → Roadmap → Execute → Review → Finalize).
+description: Master orchestrator and router for the 6-phase development lifecycle (Brainstorm → Prototype → Roadmap → Execute → Review → Finalize).
 disable-model-invocation: true
 ---
 
 # Lifecycle (Master Orchestrator)
 
-The `lifecycle` skill is the master router for feature development. It drives work through a disciplined 7-phase sequential pipeline: **Brainstorm → Prototype → Roadmap → Execute → Review → Finalize**.
+The `lifecycle` skill is the master router for feature development. It drives work through a disciplined 6-phase sequential pipeline: **Brainstorm → Prototype → Roadmap → Execute → Review → Finalize**.
 
 ---
 
-## 0. Core Mindset: Depth Over Speed
+## 0. Core Mindset: Depth Over Speed & Atomic Readability
 
 - **Never rush.** Speed comes from zero rework, not fast typing.
 - **In Brainstorm:** Act as an elite researcher. Interrogate the root "why", map hidden 2nd-order ripple effects, and explore multiple solutions before writing specs.
 - **In Engineering & Execute:** Always inspect full target files and immediate callers before proposing or writing code.
+- **One Fact Per Line (No Paragraph Bullets):** Across all `lifecycle/` documents (`01-requirements.md`, `03-roadmap.md`, `04-refine.md`, `docs/modules/`), never write multi-sentence paragraphs inside a bullet point. Break every concept into short, nested sub-bullets (1 line = 1 atomic detail) so humans can skim instantly without losing any technical depth.
 
 ---
 
@@ -22,12 +23,12 @@ The `lifecycle` skill is the master router for feature development. It drives wo
 
 All lifecycle progress and task statuses are tracked exclusively in **`lifecycle/00-status.md`**:
 - Do **not** look for or invent status tables in other files.
-- Uses 5 allowed statuses:
-  - ⚪ `Todo`: Not started yet.
-  - 🟡 `In Progress`: Actively being worked on or self-reviewed by the agent.
-  - 🟠 `In Review`: Agent completed work and verification gates; **STOPPED for user review**.
-  - 🟢 `Done`: User explicitly approved in chat.
-  - 🔵 `Skipped`: Explicitly skipped with user approval (e.g. non-UI features skipping Prototype).
+- Table cells use 5 exact plain-text statuses:
+  - `Todo`: Not started yet.
+  - `In Progress`: Actively being worked on or self-reviewed by the agent.
+  - `In Review`: Agent completed work and verification gates; **STOPPED for user review**.
+  - `Done`: User explicitly approved in chat.
+  - `Skipped`: Explicitly skipped with user approval (when neither UI prototypes nor flow diagrams are needed).
 
 ---
 
@@ -46,8 +47,8 @@ All lifecycle progress and task statuses are tracked exclusively in **`lifecycle
 | `00-status.md` does not exist | **Cold Start** | Initialize `00-status.md` & brainstorm | [`lifecycle-brainstorm`](../lifecycle-brainstorm/SKILL.md) |
 | `Brainstorm` is `Todo` or `In Progress` | **Brainstorm** | Research, interview, and write spec | [`lifecycle-brainstorm`](../lifecycle-brainstorm/SKILL.md) |
 | `Brainstorm` is `In Review` | **Brainstorm** | **STOP**; wait for user approval | [`lifecycle-brainstorm`](../lifecycle-brainstorm/SKILL.md) |
-| `Brainstorm` is `Done`; `Prototype` is `Todo` | **Prototype** | Build component carousels & stress-test | [`lifecycle-prototype`](../lifecycle-prototype/SKILL.md) |
-| `Prototype` is `In Review` | **Prototype** | **STOP**; wait for user variant choices | [`lifecycle-prototype`](../lifecycle-prototype/SKILL.md) |
+| `Brainstorm` is `Done`; `Prototype` is `Todo` | **Prototype** | Build UI carousels & flow diagrams | [`lifecycle-prototype`](../lifecycle-prototype/SKILL.md) |
+| `Prototype` is `In Review` | **Prototype** | **STOP**; wait for user variant/flow sign-off | [`lifecycle-prototype`](../lifecycle-prototype/SKILL.md) |
 | `Prototype` is `Done` or `Skipped`; `Roadmap` is `Todo` | **Roadmap** | Plan vertical slices & verification gates | [`lifecycle-roadmap`](../lifecycle-roadmap/SKILL.md) |
 | `Roadmap` is `In Review` | **Roadmap** | **STOP**; wait for user plan approval | [`lifecycle-roadmap`](../lifecycle-roadmap/SKILL.md) |
 | `Roadmap` is `Done`; any Roadmap task is `Todo`/`In Progress` | **Execute** | Implement active single vertical slice | [`lifecycle-execute`](../lifecycle-execute/SKILL.md) |
@@ -63,10 +64,10 @@ All lifecycle progress and task statuses are tracked exclusively in **`lifecycle
 
 All tracking artifacts live inside the temporary `lifecycle/` directory at the project root:
 
-1. **`00-status.md`:** The true status dashboard tracking all 6 phases and roadmap tasks.
-2. **`01-requirements.md`:** Problem, outcome, existing code touchpoints, requirements, AC, rules, decisions, staged glossary terms, and Mermaid diagrams.
-3. **`02-prototype.html` & `prototype/`:** Root launcher and modular component variants with inline styles for UI stress-testing.
-4. **`03-roadmap.md`:** Priority-ordered vertical slices with Touchpoints, AC, Guidelines, and Human Verification.
+1. **`00-status.md`:** The status dashboard tracking all 6 phases and roadmap tasks.
+2. **`01-requirements.md`:** Problem, outcome, existing code touchpoints, requirements, AC, business rules, decisions, staged glossary terms, and selected UI/UX specs.
+3. **`02-prototype.html` & `prototype/`:** Root launcher, interactive 3-option UI carousels with inline styles, and Mermaid logic/flow diagrams.
+4. **`03-roadmap.md`:** Priority-ordered vertical slices with Touchpoints, AC, Business Rules, Code Guidelines, and Human Verification.
 5. **`04-refine.md`:** Continuous mistake, ambiguity, and process refinement log.
 
 ---
@@ -91,7 +92,7 @@ All tracking artifacts live inside the temporary `lifecycle/` directory at the p
 ## 6. Smart Skip Protocol (`Skipped` Status)
 
 - Never silently skip a phase.
-- If a feature has **zero UI components** (e.g. backend API, database schema, CLI tool), the agent must proactively propose skipping `Prototype` inside the Brainstorm handoff question.
+- If a change requires **neither UI prototypes nor logic/state flow diagrams** (e.g. a minor backend tweak, config update, or simple copy change), proactively propose skipping `Prototype` inside the Brainstorm handoff question (while asking if the user still wants a flow diagram or prototype).
 - When approved, mark `Prototype` as **`Skipped`** in `00-status.md`.
 - Downstream entry gates treat `Skipped` as valid completion to proceed to `Roadmap`.
 
@@ -141,7 +142,7 @@ Whenever an agent makes a mistake, encounters an ambiguous rule, or causes frict
   - **Solution:** <Concrete fix for rules or skill instructions>
   - **Target File Updated:** <Pending Finalize>
   ```
-- Continue active work. Phase 7 (`Finalize`) will permanently apply these lessons to `.agents/rules/` and upstream skill improvements.
+- Continue active work. Phase 6 (`Finalize`) will permanently apply these lessons to `.agents/rules/` and upstream skill improvements.
 
 ---
 

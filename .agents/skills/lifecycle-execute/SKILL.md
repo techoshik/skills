@@ -41,11 +41,11 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 
 1. **Pre-Edit Inspection ("Read Before You Write"):**
    - Fully inspect all target files listed under `Touchpoints` and their immediate callers.
-   - Read any specific rule files linked under `Code Guidelines` (e.g. `.agents/rules/<rule>.md`).
+   - Read any specific rule files referenced under `Code Guidelines` (e.g. `.agents/rules/<rule>.md`).
 2. **Worker Sub-Agent Delegation (Context Hygiene):**
    - For multi-file changes or test executions, spawn a fresh worker sub-agent (`TypeName: 'self'`, `Role: 'Task Worker'`).
    - Pass the exact task specification, touchpoint list, guidelines, and safety boundaries (`no git add/commit`, `no watchers`).
-   - The worker sub-agent writes code, runs analyzer and tests, checks off boxes in `03-roadmap.md`, and returns a clean report.
+   - The worker sub-agent writes code, runs analyzer and tests, checks off the task's `Acceptance Criteria` boxes in `03-roadmap.md`, and returns a clean report.
    - Raw compiler logs, repeated linter runs, and file churn stay quarantined inside the sub-agent.
 
 > **➡️ Sign-off & Transition to Step 3:** Target files and caller contexts are understood; implementation begins.
@@ -60,8 +60,6 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 2. **Code Guidelines Compliance:**
    - **500-Line Ceiling:** Keep files under ~500 lines. Extract cohesive sub-widgets or helper functions into adjacent files if nearing the limit.
    - **Framework Invariants:** Respect project rules (e.g. `StatelessWidget`/`HookWidget` only, `Direct Client SDK First`, zero raw contract strings).
-3. **Mark Touchpoint Checkboxes:**
-   - Once file changes are complete, mark the touched file checkboxes in `03-roadmap.md` (`- [x] <file_path>:`).
 
 > **➡️ Sign-off & Transition to Step 4:** Code changes are complete and scoped strictly to active touchpoints.
 
@@ -82,10 +80,11 @@ Before presenting ANY task to the user, you MUST verify all 5 gates. Fix all iss
 5. **Gate 5: Automated Verification Gate:**
    - Run the exact static analysis command from the task (e.g. `flutter analyze <path>`). Must report **0 issues**.
    - Run the exact test command from the task (e.g. `flutter test <path>`). Must pass **100% cleanly** (fast logic/controller seam tests).
+   - Once verified, mark the task's `### 3. Acceptance Criteria` checkboxes as `- [x]` in `03-roadmap.md`.
 6. **Log Friction (`04-refine.md`):**
    - If any rule was ambiguous, compiler error was deceptive, or rework occurred, log `Phase/Task`, `Problem`, `Cause`, and `Solution` in `lifecycle/04-refine.md`.
 
-> **➡️ Sign-off & Transition to Step 5:** All 5 self-review gates pass 100% cleanly.
+> **➡️ Sign-off & Transition to Step 5:** All 5 self-review gates pass 100% cleanly and AC checkboxes are checked off in `03-roadmap.md`.
 
 ---
 

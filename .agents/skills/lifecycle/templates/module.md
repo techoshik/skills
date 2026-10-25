@@ -1,43 +1,64 @@
 # Module: <Module Name>
 
+<!-- 
+DOCUMENT FORMATTING RULE (STRICT):
+- ONE FACT PER LINE: Never write long paragraphs inside bullet points.
+- Break concepts, rules, and feature details into short, scannable nested sub-bullets (1 line = 1 atomic detail).
+- Avoid redundant bold labels on child sub-bullets; keep bolding for top-level keys and identifiers.
+-->
+
 ## 1. Purpose & Business Domain
-<1–2 plain-English sentences explaining what business domain this module owns and why it exists.>
+- **Domain Owned:** <1-line description of what business domain this module owns>
+- **Core Responsibility:** <1-line description of why this module exists>
 
 ## 2. Key Concepts & Entities
-*Core business concepts owned by this module. Cross-reference `GLOSSARY.md` for shared project terms.*
-- **<Concept / Entity>**: <What this represents in the real world and its role in this module.>
-- **<Concept / Entity>**: <Description and relation to other concepts.>
+*Cross-reference `GLOSSARY.md` for shared project terms.*
+- **`<Concept / Entity>`:**
+  - <1-line definition of what this represents>
+  - Role in Module: <1-line description of how this module uses it>
 
 ## 3. Core Business Rules & Domain Invariants
-*Non-negotiable domain rules. Agents must NEVER violate these in any feature or PR. Synced from 01-requirements.md during Finalize.*
-- **BR-1 (<Rule Name>):** <State or lifecycle rule, e.g. "Draft records have no workflow status until activated.">
-- **BR-2 (<Rule Name>):** <Validation or calculation rule, e.g. "Coupons cannot reduce order total below $0.00.">
-- **BR-3 (<Rule Name>):** <Security or tenant rule, e.g. "Archived records cannot be modified or re-activated.">
+*Non-negotiable domain rules synced from `01-requirements.md` during Finalize.*
+- **BR-1 (`<Rule Name>`):**
+  - <1-line state, validation, or calculation law>
+  - Enforced in: <Where/how enforced>
+- **BR-2 (`<Rule Name>`):**
+  - <1-line security or lifecycle law>
+  - Enforced in: <Where/how enforced>
 
-<!-- Optional: For complex multi-condition calculations or state transitions, use a Boundary Truth Table:
-| Condition A | Condition B | Expected Result | Rule / Invariant |
+<!-- Optional: For multi-condition calculations or state transitions, use a Boundary Truth Table:
+| Condition A | Condition B | Expected Result | Rule ID |
 | :--- | :--- | :--- | :--- |
-| Active User | Order Total > $50 | 10% Discount Applied | BR-Promo-1 |
+| Active User | Order Total > $50 | 10% Discount Applied | BR-1 |
 -->
 
 ## 4. Features & Current State
-*The single source of truth for all built capabilities. Update this section after completing Finalize for each feature.*
+*Single source of truth for all built capabilities. Updated during Finalize.*
 
 ### <Feature Name>
-*<1-sentence summary of the feature and its primary entry route (e.g. `/cases`).>*
-- **Views & Data Density:** <Description of views, tables, or cards and their data density.>
-- **Filters & Search:** <Specific filter dropdowns, search inputs, pills, or sorting options.>
-- **Actions & Dialogs:** <Key buttons, dialogs, drawers, or state change actions available to users.>
+- **Entry Route & Purpose:** `<e.g. /cases>` — <1-line summary>
+- **Views & Components:**
+  - `<View / Card / Table>`: <1-line description of displayed data>
+- **Filters & Search:**
+  - `<Filter / Sort Control>`: <1-line behavior>
+- **Actions & Dialogs:**
+  - `<Button / Modal / Drawer>`: <1-line state change or action triggered>
 
 ## 5. Key Architecture & File Touchpoints
-*Primary codebase anchors so agents can locate code instantly during Brainstorm pre-flight research.*
 - **Module Root:** `<path/to/module>`
-- **Controllers / State:** `<...Controller / ...Provider / ...Bloc>`
-- **Repositories / Services:** `<...Repository / ...Service>`
-- **Database Collections / Schemas:** `<collection_name or table_name>`
-- **Primary Routes:** `<e.g. /cases, /cases/:id>`
+- **Controllers / State:**
+  - `<...Controller / ...Provider>`
+- **Repositories / Services:**
+  - `<...Repository / ...Service>`
+- **Database Collections / Schemas:**
+  - `<collection_name or table_name>`
+- **Primary Routes:**
+  - `<e.g. /cases, /cases/:id>`
 
 ## 6. Scope Boundaries & Dependencies
-- **Dependencies:** <What other modules, services, or design systems this module consumes (e.g. reads Auth for user identity, uses Design System components).>
-- **Out of Scope:** <What this module explicitly delegates to other domains (e.g. does not handle billing; delegates to Billing module).>
-- **Deferred:** <Planned future capabilities explicitly postponed.>
+- **Consumes / Dependencies:**
+  - `<Other Module / Service>`: <What it reads or uses>
+- **Out of Scope (Delegated):**
+  - `<Capability>`: <Which module owns it instead>
+- **Deferred (Future):**
+  - `<Planned Capability>`: <1-line summary>
