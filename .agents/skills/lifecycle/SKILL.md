@@ -149,14 +149,14 @@ When `/lifecycle` is invoked in a fresh chat, after an IDE restart, or mid-featu
 
 Whenever an agent makes a mistake, encounters an ambiguous rule, or causes friction in **any** phase:
 - Do not stop active work to rewrite global rules.
-- Immediately append an entry to **`lifecycle/04-refine.md`**:
+- Immediately append an entry to **`lifecycle/04-refine.md`** (initializing from [Refine Template](templates/04-refine.md) if not created yet):
   ```markdown
-  ### Refinement Entry: <Date/Phase>
-  - **Phase/Task:** <Active Phase or Task ID>
-  - **Problem:** <What went wrong or caused friction>
-  - **Cause:** <Why it happened, if known>
-  - **Solution:** <Concrete fix for rules or skill instructions>
-  - **Target File Updated:** <Pending Finalize>
+  ### Refinement Entry 1: <Short Issue Title>
+  - **Phase / Task:** `<Active Phase or Task Name>`
+  - **Problem:** <1-line description of what went wrong or caused friction>
+  - **Cause:** <1-line root cause, e.g. missing rule, ambiguous instruction, framework quirk>
+  - **Solution:** <1-line concrete rule or instruction update to prevent recurrence>
+  - **Target File Updated:** `<Pending Finalize>`
   ```
 - Continue active work. Phase 6 (`Finalize`) will permanently apply these lessons to `.agents/rules/` and upstream skill improvements.
 

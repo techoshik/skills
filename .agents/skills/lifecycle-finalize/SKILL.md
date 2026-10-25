@@ -14,7 +14,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 ## 0. Core Finalize Mindset: Permanent Truth, Atomic Readability & Clean Repo
 
 - **Permanent Knowledge Over Ephemeral Notes:** The temporary `lifecycle/` folder will be deleted. Any architecture, rule, or glossary term not copied to permanent docs will be permanently lost.
-- **One Fact Per Line (No Paragraph Bullets):** When updating `docs/modules/<module>.md`, `GLOSSARY.md`, or `.agents/rules/`, break every concept, rule, and feature detail into **short nested sub-bullets (1 line = 1 atomic detail)**—never write multi-sentence paragraph bullets.
+- **One Fact Per Line (No Paragraph Bullets):** When updating `docs/modules/<module>/`, `GLOSSARY.md`, or `.agents/rules/`, break every concept, rule, and feature detail into **short nested sub-bullets (1 line = 1 atomic detail)**—never write multi-sentence paragraph bullets.
 - **Continuous Evolutionary Improvement:** Every mistake or friction logged in `04-refine.md` must either update `.agents/rules/` or produce an upstream skill improvement so the system permanently learns.
 - **Manual Git Boundary:** Never run `git add`, `git commit`, `git push`, or `gh pr create`. Staging, committing, and PR creation are 100% manual by the user.
 
@@ -99,7 +99,7 @@ Generate a complete, professional Pull Request description formatted in Markdown
 - **<Core Capability 2>:**
   - `<path/to/file>`: <1-line change summary>
 - **Documentation & Rules:**
-  - Updated `docs/modules/<module>.md`, `GLOSSARY.md`, and `.agents/rules/<rule>.md`
+  - Updated `docs/modules/<module>/`, `GLOSSARY.md`, and `.agents/rules/<rule>.md`
 
 ## 3. Verification & Evidence
 - **Automated Tests:** `<test command>` passed 100% cleanly.
