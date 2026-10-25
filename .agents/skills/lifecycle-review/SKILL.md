@@ -105,19 +105,21 @@ Run full verification across the entire project to ensure branch-wide stability:
 
 ---
 
-## Step 5: Refinement Logging & 5-Point Handoff
+## Step 5: Refinement Logging & Audit Handoff
 
 1. **Log Process Friction (`04-refine.md`):**
    - If the review uncovered recurring agent errors, brittle code patterns, or missing project rules, append an entry to `lifecycle/04-refine.md`.
 2. **Update Status Dashboard:**
    - Update `Review` in `lifecycle/00-status.md` to **`In Review`**.
-3. **Present 5-Point Review Summary in Chat:**
-   Present an executive summary covering:
-   - **1. Scope & AC Integrity:** Confirmation that all `REQ`, `AC`, and `BR` items pass end-to-end.
-   - **2. Seam & Integration Verification:** Confirmation that cross-task flows and navigation arguments are seamless.
-   - **3. Guidelines & Diff Hygiene:** Confirmation that 500-line limits hold and dead code/debug logs are removed.
-   - **4. Security & Performance:** Confirmation of tenant filters, leak disposal, and query efficiency.
-   - **5. Deduplications Applied & Verification Proof:** List of deduplications made + proof of analyzer (0 issues) and test pass.
+3. **Present Concise Review Summary in Chat:**
+   - Link directly to `lifecycle/01-requirements.md` and `lifecycle/03-roadmap.md`.
+   - Never output markdown tables or raw Mermaid code blocks in chat.
+   - Present a concise, scannable summary covering:
+     - **Scope & AC Integrity:** Confirmation that all `REQ`, `AC`, and `BR` items pass end-to-end.
+     - **Seam & Integration Verification:** Confirmation that cross-task flows and navigation arguments are seamless.
+     - **Guidelines & Diff Hygiene:** Confirmation that 500-line limits hold and dead code/debug logs are removed.
+     - **Security & Performance:** Confirmation of tenant filters, leak disposal, and query efficiency.
+     - **Deduplications Applied & Verification Proof:** List of deduplications made + proof of analyzer (0 issues) and test pass.
 4. **STOP.** Wait for explicit human approval before advancing to Finalize.
 5. **On User Approval:**
    - Mark `Review` as **`Done`** in `00-status.md`.

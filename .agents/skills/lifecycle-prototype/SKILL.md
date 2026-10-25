@@ -16,6 +16,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 - **Prototypes are Disposables, Not Production Code:** Fast, isolated HTML/JS mockups and Mermaid flow diagrams designed solely to expose visual and logic gaps before writing production code.
 - **Structural Divergence Over Surface Styling:** UI options must differ in interaction paradigm and layout (e.g. Drawer vs. Dedicated Page vs. In-line Accordion), never superficial font or color swaps.
 - **Self-Contained Styling (Zero Cross-Bleed):** Always use embedded `<style>` blocks inside each HTML file. Never share an external CSS file across variants.
+- **Conceptual References Only (Design System Primacy):** Prototypes are conceptual visual references for layout and workflow alignment. Production code must strictly consume canonical design system components (`ThanksCard`, `ThanksSpacing`, `ThanksTheme`) and Flutter theme tokens (`context.textTheme`, `context.colorScheme`). Never copy inline HTML/CSS styling, hardcoded pixel margins, or ad-hoc alpha values from prototypes into production code.
 
 ---
 
@@ -106,13 +107,14 @@ While building and testing the UI variants and flow diagrams, actively hunt for 
 1. Update `lifecycle/00-status.md`: set `Prototype` to **`In Review`**.
 2. Present a concise review summary in chat:
    - Provide the file link to `lifecycle/02-prototype.html`.
-   - Summarize the 3 options for each UI unit (with core trade-offs) and any flow diagrams added.
+   - Never output markdown tables or raw Mermaid code blocks in chat.
+   - Present a concise, scannable summary highlighting the core trade-offs across options and key flow diagrams.
    - Invite the user to test states and pick or mix-and-match:
      > *"Please review `02-prototype.html`. You can pick a winning option or mix-and-match (e.g. 'Option 1 Card + Option 3 Filter')."*
 3. **STOP.** Do not proceed to Roadmap until the user responds.
 
 ### Stage 2: Decision Consolidation on Approval (`Done`)
 1. When the user approves or selects choices:
-   - Consolidate the winning combination and confirmed flow behavior under `## 8. Selected UI/UX Specification` in `lifecycle/01-requirements.md`.
+   - Consolidate the winning combination and confirmed flow behavior under `## 6. Selected UI/UX Specification` in `lifecycle/01-requirements.md`.
 2. Update `lifecycle/00-status.md`: mark `Prototype` as **`Done`**.
 3. Read [`lifecycle-roadmap/SKILL.md`](../lifecycle-roadmap/SKILL.md) and auto-advance to Roadmap.

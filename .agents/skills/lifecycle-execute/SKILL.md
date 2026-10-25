@@ -15,6 +15,8 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 
 - **One Slice at a Time:** Strictly forbidden from executing multiple roadmap tasks in the same turn. Treat each task as an isolated, reviewable unit of delivery.
 - **Depth Over Speed:** Never rush to edit. Read the full target files and their immediate callers before writing code.
+- **Mid-Flight Requirement Interception:** If the user introduces a new capability, scope change, or alternative approach while tasks are executing, **do NOT write code immediately**. Pause and follow the **Mid-Flight Requirement Interception & Micro-Brainstorm Protocol** in `lifecycle/SKILL.md` to update requirements and roadmap first.
+- **Design System Primacy (No Prototype Copy-Paste):** Prototypes are conceptual visual references for layout and workflow alignment. Production code must strictly consume canonical design system components (`ThanksCard`, `ThanksSpacing`, `ThanksTheme`) and Flutter theme tokens. Never copy inline HTML/CSS styling, hardcoded pixel margins, or ad-hoc alpha values from prototypes into production code.
 - **Inviolable Boundaries:**
   - **100% Manual Git:** Strictly forbidden from running `git add`, `git commit`, `git reset`, `git restore`, or `git checkout`.
   - **Watchers Ban:** Never run long-running watchers or daemonized codegen (e.g. `build_runner`).
@@ -91,12 +93,14 @@ Before presenting ANY task to the user, you MUST verify all 5 gates. Fix all iss
 
 1. **Update Task Status:**
    - Update the active task in `lifecycle/00-status.md` to **`In Review`**.
-2. **Present 4-Bullet Review Summary in Chat:**
-   Present an instantly skimmable summary:
-   - **Changed Files:** Exact paths created or modified.
-   - **5-Gate Status:** Confirmation that Outcome, AC, Business Rules, Guidelines, and Analyzer/Tests passed.
-   - **Verification Evidence:** Proof of analyzer (0 issues) and test pass.
-   - **Human Verification Steps:** The exact `Action` → `Expected` steps from the task so the user can test in the running app/browser.
+2. **Present Concise Review Summary in Chat:**
+   - Link directly to `lifecycle/03-roadmap.md`.
+   - Never output markdown tables in chat.
+   - Present a concise, scannable summary focusing on:
+     - **Changed Files:** Exact paths created or modified (including test files).
+     - **5-Gate Status:** Confirmation that Outcome, AC, Business Rules, Guidelines, and Analyzer/Tests passed.
+     - **Verification Evidence:** Proof of analyzer (0 issues) and test pass.
+     - **Human Verification Steps:** The exact `Prerequisites / Environment Setup` and `Action` → `Expected` steps from the task so the user can test in the running app/browser.
 3. **STOP.** Do not start the next task. Wait for explicit human approval in chat.
 4. **On User Approval:**
    - Update that task's row in `lifecycle/00-status.md` to **`Done`**.

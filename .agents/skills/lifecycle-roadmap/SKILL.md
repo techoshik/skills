@@ -62,10 +62,12 @@ Organize the implementation into small, reviewable vertical tasks ordered by pri
 
 Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templates/03-roadmap.md) using **1-fact-per-line nested sub-bullets** across all 6 parts:
 
+- **Requirements Traceability Header:** At the top of each task, declare `- **Requirements Covered:** <REQ-X>` and `- **Mapped Criteria:** <AC-X.Y>` to maintain end-to-end traceability without re-numbering ACs.
 1. **Outcome:** A single crisp sentence stating what observable capability works when this task completes.
 2. **Touchpoints:**
    - List each target file path directly as a top-level bullet (reusing items from `Existing Code & Reuse Touchpoints` in `01-requirements.md`).
    - Underneath each file path, list 1-line sub-bullets starting with an imperative action verb and colon (`Create:`, `Add:`, `Update:`, `Remove:`, `Delete:`, `Fix:`).
+   - **Test Touchpoints:** If authoring new controllers, services, or business logic, explicitly declare the test file under Touchpoints (`<path/to/test_file_test.ext>`: `Create:` or `Update:`).
 3. **Acceptance Criteria (Binary Verification Oracles):**
    - Binary pass/fail conditions (Exit Code 0 vs 1; True vs False; no subjective opinions).
    - **Static Analysis Command:** Exact command (e.g. `flutter analyze`, `npm run lint`, `ruff check`) reporting 0 issues.
@@ -76,10 +78,11 @@ Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templa
    - Reference specific `.agents/rules/<rule>.md` files under `Rule Files`.
    - Under `Task-Specific Invariants`, list 1 constraint per sub-bullet for rules at risk in this slice (e.g. hook-only, server-side only, immutability, 500-line ceiling).
 6. **Human Verification Steps:**
+   - **`Prerequisites / Environment Setup:`** List backend deployment, emulator start, seed data, or build setup commands required before testing.
    - **`Action:`** Numbered step-by-step instructions (1 action per line) for the user to trigger or test this slice in the running app.
    - **`Expected:`** 1-line sub-bullets stating the exact observable result confirming success.
 
-> **➡️ Sign-off & Transition to Step 4:** Every task in `03-roadmap.md` is fully defined across all 6 sections with binary verification gates and 1-fact-per-line formatting.
+> **➡️ Sign-off & Transition to Step 4:** Every task in `03-roadmap.md` is fully defined across all 6 sections with binary verification gates, traceability headers, prerequisites, and 1-fact-per-line formatting.
 
 ---
 
@@ -88,7 +91,7 @@ Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templa
 When `03-roadmap.md` is drafted, synchronize `lifecycle/00-status.md`:
 
 1. Keep the standard phase rows (`Brainstorm`, `Prototype`, `Roadmap`).
-2. Replace the generic placeholder `| Execute | Todo |` row with a dedicated row for every roadmap task using a **concise task title** (2–4 words; keep table cells compact so tables don't wrap):
+2. Replace the generic placeholder `| Execute | Todo |` row with a dedicated row for every roadmap task using a **concise, scannable task slug** (avoid long multi-word titles that force table columns to wrap in narrow panels):
    ```markdown
    # Status Dashboard: <Feature Name>
 
@@ -97,14 +100,14 @@ When `03-roadmap.md` is drafted, synchronize `lifecycle/00-status.md`:
    | Brainstorm | Done |
    | Prototype | Done |
    | Roadmap | In Review |
-   | Task 1: <Short Title> | Todo |
-   | Task 2: <Short Title> | Todo |
-   | Task 3: <Short Title> | Todo |
+   | Task 1: <Short Slug> | Todo |
+   | Task 2: <Short Slug> | Todo |
+   | Task 3: <Short Slug> | Todo |
    | Review | Todo |
    | Finalize | Todo |
    ```
 
-> **➡️ Sign-off & Transition to Step 5:** All roadmap tasks are synchronized into `00-status.md` as `Todo`.
+> **➡️ Sign-off & Transition to Step 5:** All roadmap tasks are synchronized into `00-status.md` as `Todo` with concise slugs.
 
 ---
 
@@ -114,16 +117,18 @@ Before handing off, verify the **Roadmap Quality Checklist**:
 
 - [ ] Every task cuts end-to-end as a small, reviewable vertical slice (~2–5 related files per task, zero horizontal layers).
 - [ ] Any file near >400 lines has an upfront Prefactoring task.
-- [ ] Every task has binary pass/fail verification commands.
+- [ ] Every task has binary pass/fail verification commands and prerequisites.
+- [ ] Newly authored test files are explicitly declared under Touchpoints.
 - [ ] All sections use **1-fact-per-line nested sub-bullets** (zero paragraph walls).
-- [ ] All tasks are populated in `00-status.md`.
+- [ ] All tasks are populated in `00-status.md` with concise slugs.
 
 ### Handoff Protocol
 1. Record any tooling or process friction in `lifecycle/04-refine.md`.
 2. Update `lifecycle/00-status.md`: set `Roadmap` to **`In Review`**.
-3. Present a concise review summary in chat:
-   - Highlight the task sequence, file touchpoints, and verification steps.
-   - Provide the file link to `lifecycle/03-roadmap.md`.
+3. **Zero-Duplication Chat Presentation:**
+   - Link directly to `lifecycle/03-roadmap.md`.
+   - Never output markdown tables in chat.
+   - Present a concise, scannable summary highlighting the task sequence, primary seams, and test commands.
 4. **STOP.** Do not start executing Task 1 until the user explicitly approves the roadmap in chat.
 5. **On User Approval:**
    - Mark `Roadmap` as **`Done`** in `00-status.md`.

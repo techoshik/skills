@@ -22,6 +22,8 @@ All rules in `.agents/rules/` are **mandatory system invariants**, NOT optional 
 - Preserve the read-file list and key findings when summarizing context.
 - Keep command output concise; show detailed output only for relevant failures.
 - **One Fact Per Line in Docs:** Across all `lifecycle/` artifacts and `docs/modules/` files, never write multi-sentence paragraphs inside a bullet point. Break every concept into short, nested sub-bullets (`1 line = 1 atomic detail`) so humans can skim instantly without losing technical depth.
+- **Zero-Duplication Chat Protocol:** Link directly to artifacts. Never dump full specifications or duplicate tables into chat. Output concise, scannable summaries focusing on key decisions, verification proof, and approval questions.
+- **Chat Formatting Invariants:** Never output markdown tables or raw Mermaid code blocks in chat (tables wrap awkwardly in narrow panels and Mermaid renders as plaintext). Use clean nested bullets in chat; keep tables and Mermaid diagrams strictly inside artifacts (`.md`, `.html`).
 
 ## Development Lifecycle
 

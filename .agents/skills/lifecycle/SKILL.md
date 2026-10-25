@@ -16,6 +16,8 @@ The `lifecycle` skill is the master router for feature development. It drives wo
 - **In Brainstorm:** Act as an elite researcher. Interrogate the root "why", map hidden 2nd-order ripple effects, and explore multiple solutions before writing specs.
 - **In Engineering & Execute:** Always inspect full target files and immediate callers before proposing or writing code.
 - **One Fact Per Line (No Paragraph Bullets):** Across all `lifecycle/` documents (`01-requirements.md`, `03-roadmap.md`, `04-refine.md`, `docs/modules/`), never write multi-sentence paragraphs inside a bullet point. Break every concept into short, nested sub-bullets (1 line = 1 atomic detail) so humans can skim instantly without losing any technical depth.
+- **Zero-Duplication Chat Protocol:** Link directly to artifacts. Never dump full specifications or duplicate tables into chat. Keep chat responses concise and scannable, focusing on key decisions, verification proof, and approval questions.
+- **Chat Formatting Invariants:** Never output markdown tables or raw Mermaid code blocks directly in chat responses (tables wrap awkwardly in narrow chat panels and Mermaid renders as raw plaintext syntax). Format comparisons and summaries as clean nested bullets in chat; keep tables and Mermaid diagrams strictly inside artifacts (`.md`, `.html`).
 
 ---
 
@@ -23,6 +25,7 @@ The `lifecycle` skill is the master router for feature development. It drives wo
 
 All lifecycle progress and task statuses are tracked exclusively in **`lifecycle/00-status.md`**:
 - Do **not** look for or invent status tables in other files.
+- **Concise Task Slugs:** When replacing `Execute` with roadmap tasks, use concise, scannable task slugs (avoid long multi-word titles that force table columns to wrap in narrow panels).
 - Table cells use 5 exact plain-text statuses:
   - `Todo`: Not started yet.
   - `In Progress`: Actively being worked on or self-reviewed by the agent.
@@ -98,14 +101,27 @@ All tracking artifacts live inside the temporary `lifecycle/` directory at the p
 
 ---
 
-## 7. Requirement Change & Dirty Tree Protocol
+## 7. Requirement Change & Mid-Flight Insertion Protocol
 
-If the user changes requirements or design decisions mid-stream:
-1. Update `01-requirements.md` first.
-2. Reset affected downstream phases/tasks in `00-status.md` back to `Todo` or `In Progress`.
-3. **Dirty Tree Check:** Run read-only `git status` and `git diff`.
-   - If uncommitted code from discarded tasks exists, list the affected files and ask the user to manually stash or discard them before writing new code.
-   - Never overwrite dirty, conflicting uncommitted code.
+If the user changes requirements, alters design decisions, or proposes an entirely new capability mid-stream (e.g. during Execute or Review):
+
+### 1. Mid-Flight Interception (Never Jump Straight to Code)
+- **Direct Coding Ban:** When a new requirement or feature is requested while tasks are in progress, the agent is **strictly forbidden from immediately modifying code**.
+- **The Recency Bias Trap:** Agents must resist the urge to immediately write code for new requests. Any new requirement must be vetted through a micro-brainstorm to prevent uninspected edge cases and architectural drift.
+
+### 2. Fast Micro-Brainstorm Sequence
+1. **Acknowledge & Pause:** Acknowledge the user's request and state that it requires a fast, focused micro-brainstorm before execution.
+2. **Context & Root Problem:** Quickly evaluate the root problem, operational need, and trade-offs of the proposed solution.
+3. **Rapid 5-Lens Check:** Probe for failure modes, offline/error behavior, permission boundaries, concurrency/race conditions, and edge states.
+4. **Spec Update (`01-requirements.md`):** Append the problem/outcome to Section 1, add `REQ-X`, `AC-X.Y`, and `BR-X` to Sections 3 and 4, and record trade-offs under Section 5 (Architectural Decisions).
+5. **Roadmap & Overview Update (`03-roadmap.md`):** Append the new vertical slice task with full 6-part anatomy (Outcome, Touchpoints including tests, AC, Business Rules, Guidelines, Verification with Prerequisites), and update the task count and priority sequence in the Roadmap Overview.
+6. **Status Dashboard Sync (`00-status.md`):** Insert `| Task N: <Short Slug> | Todo |` in its proper priority sequence.
+7. **Human Approval Gate:** Present the concise micro-brainstorm summary in chat and **STOP** for user approval before writing any code.
+
+### 3. Dirty Tree Check
+- Run read-only `git status` and `git diff`.
+- If uncommitted code from discarded or modified tasks exists, list the affected files and ask the user to manually stash or discard them before writing new code.
+- Never overwrite dirty, conflicting uncommitted code.
 
 ---
 

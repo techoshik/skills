@@ -50,7 +50,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 Investigate the codebase autonomously before asking the user anything (*"Facts belong to the agent; decisions belong to the user"*):
 
 1. **Local Architecture, Module Docs & Touchpoint Audit:**
-   - Inspect `docs/modules/<module>.md` for existing module business rules, features, and file touchpoints.
+   - Inspect `docs/modules/<module>/README.md` (and relevant `docs/modules/<module>/feature_<name>.md` files) for domain ownership, shared data models, database collections, existing business rules, and touchpoints.
    - Inspect existing modules, models, controllers, repositories, and router tables.
    - Read relevant rules in `.agents/rules/` (architectural invariants, state management, line limits).
    - Inspect `GLOSSARY.md` for ubiquitous domain language.
@@ -133,12 +133,16 @@ Before concluding Brainstorm, run the **Exit Gate Checklist**:
 ### Handoff Protocol
 1. Record any tooling or process friction in `lifecycle/04-refine.md`.
 2. Update `lifecycle/00-status.md`: set `Brainstorm` to **`In Review`**.
-3. **Smart Prototype & Flow Assessment:**
+3. **Zero-Duplication Chat Presentation:**
+   - Link directly to `lifecycle/01-requirements.md`.
+   - Never paste large requirement blocks, tables, or raw Mermaid diagrams into chat.
+   - Present a concise, scannable summary highlighting the core problem, observable outcome, and key decisions.
+4. **Smart Prototype & Flow Assessment:**
    - **If the feature has UI components OR complex workflow/state logic:** Present `01-requirements.md` for approval to advance to `Prototype` (to build 3-option HTML UI carousels and/or Mermaid flow diagrams in `02-prototype.html`).
    - **If the change needs neither UI prototypes nor flow diagrams (e.g. minor backend tweak or config change):** Proactively ask the user whether to skip `Prototype` or generate flow diagrams:
      > *"Brainstorm is complete. Since this change has no UI components, I recommend marking `Prototype` as `Skipped` and advancing directly to `Roadmap` (unless you would like flow diagrams in `02-prototype.html`). Shall we proceed to Roadmap?"*
-4. **STOP.** Do not proceed to Prototype or Roadmap until the user explicitly approves in chat.
-5. **On User Approval:**
+5. **STOP.** Do not proceed to Prototype or Roadmap until the user explicitly approves in chat.
+6. **On User Approval:**
    - **If Prototype is required:**
      - Mark `Brainstorm` as **`Done`** in `00-status.md`.
      - Read [`lifecycle-prototype/SKILL.md`](../lifecycle-prototype/SKILL.md) and auto-advance to Prototype.

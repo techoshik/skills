@@ -4,7 +4,7 @@
 DOCUMENT FORMATTING RULE (STRICT):
 - ONE FACT PER LINE: Never write long paragraphs inside bullet points.
 - Break concepts, rules, and feature details into short, scannable nested sub-bullets (1 line = 1 atomic detail).
-- Avoid redundant bold labels on child sub-bullets; keep bolding for top-level keys and identifiers.
+- MODULAR DIRECTORY PATTERN (RECOMMENDED): For scalable modules, organize as a dedicated directory `docs/modules/<domain>/` with a `README.md` (using module_readme.md) and individual `feature_<name>.md` files (using module_feature.md) to prevent 1,000+ line monolithic files.
 -->
 
 ## 1. Purpose & Business Domain

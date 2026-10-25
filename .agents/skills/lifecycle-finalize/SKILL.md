@@ -41,10 +41,11 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 
 Update project documentation using **1-fact-per-line nested sub-bullets** so future agents and humans can skim and understand the module in seconds:
 
-1. **Module Documentation (`docs/modules/<module>.md`):**
-   - Locate the target module file (or create from [Module Template](../lifecycle/templates/module.md) if this is a new module).
-   - **Update `## 3. Core Business Rules & Domain Invariants`:** Append the finalized `BR-X` business rules from `## 4. Business Rules & Domain Invariants` in `01-requirements.md` (with 1-line invariant and enforcement sub-bullets).
-   - **Update `## 4. Features & Current State`:** Add the new feature name, entry route, views, filters, and actions using short nested sub-bullets.
+1. **Modular Module Documentation (`docs/modules/<module>/`):**
+   - Each business domain owns a dedicated folder: `docs/modules/<module>/`.
+   - **Module Overview (`docs/modules/<module>/README.md`):** Create or update from [Module README Template](../lifecycle/templates/module_readme.md). Document domain ownership, shared data models, database collections/schemas, and index all feature specs.
+   - **Dedicated Feature Spec (`docs/modules/<module>/feature_<name>.md`):** Create from [Feature Template](../lifecycle/templates/module_feature.md). Document the feature's problem/capability, workflows, file touchpoints, and scoped `BR-1..BR-X` business rules from `01-requirements.md` (with 1-line invariant and enforcement sub-bullets).
+   - *(Legacy Migration: If an existing monolithic `docs/modules/<module>.md` exists and is growing past ~500 lines, split it into the `docs/modules/<module>/` directory pattern).*
 2. **Domain Glossary (`GLOSSARY.md`):**
    - Check `## 7. Glossary Updates (Staged)` in `01-requirements.md`.
    - If new domain terms were staged, append them into `GLOSSARY.md` in alphabetical order with concise 1-line definitions.

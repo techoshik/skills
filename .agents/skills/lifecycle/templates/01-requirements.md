@@ -28,7 +28,7 @@ DOCUMENT FORMATTING RULE (STRICT):
   - Regression Guardrail: <Test or invariant that prevents recurrence>
 
 ## 2. Existing Code & Reuse Touchpoints
-- **Target Module Docs:** `docs/modules/<module>.md`
+- **Target Module Docs:** `docs/modules/<module>/README.md` (and `docs/modules/<module>/feature_<name>.md`)
 - **Target Code Paths:**
   - `<path/to/module>`
 - **Reusable Models & DTOs:**
@@ -50,7 +50,7 @@ DOCUMENT FORMATTING RULE (STRICT):
   - [ ] **AC-2.1:** <Single binary testable condition>
 
 ## 4. Business Rules & Domain Invariants
-*(Non-negotiable domain laws synced to `docs/modules/<module>.md` in Finalize. One rule per bullet; use sub-bullets for conditions and enforcement.)*
+*(Non-negotiable domain laws synced to `docs/modules/<module>/feature_<name>.md` in Finalize. One rule per bullet; use sub-bullets for conditions and enforcement.)*
 - **BR-1 (<Rule Name>):**
   - <Single-line invariant, e.g. "Coupons cannot reduce order total below $0.00.">
   - Enforced in: <Where/how it is enforced, e.g. validator + Firestore rule>

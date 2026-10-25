@@ -64,6 +64,7 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 
 ## UI & Design System Conventions
 - **Design System First:** Use design system components (`ThanksCard`, `ThanksButton`, `ThanksSpacing`). Hardcoding padding, margins, or colors is BANNED.
+- **Design System Primacy Over Prototype Values:** Prototypes (`02-prototype.html`) are conceptual visual references for layout and workflow alignment only. Production UI code must strictly consume canonical design system components (`ThanksCard`, `ThanksSpacing`, `ThanksTheme`) and Flutter theme tokens (`context.textTheme`, `context.colorScheme`). Copying raw inline CSS, hardcoded pixel values, custom typography, or arbitrary alpha overlays from HTML prototypes into Flutter code is STRICTLY BANNED.
 - **Intrinsic Sizing:** Do NOT hardcode static heights (`SizedBox(height: 500)`). Use flex bounds (`Expanded`, `Flexible`) or intrinsic widget sizing to prevent layout overflow.
 - **Prohibited UI APIs:** `showDialog`, `AlertDialog`, `ScaffoldMessenger`, and `SnackBar` are PROHIBITED in product code. Use `ThanksDialog` and `ThanksToast`.
 - **Standard Message Views:** Loading states MUST use `ThanksMessageView.loading(...)` (bare spinners BANNED). Error states MUST use `ThanksMessageView.error(...)` with retry. Empty states use generic `ThanksMessageView`.
