@@ -27,23 +27,23 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
    - If any task is still `Todo` or `In Progress`, STOP—instruct user to complete Execute first.
 2. **Lock Status to In Progress:**
    - Update `Review` in `lifecycle/00-status.md` to **`In Progress`**.
-3. **Discover Complete Branch Scope:**
+3. **Discover Complete Branch Scope (Including Untracked Files):**
    - Run read-only git commands to map the full branch footprint:
-     - `git status --short` (all untracked or modified files)
-     - `git diff HEAD` (uncommitted working tree changes)
+     - `git status --short` (all untracked `??` or modified files).
+     - `git diff HEAD` (uncommitted working tree changes to tracked files).
      - `git diff origin/main...HEAD` (or target base branch) to inspect all committed branch changes.
-   - Cross-reference with all touchpoints declared in `lifecycle/03-roadmap.md`.
+   - **Read All Untracked Files Explicitly:** Because `git add` is banned, newly created files across all roadmap tasks sit untracked (`??`) and do **not** appear in `git diff HEAD`. Explicitly read the full contents of every untracked source and test file listed by `git status --short` (cross-referenced with `lifecycle/03-roadmap.md` touchpoints).
 4. **Spawn Auditor Sub-Agent (Recommended):**
-   - If sub-agent delegation tools are available, delegate the heavy diff inspection to a fresh sub-agent (`TypeName: 'self'`, `Role: 'Branch Auditor'`) to keep the main conversation context clean for handoff.
-   - If sub-agent tools are not available in the active environment, conduct the audit directly while focusing strictly on diff touchpoints.
+   - If sub-agent delegation tools are available, delegate the heavy diff and untracked-file inspection to a fresh sub-agent (`TypeName: 'self'`, `Role: 'Branch Auditor'`) to keep the main conversation context clean for handoff.
+   - If sub-agent tools are not available in the active environment, conduct the audit directly while focusing strictly on diff and untracked touchpoints.
 
-> **➡️ Sign-off & Transition to Step 2:** All roadmap tasks are `Done`, branch footprint is fully mapped, and auditor is initialized.
+> **➡️ Sign-off & Transition to Step 2:** All roadmap tasks are `Done`, branch footprint (committed + modified + untracked files) is fully mapped, and auditor is initialized.
 
 ---
 
 ## Step 2: The 5-Point Full-Branch Audit
 
-Systematically audit the entire branch diff across 5 critical dimensions:
+Systematically audit the entire branch diff and all newly created untracked files across 5 critical dimensions:
 
 ### 1. Global AC & Scope Integrity (`01-requirements.md`)
 - Verify that every requirement (`REQ-X`), acceptance criterion (`AC-X`), and business rule (`BR-X`) from `01-requirements.md` holds true end-to-end.

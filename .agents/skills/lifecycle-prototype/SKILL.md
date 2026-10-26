@@ -16,7 +16,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 - **Prototypes are Disposables, Not Production Code:** Fast, isolated HTML/JS mockups and Mermaid flow diagrams designed solely to expose visual and logic gaps before writing production code.
 - **Structural Divergence Over Surface Styling:** UI options must differ in interaction paradigm and layout (e.g. Drawer vs. Dedicated Page vs. In-line Accordion), never superficial font or color swaps.
 - **Self-Contained Styling (Zero Cross-Bleed):** Always use embedded `<style>` blocks inside each HTML file. Never share an external CSS file across variants.
-- **Conceptual References Only (Design System Primacy):** Prototypes are conceptual visual references for layout and workflow alignment. Production code must strictly consume canonical design system components (`ThanksCard`, `ThanksSpacing`, `ThanksTheme`) and Flutter theme tokens (`context.textTheme`, `context.colorScheme`). Never copy inline HTML/CSS styling, hardcoded pixel margins, or ad-hoc alpha values from prototypes into production code.
+- **Conceptual References Only (Design System Primacy):** Prototypes are conceptual visual references for layout and workflow alignment. Production code must strictly consume the canonical design system components, theme tokens, and spacing constants defined in `.agents/rules/`. Never copy inline HTML/CSS styling, hardcoded pixel margins, or ad-hoc alpha values from prototypes into production code.
 
 ---
 

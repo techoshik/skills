@@ -1,7 +1,6 @@
 ---
 name: lifecycle
 description: Master orchestrator and router for the 6-phase development lifecycle (Brainstorm → Prototype → Roadmap → Execute → Review → Finalize).
-disable-model-invocation: true
 ---
 
 # Lifecycle (Master Orchestrator)

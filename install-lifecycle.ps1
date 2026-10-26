@@ -199,10 +199,7 @@ function Install-Project {
     New-Item -ItemType Directory -Force -Path `
         $TargetSkills, `
         $TargetRules, `
-        (Join-Path $ProjectRoot 'docs/lifecycle'), `
-        (Join-Path $ProjectRoot 'docs/rules'), `
-        (Join-Path $ProjectRoot 'docs/modules'), `
-        (Join-Path $ProjectRoot 'docs/backlog') | Out-Null
+        (Join-Path $ProjectRoot 'docs/modules') | Out-Null
 
     $SameSkillsDirectory = ([System.IO.Path]::GetFullPath($SourceSkills) -eq [System.IO.Path]::GetFullPath($TargetSkills))
 
@@ -251,9 +248,8 @@ function Install-Project {
         $Pattern = '(?s)<!-- lifecycle:start -->.*?<!-- lifecycle:end -->'
 
         if ([regex]::IsMatch($Agents, $Pattern)) {
-            $UpdatedAgents = [regex]::Replace(
+            $UpdatedAgents = ([regex]$Pattern).Replace(
                 $Agents,
-                $Pattern,
                 [System.Text.RegularExpressions.MatchEvaluator]{ param($Match) $Block },
                 1
             )
@@ -267,7 +263,7 @@ function Install-Project {
 
     Write-Output "Installed $Installed Lifecycle skill(s) into $TargetSkills"
     Write-Output "Processed Lifecycle rule sections in $TargetRules"
-    Write-Output 'Ensured docs/lifecycle, docs/rules, docs/modules, and docs/backlog exist'
+    Write-Output 'Ensured docs/modules exists'
     Write-Output "Updated the managed Lifecycle section in $AgentsFile"
 }
 

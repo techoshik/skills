@@ -50,3 +50,10 @@ DOCUMENT FORMATTING RULE (STRICT):
 - **Permission Required:** `<Permission or role required to access/execute>`
 - **Tenant Isolation:** `<How tenant filtering is enforced on reads/writes>`
 - **Fail-Closed Policy:** `<What happens when credentials or permissions fail>`
+
+## 6. Key Architectural Decisions
+*Synced from `01-requirements.md` during Finalize so future engineers and agents understand why this design was chosen.*
+- **Decision 1 (`<Topic>`):**
+  - Chosen: <1-line chosen approach>
+  - Rejected Alternatives: <1-line summary of rejected options>
+  - Rationale: <1-line reason why the chosen approach won>

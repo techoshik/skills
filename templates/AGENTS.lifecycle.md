@@ -8,7 +8,7 @@ Use emulators/development environments for automated testing.
 
 ## Direct Firebase Client SDK First (Hard Invariant)
 
-Always prefer direct Firebase Client SDK (Firestore, Storage) operations backed by robust, fail-closed Firestore Security Rules. Do not create or route through Cloud Functions for standard get/set/update/delete operations. Cloud Functions are strictly reserved for centralized atomic sequence counters (e.g. sequential document or record numbering), private secrets/external APIs, cross-collection snapshot freezing, and system triggers. See details in [.agents/rules/architecture_flutter.md](.agents/rules/architecture_flutter.md) and [.agents/rules/architecture_cloud_functions.md](.agents/rules/architecture_cloud_functions.md).
+Always prefer direct Firebase Client SDK (Firestore, Storage) operations backed by robust, fail-closed Firestore Security Rules. Do not create or route through Cloud Functions for standard get/set/update/delete operations. Cloud Functions are strictly reserved for centralized atomic sequence counters (e.g. sequential document or record numbering), private secrets/external APIs, cross-collection snapshot freezing, system triggers, and complex cross-collection aggregations exceeding Security Rules limits (10 `get()` calls). See details in [.agents/rules/architecture_flutter.md](.agents/rules/architecture_flutter.md) and [.agents/rules/architecture_cloud_functions.md](.agents/rules/architecture_cloud_functions.md).
 
 ## Required Architectural Rules Review
 

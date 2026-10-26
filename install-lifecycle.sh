@@ -33,7 +33,7 @@ while (($# > 0)); do
       echo "Unknown option: $1" >&2
       usage >&2
       exit 1
-      ;;
+    ;;
     *)
       if [[ -n "$PROJECT_PATH" || -n "$PROJECTS_FILE" ]]; then
         echo "Choose one project path or one projects-file option." >&2
@@ -268,10 +268,7 @@ install_project() {
   validate_agents_file "$agents_file"
   mkdir -p "$target_skills" \
     "$target_rules" \
-    "$project_root/docs/lifecycle" \
-    "$project_root/docs/rules" \
-    "$project_root/docs/modules" \
-    "$project_root/docs/backlog"
+    "$project_root/docs/modules"
 
   local same_skills_directory=0
   if [[ "$SOURCE_SKILLS" == "$target_skills" ]]; then
@@ -327,7 +324,7 @@ install_project() {
   update_agents_file "$agents_file"
   echo "Installed $installed Lifecycle skill(s) into $target_skills"
   echo "Processed Lifecycle rule sections in $target_rules"
-  echo "Ensured docs/lifecycle, docs/rules, docs/modules, and docs/backlog exist"
+  echo "Ensured docs/modules exists"
   echo "Updated the managed Lifecycle section in $agents_file"
 }
 

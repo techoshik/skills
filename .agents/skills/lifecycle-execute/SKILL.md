@@ -16,7 +16,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 - **One Slice at a Time:** Strictly forbidden from executing multiple roadmap tasks in the same turn. Treat each task as an isolated, reviewable unit of delivery.
 - **Depth Over Speed:** Never rush to edit. Read the full target files and their immediate callers before writing code.
 - **Mid-Flight Requirement Interception:** If the user introduces a new capability, scope change, or alternative approach while tasks are executing, **do NOT write code immediately**. Pause and follow the **Mid-Flight Requirement Interception & Micro-Brainstorm Protocol** in `lifecycle/SKILL.md` to update requirements and roadmap first.
-- **Design System Primacy (No Prototype Copy-Paste):** Prototypes are conceptual visual references for layout and workflow alignment. Production code must strictly consume canonical design system components (`ThanksCard`, `ThanksSpacing`, `ThanksTheme`) and Flutter theme tokens. Never copy inline HTML/CSS styling, hardcoded pixel margins, or ad-hoc alpha values from prototypes into production code.
+- **Design System Primacy (No Prototype Copy-Paste):** Prototypes are conceptual visual references for layout and workflow alignment. Production code must strictly consume the canonical design system components, theme tokens, and spacing constants defined in `.agents/rules/`. Never copy inline HTML/CSS styling, hardcoded pixel margins, or ad-hoc alpha values from prototypes into production code.
 - **Inviolable Boundaries:**
   - **100% Manual Git:** Strictly forbidden from running `git add`, `git commit`, `git reset`, `git restore`, or `git checkout`.
   - **Watchers Ban:** Never run long-running watchers or daemonized codegen (e.g. `build_runner`).
@@ -60,7 +60,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
    - Never implement features, UI elements, or models belonging to future roadmap tasks.
 2. **Code Guidelines Compliance:**
    - **500-Line Ceiling:** Keep files under ~500 lines. Extract cohesive sub-widgets or helper functions into adjacent files if nearing the limit.
-   - **Framework Invariants:** Respect project rules (e.g. `StatelessWidget`/`HookWidget` only, `Direct Client SDK First`, zero raw contract strings).
+   - **Framework Invariants:** Respect project rules in `.agents/rules/` (e.g. `StatelessWidget`/`HookWidget` only, `Direct Client SDK First`, zero raw contract strings).
 
 > **➡️ Sign-off & Transition to Step 4:** Code changes are complete and scoped strictly to active touchpoints.
 

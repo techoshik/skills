@@ -37,3 +37,5 @@ DOCUMENT FORMATTING RULE (STRICT):
   - `<Service / Stream / Event>`: <Public API or events exposed to callers>
 - **Strictly Out of Scope (Delegated):**
   - `<Capability>`: <Which module owns this responsibility instead>
+- **Deferred (Future Backlog):**
+  - `<Deferred Feature Idea>`: <1-line summary and reason deferred from 01-requirements.md>

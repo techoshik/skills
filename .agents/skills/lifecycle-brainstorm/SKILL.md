@@ -26,19 +26,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 1. **Check Existing Session:**
    - If `lifecycle/00-status.md` and `lifecycle/01-requirements.md` already exist, **inspect and resume them** (never overwrite existing work).
 2. **Cold Start Initialization:**
-   - If starting fresh, initialize `lifecycle/00-status.md` with `Brainstorm` set to `In Progress`:
-     ```markdown
-     # Status Dashboard: <Feature Name>
-
-     | Step / Task | Status |
-     | :--- | :--- |
-     | Brainstorm | In Progress |
-     | Prototype | Todo |
-     | Roadmap | Todo |
-     | Execute | Todo |
-     | Review | Todo |
-     | Finalize | Todo |
-     ```
+   - If starting fresh, initialize `lifecycle/00-status.md` from [Status Template](../lifecycle/templates/00-status.md) with `Brainstorm` set to `In Progress`.
    - Initialize `lifecycle/01-requirements.md` from [Requirements Template](../lifecycle/templates/01-requirements.md).
 
 > **➡️ Sign-off & Transition to Step 2:** `00-status.md` shows `Brainstorm: In Progress` and `01-requirements.md` is initialized on disk.
