@@ -1,122 +1,143 @@
 ---
 name: lifecycle-brainstorm
-description: Elite Product & UX Researcher to trace end-to-end user journeys, challenge UX duplication, hunt gaps across 5 lenses, and author 01-requirements.md (Lifecycle: Brainstorm).
+description: Investigate the problem and codebase, compare viable solutions, resolve material ambiguity, trace affected callers, and author a clear 01-requirements.md (Lifecycle: Brainstorm).
 ---
 
 # Lifecycle Brainstorm
 
-Act as an **Elite Product, UX & Technical Researcher**. Your mission is to do the deep thinking upfront: trace the complete end-to-end user journey across the app, challenge duplicated or confusing existing UX before copying it, trace 2nd-order ripple effects across all callers/models/rules, eliminate edge-case gaps across 5 lenses, and author a lean, crystal-clear `lifecycle/01-requirements.md`.
+Own the quality of problem understanding and requirements. Do not rush from the user's first proposed implementation to a solution. Determine the real goal, investigate what already exists, identify meaningful alternatives and consequences, and ask the user about decisions that belong to them. Produce a specification that is easy to scan but complete enough to guide safe implementation.
 
-Follow this strict 5-step sequence. Each step has an explicit sign-off condition before advancing to the next.
+Follow the five steps below. Keep the existing Brainstorm approval gate.
 
----
+## 0. Phase Rules & Guardrails
 
-## 0. Deep Work Mindset: Simplify the User Journey Upfront
+- **Understand before solutioning:** Restate the user problem, desired outcome, constraints, and non-goals before narrowing implementation options.
+- **Investigate before asking:** Inspect existing module docs, relevant source/tests, `.agents/rules/`, `GLOSSARY.md`, and callers first. Do not ask the user to supply facts that can be found reliably in the repository.
+- **Facts are not decisions:** Existing behavior is evidence, not automatic proof of intended behavior. A historical pattern does not grant permission to preserve a confusing UX or to choose a business rule.
+- **Challenge constructively:** Look for simpler user journeys, existing reusable capabilities, duplicate flows, obsolete paths, unnecessary states, and avoidable changes. Do not refactor unrelated code merely because it looks imperfect.
+- **Comprehension over brevity:** Put the decision-critical summary first. Use concise bullets for requirements and constraints, and short prose when it explains a rationale more clearly. Never omit a material edge case solely to shorten the file.
 
-- **Don't Just "Add a Toggle"—Audit the Whole User Flow:** When a user asks for a feature, trace how a real human navigates the app to use it. If the existing codebase splits or duplicates that workflow across multiple screens, tabs, or legacy aliases, **challenge it immediately** and propose consolidating/simplifying the UX so the user doesn't discover the UX clutter halfway through coding.
-- **Facts Belong to the Agent; Decisions Belong to the User:** Research the codebase and docs autonomously before asking Q1.
-- **Simple Presentation for Humans:** In chat and in `01-requirements.md`, use short 1-fact-per-line nested bullets (no prose walls, no chat tables, no redundant bold labels on child bullets). Whenever a decision changes, **replace superseded bullets in place** so `01-requirements.md` never contradicts itself.
+## Step 1: Initialize or Resume
 
----
+1. If `lifecycle/00-status.md` and `lifecycle/01-requirements.md` exist, inspect and resume them; never overwrite existing work.
+2. For a cold start, initialize `lifecycle/00-status.md` from [Status Template](../lifecycle/templates/00-status.md) with Brainstorm `In Progress`, and initialize `lifecycle/01-requirements.md` from [Requirements Template](../lifecycle/templates/01-requirements.md).
+3. Read the orchestrator's global contract and any project-specific instructions supplied by the workflow. Respect existing user decisions and any status checkpoint.
 
-## Step 1: Session Initialization & Resume
+**Gate:** Status is `Brainstorm: In Progress`; the requirements artifact exists and preserves any prior work.
 
-1. **Check Existing Session:**
-   - If `lifecycle/00-status.md` and `lifecycle/01-requirements.md` already exist, **inspect and resume them** (never overwrite existing work).
-2. **Cold Start Initialization:**
-   - Initialize `lifecycle/00-status.md` from [Status Template](../lifecycle/templates/00-status.md) with `Brainstorm` set to `In Progress`.
-   - Initialize `lifecycle/01-requirements.md` from [Requirements Template](../lifecycle/templates/01-requirements.md).
+## Step 2: Evidence-Driven Pre-Flight Research
 
-> **➡️ Sign-off & Transition to Step 2:** `00-status.md` shows `Brainstorm: In Progress` and `01-requirements.md` is initialized on disk.
+Before asking the first question, inspect the relevant system:
 
----
+1. Read `docs/modules/<module>/README.md` and relevant `feature_<name>.md` files, `.agents/rules/`, `GLOSSARY.md`, and existing lifecycle artifacts.
+2. Trace the likely implementation path through UI/entry point, validation, state/controller, repository/data layer, permissions, persistence, and UI refresh where relevant.
+3. **Mandatory All-Callers Grep (2nd-Order Ripple Trace):** Search (`grep`) across source and test files for callers of affected routes, model fields, getters, events, controllers, or public methods. Read the actual call sites, not just search-result counts. Delegate broad scans (`10+` files) to a fresh worker sub-agent when available and give it the required task packet.
+4. **UX Duplication & Technical Debt Critique:** Ask yourself while inspecting the existing code:
+   - *Are there duplicate screens, tabs, or cards managing the same module concept in multiple places?*
+   - *Are there deprecated fields, legacy aliases, or `TODO`s that should be cleaned up rather than preserved?*
+   - *What is the simplest, most intuitive screen flow for the end user?*
+   Inspect existing tests and conventions to learn expected behavior and reusable code. Distinguish verified facts from guesses, stale documentation, and conflicting sources.
+5. Use web research when current external APIs, dependency behavior, platform requirements, security guidance, or established UX patterns materially affect the solution. Summarize findings and cite useful sources in the artifact or conversation.
+6. Record the important reusable building blocks, directly modified files, and 2nd-order caller ripple impacts once in `## 6. Impact, Reusable Code & Dependencies` of `01-requirements.md` using `File:` and `Description:` sub-bullets under each component. Do not paste raw search dumps into the requirements document.
 
-## Step 2: Deep Pre-Flight Research, All-Callers Trace & UX Flow Critique
+### Deep decision method
 
-Investigate the codebase autonomously before asking the user anything:
+For each **consequential or ambiguous** design/technical choice, prepare a compact decision comparison:
 
-1. **Codebase, Module Docs & All-Callers Grep:**
-   - Inspect `docs/modules/<module>/README.md` (and `feature_<name>.md`), `.agents/rules/`, and `GLOSSARY.md`.
-   - **Mandatory All-Callers Grep (2nd-Order Ripple Trace):** Search (`grep`) across all source and test files for every model field, getter, widget, controller, or route being modified or removed so zero upstream/downstream callers are missed (delegate to a fresh worker sub-agent if reading `10+` files).
-2. **UX Duplication & Technical Debt Critique (Mandatory Deep Work Check):**
-   - Ask yourself while inspecting the existing code:
-     - *Are there duplicate screens, tabs, or cards managing the same module concept in multiple places?*
-     - *Are there deprecated fields, legacy aliases, or `TODO`s that should be cleaned up rather than preserved?*
-     - *What is the simplest, most intuitive screen flow for the end user?*
-3. **Record Touchpoints & Caller Ripple Impacts (`01-requirements.md` Section 6):**
-   - Populate `## 6. Code, Callers & Docs Touchpoints` in `01-requirements.md` under `Affected & Reusable Code (Including All Callers & Ripple Effects)` (`- **<Name>** (\`<path>\`): <1-line role, reuse, or caller ripple impact>`).
-4. **Targeted Web Search (When Valuable):**
-   - When external APIs, third-party packages, or industry UX patterns are relevant, search the web and present findings as **options and recommendations**.
+- **Goal and constraints:** What must be true, and what limits the solution?
+- **Viable options:** Usually 2–3 genuinely different choices, including reuse or simplification where appropriate. Fewer are fine if only one sensible option exists.
+- **Trade-offs:** Explain the most important benefits, costs, user impact, implementation complexity, operational consequences, and failure modes.
+- **Second-order effects:** Consider callers, data compatibility, permissions/tenancy, performance, testing, migration, support burden, rollback, and future changes as applicable.
+- **Recommendation:** Name the best-supported option and why it wins against the strongest alternative.
+- **Confidence/evidence:** State what was verified and what could change the recommendation.
 
-> **➡️ Sign-off & Transition to Step 3:** All affected files, callers, and UX simplification opportunities are mapped in Section 6 before Q1 is asked.
+Then challenge the leading option: identify at least one plausible counterexample or failure path. Do not create a long analysis for trivial, reversible choices. A decision summary must show the substance of the evaluation; merely listing options is not sufficient.
 
----
+**Gate:** The relevant code path, existing conventions, callers, constraints, and meaningful simplification opportunities are understood well enough to ask focused questions.
 
-## Step 3: Focused Discovery & Gap Hunting (The Interview Loop)
+## Step 3: Resolve Ambiguity with the User
 
-Conduct a fast, dependency-ordered interview (**1 question at a time, maximum 2 closely related questions**):
+Ask questions in dependency order: **start Q1 with high-level UX flow and simplification** (if Step 2 revealed duplicated screens/tabs, split settings, or a simpler user journey), then move to business rules and detailed constraints that depend on those choices.
 
-1. **Start With High-Level UX Flow & Simplification (Before Low-Level Details):**
-   - If Step 2 revealed duplicated screens/tabs, split settings, or a simpler way to structure the user journey, make **Q1** about simplifying the overall UX flow (`Current Flow` vs. `Recommended Simplified Flow`) and record the **Experience Delta** in Section 1.
-2. **Question Format (`Context → Options → Recommendation`):**
-   ```markdown
-   ❓ **Q: <Concise Question Title>**
-   <1–2 sentences of context from codebase/UX research.>
+### When to ask instead of assume
 
-   1. **Option A:** <Summary + key benefit>
-   2. **Option B:** <Summary + key trade-off>
+Ask the user before locking a requirement when multiple plausible interpretations would materially change:
 
-   ➡️ **Recommendation:** <Option + concrete reason why. Worded so typing "yes" accepts it.>
-   ```
-3. **Live In-Place Updates to `01-requirements.md`:**
-   - Update `01-requirements.md` immediately after **every user answer** using 1-fact-per-line nested sub-bullets.
-   - If an answer changes an earlier assumption, **replace the old lines in place** across Section 1 (Problem & Experience Delta), Section 2 (Requirements & AC), Section 3 (Business Rules), and Section 5 (Decisions) so the document never contains conflicting statements.
-4. **Proactive 5-Lens Gap Hunting (Translate Directly into `REQ`/`AC`/`BR`):**
-   - Probe these 5 lenses and write the resulting items directly into `## 2. Requirements & Acceptance Criteria` or `## 3. Business Rules & Module Invariants`:
-     - **Empty / First-Time State:** What renders when 0 records exist or a setting is unconfigured?
-     - **Validation & Error / Offline State:** What inputs fail, and how does the user recover?
-     - **Permissions, Roles & Tenancy:** Who can view/mutate, and how is tenant isolation enforced?
-     - **Concurrency & Idempotency:** What prevents double-submits, race conditions, or stale state?
-     - **Data Lifecycle & Side Effects:** What happens on create/update/delete, and what schema/index/rule updates are needed?
-5. **Root-Cause Lens (For Bug Fixes & Refactors):**
-   - Trace the exact code root cause first and record `Current Behavior`, `Expected Behavior`, `Root Cause`, and `Regression Guardrail` in Section 1.
+- User-visible behavior or expected workflow.
+- Business rules, calculations, statuses, or data ownership.
+- Permissions, roles, tenant boundaries, privacy, or audit history.
+- Creation, update, deletion, migration, retention, or irreversible changes.
+- Compatibility, architecture, a costly dependency, or a substantial scope/timeline choice.
 
-> **➡️ Sign-off & Transition to Step 4:** User journey, 5 lenses (or root cause), and architectural decisions are locked with zero open questions.
+Do not make a consequential choice silently even if one option seems easier to implement. Present the missing decision, why it matters, 2–3 credible options with their key consequence, and your recommendation. Ask one focused question at a time, or at most two tightly related questions.
 
----
+For a low-impact, reversible implementation detail with a clear established project convention, use the convention and mark the choice as an assumption only if necessary. Do not interrupt the user for every minor coding detail.
 
-## Step 4: Scope Boundary & Terminology Staging
+### Question format
 
-1. **Lock Requirements (`REQ-X`), Acceptance Criteria (`AC-X.Y`) & Business Rules (`BR-X`):**
-   - Keep each `BR-X` rule in Section 3 to a single crisp 1-line invariant (`- **BR-1 (<Name>):** <1-line rule>`).
-   - Ensure Section 1 (`Problem & Experience Delta`), Section 2 (`Requirements & Acceptance Criteria`), Section 3 (`Business Rules & Module Invariants`), Section 5 (`Decisions`), and Section 6 (`Code, Callers & Docs Touchpoints`) are 100% consistent with each other.
-2. **Partition Deferred Scope (`## 8. Deferred Requirements`):**
-   - Move distinct future capabilities out of current scope into `## 8. Deferred Requirements (Future Scope)` (`- **\`<Idea>\`:** <1-line reason>`). Never defer core requirements or error handling to avoid work.
-3. **Stage Module Terminology (`## 7. Glossary Updates`):**
-   - Stage new or clarified module terms in `01-requirements.md` (`- **\`<Term>\`:** <1-line definition>`).
-4. **Maintain `## 9. Open Items (Questions & Research)`:**
-   - Keep `## 9. Open Items` in `01-requirements.md` throughout the lifecycle (showing `*(None - all resolved)*` when empty) so the user or agent can add new questions or research topics at any stage and resolve them before advancing.
+Use a clean, scannable format in chat:
 
-> **➡️ Sign-off & Transition to Step 5:** Scope is cleanly partitioned and all sections of `01-requirements.md` are internally consistent.
+```markdown
+❓ **Decision needed: <Concise Question Title>**
+**Context:** <1–2 sentences of verified facts from codebase/UX research and the real uncertainty.>
 
----
+1. **Option A:** <Summary + key benefit and trade-off>
+2. **Option B:** <Summary + key benefit and trade-off>
 
-## Step 5: Exit Gate & Smart Handoff
+➡️ **Recommendation:** <Best option + concrete reason why, worded so typing "yes" accepts it.>
+```
 
-Verify the **Brainstorm Exit Checklist** before handing off:
+Avoid asking the user to choose between implementation details that the agent can confidently resolve from project rules. Avoid presenting a recommendation as if it were already approved.
 
-- [ ] End-to-end user flow was critiqued for simplicity and UX duplication.
-- [ ] All callers of modified models/getters/routes were searched (`grep`) and listed in Section 6.
-- [ ] All sections in `01-requirements.md` have **zero internal contradictions** and **zero duplicate file/feature lists**.
-- [ ] All 5 lenses (or bug root cause) are covered in Requirements or Business Rules.
-- [ ] Every section uses **1-fact-per-line nested sub-bullets** (no paragraph bullets).
-- [ ] **`Open Questions` and `Open Research` in Section 9 are 100% resolved.**
+Update `01-requirements.md` immediately after each meaningful answer using scannable nested sub-bullets (`1 line = 1 atomic detail`). Record **Experience delta** in Section 1 using `Before:` and `After:` sub-bullets under each dimension (never single-line arrows). Replace superseded statements in place, preserve stable IDs when meaning is unchanged, and mark any changed scope clearly. If the user's answer creates a new unresolved dependency, ask about that before proceeding.
 
-### Handoff Protocol
-1. Log any process friction in `lifecycle/04-refine.md`.
-2. Set `Brainstorm` to **`In Review`** in `lifecycle/00-status.md`.
-3. Present a concise summary in chat linking to `lifecycle/01-requirements.md`.
-4. **Smart Prototype Assessment:**
-   - **If the feature modifies, adds, or consolidates any user-facing screen, card, form, tab, or workflow:** Recommend advancing to `Prototype` so the user can visually verify the UX flow in `02-prototype.html` before task planning.
-   - **Only if the change is strictly non-visual (pure backend/model/config):** Propose marking `Prototype` as `Skipped` and advancing to `Roadmap`.
-5. **STOP** and wait for user approval. On approval, mark `Brainstorm` as **`Done`** (and `Prototype` as **`Skipped`** if approved) in `00-status.md`, read [`lifecycle-prototype/SKILL.md`](../lifecycle-prototype/SKILL.md) (or [`lifecycle-roadmap/SKILL.md`](../lifecycle-roadmap/SKILL.md) if skipped), and auto-advance.
+### Required coverage, when relevant
+
+Check the feature against the five lenses below and translate applicable items directly into `REQ-X`, `AC-X.Y`, or `BR-X` rules. Record only the cases applicable to the feature, but do not skip a lens merely because it is inconvenient:
+
+1. **Empty / first-time state:** No records, no setup, initial use.
+2. **Validation / failure / offline:** Invalid input, permission denial, network or service failure, recovery and retry.
+3. **Permissions / roles / tenancy:** Who can view or change each resource; tenant isolation and unauthorized access.
+4. **Concurrency / idempotency:** Double-submit, duplicate requests, stale data, race conditions, retries.
+5. **Data lifecycle / side effects:** Create/update/delete, derived state, linked records, audit history, indexes/rules/schema, migrations and rollback when relevant.
+
+For a bug fix or refactor, establish the actual root cause and capture `Current behavior`, `Expected behavior`, `Verified root cause`, and `Regression guardrail` in Section 1. Do not label an unverified hypothesis as the root cause.
+
+**Gate:** All material user-owned decisions are answered or explicitly held as blockers. Research items that are not necessary to this scope may be deferred with a reason; do not claim there are no open questions if a consequential decision remains unresolved.
+
+## Step 4: Consolidate Scope and Specification
+
+Write `01-requirements.md` from [Requirements Template](../lifecycle/templates/01-requirements.md), organized into **Part 1 (Product & UX Specification)** and **Part 2 (Technical & Agent Reference)**:
+
+- Start with the **Quick read** summary and Section 1 (`Problem, Outcome & User Flow`) so the reader understands the feature in about 30 seconds, using `Before:` and `After:` sub-bullets under `Experience delta`.
+- Give each required behavior a stable `REQ-X` ID and each independently testable criterion an `AC-X.Y` ID in Section 2.
+- Put non-negotiable business, permission, lifecycle, concurrency, and data-integrity constraints in crisp 1-line `BR-X` rules in Section 3.
+- Record consequential decisions in Section 5 with status (`Confirmed`, `Proposed`, or `Needs User Decision`), the chosen/recommended approach, key alternative(s), why the option wins, and material consequences/risks. Do not create a decision record for every routine coding choice.
+- In Section 6 (`Impact, Reusable Code & Dependencies`), group code touchpoints into **Reusable Code (Use As-Is)**, **Affected Code (Direct Modifications)**, and **Caller Ripple Effects (2nd-Order Impact)**, showing `File:` and `Description:` as sub-bullets under each component. Keep implementation task breakdown in `03-roadmap.md` rather than duplicating a task plan here.
+- Stage new or clarified module terms in Section 7 (`Glossary Updates`) and move distinct future capabilities into Section 8 (`Deferred Scope`). Deferred scope must be genuinely outside the approved outcome; never move essential validation, safety, permission behavior, error recovery, or necessary migration work to future scope merely to make the current plan shorter.
+- Keep Section 9 (`Open Questions & Research`) visible throughout the lifecycle (showing `*(None - all resolved)*` when empty) and distinguish **confirmed facts**, **user decisions**, **assumptions**, and **unresolved questions** when that distinction affects implementation.
+
+Keep each requirement and acceptance criterion clear enough that two people could independently agree whether it passes. Do not duplicate detailed behavior in the overview and then repeat it verbatim in several other sections.
+
+**Gate:** The specification is internally consistent, requirements have testable criteria, scope boundaries are clear, and material assumptions/questions are visible.
+
+## Step 5: Exit Gate and Handoff
+
+Check the artifact and evidence before requesting approval:
+
+- [ ] The actual problem, desired outcome, and `Before:` / `After:` experience delta are stated clearly.
+- [ ] End-to-end user journey was critiqued for simplicity and UX duplication.
+- [ ] All callers of modified models/getters/routes were searched (`grep`) and recorded in Section 6 using `File:` and `Description:` sub-bullets.
+- [ ] Applicable 5 lenses (empty state, validation/failure/offline, permissions/tenancy, concurrency/idempotency, data lifecycle) or bug root cause are covered.
+- [ ] Consequential decisions show real trade-offs and second-order consequences, not just an option list.
+- [ ] User-owned decisions are approved or explicitly marked as blockers; assumptions are labelled.
+- [ ] Requirements and constraints use scannable sub-bullets (`1 line = 1 atomic detail`) with zero internal contradictions or duplicate lists.
+- [ ] Open Questions & Research in Section 9 are resolved (or explicitly flagged if blocking).
+
+Then:
+
+1. Record meaningful process friction in `lifecycle/04-refine.md`.
+2. Update the Resume Checkpoint in `lifecycle/00-status.md` and set Brainstorm to `In Review`.
+3. Give a concise summary in chat (no chat tables): problem/outcome, key recommendation or decision, material risk/open decision, and link to `lifecycle/01-requirements.md`.
+4. Recommend Prototype for non-trivial user-facing screen or workflow changes. Recommend `Skipped` only for minor, clearly patterned UI edits or strictly non-visual work, with a one-line reason.
+5. Stop for user approval. After approval, set Brainstorm to `Done` (and Prototype to `Skipped` if accepted) in `00-status.md`, read [`lifecycle-prototype/SKILL.md`](../lifecycle-prototype/SKILL.md) (or [`lifecycle-roadmap/SKILL.md`](../lifecycle-roadmap/SKILL.md) if skipped), and auto-advance.

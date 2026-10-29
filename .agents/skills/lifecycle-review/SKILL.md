@@ -1,88 +1,97 @@
 ---
 name: lifecycle-review
-description: Comprehensive full-branch code audit, spec-to-code truth verification, integration seam check, two-tier deduplication, and diff hygiene (Lifecycle: Review).
+description: Independently audit the integrated change against requirements, project rules, callers, risks, and actual verification evidence (Lifecycle: Review).
 ---
 
 # Lifecycle Review
 
-The `lifecycle-review` skill audits the **entire branch as a unified whole** after all roadmap tasks are complete. Your mission is to verify that `01-requirements.md` and the actual code match 100% (with all checkboxes checked and zero stale/contradictory specs from mid-flight pivots), verify cross-task integration seams, enforce `.agents/rules/`, deduplicate repeated code, and run full verification.
+Audit the entire change as one integrated system, not as a set of individually completed tasks. Verify the approved requirements against the actual code, inspect integration seams and risks, and ensure the final state is supported by evidence. Review is an audit phase; it must not become an unplanned second implementation phase.
 
-Follow this strict 5-step sequence. Each step has an explicit sign-off condition before advancing to the next.
+## 0. Phase Rules & Guardrails
 
----
+- **Fresh eyes:** When sub-agents are available, an independent auditor may review the changes using a task packet and relevant rules. The main agent must inspect the evidence and remains accountable.
+- **Verify facts, not checklists alone:** A checked box or task-completion report is a clue, not proof. Trace important behaviors through actual code and tests.
+- **Review the final state:** Any fix after a test run invalidates affected earlier evidence; rerun the relevant checks.
+- **Respect scope:** Make only narrow, mechanical fixes that are clearly in scope and cannot change behavior. Route behavioral, architectural, cross-module, security, or data-integrity changes back through an approved roadmap task.
+- **Never invent a clean baseline:** Establish or discover the actual base branch and baseline. If a full comparison or test suite cannot run, explain the limitation.
 
-## 0. Core Review Principles
+## Step 1: Entry Gate and Change Discovery
 
-- **Audit the Whole Branch with Fresh Eyes:** Spawn a fresh auditor sub-agent (when supported) to inspect all modified and newly created untracked files without conversation bias.
-- **Verify Spec Truth Before Finalize:** If mid-flight pivots occurred during `Execute`, verify that `01-requirements.md` and `03-roadmap.md` accurately reflect the final built code so `Finalize` never writes stale specs into permanent `docs/modules/` documentation.
+1. Read `00-status.md`, the Resume Checkpoint, `01-requirements.md`, `03-roadmap.md`, and applicable `.agents/rules/`. Confirm all roadmap tasks are `Done`, then set Review to `In Progress`.
+2. Run read-only `git status --short` and relevant diffs. Identify modified, renamed, deleted, and untracked files. Read the full contents of relevant untracked files; they may not appear in a regular diff.
+3. Determine the correct base branch from repository context. Do not assume `origin/main` exists or is the correct comparison target. If no reliable base is available, state what portion of the change can be reviewed.
+4. Map the actual change scope against the roadmap touchpoints and inspect files that may be impacted indirectly (callers, exports, routes, shared components, rules, schemas, tests, and docs).
 
----
+**Gate:** The complete review scope and any limitation are understood.
 
-## Step 1: Entry Gate & Complete Branch Scope Discovery
+## Step 2: Integrated Audit
 
-1. **Verify Entry Gate:**
-   - Read `lifecycle/00-status.md`, verify all roadmap tasks are **`Done`**, and set `Review` to **`In Progress`**.
-2. **Discover Complete Branch Scope (Tracked + Untracked Files):**
-   - Run read-only `git status --short`, `git diff HEAD`, and `git diff origin/main...HEAD`.
-   - **Explicitly Read All Untracked (`??`) Files:** Because `git add` is manual, newly created source and test files are untracked and do not appear in `git diff HEAD`. Read the full contents of every untracked file listed by `git status --short`.
+### A. Requirements and behavior
 
-> **➡️ Sign-off & Transition to Step 2:** Full branch scope (committed + modified + untracked files) is mapped.
+- Trace each relevant `REQ-X`, `AC-X.Y`, and `BR-X` from `01-requirements.md` into implementation and tests.
+- Confirm mid-flight changes were reflected in the authoritative artifacts and no superseded behavior remains described as current.
+- Check the primary user flow plus relevant edge cases, invalid input, empty/loading/error states, permission denial, retry, and recovery.
 
----
+### B. Integration seams and data lifecycle
 
-## Step 2: The 5-Point Full-Branch Audit
+- Trace end-to-end paths across input/UI, validation, state/controller, repository/data layer, persistence, and UI refresh as relevant.
+- Check routes, navigation, exports, cache invalidation, event/stream listeners, resource disposal, and callers of changed public symbols.
+- Inspect create/update/delete side effects, consistency across related records, duplicate submissions, concurrency, idempotency, and migration/rollback implications when relevant.
 
-### 1. Spec-to-Code Truth & Checkbox Integrity (`01-requirements.md` & `03-roadmap.md`)
-- Verify that every `REQ-X`, `AC-X.Y`, and `BR-X` in `01-requirements.md` holds true in the integrated code.
-- **Zero Stale Spec Contradictions:** Check `01-requirements.md` from top to bottom—if any mid-flight UX change or pivot occurred during `Execute`, ensure superseded lines in `01-requirements.md` were replaced in place, all completed `REQ-X` / `AC-X.Y` checkboxes are marked **`[x]`**, and `## 9. Open Items` has zero unresolved items.
+### C. Security, privacy, and performance
 
-### 2. Cross-Task Seam & Integration Check
-- Trace end-to-end flows across tasks: `Input → Validation → State/Controller → Repository → UI Refresh`.
-- Verify navigation routes, deleted screen/route cleanup, and state/cache invalidations across screens.
+- Verify authorization at the relevant enforcement boundary, not only by hiding UI controls.
+- Check tenant/resource scoping on reads and writes, sensitive-data handling, audit history, and fail-closed behavior.
+- Look for avoidable N+1 queries, repeated expensive work, leaked subscriptions/controllers, and broad shared changes with unintended effects.
 
-### 3. Guidelines, Orphaned Exports & Diff Hygiene (`.agents/rules/`)
-- Verify `<500` lines per file, canonical folder/file naming (`<module>_validator`, 4-tier widget placement), and framework invariants.
-- **Orphaned Exports & Routes Check:** Verify that any deleted or consolidated screens/widgets are cleanly removed from barrel `index.dart` exports, route constants, and `<module>_navigation.dart`.
-- Remove all dead code, unused imports, temporary compatibility aliases, and debug logs (`print`, `debugPrint`, `console.log`).
+### D. Architecture, Code Hygiene & Two-Tier Smart Deduplication
 
-### 4. Security, Tenancy & Performance
-- Confirm tenant/role checks on all queries/mutations, zero N+1 queries inside loops/builders, and proper disposal of controllers/streams.
+- Compare changed paths, names, and component placement with applicable `.agents/rules/` (e.g. `<500` lines guide, `<module>_validator` placement, 4-tier widget placement) and existing architecture.
+- **Orphaned Exports & Routes Check:** Verify that any deleted or consolidated screens/widgets are cleanly removed from barrel `index.dart` exports, route constants, `<module>_navigation.dart`, callers, and tests.
+- Remove dead code, unused imports, debug output (`print`, `debugPrint`, `console.log`), and temporary compatibility aliases where evidence supports removal.
+- **Two-Tier Smart Deduplication:**
+  - **Tier 1 (Intra-Module):** Consolidate duplicated widgets, validation helpers, or logic across touched files into module `widgets/` or `utils/`.
+  - **Tier 2 (Cross-Module / `core/`):** Reuse existing shared components first; ask the user before modifying shared `core/` files used by unrelated modules.
+- Do not trigger a broad refactor simply to improve aesthetics or reach an arbitrary file count/line count.
 
-### 5. Two-Tier Smart Deduplication
-- **Tier 1 (Intra-Module):** Consolidate duplicated widgets, validation helpers, or logic across touched files into module `widgets/` or `utils/`.
-- **Tier 2 (Cross-Module / `core/`):** Reuse existing shared components first; ask the user before modifying shared `core/` files used by unrelated modules.
+### E. Decision and scope quality
 
-> **➡️ Sign-off & Transition to Step 3:** All 5 audit dimensions are checked.
+- Confirm implementation matches approved decisions, not merely the easiest interpretation.
+- Search for hidden assumptions, unexplained behavior changes, omitted failure paths, or deferred work that is actually required for correctness.
+- Check the roadmap did not omit a material requirement or create an unjustified task.
 
----
+**Gate:** Each applicable audit dimension has been checked against actual artifacts; findings are classified by severity and evidence.
 
-## Step 3: Apply Fixes & Sync Artifacts
+## Step 3: Classify Findings and Correct Safely
 
-1. Apply safe in-branch cleanups, dead-code removal, and intra-module deduplications directly.
-2. Repair any stale lines or unchecked `[ ]` boxes in `01-requirements.md` and `03-roadmap.md` so the artifacts match the final code 100%.
-3. If a major missing capability is uncovered, add a new numbered `Task N` to `03-roadmap.md` and `00-status.md` and return to `Execute`.
+Classify each finding before acting:
 
-> **➡️ Sign-off & Transition to Step 4:** Code and `lifecycle/` specs are clean and 100% synchronized.
+- **Blocker / material behavior / security / data integrity:** Stop advancement. Explain the evidence and options. Add or revise a roadmap task and return to Execute; obtain user approval when the change alters an approved decision or scope.
+- **In-scope mechanical defect:** A narrow fix (or safe intra-module Tier 1 deduplication / dead-code cleanup) may be made only when the intended behavior is unambiguous and the change cannot reasonably alter product behavior. Record the change and rerun affected verification.
+- **Out-of-scope cleanup or architectural improvement:** Record/defer it or propose a new task; do not silently expand scope.
+- **Unverified concern:** Investigate enough to confirm or dismiss it. If it remains uncertain and materially affects safety/correctness, report it as unresolved rather than claiming the audit passed.
 
----
+Update roadmap acceptance checkboxes based on evidence. Do not add execution checkboxes to `01-requirements.md`. If a capability is missing, add a numbered roadmap task and a matching status row, mark the relevant phase/task appropriately, and return to Execute.
 
-## Step 4: Global Verification (Full Analyzer & Test Suite)
+**Gate:** No known blocker remains hidden, and any fixes are in scope and re-verified.
 
-1. Run the project-wide static analyzer (`0` issues) and full relevant test suite (`100%` pass).
-2. Run read-only `git status` and `git diff` to confirm workspace cleanliness.
+## Step 4: Global Verification
 
-> **➡️ Sign-off & Transition to Step 5:** Global analyzer and test suite pass with 0 issues.
+1. Run the project-level analyzer and relevant full test suite when available, plus any integration/security checks justified by risk.
+2. Record exact commands and actual results. Use `Passed`, `Failed`, or `Not Run` with a reason; do not equate an unavailable environment with success.
+3. Distinguish pre-existing baseline failures from regressions introduced by this feature. The desired project standard may be zero issues, but the report must accurately describe the observed baseline.
+4. After any fix, rerun all checks affected by that fix. Inspect the final diff and `git status --short` again.
 
----
+**Gate:** The final state has current evidence, and every failed/not-run check or residual risk is disclosed.
 
-## Step 5: Refinement Logging & Audit Handoff
+## Step 5: Review Handoff
 
-1. Append any lessons learned or rule gaps to `lifecycle/04-refine.md`.
-2. Set `Review` to **`In Review`** in `lifecycle/00-status.md`.
+1. Add meaningful new lessons to `04-refine.md`.
+2. Update the Resume Checkpoint in `00-status.md` and set Review to `In Review`.
 3. Present a concise 5-bullet review summary in chat (linking to `01-requirements.md` and `03-roadmap.md`, no chat tables):
-   - **Spec & AC Integrity:** Confirmation that code and `01-requirements.md` match 100% with all `[x]` boxes checked.
-   - **Seam & Integration Check:** Cross-task flows, routes, and state updates verified.
-   - **Guidelines & Hygiene:** `<500` lines, canonical file placement, and zero dead/debug code or orphaned exports confirmed.
-   - **Security & Performance:** Tenant/role boundaries and query efficiency confirmed.
-   - **Deduplications & Test Proof:** Summary of cleanups made + global analyzer/test pass proof.
-4. **STOP** and wait for user approval. On approval, mark `Review` as **`Done`** in `00-status.md`, read [`lifecycle-finalize/SKILL.md`](../lifecycle-finalize/SKILL.md), and auto-advance to Finalize.
+   - **Spec-to-code:** What was checked and confirmation that `01-requirements.md` and final code match with zero stale contradictions.
+   - **Integration and rules:** Important caller, route/export cleanup, architecture, permission, tenancy, or performance findings.
+   - **Corrections & Deduplication:** Narrow fixes or intra-module deduplications made, or tasks returned to Execute.
+   - **Verification evidence:** Exact global analyzer and test suite commands and outcomes.
+   - **Remaining limitations:** Failed/not-run checks or unresolved risks, if any.
+4. Stop for user sign-off. On approval, mark Review `Done` in `00-status.md`, update the checkpoint, read [`lifecycle-finalize/SKILL.md`](../lifecycle-finalize/SKILL.md), and auto-advance to Finalize.

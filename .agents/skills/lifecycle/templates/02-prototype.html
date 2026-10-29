@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lifecycle Prototype Hub</title>
+  <title>Prototype Hub: {{FEATURE_NAME}}</title>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark' });
@@ -118,29 +118,29 @@
 <body>
   <div class="container">
     <header>
-      <h1>Lifecycle Prototype Hub: <Feature Name></h1>
-      <p>Interactive UI stress-testing and workflow diagrams before code implementation.</p>
+      <h1>Lifecycle Prototype Hub: {{FEATURE_NAME}}</h1>
+      <p>Compare only the meaningful UX alternatives and workflow states that help resolve the design decision.</p>
     </header>
 
-    <!-- UI Unit Carousel (Repeated per substantive screen or composite component) -->
+    <!-- Optional comparison panel: keep only the options that were actually prototyped. For a single prototype, remove this carousel and show the prototype directly. -->
     <div class="carousel-container">
       <div class="carousel-header">
-        <h2>UI Component: <Screen or Component Name></h2>
+        <h2>Design decision: {{SCREEN_OR_WORKFLOW_NAME}}</h2>
         <div class="carousel-controls">
-          <button class="active" onclick="switchOption(this, 'frame-1', 'prototype/<unit>/option-1.html')">Option 1: <1-Line Layout Summary></button>
-          <button onclick="switchOption(this, 'frame-1', 'prototype/<unit>/option-2.html')">Option 2: <1-Line Layout Summary></button>
-          <button onclick="switchOption(this, 'frame-1', 'prototype/<unit>/option-3.html')">Option 3: <1-Line Layout Summary></button>
+          <button class="active" onclick="switchOption(this, 'frame-1', 'prototype/{{UNIT_SLUG}}/option-1.html')">Option 1: {{OPTION_1_TRADE_OFF}}</button>
+          <button onclick="switchOption(this, 'frame-1', 'prototype/{{UNIT_SLUG}}/option-2.html')">Option 2: {{OPTION_2_TRADE_OFF}}</button>
+          <!-- Add a third option only when it is a genuinely different viable approach. Remove unused buttons. -->
         </div>
       </div>
-      <iframe id="frame-1" class="preview-frame" src="prototype/<unit>/option-1.html"></iframe>
+      <iframe id="frame-1" class="preview-frame" src="prototype/{{UNIT_SLUG}}/option-1.html"></iframe>
     </div>
 
-    <!-- Logic & State Flow Diagrams -->
+    <!-- Optional logic/state diagrams: omit this section if a diagram would merely repeat an obvious interaction. -->
     <section class="flows">
       <h2>Logic & State Flow Diagrams</h2>
-      <p>Modular flowcharts and state transitions (5–10 nodes max per sub-flow).</p>
+      <p>Add a diagram only when branching, state transitions, retries, approvals, or cross-screen dependencies are easier to understand visually.</p>
       <div class="flow-card">
-        <h3>Flow 1: <Sub-Flow or State Transition Name></h3>
+        <h3>Flow 1: {{FLOW_NAME}}</h3>
         <pre class="mermaid">
 flowchart TD
   Start([Start]) --> Action[Perform Action]
@@ -153,6 +153,7 @@ flowchart TD
   </div>
 
   <script>
+    // Remove this script if the page contains no option carousel.
     function switchOption(btn, frameId, src) {
       document.getElementById(frameId).src = src;
       const buttons = btn.parentElement.querySelectorAll('button');

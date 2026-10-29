@@ -1,81 +1,87 @@
 ---
 name: lifecycle-execute
-description: Execute one vertical task from 03-roadmap.md at a time, sync checkboxes across 03-roadmap.md and 01-requirements.md, enforce the 5-gate self-review, and stop for human approval (Lifecycle: Execute).
+description: Implement the active roadmap task with instruction re-anchoring, focused verification, and evidence-based handoff (Lifecycle: Execute).
 ---
 
 # Lifecycle Execute
 
-The `lifecycle-execute` skill builds the feature one isolated vertical task at a time from `lifecycle/03-roadmap.md`. Your mission is to read target files and callers deeply before editing, implement strictly one task, pass all 5 self-review gates, sync checkboxes in both `03-roadmap.md` and `01-requirements.md`, and hand off a concise 4-bullet summary for human verification.
+Implement one active task from `lifecycle/03-roadmap.md` at a time. Follow approved behavior, preserve project conventions, and verify the result against the task's outcome and acceptance criteria. Do not let implementation momentum replace problem comprehension.
 
-Follow this strict 5-step sequence. Each step has an explicit sign-off condition before advancing to the next.
+## 0. Phase Rules & Guardrails
 
----
+- **One active task:** Work only on the task marked `In Progress` in `00-status.md`.
+- **Re-anchor every task:** Before editing, reread the task outcome, mapped requirement/acceptance-criteria/business-rule IDs, applicable `.agents/rules/`, and the Resume Checkpoint. Do not rely only on conversational memory or what a prior task did.
+- **Understand before editing:** Trace the existing behavior and relevant callers. Know why the change is needed, what must remain unchanged, and how success will be verified.
+- **Approved scope is the boundary:** Do not jump ahead to future tasks. If implementation reveals a necessary unlisted file or behavior, inspect the need and update the roadmap/status before expanding scope. Ask the user before material behavior, architecture, data, security, or scope changes.
+- **Never make consequential assumptions:** If missing information changes business behavior, permissions, financial/data results, deletion/migration, user experience, or irreversible behavior, pause and ask. For routine low-risk details, follow established project conventions.
+- **Follow project rules:** Use canonical architecture, UI components/tokens, naming, file placement, and security rules. Treat hard limits in project rules as hard limits; treat general size guidance as a reason to evaluate, not to perform unrelated refactoring.
 
-## 0. Core Execution Rules
+## Step 1: Select and Re-anchor the Active Task
 
-- **One Task at a Time:** Execute only the single active task from `00-status.md`.
-- **Mid-Flight UX / Requirement Changes (Never Hack Directly):** If the user spots a UX simplification or requests a requirement change while reviewing or running the app, **pause coding immediately** and follow Section 7 of `lifecycle/SKILL.md`:
-  1. Run a quick micro-brainstorm to confirm the cleanest flow.
-  2. **Update `01-requirements.md` in place** (replacing superseded outcomes, requirements, and UI specs so the file never contradicts itself).
-  3. Update `03-roadmap.md` and `00-status.md` with a proper numbered `Task N` (collapsing any fully superseded task to a single heading line `## Task X: <Name> — ~(Superseded by Task N)~`—never dump untracked work into an unstructured footer).
-- **Design System & Architecture Primacy:** Follow `.agents/rules/` strictly (canonical design system components/tokens, `<module>_validator` placement, `<500` lines, manual git boundary, no watchers).
+1. Read `00-status.md`, its Resume Checkpoint, and `03-roadmap.md`. Confirm Roadmap is `Done` and identify the active `In Progress` task (or first `Todo` task).
+2. Confirm the task's outcome, dependency, touchpoints, acceptance criteria, constraints, and verification steps. Trace them back to `01-requirements.md` by ID.
+3. If the plan conflicts with approved requirements, current code, or a project rule, do not guess which source to prefer. Identify the conflict, gather the evidence, and route it back through the relevant phase before proceeding.
+4. Set the selected task to `In Progress` and update the Resume Checkpoint with the immediate next action.
 
----
+**Gate:** The intended result, non-negotiable constraints, and proof of success are clear.
 
-## Step 1: Select Active Task & Lock Status
+## Step 2: Inspect Before Writing
 
-1. Read `lifecycle/00-status.md`, verify `Roadmap` is `Done`, and find the first `Todo` (or `In Progress`) task.
-2. Set that task to **`In Progress`** in `00-status.md`.
-3. Read the task's specification in `lifecycle/03-roadmap.md` and its mapped `REQ-X` / `BR-X` items in `lifecycle/01-requirements.md`.
+1. Read the complete target files and the relevant tests—not only the lines mentioned in the task.
+2. Inspect immediate callers, related state/controller/repository paths, model serialization, routes, permissions, validation, caches, and linked side effects as applicable.
+3. Read the specific project rules referenced in the roadmap and discover any additional applicable rules.
+4. Check the working tree using read-only Git commands so user changes are not overwritten. Never run prohibited Git commands.
+5. Establish relevant baseline behavior or checks where practical, especially when a test/analyzer already has failures.
+6. If delegating, give the worker the approved outcome, exact scope, REQ/AC/BR IDs, rules, files/callers, tests, and boundaries. Inspect the worker's diff and independently verify material results.
 
-> **➡️ Sign-off & Transition to Step 2:** Active task is marked `In Progress` in `00-status.md`.
+**Gate:** You can explain the code path being changed, the potential side effects, and the verification plan.
 
----
+## Step 3: Implement the Task
 
-## Step 2: Deep Pre-Edit Inspection & Worker Delegation
+1. Implement the smallest coherent change that satisfies the outcome and criteria. Prefer existing abstractions and patterns when they are appropriate; do not reuse a flawed pattern without examining its consequences.
+2. Keep changes limited to the approved slice. If a necessary change exceeds the agreed scope, pause, explain why, update the roadmap/status, and get approval where the change is material.
+3. Add/update tests for the actual risk: logic, validation, state transitions, permissions, data access, concurrency, or UI behavior as relevant.
+4. Do not mark a requirement satisfied based on code appearance alone. Verify the observable behavior or provide a clear reason why it cannot be tested in the available environment.
+5. Do not start watchers or long-running background generators. Do not perform prohibited Git operations.
 
-1. **Read Before You Write:** Inspect the full target files under `Touchpoints`, their immediate callers, and the referenced `.agents/rules/<rule>.md` file.
-2. **Worker Sub-Agent Delegation:** When sub-agent tools are available, delegate multi-file coding and test execution to a fresh worker sub-agent (`Role: 'Task Worker'`) to keep raw compiler/test output out of the main chat.
+**Gate:** The intended code/test changes are present and remain within the approved scope.
 
-> **➡️ Sign-off & Transition to Step 3:** Target files, callers, and rules are inspected.
+## Step 4: Verify, Correct, and Record Evidence
 
----
+Evaluate the implementation against these gates and correct failures before handoff:
 
-## Step 3: Implement Active Touchpoints Only
+1. **Outcome:** The user's intended capability is actually delivered.
+2. **Acceptance criteria:** Each applicable criterion for the task passes.
+3. **Business rules and safety:** Relevant BRs, permissions, tenancy, validation, data integrity, lifecycle, and failure behavior remain correct.
+4. **Architecture and scope:** File placement, naming, shared components, callers, and project rules are respected; no unintended behavior or unrelated cleanup was introduced.
+5. **Automated verification:** Run the exact applicable test/analyzer commands from the roadmap and record the actual results.
 
-1. Modify **only** the files and symbols listed under `### 2. Touchpoints` for the active task (never jump ahead to future tasks).
-2. Keep all touched files under the `~500-line` ceiling and follow canonical `.agents/rules/` folder/component conventions.
+### Evidence rules
 
-> **➡️ Sign-off & Transition to Step 4:** Code and unit/controller tests for the active slice are implemented.
+- Report each check as **Passed**, **Failed**, or **Not Run**. If `Not Run`, state why and what remains unverified.
+- Do not claim zero issues or a fully passing suite unless the command actually ran and showed that result.
+- When the baseline already fails, distinguish pre-existing issues from new regressions. Do not silently broaden scope to repair unrelated baseline failures; report them and ask or create a task if they block safe completion.
+- Rerun relevant checks after the final code change. Test results from before a later edit are not evidence for the final code.
+- Inspect the final diff and changed-file list. Ensure there are no accidental edits, secrets, debug logs, or unnecessary compatibility shims.
+- Mark task-level acceptance checkboxes only in `03-roadmap.md`. Keep `01-requirements.md` as the stable specification; do not mirror execution checkboxes there.
+- Record meaningful mistakes or missing rules in `04-refine.md` with the cause and proposed prevention.
 
----
+**Gate:** Actual verification evidence supports the result; limitations and remaining issues are explicit.
 
-## Step 4: Mandatory 5-Gate Self-Review & Checkbox Sync
+## Step 5: Human Review and Handoff
 
-Verify all 5 gates and fix any failure before handoff:
+1. Update the Resume Checkpoint in `00-status.md` with files changed, checks and exact outcomes, known limitations, and next action. Set the active task to `In Review`.
+2. Present a concise 4-bullet handoff in chat (linking to `lifecycle/03-roadmap.md`, no chat tables):
+   - **Outcome:** What capability now works.
+   - **Changed Files:** Exact source and test files created, updated, or deleted.
+   - **Verification Evidence:** Exact analyzer and test commands run and their `Passed` / `Failed` / `Not Run` outcomes.
+   - **Human Verification Gate:**
+     - `Prerequisites / Environment Setup:` Required emulator/server, test role, seed data, or starting state.
+     - `Action:` Numbered steps to trigger in the app/browser.
+     - `Expected:` Observable outcome (plus any open risk or decision for the user).
+3. Stop and wait for approval. Do not imply that an unrun test passed or that a user-facing change has been validated if the user has not verified it.
+4. On approval, mark the task `Done` in `00-status.md`. Start the next `Todo` task if one remains; after all tasks are `Done`, read [`lifecycle-review/SKILL.md`](../lifecycle-review/SKILL.md) and auto-advance to Review.
 
-1. **Gate 1 — Outcome Gate:** Changes deliver the exact capability in `### 1. Outcome`.
-2. **Gate 2 — Acceptance Criteria Gate:** Every condition in `### 3. Acceptance Criteria` holds.
-3. **Gate 3 — Business Rules Gate:** All `BR-X` rules in `### 4. Rules & Constraints` hold true.
-4. **Gate 4 — Code Guidelines Gate:** Touched files obey `.agents/rules/` (`<500` lines, canonical naming/placement, zero dead code or debug logs).
-5. **Gate 5 — Automated Verification Gate:**
-   - Run the task's static analysis command (`0` issues) and test command (`100%` pass).
-6. **Sync Checkboxes in Both `03-roadmap.md` and `01-requirements.md`:**
-   - Mark the task's `### 3. Acceptance Criteria` checkboxes as `- [x]` in `03-roadmap.md`.
-   - Also mark the corresponding `- [x] AC-X.Y` (and `- [x] REQ-X` once all its ACs are complete) in `lifecycle/01-requirements.md` so both files stay in lockstep.
-7. **Log Friction (`04-refine.md`):** Record any rule gap or mistake encountered during the task.
+### Mid-flight requirement or UX change
 
-> **➡️ Sign-off & Transition to Step 5:** All 5 gates pass and checkboxes are synced in `03-roadmap.md` and `01-requirements.md`.
-
----
-
-## Step 5: Skimmable Handoff & Approval Gate
-
-1. Set the active task to **`In Review`** in `lifecycle/00-status.md`.
-2. Present a concise 4-bullet summary in chat (linking to `lifecycle/03-roadmap.md`, no chat tables):
-   - **Changed Files:** Exact source and test files created/updated.
-   - **5-Gate Status:** Confirmation that Outcome, AC, Business Rules, Guidelines, and Analyzer/Tests passed.
-   - **Verification Proof:** Analyzer (`0` issues) and test pass results.
-   - **Human Verification Steps:** Exact `Action` → `Expected` steps for the user to test.
-3. **STOP** and wait for user approval.
-4. **On User Approval:** Mark the task **`Done`** in `00-status.md`. If more tasks remain, start the next `Todo` task; if all tasks are `Done`, read [`lifecycle-review/SKILL.md`](../lifecycle-review/SKILL.md) and auto-advance to Review.
+If the user changes a requirement or points out a better workflow, pause coding on the affected behavior and follow Section 6 of `lifecycle/SKILL.md`: run a quick micro-brainstorm to confirm the cleanest flow, update `01-requirements.md` in place, update `03-roadmap.md` and `00-status.md` with a proper numbered `Task N` (collapsing any fully superseded task heading to `## Task X: <Name> — ~(Superseded by Task N)~` rather than appending an unstructured footer), check for conflicting uncommitted changes, and stop for approval before implementing newly scoped work.
