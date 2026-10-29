@@ -49,23 +49,28 @@ Order tasks by priority and dependency:
 
 ---
 
-## Step 3: Author `03-roadmap.md` (5-Part Task Anatomy)
+## Step 3: Author `03-roadmap.md` (Roadmap Overview & 5-Part Task Anatomy)
 
-Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templates/03-roadmap.md). List `- **Applicable Project Rules:** .agents/rules/<rule>.md` once at the top, and structure every task with the **5-Part Anatomy**:
+Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templates/03-roadmap.md). List `- **Applicable Project Rules:** .agents/rules/<rule>.md` once at the top, generate the **Roadmap Overview**, and structure every task with the **5-Part Anatomy**:
 
-1. **Outcome:** 1 crisp sentence stating what works when this task finishes.
-2. **Touchpoints:**
-   - List each target file path (including **explicit test file paths**) as a parent bullet.
-   - Start each child sub-bullet with an imperative verb (`Create:`, `Add:`, `Update:`, `Delete:`). Omit `Delete` if no files/symbols are deleted.
-3. **Acceptance Criteria (Binary Verification):**
-   - Binary pass/fail `- [ ] **AC-X.Y:**` conditions mapped directly from `01-requirements.md`.
-   - Exact static analysis command (`0` issues) and fast unit/controller test command (banning shallow static-widget UI tests).
-4. **Rules & Constraints:**
-   - 1 line per `BR-X` module rule from `01-requirements.md` enforced in this task.
-   - 1 line per architectural constraint specific to the touched files (e.g. `<module>_validator.dart` placement, `<500` lines).
-5. **Human Verification Gate:**
-   - Include `Prerequisites:` only when emulator, seed data, or role setup is needed (omit if none).
-   - Numbered `Action:` steps and 1-line `Expected:` result.
+1. **Roadmap Overview (Scannable Task Index):**
+   - Provide a compact, clickable numbered list at the top (`1. [Task 1: <Short Slug>](#task-1...) \`[<Scope Badge>]\` — <1-line outcome summary>`) giving the human reviewer an instant high-level overview of the entire plan before the detailed task sections.
+2. **Task Heading with Scope Badge:**
+   - Label every task heading with a scope badge: `## Task N: <Name> [<Scope Badge>]` (e.g. `[Data Layer]`, `[UI + State]`, `[Refactor]`, `[Cleanup]`).
+3. **The 5-Part Task Anatomy:**
+   - **Outcome:** 1 crisp sentence stating what works when this task finishes.
+   - **Touchpoints:**
+     - List each target file path (including **explicit test file paths**) as a parent bullet.
+     - Start each child sub-bullet with an imperative verb (`Create:`, `Add:`, `Update:`, `Delete:`). Omit `Delete` if no files/symbols are deleted.
+   - **Acceptance Criteria (Binary Verification):**
+     - Binary pass/fail `- [ ] **AC-X.Y:**` conditions mapped directly from `01-requirements.md`.
+     - Exact static analysis command (`0` issues) and fast unit/controller test command (banning shallow static-widget UI tests).
+   - **Rules & Constraints:**
+     - 1 line per `BR-X` module rule from `01-requirements.md` enforced in this task.
+     - 1 line per architectural constraint specific to the touched files (e.g. `<module>_validator.dart` placement, `<500` lines).
+   - **Human Verification Gate:**
+     - Include `Prerequisites:` only when emulator, seed data, or role setup is needed (omit if none).
+     - Numbered `Action:` steps and 1-line `Expected:` result.
 
 > **➡️ Sign-off & Transition to Step 4:** `03-roadmap.md` is complete and 100% aligned with `01-requirements.md` and `.agents/rules/`.
 

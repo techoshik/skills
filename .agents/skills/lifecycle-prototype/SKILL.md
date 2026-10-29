@@ -74,7 +74,7 @@ For each substantive UI unit (`<unit>`):
 ## Step 4: Prototyping Discovery & In-Place Sync (`01-requirements.md`)
 
 1. **Sync Discovered Gaps & UX Improvements:**
-   - Any missing field, validation rule, edge state, or screen consolidation discovered while building the prototype must be updated **in place** in `lifecycle/01-requirements.md` (`Section 1`, `Section 3`, `Section 4`) so `01-requirements.md` stays 100% consistent.
+   - Any missing field, validation rule, edge state, or screen consolidation discovered while building the prototype must be updated **in place** in `lifecycle/01-requirements.md` (`Section 1`, `Section 2`, `Section 3`) so `01-requirements.md` stays 100% consistent.
 2. **Log Friction:** Append any process or rule friction to `lifecycle/04-refine.md`.
 
 > **➡️ Sign-off & Transition to Step 5:** All discovered gaps are synced into `01-requirements.md`.
@@ -90,6 +90,6 @@ For each substantive UI unit (`<unit>`):
 
 ### Stage 2: Consolidate Selection & Auto-Advance (`Done`)
 1. When the user selects an option (or requests a UX simplification):
-   - Record the final locked design under `## 6. Selected UI/UX Specification` in `lifecycle/01-requirements.md`.
-   - **Replace any outdated lines in Section 1 (`Problem & UX Summary`) and Section 3 (`Requirements`) in place** so the entire `01-requirements.md` file matches the chosen design with zero contradictions.
+   - Record the final locked design under `## 4. Selected UI/UX Specification` in `lifecycle/01-requirements.md`.
+   - **Replace any outdated lines in Section 1 (`Problem & Experience Delta`) and Section 2 (`Requirements & Acceptance Criteria`) in place** so the entire `01-requirements.md` file matches the chosen design with zero contradictions.
 2. Mark `Prototype` as **`Done`** in `lifecycle/00-status.md`, read [`lifecycle-roadmap/SKILL.md`](../lifecycle-roadmap/SKILL.md), and auto-advance to Roadmap.

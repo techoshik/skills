@@ -26,10 +26,9 @@ DOCUMENT FORMATTING RULE (STRICT):
 - **BR-1 (`<Rule Name>`):** <1-line state, calculation, or validation law>
 - **BR-2 (`<Rule Name>`):** <1-line permission or lifecycle law>
 
-<!-- Optional: Boundary Truth Table for complex calculations or multi-state transitions:
-| Condition A | Condition B | Expected Result | Rule ID |
-| :--- | :--- | :--- | :--- |
-| Condition 1 | Condition 2 | Expected Output | BR-1 |
+<!-- Optional: For multi-condition calculations or state transitions, use bulleted condition cases:
+- Case 1: <Condition A> + <Condition B> → Expected: <Output> (BR-1)
+- Case 2: <Condition A> + <Condition C> → Expected: <Output> (BR-2)
 -->
 
 ## 4. Architecture & File Touchpoints

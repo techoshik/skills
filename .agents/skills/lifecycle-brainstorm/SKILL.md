@@ -43,12 +43,12 @@ Investigate the codebase autonomously before asking the user anything:
      - *Are there duplicate screens, tabs, or cards managing the same module concept in multiple places?*
      - *Are there deprecated fields, legacy aliases, or `TODO`s that should be cleaned up rather than preserved?*
      - *What is the simplest, most intuitive screen flow for the end user?*
-3. **Record Touchpoints & Caller Ripple Impacts (`01-requirements.md` Section 2):**
-   - Populate `## 2. Code, Callers & Docs Touchpoints` in `01-requirements.md` under `Affected & Reusable Code (Including All Callers & Ripple Effects)` (`- **<Name>** (\`<path>\`): <1-line role, reuse, or caller ripple impact>`).
+3. **Record Touchpoints & Caller Ripple Impacts (`01-requirements.md` Section 6):**
+   - Populate `## 6. Code, Callers & Docs Touchpoints` in `01-requirements.md` under `Affected & Reusable Code (Including All Callers & Ripple Effects)` (`- **<Name>** (\`<path>\`): <1-line role, reuse, or caller ripple impact>`).
 4. **Targeted Web Search (When Valuable):**
    - When external APIs, third-party packages, or industry UX patterns are relevant, search the web and present findings as **options and recommendations**.
 
-> **➡️ Sign-off & Transition to Step 3:** All affected files, callers, and UX simplification opportunities are mapped in Section 2 before Q1 is asked.
+> **➡️ Sign-off & Transition to Step 3:** All affected files, callers, and UX simplification opportunities are mapped in Section 6 before Q1 is asked.
 
 ---
 
@@ -57,7 +57,7 @@ Investigate the codebase autonomously before asking the user anything:
 Conduct a fast, dependency-ordered interview (**1 question at a time, maximum 2 closely related questions**):
 
 1. **Start With High-Level UX Flow & Simplification (Before Low-Level Details):**
-   - If Step 2 revealed duplicated screens/tabs, split settings, or a simpler way to structure the user journey, make **Q1** about simplifying the overall UX flow (`Current Flow` vs. `Recommended Simplified Flow`).
+   - If Step 2 revealed duplicated screens/tabs, split settings, or a simpler way to structure the user journey, make **Q1** about simplifying the overall UX flow (`Current Flow` vs. `Recommended Simplified Flow`) and record the **Experience Delta** in Section 1.
 2. **Question Format (`Context → Options → Recommendation`):**
    ```markdown
    ❓ **Q: <Concise Question Title>**
@@ -70,9 +70,9 @@ Conduct a fast, dependency-ordered interview (**1 question at a time, maximum 2 
    ```
 3. **Live In-Place Updates to `01-requirements.md`:**
    - Update `01-requirements.md` immediately after **every user answer** using 1-fact-per-line nested sub-bullets.
-   - If an answer changes an earlier assumption, **replace the old lines in place** across Section 1, Section 3, and Section 5 so the document never contains conflicting statements.
+   - If an answer changes an earlier assumption, **replace the old lines in place** across Section 1 (Problem & Experience Delta), Section 2 (Requirements & AC), Section 3 (Business Rules), and Section 5 (Decisions) so the document never contains conflicting statements.
 4. **Proactive 5-Lens Gap Hunting (Translate Directly into `REQ`/`AC`/`BR`):**
-   - Probe these 5 lenses and write the resulting items directly into `## 3. Requirements & Acceptance Criteria` or `## 4. Business Rules & Module Invariants`:
+   - Probe these 5 lenses and write the resulting items directly into `## 2. Requirements & Acceptance Criteria` or `## 3. Business Rules & Module Invariants`:
      - **Empty / First-Time State:** What renders when 0 records exist or a setting is unconfigured?
      - **Validation & Error / Offline State:** What inputs fail, and how does the user recover?
      - **Permissions, Roles & Tenancy:** Who can view/mutate, and how is tenant isolation enforced?
@@ -88,8 +88,8 @@ Conduct a fast, dependency-ordered interview (**1 question at a time, maximum 2 
 ## Step 4: Scope Boundary & Terminology Staging
 
 1. **Lock Requirements (`REQ-X`), Acceptance Criteria (`AC-X.Y`) & Business Rules (`BR-X`):**
-   - Keep each `BR-X` rule in Section 4 to a single crisp 1-line invariant (`- **BR-1 (<Name>):** <1-line rule>`).
-   - Ensure Section 1 (`Problem & UX Summary`), Section 2 (`Code, Callers & Docs Touchpoints`), Section 3 (`Requirements & Acceptance Criteria`), Section 4 (`Business Rules & Module Invariants`), and Section 5 (`Decisions`) are 100% consistent with each other.
+   - Keep each `BR-X` rule in Section 3 to a single crisp 1-line invariant (`- **BR-1 (<Name>):** <1-line rule>`).
+   - Ensure Section 1 (`Problem & Experience Delta`), Section 2 (`Requirements & Acceptance Criteria`), Section 3 (`Business Rules & Module Invariants`), Section 5 (`Decisions`), and Section 6 (`Code, Callers & Docs Touchpoints`) are 100% consistent with each other.
 2. **Partition Deferred Scope (`## 8. Deferred Requirements`):**
    - Move distinct future capabilities out of current scope into `## 8. Deferred Requirements (Future Scope)` (`- **\`<Idea>\`:** <1-line reason>`). Never defer core requirements or error handling to avoid work.
 3. **Stage Module Terminology (`## 7. Glossary Updates`):**
@@ -106,7 +106,7 @@ Conduct a fast, dependency-ordered interview (**1 question at a time, maximum 2 
 Verify the **Brainstorm Exit Checklist** before handing off:
 
 - [ ] End-to-end user flow was critiqued for simplicity and UX duplication.
-- [ ] All callers of modified models/getters/routes were searched (`grep`) and listed in Section 2.
+- [ ] All callers of modified models/getters/routes were searched (`grep`) and listed in Section 6.
 - [ ] All sections in `01-requirements.md` have **zero internal contradictions** and **zero duplicate file/feature lists**.
 - [ ] All 5 lenses (or bug root cause) are covered in Requirements or Business Rules.
 - [ ] Every section uses **1-fact-per-line nested sub-bullets** (no paragraph bullets).
@@ -119,4 +119,4 @@ Verify the **Brainstorm Exit Checklist** before handing off:
 4. **Smart Prototype Assessment:**
    - **If the feature modifies, adds, or consolidates any user-facing screen, card, form, tab, or workflow:** Recommend advancing to `Prototype` so the user can visually verify the UX flow in `02-prototype.html` before task planning.
    - **Only if the change is strictly non-visual (pure backend/model/config):** Propose marking `Prototype` as `Skipped` and advancing to `Roadmap`.
-5. **STOP** and wait for user approval. On approval, mark `Brainstorm` as **`Done`** (and `Prototype` as **`Skipped`** if approved) in `00-status.md` and auto-advance to the next skill.
+5. **STOP** and wait for user approval. On approval, mark `Brainstorm` as **`Done`** (and `Prototype` as **`Skipped`** if approved) in `00-status.md`, read [`lifecycle-prototype/SKILL.md`](../lifecycle-prototype/SKILL.md) (or [`lifecycle-roadmap/SKILL.md`](../lifecycle-roadmap/SKILL.md) if skipped), and auto-advance.

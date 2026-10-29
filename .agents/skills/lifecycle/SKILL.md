@@ -27,6 +27,7 @@ The `lifecycle` skill is the master router for product and feature development. 
 ## 1. Status Dashboard (`lifecycle/00-status.md`)
 
 All lifecycle progress and task statuses are tracked exclusively in **`lifecycle/00-status.md`**:
+- Features direct links to active artifacts (`01-requirements.md`, `02-prototype.html`, `03-roadmap.md`) at the top for one-click navigation.
 - Use concise, scannable task slugs (`Task 1: <Short Slug>`) so table columns never wrap.
 - Table cells strictly use 5 plain-text statuses: `Todo`, `In Progress`, `In Review`, `Done`, `Skipped`.
 
@@ -63,10 +64,10 @@ All lifecycle progress and task statuses are tracked exclusively in **`lifecycle
 
 All tracking artifacts live inside the temporary `lifecycle/` directory at the project root:
 
-1. **`00-status.md`:** Status dashboard tracking all 6 phases and roadmap tasks.
-2. **`01-requirements.md`:** Single source of truth for Problem & UX Flow, Touchpoints, Requirements/AC, Business Rules, Decisions, Selected UI/UX, Staged Glossary, and Deferred Scope.
+1. **`00-status.md`:** Status dashboard tracking all 6 phases and roadmap tasks with direct links to feature specs and prototypes.
+2. **`01-requirements.md`:** Progressive-disclosure specification placing Problem, User Flow, and Experience Delta upfront, followed directly by visible Requirements/AC, Business Rules, UI Specs, and Code Touchpoints.
 3. **`02-prototype.html` & `prototype/`:** Single-page launcher containing interactive 3-option UI carousels and Mermaid flow diagrams.
-4. **`03-roadmap.md`:** Priority-ordered vertical slices with Touchpoints, AC, Business Rules, Code Guidelines, and Human Verification.
+4. **`03-roadmap.md`:** Priority-ordered vertical slices preceded by a scannable Roadmap Overview, with Touchpoints, AC, Business Rules, and Human Verification.
 5. **`04-refine.md`:** Continuous mistake, ambiguity, and process refinement log.
 
 ---

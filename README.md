@@ -7,7 +7,7 @@ A portable, agentic development system for engineering teams and AI agents, driv
 | **0. Orchestrator** | `lifecycle`            | Master router, status dashboard (`00-status.md`), entry gates, and crash resumption                            |
 | **1. Brainstorm**   | `lifecycle-brainstorm` | Elite researcher persona: root "why", 2nd-order ripple effects, 5-lens gap hunting (`01-requirements.md`)      |
 | **2. Prototype**    | `lifecycle-prototype`  | 3 divergent UI variants with 5 state toggles + Mermaid flow diagrams (`02-prototype.html`)                     |
-| **3. Roadmap**      | `lifecycle-roadmap`    | Small vertical slices (~2–5 files/task), 6-part task anatomy, binary verification oracles (`03-roadmap.md`)    |
+| **3. Roadmap**      | `lifecycle-roadmap`    | Small vertical slices (~2–5 files/task), 5-part task anatomy, binary verification oracles (`03-roadmap.md`)    |
 | **4. Execute**      | `lifecycle-execute`    | Single-task execution, worker sub-agent delegation, mandatory 5-gate self-review                               |
 | **5. Review**       | `lifecycle-review`     | Full-branch audit (AC, integration seams, guidelines, security, two-tier deduplication)                        |
 | **6. Finalize**     | `lifecycle-finalize`   | Permanent doc sync (`docs/modules/`, `GLOSSARY.md`), dual-target rule/skill evolution, PR summary, cleanup     |

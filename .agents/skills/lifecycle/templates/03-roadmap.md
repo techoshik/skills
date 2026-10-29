@@ -9,9 +9,13 @@ DOCUMENT FORMATTING & SYNC RULES (STRICT):
 
 - **Applicable Project Rules:** `.agents/rules/<rule>.md`
 
+## Roadmap Overview
+1. [Task 1: <Short Slug>](#task-1-p1-core-tracer-bullet--short-name-scope-badge) `[<Scope Badge>]` — <1-line user-facing outcome summary>
+2. [Task 2: <Short Slug>](#task-2-p2-secondary-flows--interactions-scope-badge) `[<Scope Badge>]` — <1-line user-facing outcome summary>
+
 ---
 
-## Task 1: <P1 Core Tracer Bullet / Short Name>
+## Task 1: <P1 Core Tracer Bullet / Short Name> [<Scope Badge>]
 
 ### 1. Outcome
 - <Single crisp sentence stating the observable capability that works when this task finishes.>
@@ -43,7 +47,7 @@ DOCUMENT FORMATTING & SYNC RULES (STRICT):
 
 ---
 
-## Task 2: <P2 Secondary Flows & Interactions>
+## Task 2: <P2 Secondary Flows & Interactions> [<Scope Badge>]
 
 ### 1. Outcome
 - <Single crisp sentence stating the secondary flow or sub-component capability delivered.>
