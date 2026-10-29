@@ -23,7 +23,26 @@ Before a consequential decision or implementation, work through this sequence:
 6. **Recommend or ask:** Recommend the best-supported option when the decision is within the agent's authority. Ask the user when a material user-owned decision remains unresolved.
 7. **Record only useful reasoning:** Show the evidence, important trade-offs, key risks, recommendation, and unresolved decision in concise language. Do not output long internal monologues or claim certainty without evidence.
 
-Apply depth proportionally. A small, reversible change does not need a formal alternatives report; a change involving money, permissions, personal or tenant data, destructive actions, migrations, concurrency, security, or architecture deserves stronger analysis.
+Apply depth according to the tier below; do not decide depth by feel.
+
+### Depth tiers
+
+Set once in Brainstorm and reused by every later phase. Pick the tier from the change itself, not from how confident you feel.
+
+- **Light:** A small, reversible change that follows an established pattern and hits no Deep trigger.
+  - Required: restate the outcome, cite the evidence you inspected, proceed.
+- **Standard (default):** Any non-trivial change that hits no Deep trigger.
+  - Required: gather evidence, compare credible options where the choice is real, stress-test the leading option once, and record each consequential decision.
+- **Deep (automatic when any trigger applies):**
+  - Triggers: money or financial results; permissions, roles, or authentication; personal or tenant data; destructive actions, migrations, or backfills; concurrency or idempotency; security or secrets; shared infrastructure or cross-module architecture; externally visible contracts that are hard to reverse.
+  - Required: everything in Standard, plus the full decision record (alternatives, second-order effects, confidence) and a **pre-mortem**.
+  - Pre-mortem: assume the change shipped and failed; list the top 3 causes as `PM-1`…`PM-3` and map each to a task, an `AC-X.Y`, or a `BR-X` — or record that the user explicitly accepted that risk.
+  - Every `PM-n` needs verification evidence before Review can sign off.
+
+Tier rules:
+- Record the tier and the trigger(s) that set it in `01-requirements.md` (the `Depth tier` line) and in the Resume Checkpoint of `00-status.md`.
+- Raising the tier needs no approval. If a Deep trigger appears in a later phase, escalate immediately, pause the affected work, and complete the Deep requirements for that scope.
+- Only the user can lower a tier that was set to Deep.
 
 ### Research facts; do not assume user decisions
 
@@ -38,11 +57,19 @@ Apply depth proportionally. A small, reversible change does not need a formal al
 - Put a **quick read** first: problem, intended outcome, and scope or key decision.
 - Present findings to the user in chat using short, plain, scannable bullets—never dump prose walls, markdown tables, or raw Mermaid syntax in chat.
 - Across all `lifecycle/` and `docs/modules/` files, use scannable nested sub-bullets (`1 line = 1 atomic detail`) rather than multi-sentence prose paragraphs inside bullets.
+  - Exception: one optional `Why:` line (max 2 sentences) may explain the rationale behind a requirement or decision. It is the only prose allowed inside a bullet.
 - Make requirements, invariants, decisions, task outcomes, and acceptance criteria precise and independently understandable.
 - Keep each fact's detailed authoritative version in one place. Summaries may point to it but should not reproduce it.
 - Omit sections that are genuinely irrelevant or empty. Do not omit a relevant risk, requirement, dependency, edge case, or decision merely to make a document shorter.
 - Prefer meaningful headings, descriptive labels, and examples only when they prevent ambiguity. Avoid boilerplate, repeated explanations, empty placeholder sections, and decorative process text.
-- Every important claim should be identifiable as **verified fact, user decision, assumption, recommendation, or unresolved question** where that distinction matters.
+- Label important claims where the distinction matters, using these exact tags:
+  - `[Fact]` — verified from code, tests, docs, or a command; cite the source (`path:line`, command, or URL).
+  - `[Decision]` — approved by the user.
+  - `[Assumption]` — believed but not verified or approved; say what would invalidate it.
+  - `[Recommendation]` — the agent's proposal, not yet approved.
+  - `[Open]` — unresolved question; say who owns it and whether it blocks.
+  - Untagged lines are routine requirement text. Never tag a line `[Fact]` without a source.
+- Under each artifact's **Quick read**, keep a **Needs your decision** line (see Section 4). It only points at open decisions; the detail stays in its authoritative section.
 
 ### Source of truth for lifecycle artifacts
 
@@ -51,6 +78,7 @@ Apply depth proportionally. A small, reversible change does not need a formal al
 - `lifecycle/02-prototype.html` and `lifecycle/prototype/`: visual exploration and chosen interaction reference when prototyping is appropriate ([Prototype Hub Template](templates/02-prototype.html)).
 - `lifecycle/03-roadmap.md`: authoritative task breakdown, task-level verification checkboxes, dependencies, and execution plan ([Roadmap Template](templates/03-roadmap.md)).
 - `lifecycle/04-refine.md`: process friction and verified lessons for possible rule/skill improvement ([Refine Template](templates/04-refine.md)).
+- `lifecycle/05-traceability.md`: authoritative map from each `AC-X.Y` / `BR-X` (and `PM-n` at Deep tier) to its task, implementation location, verifying check, and result ([Traceability Template](templates/05-traceability.md)). Seeded in Roadmap; completed by Review from actual code and checks. Uses IDs and short labels only — requirement text stays in `01-requirements.md`.
 - Permanent `docs/modules/` ([Module README Template](templates/module_readme.md), [Feature Template](templates/module_feature.md)) and `GLOSSARY.md`: final, reviewed project documentation after Review.
 
 Do not duplicate execution checkboxes between `01-requirements.md` and `03-roadmap.md`. Keep requirements stable and track completion in the roadmap and status dashboard.
@@ -58,7 +86,7 @@ Do not duplicate execution checkboxes between `01-requirements.md` and `03-roadm
 ### Non-negotiable safety boundaries
 
 - **Manual Git only:** Never run `git add`, `git commit`, `git push`, `git reset`, `git restore`, or `git checkout`. Read-only `git status`, `git diff`, and `git log` are allowed.
-- **No long-running watchers or background code generation:** Do not launch watchers, persistent dev servers, or daemon code generators (e.g. `build_runner watch`). Ask the user to run these in their terminal when needed.
+- **No long-running watchers or background code generation:** Do not launch watchers, persistent dev servers, or daemon code generators (for example, a code generator in watch mode). Ask the user to run these in their terminal when needed.
 - **Preserve user work:** Never overwrite existing lifecycle work on resume. Inspect the working tree before cleanup or scope changes. Do not delete or discard user changes.
 - **Follow the repository's actual rules:** Read applicable `.agents/rules/` files and existing patterns. If two rules conflict or a required rule file is missing, report the conflict/blocker instead of silently inventing a resolution.
 
@@ -71,6 +99,7 @@ Read `lifecycle/00-status.md` first when resuming or routing an existing lifecyc
 Keep a compact `Resume Checkpoint` in `00-status.md`, updated at task/phase boundaries and before handoff:
 
 - **Current Phase / Task:** Active step in `00-status.md`.
+- **Depth Tier:** `Light`, `Standard`, or `Deep`, and the trigger(s) that set it.
 - **Approved Outcome:** What is being completed and why.
 - **Decisions & Constraints to Preserve:** Only those necessary to resume safely; link to the requirements/roadmap for detail.
 - **Current State & Verification:** Files changed, what was verified, and actual command outcomes.
@@ -108,10 +137,28 @@ The checkpoint is a navigation aid, not another copy of the spec. Keep details i
 ## 4. Phase Approval and Advancement
 
 - The agent owns research, implementation, and evidence. The user owns approval and material product/business decisions.
-- At a phase/task approval gate, set status to `In Review`, summarize the outcome, important evidence, open risks (if any), and the requested decision; then stop.
+- At a phase/task approval gate, set status to `In Review`, present the Approval Request block below, then stop.
 - After explicit approval, set the status to `Done` (or `Skipped` if explicitly accepted), load the next phase's `SKILL.md`, and auto-advance immediately.
 - If the user requests changes, set the item to `In Progress`, update the authoritative artifacts in place, verify the revision, and return it to `In Review`.
 - Do not ask for approval again on unchanged decisions already explicitly approved. Do ask when new evidence materially changes the decision or scope.
+
+### Approval Request block
+
+Use this exact four-part structure in chat at every phase/task gate. Each phase skill says what goes in each part. No chat tables, no raw Mermaid.
+
+```markdown
+✅ **Approval needed: <Phase or Task name>**
+**What I did:** <≤3 bullets — the outcome, plus exact verification commands with Passed / Failed / Not Run>
+**What to check:** <≤3 bullets — where to look first, with links to the artifact; human verification steps when the phase has them>
+**What I need from you:** <The exact decision(s); mark blocking questions; write "Nothing besides approval." when none>
+**How to reply:** `approve` to advance · describe changes to revise · or answer the decision above
+```
+
+Keep the artifact side in sync:
+- `01-requirements.md`, `03-roadmap.md`, `00-status.md`, and the prototype hub each carry a `Needs your decision` line near the top.
+- The line lists one pointer per open user-owned decision (topic → section link → recommended default). Detail stays in `01-requirements.md` Sections 5 and 9.
+- Set it to `None — ready for sign-off` only when no user-owned decision is open; update it each time a decision is answered.
+- Use the `❓ Decision needed` format (see `lifecycle-brainstorm`) for mid-phase questions; reference those questions in the block's *What I need from you* part.
 
 ## 5. Smart Prototype Assessment
 
@@ -124,9 +171,9 @@ The checkpoint is a navigation aid, not another copy of the spec. Keep details i
 
 When the user changes scope or a better solution is discovered during Prototype, Roadmap, Execute, or Review:
 
-1. **Pause & Micro-Brainstorm:** Pause implementation of the affected work. Clarify the underlying goal, inspect consequences and callers, compare plausible options, and ask about any material unresolved decision.
+1. **Pause & Micro-Brainstorm:** Pause implementation of the affected work. Clarify the underlying goal, inspect consequences and callers, compare plausible options, and ask about any material unresolved decision. Re-check the depth tier and escalate to `Deep` if a trigger now applies.
 2. **Update `01-requirements.md` In Place:** Replace superseded statements in place so `01-requirements.md` expresses one coherent current truth; preserve stable IDs where behavior remains the same and retire superseded requirements clearly.
-3. **Update `03-roadmap.md` & `00-status.md` (No Unstructured Amendment Footers):** Never dump new scope into an untracked footer at the bottom of `03-roadmap.md`. If an earlier task was superseded, mark its replaced lines as `~(Superseded by Task N)~` (or collapse a fully superseded task heading to `## Task X: <Name> — ~(Superseded by Task N)~`) and add a proper numbered `Task N: <Short Slug>` using the canonical five-part task anatomy in `03-roadmap.md` and a matching row in `00-status.md`.
+3. **Update `03-roadmap.md` & `00-status.md` (No Unstructured Amendment Footers):** Never dump new scope into an untracked footer at the bottom of `03-roadmap.md`. If an earlier task was superseded, mark its replaced lines as `~(Superseded by Task N)~` (or collapse a fully superseded task heading to `## Task X: <Name> — ~(Superseded by Task N)~`) and add a proper numbered `Task N: <Short Slug>` using the canonical five-part task anatomy in `03-roadmap.md` and a matching row in `00-status.md`. Update `05-traceability.md` the same way: mark retired IDs `Superseded` and add rows for new `AC`/`BR` IDs.
 4. **Dirty Tree Check:** Inspect read-only `git status` and `git diff`. If uncommitted code from a discarded approach conflicts with the new direction, list the affected files and ask the user to stash or discard them manually before writing new code.
 5. **Confirm & Resume:** Summarize the change and revised plan concisely in chat and stop for user approval before implementing newly scoped work.
 

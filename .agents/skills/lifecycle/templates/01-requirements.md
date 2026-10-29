@@ -5,9 +5,15 @@ DOCUMENT FORMATTING & SINGLE-TRUTH RULES (STRICT):
 - SCANNABLE SUB-BULLETS: Keep bullets concise (1 line = 1 atomic detail). Avoid multi-sentence prose walls inside bullets.
 - NO CONTRADICTIONS: When a requirement or UX decision changes, replace superseded lines in place across all sections so this file always reflects a single coherent truth.
 - VISIBLE TO ALL: Never hide active requirements, acceptance criteria, or touchpoints in HTML comments or collapsed tags.
+- EVIDENCE LABELS: Tag material statements as [Fact] (cite `path:line`, command, or URL), [Decision] (user-approved), [Assumption], [Recommendation], or [Open]. Untagged lines are routine requirement text. Never tag [Fact] without a source.
+- RATIONALE: One optional `Why:` line (max 2 sentences) is allowed under a requirement or decision. It is the only prose allowed inside a bullet.
 -->
 
 > **Quick read:** <In 2–4 short lines, explain the problem, who is affected, the intended outcome, and the scope boundary. Keep this summary high-level; detailed behavior belongs below.>
+>
+> **Depth tier:** `<Light / Standard / Deep>` — <trigger(s) that set it, or "no Deep trigger applies">
+>
+> **Needs your decision:** <`None — ready for sign-off`, or 1 line per open user-owned decision: topic → link to Section 5 / 9 → recommended default>
 
 ---
 
@@ -16,8 +22,8 @@ DOCUMENT FORMATTING & SINGLE-TRUTH RULES (STRICT):
 ## 1. Problem, Outcome & User Flow
 
 - **Problem:**
-  - <The user or operational pain point, not just the requested implementation>
-  - <Why current behavior or UX falls short>
+  - [Fact] <The user or operational pain point, not just the requested implementation> (source: `path:line` or user report)
+  - [Fact] <Why current behavior or UX falls short> (source)
 - **Desired outcome:**
   - <What should become possible or improve>
 - **Users & context:**
@@ -49,6 +55,7 @@ Write requirements as observable capabilities and acceptance criteria as indepen
 
 - **REQ-1 — <Capability>:**
   - <1-line summary of what the system must do and for whom>
+  - Why: <Optional — max 2 sentences on the user need behind this requirement>
   - **AC-1.1:** <Observable binary pass/fail condition>
   - **AC-1.2:** <Observable binary pass/fail condition>
 - **REQ-2 — <Capability>:**
@@ -89,7 +96,21 @@ Record decisions that materially affect behavior, architecture, risk, or future 
   - Consequences & risks: <Material side effects, failure cases, compatibility, or future costs>
   - Confidence & evidence: <What was verified and what could change the decision>
 
-List assumptions explicitly when they influence implementation. Ask the user instead of recording an assumption when the unresolved choice materially affects business behavior, authorization, financial/data outcomes, destructive operations, or the user experience.
+### Pre-mortem (Deep tier only)
+
+Assume the change shipped and failed. List the top 3 causes and map each to a mitigation. Omit this block for Light and Standard.
+
+- **PM-1 — <Failure cause>:**
+  - Likelihood / impact: `Low` / `Medium` / `High`
+  - Mitigated by: <`Task N` and/or `AC-X.Y` / `BR-X`> — or `Risk accepted by user (<date>)`
+- **PM-2 — <Failure cause>:**
+  - Likelihood / impact: `Low` / `Medium` / `High`
+  - Mitigated by: <`Task N` and/or `AC-X.Y` / `BR-X`> — or `Risk accepted by user (<date>)`
+- **PM-3 — <Failure cause>:**
+  - Likelihood / impact: `Low` / `Medium` / `High`
+  - Mitigated by: <`Task N` and/or `AC-X.Y` / `BR-X`> — or `Risk accepted by user (<date>)`
+
+List assumptions explicitly as `[Assumption]` lines when they influence implementation. Ask the user instead of recording an assumption when the unresolved choice materially affects business behavior, authorization, financial/data outcomes, destructive operations, or the user experience.
 
 ## 6. Impact, Reusable Code & Dependencies
 
@@ -131,7 +152,7 @@ Include only meaningful ideas explicitly excluded from the current outcome. Expl
 
 Keep this section visible (showing `*(None - all resolved)*` when empty, or listing active items) so new questions or research items can be added and resolved at any stage before advancing.
 
-- **Question / uncertainty:** <Specific issue (or `*(None - all resolved)*`)>
+- **[Open] Question / uncertainty:** <Specific issue (or `*(None - all resolved)*`)>
   - Why it matters: <How the answer may change the solution>
   - Owner: `User` / `Agent` / `External`
   - Blocking: `Yes` / `No`

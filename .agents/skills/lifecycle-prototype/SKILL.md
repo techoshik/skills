@@ -59,10 +59,10 @@ An `option-3.html` may be added when it contributes a real alternative. For a fo
 
 ## Step 3: Assemble the Prototype Hub
 
-1. Use [Prototype Hub Template](../lifecycle/templates/02-prototype.html) as the starting point when a hub is useful.
+1. Use [Prototype Hub Template](../lifecycle/templates/02-prototype.html) as the starting point when a hub is useful. Fill its `Needs your decision` banner with the choice being asked.
 2. Ensure every visible option control points to the correct existing file; remove unused placeholder buttons and frames.
 3. Add concise descriptions of the actual trade-offs between options.
-4. Add modular Mermaid diagrams only for non-trivial flows (`5–10` nodes max per sub-flow). Keep each diagram small enough to read and split a complex process into meaningful subflows.
+4. Add modular Mermaid diagrams only for non-trivial flows (`5–10` nodes max per sub-flow). Keep each diagram small enough to read and split a complex process into meaningful subflows. Mermaid loads from a CDN; offline, the hub shows the diagram source as text, so keep node labels readable as plain text.
 5. Open or otherwise validate the generated HTML where the environment supports it. Report if browser verification is unavailable rather than claiming the prototype was tested.
 
 **Gate:** The hub opens, links to valid prototype files, and displays the intended alternatives/diagrams.
@@ -80,11 +80,11 @@ An `option-3.html` may be added when it contributes a real alternative. For a fo
 ## Step 5: User Review and Handoff
 
 1. Set Prototype to `In Review` and update the Resume Checkpoint in `00-status.md`.
-2. In chat, link to `lifecycle/02-prototype.html` and summarize in plain bullets (no chat tables or raw Mermaid):
-   - What decision the prototype is intended to resolve.
-   - The meaningful difference and trade-off of each option.
-   - Any important state, risk, or question that needs feedback.
-3. Invite the user to select an option, combine elements, request a simpler approach, or reject all options.
+2. Present the Approval Request block (Section 4 of [`lifecycle/SKILL.md`](../lifecycle/SKILL.md)), linking `lifecycle/02-prototype.html`, in plain bullets (no chat tables or raw Mermaid):
+   - **What I did:** The decision the prototype is meant to resolve and the options built.
+   - **What to check:** The meaningful trade-off of each option and any state, risk, or question that needs feedback.
+   - **What I need from you:** Select an option, combine elements, request a simpler approach, or reject all options.
+3. Keep the `Needs your decision` line in `01-requirements.md` pointing at this choice until it is answered.
 4. Stop and wait for the user's choice where approval is required.
 5. After selection, record the chosen design under `## 4. Selected UI/UX Specification` in `01-requirements.md`, replace any outdated behavior in Section 1 and Section 2 in place, verify consistency, mark Prototype `Done` in `00-status.md`, update the Resume Checkpoint, read [`lifecycle-roadmap/SKILL.md`](../lifecycle-roadmap/SKILL.md), and auto-advance to Roadmap.
 

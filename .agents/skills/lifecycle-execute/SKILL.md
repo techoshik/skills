@@ -14,12 +14,12 @@ Implement one active task from `lifecycle/03-roadmap.md` at a time. Follow appro
 - **Understand before editing:** Trace the existing behavior and relevant callers. Know why the change is needed, what must remain unchanged, and how success will be verified.
 - **Approved scope is the boundary:** Do not jump ahead to future tasks. If implementation reveals a necessary unlisted file or behavior, inspect the need and update the roadmap/status before expanding scope. Ask the user before material behavior, architecture, data, security, or scope changes.
 - **Never make consequential assumptions:** If missing information changes business behavior, permissions, financial/data results, deletion/migration, user experience, or irreversible behavior, pause and ask. For routine low-risk details, follow established project conventions.
-- **Follow project rules:** Use canonical architecture, UI components/tokens, naming, file placement, and security rules. Treat hard limits in project rules as hard limits; treat general size guidance as a reason to evaluate, not to perform unrelated refactoring.
+- **Follow project rules:** Use canonical architecture, UI components/tokens, naming, file placement, and security rules. Treat hard limits in project rules (including the file-size hard limit) as hard limits; treat evaluate thresholds as a reason to evaluate, not to perform unrelated refactoring. A task that would push a file past the hard limit stops and goes back to Roadmap.
 
 ## Step 1: Select and Re-anchor the Active Task
 
 1. Read `00-status.md`, its Resume Checkpoint, and `03-roadmap.md`. Confirm Roadmap is `Done` and identify the active `In Progress` task (or first `Todo` task).
-2. Confirm the task's outcome, dependency, touchpoints, acceptance criteria, constraints, and verification steps. Trace them back to `01-requirements.md` by ID.
+2. Confirm the task's outcome, dependency, touchpoints, acceptance criteria, constraints, and verification steps. Trace them back to `01-requirements.md` by ID. At `Deep` tier, also re-read the pre-mortem items (`PM-n`) listed under the task’s rules and constraints.
 3. If the plan conflicts with approved requirements, current code, or a project rule, do not guess which source to prefer. Identify the conflict, gather the evidence, and route it back through the relevant phase before proceeding.
 4. Set the selected task to `In Progress` and update the Resume Checkpoint with the immediate next action.
 
@@ -55,6 +55,7 @@ Evaluate the implementation against these gates and correct failures before hand
 3. **Business rules and safety:** Relevant BRs, permissions, tenancy, validation, data integrity, lifecycle, and failure behavior remain correct.
 4. **Architecture and scope:** File placement, naming, shared components, callers, and project rules are respected; no unintended behavior or unrelated cleanup was introduced.
 5. **Automated verification:** Run the exact applicable test/analyzer commands from the roadmap and record the actual results.
+6. **Pre-mortem coverage (Deep tier only):** Each `PM-n` assigned to this task has a test, check, or manual step that exercises it; report that result alongside the others.
 
 ### Evidence rules
 
@@ -71,7 +72,7 @@ Evaluate the implementation against these gates and correct failures before hand
 ## Step 5: Human Review and Handoff
 
 1. Update the Resume Checkpoint in `00-status.md` with files changed, checks and exact outcomes, known limitations, and next action. Set the active task to `In Review`.
-2. Present a concise 4-bullet handoff in chat (linking to `lifecycle/03-roadmap.md`, no chat tables):
+2. Present the handoff using the Approval Request block (Section 4 of [`lifecycle/SKILL.md`](../lifecycle/SKILL.md)), linking `lifecycle/03-roadmap.md`, no chat tables. Fill the block from the four items below: **What I did** = Outcome + Changed Files + Verification Evidence; **What to check** = Human Verification Gate; **What I need from you** = approval plus any open risk or decision:
    - **Outcome:** What capability now works.
    - **Changed Files:** Exact source and test files created, updated, or deleted.
    - **Verification Evidence:** Exact analyzer and test commands run and their `Passed` / `Failed` / `Not Run` outcomes.

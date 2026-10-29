@@ -14,12 +14,12 @@ Finalize only the reviewed implementation. Preserve durable product knowledge, i
 - **Keep one authoritative home per detail:** Module README summarizes scope, models, dependencies, and links; feature docs explain detailed workflows, invariants, and architecture. Link instead of repeating.
 - **Preserve managed rule regions:** In consumer projects, do not edit inside `<!-- lifecycle:guideline:start ... -->` markers. Add local rules below `<!-- lifecycle:guideline:end -->` or use the project-local rule mechanism.
 - **Manual Git only:** Never run `git add`, `git commit`, `git push`, or `gh pr create`.
-- **Preserve lifecycle work by default:** Requirements, prototypes, roadmaps, and refinement records may be valuable review evidence. Do not delete or archive them without explicit user approval of the action and destination.
+- **Preserve lifecycle work by default:** Requirements, prototypes, roadmaps, traceability, and refinement records may be valuable review evidence. Do not delete or archive them without explicit user approval of the action and destination.
 
 ## Step 1: Entry Gate and Artifact Collection
 
-1. Read `00-status.md`, the Resume Checkpoint, `01-requirements.md`, `03-roadmap.md`, and `04-refine.md`. Confirm Review is `Done`, then set Finalize to `In Progress`.
-2. Confirm the final code was reviewed and record any known failed/not-run tests or remaining risks. Do not describe them as passed or resolved.
+1. Read `00-status.md`, the Resume Checkpoint, `01-requirements.md`, `03-roadmap.md`, `04-refine.md`, and `05-traceability.md`. Confirm Review is `Done`, then set Finalize to `In Progress`.
+2. Confirm the final code was reviewed and record any known failed/not-run tests or remaining risks. Do not describe them as passed or resolved. Carry every non-`Verified` row from `05-traceability.md` into the handoff’s known limitations.
 3. Identify the affected module(s), permanent docs, glossary entries, and managed rule files.
 
 **Gate:** The reviewed end state and any verification limitations are known.
@@ -116,6 +116,7 @@ Prepare a copyable PR/handoff description using the structure below. Populate ev
   - Prerequisites / Environment Setup: <Test role, seed data, or emulator setup>
   - Action: <Steps performed>
   - Expected: <Observable result and whether verified>
+- **Traceability:** <n>/<total> acceptance criteria and <n>/<total> business rules `Verified` — <gaps and dispositions, or "none">
 
 ## 4. Business Rules & Known Limitations
 - **BR-1 (`<Rule Name>`):** <1-line invariant>
@@ -130,7 +131,7 @@ Do not invent PR URLs, claim a merge occurred, or imply tests passed without evi
 
 1. Inspect read-only `git status --short` and confirm what temporary lifecycle files remain, including untracked or uncommitted work.
 2. Update the Resume Checkpoint and set Finalize to `In Review`.
-3. Present links to updated permanent docs, verified rule/skill improvements, the handoff summary, and any residual limitations.
+3. Present the Approval Request block (Section 4 of [`lifecycle/SKILL.md`](../lifecycle/SKILL.md)): **What I did** = links to updated permanent docs and verified rule/skill improvements; **What to check** = the handoff summary and any residual limitations; **What I need from you** = the artifact decision in the next item.
 4. Ask the user to choose what should happen to `lifecycle/`: **keep it in place**, **archive it to a specific location**, or **delete it**. State that preservation is the default and list the artifacts that would be moved/deleted. Do not infer permission to delete from approval of the feature or of Finalize.
 5. Stop and wait for explicit approval of the cleanup action. If the destination or deletion scope is unclear, ask before acting.
 6. After approval, perform only the authorized action, verify the resulting paths, and never remove unrelated or uncommitted user files. Then mark Finalize `Done` and update the checkpoint.

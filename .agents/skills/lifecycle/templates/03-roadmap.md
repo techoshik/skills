@@ -3,11 +3,13 @@
 <!--
 DOCUMENT FORMATTING & SYNC RULES (STRICT):
 - SCANNABLE SUB-BULLETS: Keep bullets concise (1 line = 1 atomic detail). Avoid multi-sentence prose walls.
-- CANONICAL FILE PLACEMENT: Verify every new file path under Touchpoints against `.agents/rules/` folder/naming conventions (e.g. `<module>_validator.dart`, 4-tier widget placement) before finalizing.
+- CANONICAL FILE PLACEMENT: Run each applicable `.agents/rules/` file’s Roadmap placement check against every new file path under Touchpoints before finalizing.
 - MID-FLIGHT PIVOTS: Never dump new scope into an untracked footer. Collapse any fully superseded task to a single heading line (`## Task X: <Name> — ~(Superseded by Task N)~`) and add a numbered `Task N` here and in `00-status.md`.
 -->
 
 > **Quick read:** <1–2 lines stating the overall implementation strategy, total vertical slices, and key architectural trade-off.>
+>
+> **Needs your decision:** <`None — ready for sign-off`, or 1 line per open user-owned decision: topic → link → recommended default>
 
 - **Applicable project rules:** `.agents/rules/<rule>.md`
 
@@ -46,7 +48,8 @@ Map each product criterion to `01-requirements.md`. Separate human-readable beha
 
 ### 4. Rules and constraints
 - **BR-1 (`<Rule Name>`):** <Single-line module, validation, or permission invariant enforced in this slice>
-- **Project constraint:** <1-line architectural constraint specific to the touched files, e.g. `<module>_validator.dart` placement, `<500` lines>
+- **Project constraint:** <1-line architectural constraint specific to the touched files, e.g. a placement rule or the file-size hard limit from `.agents/rules/`>
+- **Pre-mortem coverage (Deep tier only):** `PM-1` — <what in this task mitigates it> <!-- Omit for Light and Standard. -->
 
 ### 5. Human verification gate
 - **Prerequisites / Environment Setup:**

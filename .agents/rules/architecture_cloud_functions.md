@@ -43,11 +43,13 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   - Serialize outgoing Firestore timestamps back to the agreed JSON shape.
 - Invalid timestamps or protected enum values MUST yield typed validation failures—NEVER permissive fallback defaults or server current time.
 
-## Concurrency, Atomicity & File Sizing
+## Concurrency, Atomicity & File-Size Thresholds
 - **Multi-Document Writes:** MUST use atomic operations (Transactions via `runTransaction`, Batched Writes via `batch.commit()`) to prevent partial failures.
 - **Optimistic Concurrency:** Updates to mutable entities MUST utilize optimistic concurrency (`expectedRevision` / `revision`) to prevent lost updates from concurrent writers.
 - **Idempotency:** Non-idempotent operations MUST implement idempotency keys or transaction checks to prevent duplicate execution.
-- **The 500-Line Soft Ceiling:** Handwritten backend files SHOULD NOT exceed ~500 lines. Split along natural module seams (separate use cases, dedicated validators, modular adapters).
+- **File-Size Thresholds (single definition — every lifecycle skill and template refers here):**
+  - *Evaluate threshold — 400 lines:* A handwritten backend file above this MUST be evaluated for a split along natural module seams (separate use cases, dedicated validators, modular adapters) before more code is added.
+  - *Hard limit — 500 lines:* A handwritten backend file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `01-requirements.md` Section 5.
 
 ## Error Handling, Logging & Secrets
 - **Safe Error Mapping:** Map module and technical errors once to safe `HttpsError` responses at the callable boundary. Raw database exceptions, stack traces, storage errors, or internal service errors MUST NEVER be returned to clients.

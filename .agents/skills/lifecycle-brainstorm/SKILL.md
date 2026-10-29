@@ -15,7 +15,7 @@ Follow the five steps below. Keep the existing Brainstorm approval gate.
 - **Investigate before asking:** Inspect existing module docs, relevant source/tests, `.agents/rules/`, `GLOSSARY.md`, and callers first. Do not ask the user to supply facts that can be found reliably in the repository.
 - **Facts are not decisions:** Existing behavior is evidence, not automatic proof of intended behavior. A historical pattern does not grant permission to preserve a confusing UX or to choose a business rule.
 - **Challenge constructively:** Look for simpler user journeys, existing reusable capabilities, duplicate flows, obsolete paths, unnecessary states, and avoidable changes. Do not refactor unrelated code merely because it looks imperfect.
-- **Comprehension over brevity:** Put the decision-critical summary first. Use concise bullets for requirements and constraints, and short prose when it explains a rationale more clearly. Never omit a material edge case solely to shorten the file.
+- **Comprehension over brevity:** Put the decision-critical summary first. Use concise bullets for requirements and constraints, and a `Why:` line (max 2 sentences) when a rationale needs explaining. Never omit a material edge case solely to shorten the file.
 
 ## Step 1: Initialize or Resume
 
@@ -40,6 +40,14 @@ Before asking the first question, inspect the relevant system:
 5. Use web research when current external APIs, dependency behavior, platform requirements, security guidance, or established UX patterns materially affect the solution. Summarize findings and cite useful sources in the artifact or conversation.
 6. Record the important reusable building blocks, directly modified files, and 2nd-order caller ripple impacts once in `## 6. Impact, Reusable Code & Dependencies` of `01-requirements.md` using `File:` and `Description:` sub-bullets under each component. Do not paste raw search dumps into the requirements document.
 
+### Assign the depth tier
+
+After the pre-flight research, set the depth tier using [Depth tiers](../lifecycle/SKILL.md#depth-tiers) in the orchestrator.
+
+- Name each Deep trigger you found, or state that none applies.
+- Record the tier and triggers in the `Depth tier` line of `01-requirements.md` and in the Resume Checkpoint of `00-status.md`.
+- For `Deep`, complete the full decision record and the pre-mortem (`PM-n`) in Section 5 before asking for approval.
+
 ### Deep decision method
 
 For each **consequential or ambiguous** design/technical choice, prepare a compact decision comparison:
@@ -51,7 +59,7 @@ For each **consequential or ambiguous** design/technical choice, prepare a compa
 - **Recommendation:** Name the best-supported option and why it wins against the strongest alternative.
 - **Confidence/evidence:** State what was verified and what could change the recommendation.
 
-Then challenge the leading option: identify at least one plausible counterexample or failure path. Do not create a long analysis for trivial, reversible choices. A decision summary must show the substance of the evaluation; merely listing options is not sufficient.
+Then challenge the leading option: identify at least one plausible counterexample or failure path. At `Deep` tier, use the pre-mortem in `01-requirements.md` Section 5 instead of a single counterexample. Do not create a long analysis for trivial, reversible choices. A decision summary must show the substance of the evaluation; merely listing options is not sufficient.
 
 **Gate:** The relevant code path, existing conventions, callers, constraints, and meaningful simplification opportunities are understood well enough to ask focused questions.
 
@@ -109,13 +117,14 @@ For a bug fix or refactor, establish the actual root cause and capture `Current 
 
 Write `01-requirements.md` from [Requirements Template](../lifecycle/templates/01-requirements.md), organized into **Part 1 (Product & UX Specification)** and **Part 2 (Technical & Agent Reference)**:
 
-- Start with the **Quick read** summary and Section 1 (`Problem, Outcome & User Flow`) so the reader understands the feature in about 30 seconds, using `Before:` and `After:` sub-bullets under `Experience delta`.
+- Start with the **Quick read** summary, the `Depth tier` line, the `Needs your decision` line, and Section 1 (`Problem, Outcome & User Flow`) so the reader understands the feature in about 30 seconds, using `Before:` and `After:` sub-bullets under `Experience delta`.
 - Give each required behavior a stable `REQ-X` ID and each independently testable criterion an `AC-X.Y` ID in Section 2.
 - Put non-negotiable business, permission, lifecycle, concurrency, and data-integrity constraints in crisp 1-line `BR-X` rules in Section 3.
-- Record consequential decisions in Section 5 with status (`Confirmed`, `Proposed`, or `Needs User Decision`), the chosen/recommended approach, key alternative(s), why the option wins, and material consequences/risks. Do not create a decision record for every routine coding choice.
+- Record consequential decisions in Section 5 with status (`Confirmed`, `Proposed`, or `Needs User Decision`), the chosen/recommended approach, key alternative(s), why the option wins, and material consequences/risks. Do not create a decision record for every routine coding choice. At `Deep` tier, also complete the **Pre-mortem** block (`PM-n`) in Section 5.
 - In Section 6 (`Impact, Reusable Code & Dependencies`), group code touchpoints into **Reusable Code (Use As-Is)**, **Affected Code (Direct Modifications)**, and **Caller Ripple Effects (2nd-Order Impact)**, showing `File:` and `Description:` as sub-bullets under each component. Keep implementation task breakdown in `03-roadmap.md` rather than duplicating a task plan here.
 - Stage new or clarified module terms in Section 7 (`Glossary Updates`) and move distinct future capabilities into Section 8 (`Deferred Scope`). Deferred scope must be genuinely outside the approved outcome; never move essential validation, safety, permission behavior, error recovery, or necessary migration work to future scope merely to make the current plan shorter.
 - Keep Section 9 (`Open Questions & Research`) visible throughout the lifecycle (showing `*(None - all resolved)*` when empty) and distinguish **confirmed facts**, **user decisions**, **assumptions**, and **unresolved questions** when that distinction affects implementation.
+- Tag material statements with the evidence labels defined in the orchestrator (`[Fact]` with a source, `[Decision]`, `[Assumption]`, `[Recommendation]`, `[Open]`), and keep the `Needs your decision` line in sync with Sections 5 and 9.
 
 Keep each requirement and acceptance criterion clear enough that two people could independently agree whether it passes. Do not duplicate detailed behavior in the overview and then repeat it verbatim in several other sections.
 
@@ -133,11 +142,16 @@ Check the artifact and evidence before requesting approval:
 - [ ] User-owned decisions are approved or explicitly marked as blockers; assumptions are labelled.
 - [ ] Requirements and constraints use scannable sub-bullets (`1 line = 1 atomic detail`) with zero internal contradictions or duplicate lists.
 - [ ] Open Questions & Research in Section 9 are resolved (or explicitly flagged if blocking).
+- [ ] The depth tier and its triggers are recorded; for `Deep`, every pre-mortem item is mapped to a task/AC/BR or explicitly accepted by the user.
+- [ ] The `Needs your decision` line matches Sections 5 and 9.
 
 Then:
 
 1. Record meaningful process friction in `lifecycle/04-refine.md`.
 2. Update the Resume Checkpoint in `lifecycle/00-status.md` and set Brainstorm to `In Review`.
-3. Give a concise summary in chat (no chat tables): problem/outcome, key recommendation or decision, material risk/open decision, and link to `lifecycle/01-requirements.md`.
+3. Present the Approval Request block (Section 4 of [`lifecycle/SKILL.md`](../lifecycle/SKILL.md)) — no chat tables:
+   - **What I did:** Problem/outcome and the key recommendation or decision.
+   - **What to check:** Link to `lifecycle/01-requirements.md`, the depth tier, and the single riskiest requirement or open decision.
+   - **What I need from you:** Open user-owned decisions, plus the Prototype recommendation from the next item.
 4. Recommend Prototype for non-trivial user-facing screen or workflow changes. Recommend `Skipped` only for minor, clearly patterned UI edits or strictly non-visual work, with a one-line reason.
 5. Stop for user approval. After approval, set Brainstorm to `Done` (and Prototype to `Skipped` if accepted) in `00-status.md`, read [`lifecycle-prototype/SKILL.md`](../lifecycle-prototype/SKILL.md) (or [`lifecycle-roadmap/SKILL.md`](../lifecycle-roadmap/SKILL.md) if skipped), and auto-advance.

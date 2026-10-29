@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > **MANDATORY FRONTEND RULES — STRICT ENFORCEMENT**
-> Every requirement is a strict system invariant. Creating `StatefulWidget`, bypassing Direct Client SDK, exceeding the 500-line ceiling, embedding queries in UI, or placing display logic in widgets is STRICTLY PROHIBITED. Production access or deployment requires explicit user authorization; use emulators/dev environments for automated testing.
+> Every requirement is a strict system invariant. Creating `StatefulWidget`, bypassing Direct Client SDK, exceeding the 500-line hard limit, embedding queries in UI, or placing display logic in widgets is STRICTLY PROHIBITED. Production access or deployment requires explicit user authorization; use emulators/dev environments for automated testing.
 
 ## Direct Firebase Client SDK First (Hard Invariant)
 Application clients MUST interact directly with Firestore and Firebase Storage via Client SDK protected by server-side `firestore.rules`.
@@ -33,8 +33,11 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
   - Scroll/tab: `useScrollController()`, `useTabController(...)`.
   Hooks automatically dispose resources on unmount, eliminating memory leaks.
 
-## 4-Tier Placement & 500-Line Soft Ceiling
-- **The 500-Line Ceiling:** Handwritten code files SHOULD NOT exceed ~500 lines (UI files target ~300–400 lines). When approaching 500 lines, split along natural module seams. Generated files (`*.g.dart`, `*.freezed.dart`) are exempt.
+## 4-Tier Placement & File-Size Thresholds
+- **File-Size Thresholds (single definition — every lifecycle skill and template refers here):**
+  - *Evaluate threshold — 400 lines:* A handwritten file above this MUST be evaluated for a split along natural module seams before more code is added (UI files target ~300–400 lines).
+  - *Hard limit — 500 lines:* A handwritten file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `01-requirements.md` Section 5.
+  - Generated files (`*.g.dart`, `*.freezed.dart`) are exempt.
 - **4-Tier Placement Rule:**
   - *Tier 1 (Same File — Default):* Feature child widgets MUST be private classes (`class _SectionCard extends StatelessWidget`) in the same feature file to preserve locality of reference.
   - *Tier 2 (Feature Sub-Widgets):* Extract to `features/<feature>/widgets/<widget>.dart` ONLY if independently complex (>150 lines) and the main file exceeds ~350 lines. Do not create `widgets/` by default.
@@ -88,8 +91,29 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 
 ## Pre-Handoff Self-Review
 Before declaring any task ready for human review:
-1. **Rule Check:** Verify compliance against this document (`StatefulWidget` ban, Direct SDK First, 500-line ceiling, `<module>_validator.dart` placement).
+1. **Rule Check:** Verify compliance against this document (`StatefulWidget` ban, Direct SDK First, 500-line hard limit, `<module>_validator.dart` placement).
 2. **Simplicity:** Remove dead code, redundant transformations, debug logs (`print`, `debugPrint`), and pass-through abstractions.
 3. **Behavior & Concurrency:** Verify error propagation, async state cleanup, and null-safety.
 4. **Automated Verification:** Run `flutter analyze` (0 issues) and `flutter test` (100% passing).
 5. **Diff Hygiene:** Inspect `git diff` to ensure changes touch only authorized task files.
+
+## Lifecycle Checklists
+
+The generic lifecycle skills delegate stack-specific checks to these lists. Apply every item that is relevant to the change.
+
+### Roadmap placement check (used by `lifecycle-roadmap`)
+- Every new file path matches the Folder Structure above (`<module>_repository.dart`, `<module>_navigation.dart`, `<module>_validator.dart`, `features/<feature>/`, etc.).
+- Validation, eligibility filtering, and business-rule calculations are planned into `modules/<module>/<module>_validator.dart` — never into ad-hoc `*_filter.dart` / `*_helper.dart` files.
+- Widget placement follows the 4-Tier rule (private same-file → feature `widgets/` → module `widgets/` → `core/widgets/`).
+- Any target file above the 400-line evaluate threshold has a prefactor decision (a `P0` task or a recorded reason).
+- No planned change leaves a handwritten file above the 500-line hard limit.
+- Verification commands: `flutter analyze` and `flutter test` (targeted paths per task).
+
+### Review hygiene checklist (used by `lifecycle-review`)
+- Deleted or consolidated screens/widgets are removed from barrel `index.dart` exports, route constants, `<module>_navigation.dart`, callers, and tests.
+- No `print` / `debugPrint` remains in product code.
+- No `StatefulWidget`, `ConsumerWidget`, or standalone `HookWidget` classes; no `showDialog` / `AlertDialog` / `ScaffoldMessenger` / `SnackBar`.
+- No hardcoded colors, padding, or static heights; design-system components and theme tokens are used.
+- Intra-module duplicates are consolidated into the module's `widgets/` (Tier 3); prefer existing `core/widgets/` components; ask the user before changing shared `core/` files used by unrelated modules.
+- No handwritten file is above the 500-line hard limit.
+- Global verification commands: `flutter analyze` (target 0 issues) and `flutter test`.
