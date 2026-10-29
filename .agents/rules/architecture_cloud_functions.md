@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > **MANDATORY BACKEND RULES — STRICT ENFORCEMENT**
-> Creating Cloud Functions for standard CRUD operations is STRICTLY PROHIBITED. All Firestore reads/writes must use Client SDK backed by Security Rules unless satisfying the 5 explicit exception criteria.
+> Creating Cloud Functions for standard CRUD operations is STRICTLY PROHIBITED. All Firestore reads/writes must use Client SDK backed by Security Rules unless satisfying the 5 explicit exception criteria. Production access or deployment requires explicit user authorization; use emulators/dev environments for automated testing.
 
 ## Direct Firebase Client SDK First & Permitted Scope
 Clients MUST communicate directly with Firestore and Firebase Storage via Client SDK protected by server-side `firestore.rules`.

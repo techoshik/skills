@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > **MANDATORY FRONTEND RULES — STRICT ENFORCEMENT**
-> Every requirement is a strict system invariant. Creating `StatefulWidget`, bypassing Direct Client SDK, exceeding the 500-line ceiling, embedding queries in UI, or placing display logic in widgets is STRICTLY PROHIBITED.
+> Every requirement is a strict system invariant. Creating `StatefulWidget`, bypassing Direct Client SDK, exceeding the 500-line ceiling, embedding queries in UI, or placing display logic in widgets is STRICTLY PROHIBITED. Production access or deployment requires explicit user authorization; use emulators/dev environments for automated testing.
 
 ## Direct Firebase Client SDK First (Hard Invariant)
 Application clients MUST interact directly with Firestore and Firebase Storage via Client SDK protected by server-side `firestore.rules`.
