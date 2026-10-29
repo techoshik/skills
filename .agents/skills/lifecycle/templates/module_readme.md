@@ -1,4 +1,4 @@
-# Module: <Module Domain Name>
+# Module: <Module Name>
 
 <!-- 
 DOCUMENT FORMATTING RULE (STRICT):
@@ -6,12 +6,12 @@ DOCUMENT FORMATTING RULE (STRICT):
 - Break concepts, schemas, and dependencies into short, scannable nested sub-bullets (1 line = 1 atomic detail).
 -->
 
-## 1. Purpose & Business Domain
-- <1-line summary of what business domain and core responsibility this module owns>
+## 1. Purpose & Module Scope
+- <1-line summary of what business area and core responsibility this module owns>
 
 ## 2. Shared Concepts & Data Models
-*Cross-reference `GLOSSARY.md` for project-wide domain language.*
-- **`<Core Model / Entity>`** (`<path/to/model.ext>`): <1-line purpose in domain>
+*Cross-reference `GLOSSARY.md` for project-wide terminology.*
+- **`<Core Model / Entity>`** (`<path/to/model.ext>`): <1-line purpose in module>
 
 ## 3. Database Collections & Storage Schemas
 - **`<collection_or_table_name>`** (`key: <e.g. auto-id, userId>`): <1-line purpose and primary indexes>

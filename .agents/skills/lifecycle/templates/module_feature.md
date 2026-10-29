@@ -21,8 +21,8 @@ DOCUMENT FORMATTING RULE (STRICT):
   - Error State: <What happens on network or validation failure>
   - Concurrency / Guard: <Debounce, lock, or disabled state behavior>
 
-## 3. Core Business Rules & Domain Invariants
-*Scoped non-negotiable domain rules governing this specific feature.*
+## 3. Core Business Rules & Module Invariants
+*Scoped non-negotiable module rules governing this specific feature.*
 - **BR-1 (`<Rule Name>`):** <1-line state, calculation, or validation law>
 - **BR-2 (`<Rule Name>`):** <1-line permission or lifecycle law>
 
@@ -37,8 +37,8 @@ DOCUMENT FORMATTING RULE (STRICT):
   - `<...Controller / ...State / ...Provider>`: <1-line responsibility>
 - **Views & UI Components:**
   - `<...Screen / ...Dialog / ...Card>`: <1-line responsibility>
-- **Data & Repositories:**
-  - `<...Repository / ...Service>`: <1-line responsibility>
+- **Data & Validators:**
+  - `<...Repository / ...Validator>`: <1-line responsibility>
 - **Routes & Navigation:**
   - `<Route name and path>`: <Guard or redirection logic if applicable>
 

@@ -34,15 +34,16 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 
 ### 1. Spec-to-Code Truth & Checkbox Integrity (`01-requirements.md` & `03-roadmap.md`)
 - Verify that every `REQ-X`, `AC-X.Y`, and `BR-X` in `01-requirements.md` holds true in the integrated code.
-- **Zero Stale Spec Contradictions:** Check `01-requirements.md` from top to bottom—if any mid-flight UX change or pivot occurred during `Execute`, ensure superseded lines in `01-requirements.md` were replaced in place and all completed `REQ-X` / `AC-X.Y` checkboxes are marked **`[x]`**.
+- **Zero Stale Spec Contradictions:** Check `01-requirements.md` from top to bottom—if any mid-flight UX change or pivot occurred during `Execute`, ensure superseded lines in `01-requirements.md` were replaced in place, all completed `REQ-X` / `AC-X.Y` checkboxes are marked **`[x]`**, and `## 9. Open Items` has zero unresolved items.
 
 ### 2. Cross-Task Seam & Integration Check
 - Trace end-to-end flows across tasks: `Input → Validation → State/Controller → Repository → UI Refresh`.
 - Verify navigation routes, deleted screen/route cleanup, and state/cache invalidations across screens.
 
-### 3. Guidelines & Diff Hygiene (`.agents/rules/`)
-- Verify `<500` lines per file, canonical folder/file naming (`<domain>_validator`, 4-tier widget placement), and framework invariants.
-- Remove all dead code, unused imports, deprecated aliases slated for removal, and debug logs (`print`, `debugPrint`, `console.log`).
+### 3. Guidelines, Orphaned Exports & Diff Hygiene (`.agents/rules/`)
+- Verify `<500` lines per file, canonical folder/file naming (`<module>_validator`, 4-tier widget placement), and framework invariants.
+- **Orphaned Exports & Routes Check:** Verify that any deleted or consolidated screens/widgets are cleanly removed from barrel `index.dart` exports, route constants, and `<module>_navigation.dart`.
+- Remove all dead code, unused imports, temporary compatibility aliases, and debug logs (`print`, `debugPrint`, `console.log`).
 
 ### 4. Security, Tenancy & Performance
 - Confirm tenant/role checks on all queries/mutations, zero N+1 queries inside loops/builders, and proper disposal of controllers/streams.
@@ -81,7 +82,7 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 3. Present a concise 5-bullet review summary in chat (linking to `01-requirements.md` and `03-roadmap.md`, no chat tables):
    - **Spec & AC Integrity:** Confirmation that code and `01-requirements.md` match 100% with all `[x]` boxes checked.
    - **Seam & Integration Check:** Cross-task flows, routes, and state updates verified.
-   - **Guidelines & Hygiene:** `<500` lines, canonical file placement, and zero dead/debug code confirmed.
+   - **Guidelines & Hygiene:** `<500` lines, canonical file placement, and zero dead/debug code or orphaned exports confirmed.
    - **Security & Performance:** Tenant/role boundaries and query efficiency confirmed.
    - **Deduplications & Test Proof:** Summary of cleanups made + global analyzer/test pass proof.
 4. **STOP** and wait for user approval. On approval, mark `Review` as **`Done`** in `00-status.md`, read [`lifecycle-finalize/SKILL.md`](../lifecycle-finalize/SKILL.md), and auto-advance to Finalize.

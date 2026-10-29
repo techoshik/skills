@@ -33,9 +33,9 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 Update permanent docs using **1-fact-per-line nested sub-bullets**:
 
 1. **Modular Module Docs (`docs/modules/<module>/`):**
-   - **Module Overview (`docs/modules/<module>/README.md`):** Create or update from [Module README Template](../lifecycle/templates/module_readme.md). Update domain models, schemas, feature index links, and append any **Deferred Requirements** from `01-requirements.md` (`## 8`) under `## 5. Scope Boundaries & Cross-Module Dependencies` (`Deferred (Future Backlog)`). If any legacy feature/screen was removed during this cycle, remove or update its stale entry in `docs/modules/<module>/`.
+   - **Module Overview (`docs/modules/<module>/README.md`):** Create or update from [Module README Template](../lifecycle/templates/module_readme.md). Update module models, schemas, feature index links, and append any **Deferred Requirements** from `01-requirements.md` (`## 8`) under `## 5. Scope Boundaries & Cross-Module Dependencies` (`Deferred (Future Backlog)`). If any legacy feature/screen was removed during this cycle, remove or update its stale entry in `docs/modules/<module>/`.
    - **Feature Spec (`docs/modules/<module>/feature_<name>.md`):** Create or update from [Feature Template](../lifecycle/templates/module_feature.md). Sync the final workflows, file touchpoints, `BR-X` business rules (`## 3`), and `Key Architectural Decisions` (`## 6`).
-2. **Domain Glossary (`GLOSSARY.md`):**
+2. **Module Glossary (`GLOSSARY.md`):**
    - Sync any staged terms from `## 7. Glossary Updates` in `01-requirements.md` into `GLOSSARY.md` alphabetically.
 3. **Public Project Docs (`README.md`):**
    - Update `README.md` only if setup instructions, env vars, or CLI flags changed.
@@ -49,6 +49,7 @@ Update permanent docs using **1-fact-per-line nested sub-bullets**:
 Review every entry in `lifecycle/04-refine.md`:
 
 1. **Target A — Project Rules (`.agents/rules/*.md`):**
+   - Only promote **generalizable architectural/module rules** (skip one-off feature notes that only apply to a single screen).
    - In consumer projects, append project-specific rules **below `<!-- lifecycle:guideline:end -->`** (or in a project-local rule file) so managed SHA-256 hashes stay intact.
    - Update `Target File Updated` in `04-refine.md`.
 2. **Target B — Upstream Skills & Universal Rules Sync:**

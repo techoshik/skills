@@ -14,16 +14,16 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
   4. *Asynchronous Triggers:* Background events (storage uploads, webhooks).
   5. *Complex Aggregations:* Multi-document batch operations exceeding Security Rules limits (10 `get()` calls).
 
-## Model-Driven UI & Dumb Presentational Widgets
-- **No UI Logic in Widgets:** Widgets are dumb renderers. Raw string manipulation, status mapping, and date formatting in UI are STRICTLY PROHIBITED. Encapsulate all display logic in domain models via getters, methods, or enum extensions (e.g. `role.displayName`).
-- **Dumb Presentational Widgets:** Child and section widgets MUST be dumb `StatelessWidget` renderers. They MUST NOT call `ref.watch`/`ref.read` or import controllers/use-cases. Pass only plain domain models, primitives, and callbacks (`VoidCallback`, `ValueChanged<T>`).
-- **Single Controller Entry:** Only root feature screens (`<feature>_page.dart`) or composite views (`<feature>_view.dart`) watch controllers and orchestrate state.
+## Model-Driven UI & Component Boundaries
+- **No UI Logic in Widgets:** Widgets are renderers. Raw string manipulation, status mapping, and date formatting in UI are STRICTLY PROHIBITED. Encapsulate all display logic in module models via getters, methods, or enum extensions (e.g. `role.displayName`).
+- **Presentational Widgets vs. Self-Contained Feature Sections:**
+  - *Reusable Presentational Widgets:* Cards, list rows, dialogs, and form controls MUST NOT call `ref.watch`/`ref.read` or import controllers/use-cases. Pass only plain module models, primitives, and callbacks (`VoidCallback`, `ValueChanged<T>`).
+  - *Root Screens & Self-Contained Feature Sections:* Root screens (`<feature>_page.dart` / `<feature>_screen.dart`), composite views (`<feature>_view.dart`), and independent module sections (`<section>_section.dart` managing their own edit/save lifecycle) may watch providers and orchestrate state directly so parent screens stay decoupled and under 500 lines.
 
-## StatelessWidget & HookWidget Only (StatefulWidget Prohibited)
-- **`StatefulWidget` is STRICTLY PROHIBITED:** Creating Flutter `StatefulWidget` and `State` classes is banned. Manual lifecycle overrides (`initState`, `dispose`) cause memory leaks and boilerplate.
-- **Two Widget Types Only:**
-  1. **`StatelessWidget`:** For dumb presentational components without local mutable state.
-  2. **`HookWidget` / `HookConsumerWidget`:** For components managing local state, controllers, or subscriptions. Use `HookWidget` by default; use `HookConsumerWidget` only when Riverpod (`WidgetRef ref`) is also required.
+## StatelessWidget & HookConsumerWidget Only (`StatefulWidget` & `HookWidget` Prohibited)
+- **Strict Two-Widget Rule:** Creating `StatefulWidget`, `State`, `ConsumerWidget`, `ConsumerStatefulWidget`, or standalone `HookWidget` classes is STRICTLY PROHIBITED. Every widget MUST use one of two base classes:
+  1. **`StatelessWidget`:** For pure presentational components with no local state, hooks, or Riverpod provider access.
+  2. **`HookConsumerWidget`:** For all screens, feature sections, and components using Flutter Hooks (`useState`, `useTextEditingController`, `useEffect`) or Riverpod (`WidgetRef ref`). Using `HookConsumerWidget` directly avoids refactoring base classes and `build(context, ref)` signatures when adding hooks or providers later.
 - **Declarative Hooks Lifecycle:** Use Flutter Hooks exclusively:
   - Text controllers: `useTextEditingController()` (never manually call `new` or `.dispose()`).
   - Local state: `useState<T>(initialValue)`.
@@ -34,7 +34,7 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
   Hooks automatically dispose resources on unmount, eliminating memory leaks.
 
 ## 4-Tier Placement & 500-Line Soft Ceiling
-- **The 500-Line Ceiling:** Handwritten code files SHOULD NOT exceed ~500 lines (UI files target ~300–400 lines). When approaching 500 lines, split along natural domain seams. Generated files (`*.g.dart`, `*.freezed.dart`) are exempt.
+- **The 500-Line Ceiling:** Handwritten code files SHOULD NOT exceed ~500 lines (UI files target ~300–400 lines). When approaching 500 lines, split along natural module seams. Generated files (`*.g.dart`, `*.freezed.dart`) are exempt.
 - **4-Tier Placement Rule:**
   - *Tier 1 (Same File — Default):* Feature child widgets MUST be private classes (`class _SectionCard extends StatelessWidget`) in the same feature file to preserve locality of reference.
   - *Tier 2 (Feature Sub-Widgets):* Extract to `features/<feature>/widgets/<widget>.dart` ONLY if independently complex (>150 lines) and the main file exceeds ~350 lines. Do not create `widgets/` by default.
@@ -45,7 +45,7 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 - **Code-Generated Providers Only:** Use code-generated Riverpod (`@riverpod` / `@Riverpod(keepAlive: true)` with `part '<file>.g.dart';`). Legacy manual providers (`StateNotifierProvider`, etc.) are BANNED.
 - **Freezed State Classes:** UI state MUST be immutable `@freezed` classes with private `const StateName._();` constructor for getters.
 - **Async Mutations:** Model mutations as nullable `AsyncValue<void>?` fields (e.g. `saveOperation`). Never use fragmented boolean flags (`isLoading`, `isSuccess`, `isError`).
-- **Primitive Family Keys:** Family provider arguments MUST be primitive IDs (`String caseId`), NEVER domain entity objects.
+- **Primitive Family Keys:** Family provider arguments MUST be primitive IDs (`String caseId`), NEVER module entity objects.
 - **Ref Usage Rules:**
   - `ref.watch`: Unconditionally at top of `build()`. NEVER inside branches, loops, or callbacks.
   - `ref.read`: Inside callbacks (`onPressed`) or controller event handlers. NEVER inside `build()`.
@@ -58,9 +58,9 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 - **Enums Over Strings:** Use Dart enums with extensions/properties for states, roles, and types.
 - **Deserialization Invariants:** Optional fields MUST specify `@Default(...)`. Non-critical enums use `@JsonKey(unknownEnumValue: ...)`. Security-critical identifiers, roles, tenant keys, and mandatory fields MUST fail closed on invalid or unrecognized values—NEVER use permissive fallbacks.
 
-## Functional Error Handling & Pure Validators
+## Functional Error Handling & Pure Module Validators
 - **Functional Results:** Repositories and use cases MUST return `Either<PlatformFailure, T>` via `fpdart`. Catch and map exceptions to `PlatformFailure` at the repository boundary. NEVER throw unhandled exceptions across architectural layers.
-- **Dedicated Pure Validators:** Validation MUST live in dedicated `Validator` classes returning `Option<String>` or error strings/enums. Validators MUST NEVER throw exceptions.
+- **Dedicated Pure Module Validators (`<module>_validator.dart`):** All pure module validation, eligibility filtering, and business-rule calculations MUST live in `modules/<module>/<module>_validator.dart` (or module model methods) returning `Option<String>`, error enums, or filtered lists. Creating ad-hoc `*_filter.dart` or `*_helper.dart` files inside `features/` is STRICTLY PROHIBITED. Validators MUST NEVER throw exceptions.
 
 ## UI & Design System Conventions
 - **Design System First:** Use design system components (`ThanksCard`, `ThanksButton`, `ThanksSpacing`). Hardcoding padding, margins, or colors is BANNED.
@@ -71,24 +71,24 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 - **Interaction Lock:** Bind `ThanksButton.isLoading` and interaction lock to the same async state; activate before the first `await`.
 - **Theming:** Use `ThanksTheme.of(context)` palette roles. Page-local `Color` literals and ad-hoc alpha (`.withOpacity()`) on status colors are BANNED.
 - **Card Radius:** Main page cards: `ThanksCardSpacing.medium`. Nested cards: small radius.
-- **Navigation Decoupling:** Route navigation MUST go through the module's `<domain>_navigation.dart` extending `ThanksNavigator`. Raw route strings (`context.go('/...')`) in widgets are BANNED.
+- **Navigation Decoupling:** Route navigation MUST go through the module's `<module>_navigation.dart` extending `ThanksNavigator`. Raw route strings (`context.go('/...')`) in widgets are BANNED.
 
 ## Folder Structure (`app/lib`)
-- **`core/`**: Universal infrastructure: `routing/`, `navigation/`, `errors/`, `validators/`, `widgets/`. No domain logic.
-- **`modules/<domain>/`**: Domain-driven feature sets:
+- **`core/`**: Universal infrastructure: `routing/`, `navigation/`, `errors/`, `validators/`, `widgets/`. No module-specific business logic.
+- **`modules/<module>/`**: Module-driven feature sets:
   - `models/`: Freezed entities, enums, DTOs, request/response contracts.
   - `use_cases/`: Business logic returning `Either<PlatformFailure, T>`. Widgets never import here.
   - `features/<feature>/`: `<feature>_page.dart` / `<feature>_view.dart`, `<feature>_state.dart`, private child widgets (Tier 1).
-  - `widgets/`: Module-shared widgets (Tier 3).
-  - `<domain>_navigation.dart`: Module route definitions extending `ThanksNavigator`.
-  - `<domain>_repository.dart`: Data persistence contracts and Firestore implementations.
-  - `<domain>_validator.dart`: Pure domain validation logic.
-  - `<domain>_constants.dart`: Collection paths and domain field names.
-  - `<domain>_providers.dart`: Public Riverpod providers for the module.
+  - `widgets/`: Module-shared widgets and self-contained sections (Tier 3).
+  - `<module>_navigation.dart`: Module route definitions extending `ThanksNavigator`.
+  - `<module>_repository.dart`: Data persistence contracts and Firestore implementations.
+  - `<module>_validator.dart`: Pure module validation, eligibility filtering, and business rules.
+  - `<module>_constants.dart`: Collection paths and module field names.
+  - `<module>_providers.dart`: Public Riverpod providers for the module.
 
 ## Pre-Handoff Self-Review
 Before declaring any task ready for human review:
-1. **Rule Check:** Verify compliance against this document (StatelessWidget/HookWidget only, Direct SDK First, 500-line ceiling, dumb presentational widgets).
+1. **Rule Check:** Verify compliance against this document (`StatefulWidget` ban, Direct SDK First, 500-line ceiling, `<module>_validator.dart` placement).
 2. **Simplicity:** Remove dead code, redundant transformations, debug logs (`print`, `debugPrint`), and pass-through abstractions.
 3. **Behavior & Concurrency:** Verify error propagation, async state cleanup, and null-safety.
 4. **Automated Verification:** Run `flutter analyze` (0 issues) and `flutter test` (100% passing).

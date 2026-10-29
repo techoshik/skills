@@ -17,8 +17,8 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 - **Mid-Flight UX / Requirement Changes (Never Hack Directly):** If the user spots a UX simplification or requests a requirement change while reviewing or running the app, **pause coding immediately** and follow Section 7 of `lifecycle/SKILL.md`:
   1. Run a quick micro-brainstorm to confirm the cleanest flow.
   2. **Update `01-requirements.md` in place** (replacing superseded outcomes, requirements, and UI specs so the file never contradicts itself).
-  3. Update `03-roadmap.md` and `00-status.md` with a proper numbered `Task N` (marking any superseded task lines with `~(Superseded by Task N)~`—never dump untracked work into an unstructured footer).
-- **Design System & Architecture Primacy:** Follow `.agents/rules/` strictly (canonical design system components/tokens, folder/naming conventions, `<500` lines, manual git boundary, no watchers).
+  3. Update `03-roadmap.md` and `00-status.md` with a proper numbered `Task N` (collapsing any fully superseded task to a single heading line `## Task X: <Name> — ~(Superseded by Task N)~`—never dump untracked work into an unstructured footer).
+- **Design System & Architecture Primacy:** Follow `.agents/rules/` strictly (canonical design system components/tokens, `<module>_validator` placement, `<500` lines, manual git boundary, no watchers).
 
 ---
 
@@ -56,7 +56,7 @@ Verify all 5 gates and fix any failure before handoff:
 
 1. **Gate 1 — Outcome Gate:** Changes deliver the exact capability in `### 1. Outcome`.
 2. **Gate 2 — Acceptance Criteria Gate:** Every condition in `### 3. Acceptance Criteria` holds.
-3. **Gate 3 — Business Rules Gate:** All mapped `BR-X` rules hold true.
+3. **Gate 3 — Business Rules Gate:** All `BR-X` rules in `### 4. Rules & Constraints` hold true.
 4. **Gate 4 — Code Guidelines Gate:** Touched files obey `.agents/rules/` (`<500` lines, canonical naming/placement, zero dead code or debug logs).
 5. **Gate 5 — Automated Verification Gate:**
    - Run the task's static analysis command (`0` issues) and test command (`100%` pass).

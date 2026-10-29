@@ -4,7 +4,7 @@
 DOCUMENT FORMATTING & SINGLE-TRUTH RULES (STRICT):
 - ONE FACT PER LINE: Never write multi-sentence paragraphs inside a bullet point. Break details into short nested sub-bullets (1 line = 1 atomic detail).
 - NO CONTRADICTIONS: If a requirement or UX decision changes at any point, REPLACE the superseded bullets in place across all sections so this file always reflects a single, coherent truth.
-- NO DUPLICATE LISTS: Keep Section 1 focused strictly on Problem and User Flow; list affected/reused code only once in Section 2, and list requirements only once in Section 3.
+- NO DUPLICATE LISTS: Keep Section 1 focused strictly on Problem and User Flow; list affected/reused code and 2nd-order caller ripple impacts only once in Section 2, and list requirements only once in Section 3.
 - CHECKBOX SYNC: Check off [x] on REQ-X and AC-X.Y items as tasks complete during Execute and verify 100% completion in Review.
 -->
 
@@ -16,12 +16,12 @@ DOCUMENT FORMATTING & SINGLE-TRUTH RULES (STRICT):
   - <Step 1 of the clean user journey across screens>
   - <Step 2 of the clean user journey (noting any redundant tabs/screens consolidated or removed)>
 
-## 2. Code & Docs Touchpoints
+## 2. Code, Callers & Docs Touchpoints
 - **Module Docs:**
   - `docs/modules/<module>/README.md`
   - `docs/modules/<module>/feature_<name>.md`
-- **Affected & Reusable Code:**
-  - **<Screen / Model / Widget / Service>** (`<path/to/file>`): <1-line role, reuse, or impact>
+- **Affected & Reusable Code (Including All Callers & Ripple Effects):**
+  - **<Screen / Model / Widget / Validator>** (`<path/to/file>`): <1-line role, reuse, or caller ripple impact>
 - **Project Rules:**
   - `.agents/rules/<rule>.md`
 
@@ -34,10 +34,10 @@ DOCUMENT FORMATTING & SINGLE-TRUTH RULES (STRICT):
   - <1-line summary of what this capability does>
   - [ ] **AC-2.1:** <Single binary testable condition>
 
-## 4. Business Rules & Domain Invariants
-*(Non-negotiable domain laws synced to `docs/modules/<module>/feature_<name>.md` in Finalize.)*
-- **BR-1 (<Rule Name>):** <Single-line domain, validation, or permission invariant>
-- **BR-2 (<Rule Name>):** <Single-line domain, validation, or permission invariant>
+## 4. Business Rules & Module Invariants
+*(Non-negotiable module laws synced to `docs/modules/<module>/feature_<name>.md` in Finalize.)*
+- **BR-1 (<Rule Name>):** <Single-line business, validation, or permission invariant>
+- **BR-2 (<Rule Name>):** <Single-line business, validation, or permission invariant>
 
 <!-- Optional: For multi-condition calculations or state transitions, use a Boundary Truth Table:
 | Condition A | Condition B | Expected Result | Rule ID |
@@ -58,11 +58,14 @@ DOCUMENT FORMATTING & SINGLE-TRUTH RULES (STRICT):
   - <1-line locked UX/state behavior>
 
 ## 7. Glossary Updates (Staged)
-- **`<Domain Term>`:** <1-line unambiguous business definition (synced to `GLOSSARY.md` in Finalize)>
+- **`<Module Term>`:** <1-line unambiguous business definition (synced to `GLOSSARY.md` in Finalize)>
 
 ## 8. Deferred Requirements (Future Scope)
 - **`<Feature Idea>`:** <1-line reason why this is out of scope for now>
 
-## 9. Open Items (Must be 100% empty at sign-off)
-- **Open Questions:** *(None - all resolved)*
-- **Open Research:** *(None - all resolved)*
+## 9. Open Items (Questions & Research)
+*(Must be resolved before advancing, but new questions or research items can be added here at any point during the lifecycle)*
+- **Open Questions:**
+  - *(None - all resolved)*
+- **Open Research:**
+  - *(None - all resolved)*

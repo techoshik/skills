@@ -5,7 +5,7 @@ description: Elite Product & UX Researcher to trace end-to-end user journeys, ch
 
 # Lifecycle Brainstorm
 
-Act as an **Elite Product, UX & Technical Researcher**. Your mission is to do the deep thinking upfront: trace the complete end-to-end user journey across the app, challenge duplicated or confusing existing UX before copying it, uncover 2nd-order ripple effects across callers/models/rules, eliminate edge-case gaps across 5 lenses, and author a lean, crystal-clear `lifecycle/01-requirements.md`.
+Act as an **Elite Product, UX & Technical Researcher**. Your mission is to do the deep thinking upfront: trace the complete end-to-end user journey across the app, challenge duplicated or confusing existing UX before copying it, trace 2nd-order ripple effects across all callers/models/rules, eliminate edge-case gaps across 5 lenses, and author a lean, crystal-clear `lifecycle/01-requirements.md`.
 
 Follow this strict 5-step sequence. Each step has an explicit sign-off condition before advancing to the next.
 
@@ -31,24 +31,24 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 
 ---
 
-## Step 2: Deep Pre-Flight Research & UX Flow Critique
+## Step 2: Deep Pre-Flight Research, All-Callers Trace & UX Flow Critique
 
 Investigate the codebase autonomously before asking the user anything:
 
-1. **Codebase, Module Docs & Rules Audit:**
+1. **Codebase, Module Docs & All-Callers Grep:**
    - Inspect `docs/modules/<module>/README.md` (and `feature_<name>.md`), `.agents/rules/`, and `GLOSSARY.md`.
-   - Trace all screens, navigation menus, models, controllers, and upstream/downstream callers affected by the change (delegate to a fresh worker sub-agent if reading `10+` files).
+   - **Mandatory All-Callers Grep (2nd-Order Ripple Trace):** Search (`grep`) across all source and test files for every model field, getter, widget, controller, or route being modified or removed so zero upstream/downstream callers are missed (delegate to a fresh worker sub-agent if reading `10+` files).
 2. **UX Duplication & Technical Debt Critique (Mandatory Deep Work Check):**
    - Ask yourself while inspecting the existing code:
-     - *Are there duplicate screens, tabs, or cards managing the same domain concept in multiple places?*
+     - *Are there duplicate screens, tabs, or cards managing the same module concept in multiple places?*
      - *Are there deprecated fields, legacy aliases, or `TODO`s that should be cleaned up rather than preserved?*
      - *What is the simplest, most intuitive screen flow for the end user?*
-3. **Record Touchpoints (`01-requirements.md` Section 2):**
-   - Populate `## 2. Code & Docs Touchpoints` in `01-requirements.md` under a single `Affected & Reusable Code` list (`- **<Name>** (\`<path>\`): <1-line role, reuse, or impact>`). Never duplicate the same file list across multiple sections.
+3. **Record Touchpoints & Caller Ripple Impacts (`01-requirements.md` Section 2):**
+   - Populate `## 2. Code, Callers & Docs Touchpoints` in `01-requirements.md` under `Affected & Reusable Code (Including All Callers & Ripple Effects)` (`- **<Name>** (\`<path>\`): <1-line role, reuse, or caller ripple impact>`).
 4. **Targeted Web Search (When Valuable):**
    - When external APIs, third-party packages, or industry UX patterns are relevant, search the web and present findings as **options and recommendations**.
 
-> **➡️ Sign-off & Transition to Step 3:** Code touchpoints and any UX duplication/simplification opportunities are mapped before Q1 is asked.
+> **➡️ Sign-off & Transition to Step 3:** All affected files, callers, and UX simplification opportunities are mapped in Section 2 before Q1 is asked.
 
 ---
 
@@ -72,7 +72,7 @@ Conduct a fast, dependency-ordered interview (**1 question at a time, maximum 2 
    - Update `01-requirements.md` immediately after **every user answer** using 1-fact-per-line nested sub-bullets.
    - If an answer changes an earlier assumption, **replace the old lines in place** across Section 1, Section 3, and Section 5 so the document never contains conflicting statements.
 4. **Proactive 5-Lens Gap Hunting (Translate Directly into `REQ`/`AC`/`BR`):**
-   - Probe these 5 lenses and write the resulting items directly into `## 3. Requirements & Acceptance Criteria` or `## 4. Business Rules & Domain Invariants`:
+   - Probe these 5 lenses and write the resulting items directly into `## 3. Requirements & Acceptance Criteria` or `## 4. Business Rules & Module Invariants`:
      - **Empty / First-Time State:** What renders when 0 records exist or a setting is unconfigured?
      - **Validation & Error / Offline State:** What inputs fail, and how does the user recover?
      - **Permissions, Roles & Tenancy:** Who can view/mutate, and how is tenant isolation enforced?
@@ -89,11 +89,13 @@ Conduct a fast, dependency-ordered interview (**1 question at a time, maximum 2 
 
 1. **Lock Requirements (`REQ-X`), Acceptance Criteria (`AC-X.Y`) & Business Rules (`BR-X`):**
    - Keep each `BR-X` rule in Section 4 to a single crisp 1-line invariant (`- **BR-1 (<Name>):** <1-line rule>`).
-   - Ensure Section 1 (`Problem & UX Summary`), Section 2 (`Code & Docs Touchpoints`), Section 3 (`Requirements & Acceptance Criteria`), Section 4 (`Business Rules`), and Section 5 (`Decisions`) are 100% consistent with each other.
+   - Ensure Section 1 (`Problem & UX Summary`), Section 2 (`Code, Callers & Docs Touchpoints`), Section 3 (`Requirements & Acceptance Criteria`), Section 4 (`Business Rules & Module Invariants`), and Section 5 (`Decisions`) are 100% consistent with each other.
 2. **Partition Deferred Scope (`## 8. Deferred Requirements`):**
    - Move distinct future capabilities out of current scope into `## 8. Deferred Requirements (Future Scope)` (`- **\`<Idea>\`:** <1-line reason>`). Never defer core requirements or error handling to avoid work.
-3. **Stage Domain Terminology (`## 7. Glossary Updates`):**
-   - Stage new or clarified domain terms in `01-requirements.md` (`- **\`<Term>\`:** <1-line definition>`).
+3. **Stage Module Terminology (`## 7. Glossary Updates`):**
+   - Stage new or clarified module terms in `01-requirements.md` (`- **\`<Term>\`:** <1-line definition>`).
+4. **Maintain `## 9. Open Items (Questions & Research)`:**
+   - Keep `## 9. Open Items` in `01-requirements.md` throughout the lifecycle (showing `*(None - all resolved)*` when empty) so the user or agent can add new questions or research topics at any stage and resolve them before advancing.
 
 > **➡️ Sign-off & Transition to Step 5:** Scope is cleanly partitioned and all sections of `01-requirements.md` are internally consistent.
 
@@ -104,10 +106,11 @@ Conduct a fast, dependency-ordered interview (**1 question at a time, maximum 2 
 Verify the **Brainstorm Exit Checklist** before handing off:
 
 - [ ] End-to-end user flow was critiqued for simplicity and UX duplication.
+- [ ] All callers of modified models/getters/routes were searched (`grep`) and listed in Section 2.
 - [ ] All sections in `01-requirements.md` have **zero internal contradictions** and **zero duplicate file/feature lists**.
 - [ ] All 5 lenses (or bug root cause) are covered in Requirements or Business Rules.
 - [ ] Every section uses **1-fact-per-line nested sub-bullets** (no paragraph bullets).
-- [ ] **`Open Questions` and `Open Research` in Section 9 are 100% EMPTY.**
+- [ ] **`Open Questions` and `Open Research` in Section 9 are 100% resolved.**
 
 ### Handoff Protocol
 1. Log any process friction in `lifecycle/04-refine.md`.

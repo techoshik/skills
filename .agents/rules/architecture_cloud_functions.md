@@ -15,7 +15,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   5. *Complex Aggregations:* Multi-document batch processing exceeding Security Rules limits (10 `get()` calls).
 
 ## Strict Model Adherence & Remote Contract Literals
-- **Domain Source of Truth:** Backend models represent the absolute source of truth. Incoming request objects (DTOs) MUST strictly map into internal domain models.
+- **Module Source of Truth:** Backend module models represent the absolute source of truth. Incoming request objects (DTOs) MUST strictly map into internal module models.
 - **Reject Unknown Fields:** Backend models and validators MUST explicitly reject unknown or caller-controlled lifecycle/tenant fields. Silently ignoring or passing through unvalidated payload fields is STRICTLY PROHIBITED.
 - **Ban on Raw Contract Literals:** External contract names, callable names, request payload keys, Firestore/Storage paths, persisted collection names, and persisted field names MUST live once in an owner-owned module contract container (`*_constants.ts` or `*_models.ts`).
   - Raw string literals in Firestore reads, writes, collection queries (`.where()`, `.orderBy()`, `.select()`, `.collection()`, `.collectionGroup()`), or callable handlers are STRICTLY PROHIBITED.
@@ -28,10 +28,10 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 - **Authentication != Tenant Access:** The actor's identity, `agencyId`, role, permissions, and session MUST ALWAYS be derived from the trusted authenticated server context (`context.auth` / `CommandContext`). Client-supplied tenant IDs or user roles in payloads MUST NEVER be trusted.
 - **Tenant Isolation:** Every tenant record has one immutable owning Agency. Cross-agency access MUST fail closed immediately.
 - **Backend-Only Records:** Backend-only collections and records MUST NEVER be client-readable or exposed to client SDKs.
-- **Pure Validation Before Side Effects:** Input and domain validation MUST execute prior to initiating any protected side effects, external API calls, or database writes.
+- **Pure Validation Before Side Effects:** Input and module validation MUST execute prior to initiating any protected side effects, external API calls, or database writes.
 
 ## Separation of Concerns & Single Repository Contract
-- **Use Cases vs Repositories:** Domain logic, authorization, and validation MUST happen in the Use Case layer (`use_cases/`). Callable handlers act only as thin dispatchers; repositories strictly handle data access and persistence via Firebase Admin SDK.
+- **Use Cases vs Repositories:** Module business logic, authorization, and validation MUST happen in the Use Case layer (`use_cases/`). Callable handlers act only as thin dispatchers; repositories strictly handle data access and persistence via Firebase Admin SDK.
 - **Single Repository per Module:** All Firestore reads/writes for a module MUST belong to its single `<module>_repository.ts`. Creating sibling `*_lookup.ts`, `*_store.ts`, `*_reader.ts`, or `*_writer.ts` files is STRICTLY PROHIBITED.
 - **Cross-Module Access:** Cross-module workflows MUST consume the other module's public repository contract or compose injected repository interfaces inside use cases. Direct Firestore access across module boundaries is STRICTLY PROHIBITED.
 
@@ -47,7 +47,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 - **Multi-Document Writes:** MUST use atomic operations (Transactions via `runTransaction`, Batched Writes via `batch.commit()`) to prevent partial failures.
 - **Optimistic Concurrency:** Updates to mutable entities MUST utilize optimistic concurrency (`expectedRevision` / `revision`) to prevent lost updates from concurrent writers.
 - **Idempotency:** Non-idempotent operations MUST implement idempotency keys or transaction checks to prevent duplicate execution.
-- **The 500-Line Soft Ceiling:** Handwritten backend files SHOULD NOT exceed ~500 lines. Split along natural domain seams (separate use cases, dedicated validators, modular adapters).
+- **The 500-Line Soft Ceiling:** Handwritten backend files SHOULD NOT exceed ~500 lines. Split along natural module seams (separate use cases, dedicated validators, modular adapters).
 
 ## Error Handling, Logging & Secrets
 - **Safe Error Mapping:** Map module and technical errors once to safe `HttpsError` responses at the callable boundary. Raw database exceptions, stack traces, storage errors, or internal service errors MUST NEVER be returned to clients.
@@ -56,14 +56,14 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 
 ## Folder Structure (`functions/src`)
 - **`core/`**: Infrastructure, middleware, `CommandContext`, auth resolution, shared persistence helpers, and base `PlatformFailure` errors.
-- **`modules/<domain_name>/`**: Domain-driven backend services:
-  - `<domain>_models.ts`: Schemas and payload DTOs. Constants must be `static readonly`.
-  - `<domain>_constants.ts`: Collection names, field names, callable names, query constants.
+- **`modules/<module_name>/`**: Module-driven backend services:
+  - `<module>_models.ts`: Schemas and payload DTOs. Constants must be `static readonly`.
+  - `<module>_constants.ts`: Collection names, field names, callable names, query constants.
   - `use_cases/`: `<verb>_<noun>_use_case.ts` containing business rules, authorization, and validation.
-  - `<domain>_repository.ts`: Data-access class handling Firestore `get`, `set`, transactions, and batches.
-  - `<domain>_validators.ts`: Pure validation functions and schemas.
-  - `<domain>_commands.ts`: Callable request/response contracts and payload readers.
-  - `<domain>_functions.ts`: HTTP/Callable entry points parsing requests and dispatching to Use Cases.
+  - `<module>_repository.ts`: Data-access class handling Firestore `get`, `set`, transactions, and batches.
+  - `<module>_validators.ts`: Pure validation functions and schemas.
+  - `<module>_commands.ts`: Callable request/response contracts and payload readers.
+  - `<module>_functions.ts`: HTTP/Callable entry points parsing requests and dispatching to Use Cases.
   - `<capability>_adapter.ts`: Optional external capability implementations.
   - `index.ts`: Public module boundary.
 
