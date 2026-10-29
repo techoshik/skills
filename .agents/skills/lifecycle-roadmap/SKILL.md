@@ -19,7 +19,7 @@ Translate the approved requirements and any chosen prototype into an implementat
 
 1. Read `00-status.md`, the Resume Checkpoint, `01-requirements.md`, and `02-prototype.html` if it exists. Confirm Prototype is `Done` or `Skipped`.
 2. Set Roadmap to `In Progress`.
-3. Read the relevant `.agents/rules/` files, module docs, and existing examples for folder placement, naming, state management, validation, security, and testing. Note each rules file’s **Roadmap placement check** and apply it in Step 3.
+3. Read the relevant `.agents/rules/` files, module docs, and existing examples for folder placement, naming, state management, validation, security, and testing. Apply the architectural invariants and folder structures in Step 3.
 4. **File-Size Thresholds & Prefactoring Check:** Inspect target files and important callers to verify likely change points and check line counts. If any file to be modified is above the rules’ *evaluate threshold* (400 lines), decide whether to schedule an upfront `P0: Prefactor <Target>` task (*"Make the change easy, then make the easy change"*) before feature tasks. If the change would push a file past the rules’ *hard limit* (500 lines), the plan must include a split (or a user-approved exception recorded in `01-requirements.md` Section 5).
 5. Identify dependencies, data/schema/rule/index changes, feature flags, migration or backfill needs, compatibility concerns, rollback needs, and approval gates when relevant.
 6. If the spec and code appear to disagree, return to Brainstorm or raise the conflict; do not plan implementation around an unapproved interpretation.
@@ -91,7 +91,7 @@ Verify:
 - [ ] All in-scope `REQ-X`, `AC-X.Y`, and `BR-X` items are covered by the roadmap.
 - [ ] Every in-scope `AC-X.Y` and `BR-X` has a row in `05-traceability.md` with a task; every `PM-n` (Deep tier) is mapped to a task or explicitly accepted by the user.
 - [ ] Task ordering (`P0` → `P1` → `P2` → `P3`) and dependencies are coherent.
-- [ ] Every new/modified file path is consistent with `.agents/rules/` folder and naming conventions (each applicable rules file’s Roadmap placement check passes).
+- [ ] Every new/modified file path is consistent with `.agents/rules/` folder, naming, and architectural conventions.
 - [ ] Any temporary compatibility alias created in an early task has an explicit `Delete:` touchpoint in a later task.
 - [ ] Material risks, migration/data effects, permissions, failure handling, and external dependencies have a task or explicit reason they do not apply.
 - [ ] Relevant tests, exact verification commands, and `Prerequisites / Environment Setup` under Human Verification Gate are specified.

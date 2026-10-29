@@ -8,8 +8,8 @@
 Application clients MUST interact directly with Firestore and Firebase Storage via Client SDK protected by server-side `firestore.rules`.
 - **Direct SDK Default:** Standard CRUD (create, read, update, delete drafts, upload attachments) MUST use the client SDK. Wrapping standard operations in Cloud Functions is STRICTLY PROHIBITED (adds cold starts, eliminates offline caching, increases latency).
 - **The 5 Strict Cloud Function Exceptions:** Cloud Functions are permitted ONLY for:
-  1. *Atomic Counters:* Gap-free, sequential IDs (`INV-001`) where client generation risks collisions.
-  2. *Private Secrets:* External APIs (Stripe, Twilio, SendGrid) requiring hidden credentials.
+  1. *Atomic Counters:* Gap-free, sequential IDs (e.g. order/invoice numbers) where client generation risks collisions.
+  2. *Private Secrets:* External APIs (e.g. payment processors, external communication services) requiring hidden credentials.
   3. *Privileged Lifecycle Locks:* Freezing immutable multi-collection snapshots upon state transitions.
   4. *Asynchronous Triggers:* Background events (storage uploads, webhooks).
   5. *Complex Aggregations:* Multi-document batch operations exceeding Security Rules limits (10 `get()` calls).
@@ -48,7 +48,7 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 - **Code-Generated Providers Only:** Use code-generated Riverpod (`@riverpod` / `@Riverpod(keepAlive: true)` with `part '<file>.g.dart';`). Legacy manual providers (`StateNotifierProvider`, etc.) are BANNED.
 - **Freezed State Classes:** UI state MUST be immutable `@freezed` classes with private `const StateName._();` constructor for getters.
 - **Async Mutations:** Model mutations as nullable `AsyncValue<void>?` fields (e.g. `saveOperation`). Never use fragmented boolean flags (`isLoading`, `isSuccess`, `isError`).
-- **Primitive Family Keys:** Family provider arguments MUST be primitive IDs (`String caseId`), NEVER module entity objects.
+- **Primitive Family Keys:** Family provider arguments MUST be primitive IDs (`String id`), NEVER module entity objects.
 - **Ref Usage Rules:**
   - `ref.watch`: Unconditionally at top of `build()`. NEVER inside branches, loops, or callbacks.
   - `ref.read`: Inside callbacks (`onPressed`) or controller event handlers. NEVER inside `build()`.
@@ -88,32 +88,3 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
   - `<module>_validator.dart`: Pure module validation, eligibility filtering, and business rules.
   - `<module>_constants.dart`: Collection paths and module field names.
   - `<module>_providers.dart`: Public Riverpod providers for the module.
-
-## Pre-Handoff Self-Review
-Before declaring any task ready for human review:
-1. **Rule Check:** Verify compliance against this document (`StatefulWidget` ban, Direct SDK First, 500-line hard limit, `<module>_validator.dart` placement).
-2. **Simplicity:** Remove dead code, redundant transformations, debug logs (`print`, `debugPrint`), and pass-through abstractions.
-3. **Behavior & Concurrency:** Verify error propagation, async state cleanup, and null-safety.
-4. **Automated Verification:** Run `flutter analyze` (0 issues) and `flutter test` (100% passing).
-5. **Diff Hygiene:** Inspect `git diff` to ensure changes touch only authorized task files.
-
-## Lifecycle Checklists
-
-The generic lifecycle skills delegate stack-specific checks to these lists. Apply every item that is relevant to the change.
-
-### Roadmap placement check (used by `lifecycle-roadmap`)
-- Every new file path matches the Folder Structure above (`<module>_repository.dart`, `<module>_navigation.dart`, `<module>_validator.dart`, `features/<feature>/`, etc.).
-- Validation, eligibility filtering, and business-rule calculations are planned into `modules/<module>/<module>_validator.dart` — never into ad-hoc `*_filter.dart` / `*_helper.dart` files.
-- Widget placement follows the 4-Tier rule (private same-file → feature `widgets/` → module `widgets/` → `core/widgets/`).
-- Any target file above the 400-line evaluate threshold has a prefactor decision (a `P0` task or a recorded reason).
-- No planned change leaves a handwritten file above the 500-line hard limit.
-- Verification commands: `flutter analyze` and `flutter test` (targeted paths per task).
-
-### Review hygiene checklist (used by `lifecycle-review`)
-- Deleted or consolidated screens/widgets are removed from barrel `index.dart` exports, route constants, `<module>_navigation.dart`, callers, and tests.
-- No `print` / `debugPrint` remains in product code.
-- No `StatefulWidget`, `ConsumerWidget`, or standalone `HookWidget` classes; no `showDialog` / `AlertDialog` / `ScaffoldMessenger` / `SnackBar`.
-- No hardcoded colors, padding, or static heights; design-system components and theme tokens are used.
-- Intra-module duplicates are consolidated into the module's `widgets/` (Tier 3); prefer existing `core/widgets/` components; ask the user before changing shared `core/` files used by unrelated modules.
-- No handwritten file is above the 500-line hard limit.
-- Global verification commands: `flutter analyze` (target 0 issues) and `flutter test`.

@@ -8,8 +8,8 @@
 Clients MUST communicate directly with Firestore and Firebase Storage via Client SDK protected by server-side `firestore.rules`.
 - **CRUD Wrappers Prohibited:** Cloud Functions MUST NOT be created or used for standard get/set/update/delete operations or pass-through database wrappers.
 - **The 5 Strict Exceptions:** A Cloud Function callable, HTTP endpoint, or background trigger is ONLY permitted when fulfilling one of the following criteria:
-  1. *Atomic Counters:* Gap-free, sequential human-readable numbers (`INV-001`) where client-side generation risks collisions.
-  2. *Private Secrets:* Operations requiring hidden credentials (Stripe, Twilio, SendGrid, partner/government identity APIs).
+  1. *Atomic Counters:* Gap-free, sequential human-readable numbers (e.g. order/invoice numbers) where client-side generation risks collisions.
+  2. *Private Secrets:* Operations requiring hidden credentials (e.g. payment processors, external identity/SMS providers).
   3. *Privileged Lifecycle Locks:* Operations freezing immutable snapshots across multiple collections upon state transitions.
   4. *Asynchronous System Triggers:* Background event listeners (storage upload processing, malware scanning, webhooks).
   5. *Complex Aggregations:* Multi-document batch processing exceeding Security Rules limits (10 `get()` calls).
@@ -25,8 +25,8 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 
 ## Multi-Tenancy & Authorization (Admin SDK Security)
 - **Admin SDK Bypasses Security Rules:** Firestore Security Rules DO NOT protect Admin SDK operations. Every callable, trigger path, and background job MUST perform its own explicit authorization and tenant check before any read or write.
-- **Authentication != Tenant Access:** The actor's identity, `agencyId`, role, permissions, and session MUST ALWAYS be derived from the trusted authenticated server context (`context.auth` / `CommandContext`). Client-supplied tenant IDs or user roles in payloads MUST NEVER be trusted.
-- **Tenant Isolation:** Every tenant record has one immutable owning Agency. Cross-agency access MUST fail closed immediately.
+- **Authentication != Tenant Access:** The actor's identity, tenant identifier (e.g. `tenantId`), role, permissions, and session MUST ALWAYS be derived from the trusted authenticated server context (`context.auth`). Client-supplied tenant IDs or user roles in payloads MUST NEVER be trusted.
+- **Tenant Isolation:** Every tenant-scoped record has one immutable owning tenant. Cross-tenant access MUST fail closed immediately.
 - **Backend-Only Records:** Backend-only collections and records MUST NEVER be client-readable or exposed to client SDKs.
 - **Pure Validation Before Side Effects:** Input and module validation MUST execute prior to initiating any protected side effects, external API calls, or database writes.
 
@@ -45,7 +45,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 
 ## Concurrency, Atomicity & File-Size Thresholds
 - **Multi-Document Writes:** MUST use atomic operations (Transactions via `runTransaction`, Batched Writes via `batch.commit()`) to prevent partial failures.
-- **Optimistic Concurrency:** Updates to mutable entities MUST utilize optimistic concurrency (`expectedRevision` / `revision`) to prevent lost updates from concurrent writers.
+- **Optimistic Concurrency:** Updates to mutable entities where concurrent writes are possible MUST utilize optimistic concurrency (e.g. version or revision checks) to prevent lost updates from concurrent writers.
 - **Idempotency:** Non-idempotent operations MUST implement idempotency keys or transaction checks to prevent duplicate execution.
 - **File-Size Thresholds (single definition — every lifecycle skill and template refers here):**
   - *Evaluate threshold — 400 lines:* A handwritten backend file above this MUST be evaluated for a split along natural module seams (separate use cases, dedicated validators, modular adapters) before more code is added.
@@ -57,7 +57,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 - Use structured, minimal operational logs with sensitive data masked or omitted.
 
 ## Folder Structure (`functions/src`)
-- **`core/`**: Infrastructure, middleware, `CommandContext`, auth resolution, shared persistence helpers, and base `PlatformFailure` errors.
+- **`core/`**: Infrastructure, middleware, auth resolution, shared persistence helpers, and base `PlatformFailure` errors.
 - **`modules/<module_name>/`**: Module-driven backend services:
   - `<module>_models.ts`: Schemas and payload DTOs. Constants must be `static readonly`.
   - `<module>_constants.ts`: Collection names, field names, callable names, query constants.
@@ -68,11 +68,3 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   - `<module>_functions.ts`: HTTP/Callable entry points parsing requests and dispatching to Use Cases.
   - `<capability>_adapter.ts`: Optional external capability implementations.
   - `index.ts`: Public module boundary.
-
-## Pre-Handoff Self-Review
-Before declaring any backend task ready for human review:
-1. **Rule Check:** Verify compliance against this document (Direct SDK First, no raw contract strings, Admin SDK tenant checks, single repository contract).
-2. **Security & Secrets:** Confirm that tenant IDs come from `context.auth` and zero secrets or PII leak into client responses or logs.
-3. **Simplicity:** Remove dead code, redundant queries, and unnecessary abstractions.
-4. **Automated Verification:** Run `npm run lint` (0 issues) and `npm test` (100% passing).
-5. **Diff Hygiene:** Inspect `git diff` to verify only authorized task files are modified.

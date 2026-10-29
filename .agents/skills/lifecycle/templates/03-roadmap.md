@@ -3,7 +3,7 @@
 <!--
 DOCUMENT FORMATTING & SYNC RULES (STRICT):
 - SCANNABLE SUB-BULLETS: Keep bullets concise (1 line = 1 atomic detail). Avoid multi-sentence prose walls.
-- CANONICAL FILE PLACEMENT: Run each applicable `.agents/rules/` file’s Roadmap placement check against every new file path under Touchpoints before finalizing.
+- CANONICAL FILE PLACEMENT: Verify every new file path under Touchpoints against `.agents/rules/` folder, naming, and architectural conventions before finalizing.
 - MID-FLIGHT PIVOTS: Never dump new scope into an untracked footer. Collapse any fully superseded task to a single heading line (`## Task X: <Name> — ~(Superseded by Task N)~`) and add a numbered `Task N` here and in `00-status.md`.
 -->
 

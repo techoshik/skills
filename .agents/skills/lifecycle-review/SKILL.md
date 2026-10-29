@@ -52,8 +52,8 @@ Audit the entire change as one integrated system, not as a set of individually c
 
 ### D. Architecture, Code Hygiene & Deduplication
 
-- Compare changed paths, names, and component placement with applicable `.agents/rules/` and existing architecture. Run each applicable rules file’s **Review hygiene checklist**, including the file-size hard limit.
-- **Orphaned Exports & Routes Check:** Verify that any deleted or consolidated screens, widgets, or symbols are cleanly removed from public exports, route definitions, callers, and tests. The rules file’s checklist names the exact places.
+- Compare changed paths, names, and component placement with applicable `.agents/rules/` (folder structure, naming conventions, architectural bans, and the file-size hard limit) and existing architecture.
+- **Orphaned Exports & Routes Check:** Verify that any deleted or consolidated screens, widgets, or symbols are cleanly removed from public exports, route definitions, callers, and tests.
 - Remove dead code, unused imports, debug output, and temporary compatibility aliases where evidence supports removal.
 - **Smart Deduplication:**
   - **Intra-module:** Consolidate duplicated helpers or logic across touched files into the module’s shared location, as the rules file specifies.

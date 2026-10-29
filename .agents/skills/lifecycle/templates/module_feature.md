@@ -8,7 +8,7 @@ DOCUMENT FORMATTING RULE (STRICT):
 ## At a Glance
 - **Problem:** <1-line user or operational pain this feature addresses>
 - **Capability:** <1-line summary of what this feature enables>
-- **Entry point:** `<e.g. Route /shops, button on OrderSummary, or background push event>`
+- **Entry point:** `<e.g. Route /items, button on FeatureCard, or background push event>`
 
 ## 1. Primary Workflow
 
