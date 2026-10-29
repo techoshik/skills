@@ -1,135 +1,89 @@
 ---
 name: lifecycle-roadmap
-description: Architect tracer-bullet vertical slices, 6-part task anatomy, binary verification oracles, and author 03-roadmap.md (Lifecycle: Roadmap).
+description: Architect tracer-bullet vertical slices, verify canonical file placement, specify binary verification oracles, and author 03-roadmap.md (Lifecycle: Roadmap).
 ---
 
 # Lifecycle Roadmap
 
-Act as a **Principal Technical Architect**. Your mission is to take approved requirements and prototype designs, investigate codebase line limits, slice the work into priority-ordered, small vertical tasks, specify binary verification oracles, and author the execution blueprint in `lifecycle/03-roadmap.md`.
+Act as a **Principal Technical Architect**. Your mission is to translate the approved `01-requirements.md` and `02-prototype.html` into priority-ordered, small vertical tasks in `lifecycle/03-roadmap.md`, verifying that every file path obeys project architecture rules and every task is independently testable and reviewable.
 
 Follow this strict 5-step sequence. Each step has an explicit sign-off condition before advancing to the next.
 
 ---
 
-## 0. Core Architectural Mindset: Vertical Slicing & Atomic Readability
+## 0. Core Architectural Mindset: Vertical Slices & Canonical Placement
 
-- **Death to Horizontal Layering:** Never slice work into horizontal technical layers (*"Task 1: Models & DTOs, Task 2: Mocked UI, Task 3: API Integration"*). Horizontal layering creates untestable intermediate states and delays human verification.
-- **Tracer-Bullet Slices:** Every task must cut end-to-end through data, state/logic, and UI, delivering an observable, testable behavior change.
-- **Single Turn Sizing:** Size each task by scope and reviewability—touching only **~2–5 related files per task** so it can be implemented, tested, and reviewed within a single context window.
-- **One Fact Per Line (No Paragraph Bullets):** Never cram multiple file changes, constraints, or verification steps into a single multi-sentence bullet in `03-roadmap.md`. Use **nested sub-bullets where 1 line = 1 atomic detail**.
+- **Vertical Slices Only (No Horizontal Layers):** Every task must deliver an observable, testable outcome touching **~2–5 related files** (never *"Task 1: All Models, Task 2: All UI"*).
+- **Canonical File Placement Check (Before Writing Touchpoints):** Never invent ad-hoc helper filenames inside feature folders. Cross-check every proposed file path against `.agents/rules/` folder and naming conventions (e.g. domain validators in `modules/<domain>/<domain>_validator`, 4-tier widget placement) and existing module structure.
+- **One Fact Per Line:** Format `03-roadmap.md` using short nested sub-bullets (`1 line = 1 atomic detail`) with zero prose walls and zero header boilerplate.
 
 ---
 
-## Step 1: Entry Gate & Architectural Ingestion
+## Step 1: Entry Gate & Pre-Flight Code Audit
 
 1. **Verify Entry Gate:**
-   - Read `lifecycle/00-status.md`.
-   - Verify that **`Prototype` is marked `Done` or `Skipped`**.
-   - If not, STOP—instruct the user to complete the preceding phase first.
-2. **Ingest Specification & Design:**
-   - Read `lifecycle/01-requirements.md` in full: Requirements, AC, Business Rules, Decisions, and `Selected UI/UX Specification`.
-   - Inspect `lifecycle/02-prototype.html` (and feature carousels / flow diagrams) if `Prototype` was completed.
-3. **Pre-Flight Line-Count & Refactor Audit:**
-   - Check the line counts of all existing files scheduled to be modified.
-   - **The 500-Line Soft Ceiling Trigger:** If any target file is already **>400–500 lines** (or this feature will push it over 500 lines), flag it for an upfront **Prefactoring Task** (*"Make the change easy, then make the easy change"*).
+   - Read `lifecycle/00-status.md` and verify **`Prototype` is `Done` or `Skipped`**.
+   - Set `Roadmap` to **`In Progress`** in `lifecycle/00-status.md`.
+2. **Ingest Specification & Verify Rules:**
+   - Read `lifecycle/01-requirements.md` and `lifecycle/02-prototype.html` (if created).
+   - Read `.agents/rules/` to verify exact folder structure, state management, and naming conventions for all planned files.
+3. **500-Line Ceiling & Prefactoring Check:**
+   - Check line counts of all target files. If any file to be modified is already **>400–500 lines**, schedule an upfront **`Task 1: Prefactor <Target>`** (*"Make the change easy, then make the easy change"*) before feature tasks.
 
-> **➡️ Sign-off & Transition to Step 2:** Spec is ingested, entry gate is verified, and target file line counts are audited.
+> **➡️ Sign-off & Transition to Step 2:** Spec is ingested, canonical file paths are verified against `.agents/rules/`, and file line counts are checked.
 
 ---
 
-## Step 2: Tracer-Bullet Slicing & Priority Flow
+## Step 2: Priority-Ordered Vertical Slicing
 
-Organize the implementation into small, reviewable vertical tasks ordered by priority and dependency:
+Order tasks by priority and dependency:
+1. **`P0: Foundation / Prefactoring` (Only if a target file exceeds ~400 lines):** Extract sub-widgets/helpers with zero behavior change.
+2. **`P1: Core End-to-End Slice (Primary Flow)`:** Cuts through model/data, state/validator, and primary UI with unit/controller tests.
+3. **`P2: Secondary Screens / Component Reuse`:** Extracts shared widgets or wires secondary screens/flows.
+4. **`P3: Edge Cases, Permissions & Cleanup`:** Enforces remaining edge invariants and removes any deprecated aliases/screens.
 
-1. **`P0: Foundation / Prefactoring` (If Triggered):**
-   - Scheduled *only* if target files exceed ~400 lines or an existing class must be split.
-   - **Zero Behavior Changes:** Refactoring must extract sub-widgets, helpers, or split controllers into adjacent files without altering existing behavior. All existing tests must pass before feature work begins.
-2. **`P1: Core Tracer-Bullet (Happy Path)`:**
-   - Cuts end-to-end through models, state/controller, UI, and data/repository calls.
-   - Delivers the primary working capability (the core happy path) with real data flow.
-3. **`P2: Secondary Flows & Component Interactions`:**
-   - Sub-forms, filter bars, action dialogs, or secondary user journeys building on P1.
-4. **`P3: Edge Cases, Error Recovery & Invariants`:**
-   - Validation failures, offline retry mechanisms, empty states, and tenant/permission boundaries.
-5. **Wide Refactor Pattern (Expand–Contract):**
-   - If changing a shared data contract used across multiple modules, use **Expand → Migrate → Contract** across tasks to prevent breaking the build.
-
-> **➡️ Sign-off & Transition to Step 3:** Tasks follow a strict dependency flow; each task represents an observable behavior touching ~2–5 files.
+> **➡️ Sign-off & Transition to Step 3:** Every task is a reviewable vertical slice (~2–5 files) mapped to `AC-X.Y` and `BR-X` items.
 
 ---
 
-## Step 3: Concrete 6-Part Task Authoring (`03-roadmap.md`)
+## Step 3: Author `03-roadmap.md` (6-Part Task Anatomy)
 
-Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templates/03-roadmap.md) using **1-fact-per-line nested sub-bullets** across all 6 parts:
+Initialize `lifecycle/03-roadmap.md` from [Roadmap Template](../lifecycle/templates/03-roadmap.md). Start directly with `## Task 1: <Short Name>` and follow the **6-Part Anatomy**:
 
-- **Requirements Traceability Header:** At the top of each task, declare `- **Requirements Covered:** <REQ-X>` and `- **Mapped Criteria:** <AC-X.Y>` to maintain end-to-end traceability without re-numbering ACs.
-1. **Outcome:** A single crisp sentence stating what observable capability works when this task completes.
+1. **Outcome:** 1 crisp sentence stating what works when this task finishes.
 2. **Touchpoints:**
-   - List each target file path directly as a top-level bullet (reusing items from `Existing Code & Reuse Touchpoints` in `01-requirements.md`).
-   - Underneath each file path, list 1-line sub-bullets starting with an imperative action verb and colon (`Create:`, `Add:`, `Update:`, `Remove:`, `Delete:`, `Fix:`).
-   - **Test Touchpoints:** If authoring new controllers, services, or business logic, explicitly declare the test file under Touchpoints (`<path/to/test_file_test.ext>`: `Create:` or `Update:`).
-3. **Acceptance Criteria (Binary Verification Oracles):**
-   - Binary pass/fail conditions (Exit Code 0 vs 1; True vs False; no subjective opinions).
-   - **Static Analysis Command:** Exact command (e.g. `flutter analyze`, `npm run lint`, `ruff check`) reporting 0 issues.
-   - **Fast Automated Tests:** Exact test command (e.g. `flutter test`, `npm test`, `pytest`) executing fast logic/controller tests.
-   - **Strict Ban on Shallow UI Tests:** Ban brittle tests that merely assert static text or widget presence (`find.text('Submit')`). Tests must verify business logic, state transitions, and dynamic conditions.
-4. **Business Rules:** One bullet per domain, validation, or permission invariant from `01-requirements.md` governing this slice.
-5. **Code Guidelines (Exception-Only):**
-   - Reference specific `.agents/rules/<rule>.md` files under `Rule Files`.
-   - Under `Task-Specific Invariants`, list 1 constraint per sub-bullet for rules at risk in this slice (e.g. hook-only, server-side only, immutability, 500-line ceiling).
-6. **Human Verification Steps:**
-   - **`Prerequisites / Environment Setup:`** List backend deployment, emulator start, seed data, or build setup commands required before testing.
-   - **`Action:`** Numbered step-by-step instructions (1 action per line) for the user to trigger or test this slice in the running app.
-   - **`Expected:`** 1-line sub-bullets stating the exact observable result confirming success.
+   - List each target file path (including **explicit test file paths**) as a parent bullet.
+   - Start each child sub-bullet with an imperative verb (`Create:`, `Add:`, `Update:`, `Delete:`). Omit `Delete` if no files/symbols are deleted.
+3. **Acceptance Criteria (Binary Verification):**
+   - Binary pass/fail `- [ ] **AC-X.Y:**` conditions mapped directly from `01-requirements.md`.
+   - Exact static analysis command (`0` issues) and fast unit/controller test command (banning shallow static-widget UI tests).
+4. **Business Rules:** 1 line per `BR-X` rule from `01-requirements.md` enforced in this task.
+5. **Code Guidelines:** Target `.agents/rules/<rule>.md` file and 1-line task-specific invariants.
+6. **Human Verification Gate:**
+   - Include `Prerequisites:` only when emulator, seed data, or role setup is needed (omit if none).
+   - Numbered `Action:` steps and 1-line `Expected:` result.
 
-> **➡️ Sign-off & Transition to Step 4:** Every task in `03-roadmap.md` is fully defined across all 6 sections with binary verification gates, traceability headers, prerequisites, and 1-fact-per-line formatting.
+> **➡️ Sign-off & Transition to Step 4:** `03-roadmap.md` is complete and 100% aligned with `01-requirements.md` and `.agents/rules/`.
 
 ---
 
-## Step 4: Status Dashboard Synchronization (`00-status.md`)
+## Step 4: Synchronize `00-status.md`
 
-When `03-roadmap.md` is drafted, synchronize `lifecycle/00-status.md`:
+Replace the placeholder `| Execute | Todo |` row in `lifecycle/00-status.md` with concise task rows (`| Task 1: <Short Slug> | Todo |`, `| Task 2: <Short Slug> | Todo |`, ...) and set `Roadmap` to **`In Review`**.
 
-1. Keep the standard phase rows (`Brainstorm`, `Prototype`, `Roadmap`).
-2. Replace the generic placeholder `| Execute | Todo |` row with a dedicated row for every roadmap task using a **concise, scannable task slug** (avoid long multi-word titles that force table columns to wrap in narrow panels):
-   ```markdown
-   # Status Dashboard: <Feature Name>
-
-   | Step / Task | Status |
-   | :--- | :--- |
-   | Brainstorm | Done |
-   | Prototype | Done |
-   | Roadmap | In Review |
-   | Task 1: <Short Slug> | Todo |
-   | Task 2: <Short Slug> | Todo |
-   | Task 3: <Short Slug> | Todo |
-   | Review | Todo |
-   | Finalize | Todo |
-   ```
-
-> **➡️ Sign-off & Transition to Step 5:** All roadmap tasks are synchronized into `00-status.md` as `Todo` with concise slugs.
+> **➡️ Sign-off & Transition to Step 5:** All roadmap tasks are synced into `00-status.md`.
 
 ---
 
 ## Step 5: Exit Gate & Human Handoff
 
-Before handing off, verify the **Roadmap Quality Checklist**:
-
-- [ ] Every task cuts end-to-end as a small, reviewable vertical slice (~2–5 related files per task, zero horizontal layers).
-- [ ] Any file near >400 lines has an upfront Prefactoring task.
-- [ ] Every task has binary pass/fail verification commands and prerequisites.
-- [ ] Newly authored test files are explicitly declared under Touchpoints.
-- [ ] All sections use **1-fact-per-line nested sub-bullets** (zero paragraph walls).
-- [ ] All tasks are populated in `00-status.md` with concise slugs.
+Verify the **Roadmap Checklist**:
+- [ ] Every `REQ-X`, `AC-X.Y`, and `BR-X` in `01-requirements.md` is covered by a task.
+- [ ] Every new/modified file path follows `.agents/rules/` folder and naming conventions.
+- [ ] Every task includes explicit test touchpoints and binary verification commands.
+- [ ] All tasks are listed in `00-status.md` with short slugs.
 
 ### Handoff Protocol
-1. Record any tooling or process friction in `lifecycle/04-refine.md`.
-2. Update `lifecycle/00-status.md`: set `Roadmap` to **`In Review`**.
-3. **Zero-Duplication Chat Presentation:**
-   - Link directly to `lifecycle/03-roadmap.md`.
-   - Never output markdown tables in chat.
-   - Present a concise, scannable summary highlighting the task sequence, primary seams, and test commands.
-4. **STOP.** Do not start executing Task 1 until the user explicitly approves the roadmap in chat.
-5. **On User Approval:**
-   - Mark `Roadmap` as **`Done`** in `00-status.md`.
-   - Read [`lifecycle-execute/SKILL.md`](../lifecycle-execute/SKILL.md) and auto-advance to start Task 1.
+1. Log any friction in `lifecycle/04-refine.md`.
+2. Present a concise chat summary linking to `lifecycle/03-roadmap.md` (no chat tables) and **STOP** for user approval.
+3. **On User Approval:** Mark `Roadmap` as **`Done`** in `00-status.md`, read [`lifecycle-execute/SKILL.md`](../lifecycle-execute/SKILL.md), and auto-advance to Task 1.

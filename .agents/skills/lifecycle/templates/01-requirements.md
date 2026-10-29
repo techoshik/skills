@@ -1,43 +1,28 @@
 # Requirements: <Feature Name>
 
 <!-- 
-DOCUMENT FORMATTING RULE (STRICT):
-- ONE FACT PER LINE: Never write multi-sentence paragraphs inside a bullet point.
-- Break every topic into short, scannable nested sub-bullets (1 line = 1 atomic detail).
-- Keep all technical depth, edge cases, and file paths—just structure them vertically as sub-bullets.
-- Avoid redundant bold labels on child sub-bullets; keep bolding for top-level identifiers and keys.
+DOCUMENT FORMATTING & SINGLE-TRUTH RULES (STRICT):
+- ONE FACT PER LINE: Never write multi-sentence paragraphs inside a bullet point. Break details into short nested sub-bullets (1 line = 1 atomic detail).
+- NO CONTRADICTIONS: If a requirement or UX decision changes at any point, REPLACE the superseded bullets in place across all sections so this file always reflects a single, coherent truth.
+- NO DUPLICATE LISTS: Keep Section 1 focused strictly on Problem and User Flow; list affected/reused code only once in Section 2, and list requirements only once in Section 3.
+- CHECKBOX SYNC: Check off [x] on REQ-X and AC-X.Y items as tasks complete during Execute and verify 100% completion in Review.
 -->
 
-## 1. Problem & Outcome Summary
+## 1. Problem & UX Summary
 - **Core Problem (The "Why"):**
   - <Single-line root user or operational pain point>
-  - <Why current behavior falls short>
-- **Observable Outcome:**
-  - <Single-line capability 1 that works when complete>
-  - <Single-line capability 2 that works when complete>
-- **Second-Order Ripple Effects:**
-  - Callers / UI: <Affected screens or upstream/downstream callers>
-  - Data / State: <Affected models, providers, or cache invalidation>
-  - Security / Rules: <Affected permissions, tenancy, or security rules>
+  - <Why current behavior or UX falls short>
+- **End-to-End User Flow (Simplified):**
+  - <Step 1 of the clean user journey across screens>
+  - <Step 2 of the clean user journey (noting any redundant tabs/screens consolidated or removed)>
 
-<!-- For Bug Fixes & Refactors: Include Root-Cause Analysis -->
-- **Bug / Refactor Root Cause (If Applicable):**
-  - Current Behavior: <1-line description of what fails today>
-  - Expected Behavior: <1-line description of correct behavior>
-  - Root Cause: <Exact file/method and why it fails>
-  - Regression Guardrail: <Test or invariant that prevents recurrence>
-
-## 2. Existing Code & Reuse Touchpoints
-- **Target Module Docs:** `docs/modules/<module>/README.md` (and `docs/modules/<module>/feature_<name>.md`)
-- **Target Code Paths:**
-  - `<path/to/module>`
-- **Reusable Models & DTOs:**
-  - `<ExistingModel>`: <How it will be reused>
-- **Reusable Widgets & Components:**
-  - `<ExistingWidget>`: <Where it will be reused>
-- **Reusable Utilities / Services:**
-  - `<ExistingService>`: <Method/helper to reuse>
-- **Applicable Project Rules:**
+## 2. Code & Docs Touchpoints
+- **Module Docs:**
+  - `docs/modules/<module>/README.md`
+  - `docs/modules/<module>/feature_<name>.md`
+- **Affected & Reusable Code:**
+  - **<Screen / Model / Widget / Service>** (`<path/to/file>`): <1-line role, reuse, or impact>
+- **Project Rules:**
   - `.agents/rules/<rule>.md`
 
 ## 3. Requirements & Acceptance Criteria
@@ -50,45 +35,34 @@ DOCUMENT FORMATTING RULE (STRICT):
   - [ ] **AC-2.1:** <Single binary testable condition>
 
 ## 4. Business Rules & Domain Invariants
-*(Non-negotiable domain laws synced to `docs/modules/<module>/feature_<name>.md` in Finalize. One rule per bullet; use sub-bullets for conditions and enforcement.)*
-- **BR-1 (<Rule Name>):**
-  - <Single-line invariant, e.g. "Coupons cannot reduce order total below $0.00.">
-  - Enforced in: <Where/how it is enforced, e.g. validator + Firestore rule>
-- **BR-2 (<Rule Name>):**
-  - <Single-line invariant>
-  - Enforced in: <Where/how it is enforced>
+*(Non-negotiable domain laws synced to `docs/modules/<module>/feature_<name>.md` in Finalize.)*
+- **BR-1 (<Rule Name>):** <Single-line domain, validation, or permission invariant>
+- **BR-2 (<Rule Name>):** <Single-line domain, validation, or permission invariant>
 
-<!-- Optional: For multi-condition calculations or state transitions, use a Boundary Truth Table instead of prose:
+<!-- Optional: For multi-condition calculations or state transitions, use a Boundary Truth Table:
 | Condition A | Condition B | Expected Result | Rule ID |
 | :--- | :--- | :--- | :--- |
-| Active User | Order Total > $50 | 10% Discount Applied | BR-1 |
+| Condition 1 | Condition 2 | Expected Output | BR-1 |
 -->
 
 ## 5. Architectural & Technical Decisions
 - **Decision 1 (<Topic>):**
-  - Chosen: <1-line decision>
-  - Alternatives: <1-line summary of rejected option(s)>
-  - Rationale: <1-line reason why the chosen approach wins>
+  - Chosen: <1-line chosen approach>
+  - Why (vs. Alternatives): <1-line reason why this wins over rejected alternatives>
 
 ## 6. Selected UI/UX Specification
-*(Populated during Prototype after reviewing `02-prototype.html`)*
+*(Populated during Prototype after reviewing `02-prototype.html`, or omitted if pure backend)*
 - **Selected Variants:**
-  - `<Screen / Component 1>`: <Chosen option or mix-and-match combination>
-- **Confirmed Interaction & Flow Details:**
-  - <1-line locked UX/state behavior 1>
-  - <1-line locked UX/state behavior 2>
+  - `<Screen / Component>`: <Chosen option or mix-and-match combination>
+- **Confirmed Interaction & State Details:**
+  - <1-line locked UX/state behavior>
 
 ## 7. Glossary Updates (Staged)
-- **`<Domain Term>`:**
-  - <1-line unambiguous business definition (synced to `GLOSSARY.md` in Finalize)>
-  - Avoid: <Confusing synonyms to avoid>
+- **`<Domain Term>`:** <1-line unambiguous business definition (synced to `GLOSSARY.md` in Finalize)>
 
 ## 8. Deferred Requirements (Future Scope)
-- **`<Feature Idea>`:**
-  - <1-line reason why this is out of scope for now>
+- **`<Feature Idea>`:** <1-line reason why this is out of scope for now>
 
 ## 9. Open Items (Must be 100% empty at sign-off)
-- **Open Questions:**
-  - *(None - all resolved)*
-- **Open Research:**
-  - *(None - all resolved)*
+- **Open Questions:** *(None - all resolved)*
+- **Open Research:** *(None - all resolved)*

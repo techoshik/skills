@@ -7,35 +7,25 @@ DOCUMENT FORMATTING RULE (STRICT):
 -->
 
 ## 1. Purpose & Business Domain
-- **Domain Owned:** <1-line description of what business domain this module owns>
-- **Core Responsibility:** <1-line description of why this module exists>
+- <1-line summary of what business domain and core responsibility this module owns>
 
 ## 2. Shared Concepts & Data Models
 *Cross-reference `GLOSSARY.md` for project-wide domain language.*
-- **`<Core Model / Entity 1>`:**
-  - Role in Domain: <1-line purpose>
-  - Source File: `<path/to/model.ext>`
-- **`<Core Model / Entity 2>`:**
-  - Role in Domain: <1-line purpose>
-  - Source File: `<path/to/model.ext>`
+- **`<Core Model / Entity>`** (`<path/to/model.ext>`): <1-line purpose in domain>
 
 ## 3. Database Collections & Storage Schemas
-- **`<collection_or_table_name>`:**
-  - Ownership: Owned exclusively by this module.
-  - Document / Row Key: `<e.g. auto-id, userId, tenantId:shopId>`
-  - Primary Indexes: `<Composite index or partition key>`
+- **`<collection_or_table_name>`** (`key: <e.g. auto-id, userId>`): <1-line purpose and primary indexes>
 
 ## 4. Feature Directory Index
-*Each substantive capability is documented in its own dedicated feature file in this directory.*
-- **[`feature_<name_1>.md`](feature_<name_1>.md):** <1-line summary of what capability 1 provides>
-- **[`feature_<name_2>.md`](feature_<name_2>.md):** <1-line summary of what capability 2 provides>
+- **[`feature_<name_1>.md`](feature_<name_1>.md):** <1-line summary of capability 1>
+- **[`feature_<name_2>.md`](feature_<name_2>.md):** <1-line summary of capability 2>
 
 ## 5. Scope Boundaries & Cross-Module Dependencies
-- **Consumes from Other Modules:**
+- **Consumes:**
   - `<Other Module / Service>`: <What data or event it reads/consumes>
-- **Exposes to Other Modules:**
+- **Exposes:**
   - `<Service / Stream / Event>`: <Public API or events exposed to callers>
-- **Strictly Out of Scope (Delegated):**
+- **Out of Scope (Delegated):**
   - `<Capability>`: <Which module owns this responsibility instead>
 - **Deferred (Future Backlog):**
-  - `<Deferred Feature Idea>`: <1-line summary and reason deferred from 01-requirements.md>
+  - `<Deferred Feature Idea>`: <1-line summary and reason deferred>

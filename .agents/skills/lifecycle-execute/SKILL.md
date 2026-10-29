@@ -1,109 +1,81 @@
 ---
 name: lifecycle-execute
-description: Execute exactly one vertical task from 03-roadmap.md at a time, enforce the 5-gate self-review, and stop for human approval (Lifecycle: Execute).
+description: Execute one vertical task from 03-roadmap.md at a time, sync checkboxes across 03-roadmap.md and 01-requirements.md, enforce the 5-gate self-review, and stop for human approval (Lifecycle: Execute).
 ---
 
 # Lifecycle Execute
 
-The `lifecycle-execute` skill builds the software one isolated vertical task at a time as defined in `lifecycle/03-roadmap.md`. Your mission is to implement strictly one slice, enforce the 5-gate self-review (fixing all issues before handoff), and present a skimmable 4-bullet summary for human verification.
+The `lifecycle-execute` skill builds the feature one isolated vertical task at a time from `lifecycle/03-roadmap.md`. Your mission is to read target files and callers deeply before editing, implement strictly one task, pass all 5 self-review gates, sync checkboxes in both `03-roadmap.md` and `01-requirements.md`, and hand off a concise 4-bullet summary for human verification.
 
 Follow this strict 5-step sequence. Each step has an explicit sign-off condition before advancing to the next.
 
 ---
 
-## 0. Core Execution Mindset: Single-Task Isolation
+## 0. Core Execution Rules
 
-- **One Slice at a Time:** Strictly forbidden from executing multiple roadmap tasks in the same turn. Treat each task as an isolated, reviewable unit of delivery.
-- **Depth Over Speed:** Never rush to edit. Read the full target files and their immediate callers before writing code.
-- **Mid-Flight Requirement Interception:** If the user introduces a new capability, scope change, or alternative approach while tasks are executing, **do NOT write code immediately**. Pause and follow the **Mid-Flight Requirement Interception & Micro-Brainstorm Protocol** in `lifecycle/SKILL.md` to update requirements and roadmap first.
-- **Design System Primacy (No Prototype Copy-Paste):** Prototypes are conceptual visual references for layout and workflow alignment. Production code must strictly consume the canonical design system components, theme tokens, and spacing constants defined in `.agents/rules/`. Never copy inline HTML/CSS styling, hardcoded pixel margins, or ad-hoc alpha values from prototypes into production code.
-- **Inviolable Boundaries:**
-  - **100% Manual Git:** Strictly forbidden from running `git add`, `git commit`, `git reset`, `git restore`, or `git checkout`.
-  - **Watchers Ban:** Never run long-running watchers or daemonized codegen (e.g. `build_runner`).
-
----
-
-## Step 1: Task Selection & Status Lock
-
-1. **Verify Entry Gate:**
-   - Read `lifecycle/00-status.md`.
-   - Verify that **`Roadmap` is marked `Done`**.
-   - Locate the first task in `00-status.md` with status **`Todo`** (or `In Progress`).
-2. **Lock Status to In Progress:**
-   - Update that specific task's row in `lifecycle/00-status.md` to **`In Progress`**.
-   - Do **not** touch subsequent tasks.
-3. **Ingest Task Definition:**
-   - Open `lifecycle/03-roadmap.md` and read the exact specification for this active task: Outcome, Touchpoints, AC, Business Rules, Guidelines, and Human Verification.
-
-> **➡️ Sign-off & Transition to Step 2:** Active task is marked `In Progress` in `00-status.md` and its roadmap section is ingested.
+- **One Task at a Time:** Execute only the single active task from `00-status.md`.
+- **Mid-Flight UX / Requirement Changes (Never Hack Directly):** If the user spots a UX simplification or requests a requirement change while reviewing or running the app, **pause coding immediately** and follow Section 7 of `lifecycle/SKILL.md`:
+  1. Run a quick micro-brainstorm to confirm the cleanest flow.
+  2. **Update `01-requirements.md` in place** (replacing superseded outcomes, requirements, and UI specs so the file never contradicts itself).
+  3. Update `03-roadmap.md` and `00-status.md` with a proper numbered `Task N` (marking any superseded task lines with `~(Superseded by Task N)~`—never dump untracked work into an unstructured footer).
+- **Design System & Architecture Primacy:** Follow `.agents/rules/` strictly (canonical design system components/tokens, folder/naming conventions, `<500` lines, manual git boundary, no watchers).
 
 ---
 
-## Step 2: Pre-Edit Inspection & Worker Sub-Agent Delegation
+## Step 1: Select Active Task & Lock Status
 
-1. **Pre-Edit Inspection ("Read Before You Write"):**
-   - Fully inspect all target files listed under `Touchpoints` and their immediate callers.
-   - Read any specific rule files referenced under `Code Guidelines` (e.g. `.agents/rules/<rule>.md`).
-2. **Worker Sub-Agent Delegation (Context Hygiene):**
-   - If sub-agent delegation tools are available in your environment, spawn a fresh worker sub-agent (`TypeName: 'self'`, `Role: 'Task Worker'`) for multi-file changes or test executions. Pass the exact task specification, touchpoint list, guidelines, and safety boundaries (`no git add/commit`, `no watchers`).
-   - If sub-agent delegation is not supported in the active environment, execute directly within the main session while maintaining strict context discipline.
-   - The executing worker writes code, runs analyzer and tests, checks off the task's `Acceptance Criteria` boxes in `03-roadmap.md`, and returns a clean report (keeping raw compiler chatter quarantined).
+1. Read `lifecycle/00-status.md`, verify `Roadmap` is `Done`, and find the first `Todo` (or `In Progress`) task.
+2. Set that task to **`In Progress`** in `00-status.md`.
+3. Read the task's specification in `lifecycle/03-roadmap.md` and its mapped `REQ-X` / `BR-X` items in `lifecycle/01-requirements.md`.
 
-> **➡️ Sign-off & Transition to Step 3:** Target files and caller contexts are understood; implementation begins.
+> **➡️ Sign-off & Transition to Step 2:** Active task is marked `In Progress` in `00-status.md`.
+
+---
+
+## Step 2: Deep Pre-Edit Inspection & Worker Delegation
+
+1. **Read Before You Write:** Inspect the full target files under `Touchpoints`, their immediate callers, and the referenced `.agents/rules/<rule>.md` file.
+2. **Worker Sub-Agent Delegation:** When sub-agent tools are available, delegate multi-file coding and test execution to a fresh worker sub-agent (`Role: 'Task Worker'`) to keep raw compiler/test output out of the main chat.
+
+> **➡️ Sign-off & Transition to Step 3:** Target files, callers, and rules are inspected.
 
 ---
 
 ## Step 3: Implement Active Touchpoints Only
 
-1. **Strict Touchpoint Discipline:**
-   - Modify **only** the files and symbols explicitly declared under `### 2. Touchpoints` for this active task in `03-roadmap.md`.
-   - Never implement features, UI elements, or models belonging to future roadmap tasks.
-2. **Code Guidelines Compliance:**
-   - **500-Line Ceiling:** Keep files under ~500 lines. Extract cohesive sub-widgets or helper functions into adjacent files if nearing the limit.
-   - **Framework Invariants:** Respect project rules in `.agents/rules/` (e.g. `StatelessWidget`/`HookWidget` only, `Direct Client SDK First`, zero raw contract strings).
+1. Modify **only** the files and symbols listed under `### 2. Touchpoints` for the active task (never jump ahead to future tasks).
+2. Keep all touched files under the `~500-line` ceiling and follow canonical `.agents/rules/` folder/component conventions.
 
-> **➡️ Sign-off & Transition to Step 4:** Code changes are complete and scoped strictly to active touchpoints.
+> **➡️ Sign-off & Transition to Step 4:** Code and unit/controller tests for the active slice are implemented.
 
 ---
 
-## Step 4: Mandatory 5-Gate Self-Review
+## Step 4: Mandatory 5-Gate Self-Review & Checkbox Sync
 
-Before presenting ANY task to the user, you MUST verify all 5 gates. Fix all issues silently before handoff:
+Verify all 5 gates and fix any failure before handoff:
 
-1. **Gate 1: Outcome Gate:**
-   - Verify that the code delivers the exact working capability stated in `### 1. Outcome`.
-2. **Gate 2: Acceptance Criteria Gate:**
-   - Verify every condition listed under `### 3. Acceptance Criteria`.
-3. **Gate 3: Business Rules Gate:**
-   - Verify that all domain, validation, and permission rules from `01-requirements.md` (and task `### 4. Business Rules`) strictly hold true.
-4. **Gate 4: Code Guidelines Gate:**
-   - Verify adherence to `.agents/rules/` (500-line limit, architecture invariants, zero dead code or debug logs).
-5. **Gate 5: Automated Verification Gate:**
-   - Run the exact static analysis command from the task (e.g. `flutter analyze <path>`). Must report **0 issues**.
-   - Run the exact test command from the task (e.g. `flutter test <path>`). Must pass **100% cleanly** (fast logic/controller seam tests).
-   - Once verified, mark the task's `### 3. Acceptance Criteria` checkboxes as `- [x]` in `03-roadmap.md`.
-6. **Log Friction (`04-refine.md`):**
-   - If any rule was ambiguous, compiler error was deceptive, or rework occurred, log `Phase/Task`, `Problem`, `Cause`, and `Solution` in `lifecycle/04-refine.md`.
+1. **Gate 1 — Outcome Gate:** Changes deliver the exact capability in `### 1. Outcome`.
+2. **Gate 2 — Acceptance Criteria Gate:** Every condition in `### 3. Acceptance Criteria` holds.
+3. **Gate 3 — Business Rules Gate:** All mapped `BR-X` rules hold true.
+4. **Gate 4 — Code Guidelines Gate:** Touched files obey `.agents/rules/` (`<500` lines, canonical naming/placement, zero dead code or debug logs).
+5. **Gate 5 — Automated Verification Gate:**
+   - Run the task's static analysis command (`0` issues) and test command (`100%` pass).
+6. **Sync Checkboxes in Both `03-roadmap.md` and `01-requirements.md`:**
+   - Mark the task's `### 3. Acceptance Criteria` checkboxes as `- [x]` in `03-roadmap.md`.
+   - Also mark the corresponding `- [x] AC-X.Y` (and `- [x] REQ-X` once all its ACs are complete) in `lifecycle/01-requirements.md` so both files stay in lockstep.
+7. **Log Friction (`04-refine.md`):** Record any rule gap or mistake encountered during the task.
 
-> **➡️ Sign-off & Transition to Step 5:** All 5 self-review gates pass 100% cleanly and AC checkboxes are checked off in `03-roadmap.md`.
+> **➡️ Sign-off & Transition to Step 5:** All 5 gates pass and checkboxes are synced in `03-roadmap.md` and `01-requirements.md`.
 
 ---
 
-## Step 5: Skimmable Handoff & Human Approval Gate
+## Step 5: Skimmable Handoff & Approval Gate
 
-1. **Update Task Status:**
-   - Update the active task in `lifecycle/00-status.md` to **`In Review`**.
-2. **Present Concise Review Summary in Chat:**
-   - Link directly to `lifecycle/03-roadmap.md`.
-   - Never output markdown tables in chat.
-   - Present a concise, scannable summary focusing on:
-     - **Changed Files:** Exact paths created or modified (including test files).
-     - **5-Gate Status:** Confirmation that Outcome, AC, Business Rules, Guidelines, and Analyzer/Tests passed.
-     - **Verification Evidence:** Proof of analyzer (0 issues) and test pass.
-     - **Human Verification Steps:** The exact `Prerequisites / Environment Setup` and `Action` → `Expected` steps from the task so the user can test in the running app/browser.
-3. **STOP.** Do not start the next task. Wait for explicit human approval in chat.
-4. **On User Approval:**
-   - Update that task's row in `lifecycle/00-status.md` to **`Done`**.
-   - Check `00-status.md` for remaining tasks:
-     - **If more tasks remain:** Pick the next `Todo` task, mark it `In Progress`, and return to Step 1.
-     - **If ALL roadmap tasks are `Done`:** Read [`lifecycle-review/SKILL.md`](../lifecycle-review/SKILL.md) and auto-advance to Review.
+1. Set the active task to **`In Review`** in `lifecycle/00-status.md`.
+2. Present a concise 4-bullet summary in chat (linking to `lifecycle/03-roadmap.md`, no chat tables):
+   - **Changed Files:** Exact source and test files created/updated.
+   - **5-Gate Status:** Confirmation that Outcome, AC, Business Rules, Guidelines, and Analyzer/Tests passed.
+   - **Verification Proof:** Analyzer (`0` issues) and test pass results.
+   - **Human Verification Steps:** Exact `Action` → `Expected` steps for the user to test.
+3. **STOP** and wait for user approval.
+4. **On User Approval:** Mark the task **`Done`** in `00-status.md`. If more tasks remain, start the next `Todo` task; if all tasks are `Done`, read [`lifecycle-review/SKILL.md`](../lifecycle-review/SKILL.md) and auto-advance to Review.

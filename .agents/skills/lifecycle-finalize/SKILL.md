@@ -5,33 +5,24 @@ description: Permanent documentation sync, dual-target rule/skill evolution from
 
 # Lifecycle Finalize
 
-The `lifecycle-finalize` skill permanently captures product knowledge, evolves codebase rules, generates a copy-paste PR suite, and cleans up temporary lifecycle artifacts. Your mission is to update permanent documentation (`docs/modules/`, `GLOSSARY.md`), turn logged friction into permanent rules ("Friction to Wisdom"), generate a release-ready PR summary, and clean the repository for the user's manual git commit.
+The `lifecycle-finalize` skill permanently captures product knowledge, evolves codebase rules and skills from `04-refine.md`, generates a copy-paste PR summary, and cleans up the temporary `lifecycle/` directory.
 
 Follow this strict 5-step sequence. Each step has an explicit sign-off condition before advancing to the next.
 
 ---
 
-## 0. Core Finalize Mindset: Permanent Truth, Atomic Readability & Clean Repo
+## 0. Core Finalize Principles
 
-- **Permanent Knowledge Over Ephemeral Notes:** The temporary `lifecycle/` folder will be deleted. Any architecture, decision, deferred backlog item, rule, or glossary term not copied to permanent docs will be permanently lost.
-- **One Fact Per Line (No Paragraph Bullets):** When updating `docs/modules/<module>/`, `GLOSSARY.md`, or `.agents/rules/`, break every concept, rule, and feature detail into **short nested sub-bullets (1 line = 1 atomic detail)**—never write multi-sentence paragraph bullets.
-- **Continuous Evolutionary Improvement:** Every mistake or friction logged in `04-refine.md` must either update `.agents/rules/` or produce an upstream skill/rule improvement so the system permanently learns.
-- **Manual Git Boundary:** Never run `git add`, `git commit`, `git push`, or `gh pr create`. Staging, committing, and PR creation are 100% manual by the user.
+- **Permanent Truth Only:** Sync only the final, verified truth from `01-requirements.md` and `03-roadmap.md` into `docs/modules/<module>/` and `GLOSSARY.md` using **1-fact-per-line nested sub-bullets**.
+- **Preserve Managed Guideline Hashes:** Never edit inside `<!-- lifecycle:guideline:start ... -->` markers in consumer projects; append project-specific rules **below `<!-- lifecycle:guideline:end -->`** so future `./install-lifecycle.sh` updates succeed.
+- **100% Manual Git:** Never run `git add`, `git commit`, `git push`, or `gh pr create`.
 
 ---
 
 ## Step 1: Entry Gate & Artifact Collection
 
-1. **Verify Entry Gate:**
-   - Read `lifecycle/00-status.md`.
-   - Verify that **`Review` is marked `Done`**.
-   - If `Review` is `In Progress` or `In Review`, STOP—instruct user to complete the Review audit first.
-2. **Lock Status to In Progress:**
-   - Update `Finalize` in `lifecycle/00-status.md` to **`In Progress`**.
-3. **Collect Tracking Artifacts:**
-   - Read `lifecycle/01-requirements.md` (for Outcome, Business Rules, Architectural Decisions, Glossary Updates, and Deferred Requirements).
-   - Read `lifecycle/03-roadmap.md` (for Touched Files and Verification Evidence).
-   - Read `lifecycle/04-refine.md` (for logged friction and process lessons).
+1. Read `lifecycle/00-status.md`, verify **`Review` is `Done`**, and set `Finalize` to **`In Progress`**.
+2. Read `lifecycle/01-requirements.md`, `lifecycle/03-roadmap.md`, and `lifecycle/04-refine.md`.
 
 > **➡️ Sign-off & Transition to Step 2:** Review is verified `Done` and all tracking artifacts are ingested.
 
@@ -39,53 +30,43 @@ Follow this strict 5-step sequence. Each step has an explicit sign-off condition
 
 ## Step 2: Permanent Project Documentation Sync
 
-Update project documentation using **1-fact-per-line nested sub-bullets** so future agents and humans can skim and understand the module in seconds:
+Update permanent docs using **1-fact-per-line nested sub-bullets**:
 
-1. **Modular Module Documentation (`docs/modules/<module>/`):**
-   - Each business domain owns a dedicated folder: `docs/modules/<module>/`.
-   - **Module Overview (`docs/modules/<module>/README.md`):** Create or update from [Module README Template](../lifecycle/templates/module_readme.md). Document domain ownership, shared data models, database collections/schemas, index all `feature_<name>.md` files, and append any **Deferred Requirements** from `## 8. Deferred Requirements (Future Scope)` in `01-requirements.md` under `## 5. Scope Boundaries & Cross-Module Dependencies` (`Deferred (Future Backlog)`).
-   - **Dedicated Feature Spec (`docs/modules/<module>/feature_<name>.md`):** Create or update from [Feature Template](../lifecycle/templates/module_feature.md). Document the feature's problem/capability, workflows, file touchpoints, scoped `BR-1..BR-X` business rules from `01-requirements.md` (`## 3. Core Business Rules & Domain Invariants`), and **Key Architectural Decisions** from `## 5. Architectural & Technical Decisions` in `01-requirements.md` (`## 6. Key Architectural Decisions`).
-   - *(Legacy Migration: If an existing monolithic `docs/modules/<module>.md` exists and is growing past ~500 lines, split it into the `docs/modules/<module>/` directory pattern).*
+1. **Modular Module Docs (`docs/modules/<module>/`):**
+   - **Module Overview (`docs/modules/<module>/README.md`):** Create or update from [Module README Template](../lifecycle/templates/module_readme.md). Update domain models, schemas, feature index links, and append any **Deferred Requirements** from `01-requirements.md` (`## 8`) under `## 5. Scope Boundaries & Cross-Module Dependencies` (`Deferred (Future Backlog)`). If any legacy feature/screen was removed during this cycle, remove or update its stale entry in `docs/modules/<module>/`.
+   - **Feature Spec (`docs/modules/<module>/feature_<name>.md`):** Create or update from [Feature Template](../lifecycle/templates/module_feature.md). Sync the final workflows, file touchpoints, `BR-X` business rules (`## 3`), and `Key Architectural Decisions` (`## 6`).
 2. **Domain Glossary (`GLOSSARY.md`):**
-   - Check `## 7. Glossary Updates (Staged)` in `01-requirements.md`.
-   - If new domain terms were staged, append them into `GLOSSARY.md` in alphabetical order with concise 1-line definitions.
+   - Sync any staged terms from `## 7. Glossary Updates` in `01-requirements.md` into `GLOSSARY.md` alphabetically.
 3. **Public Project Docs (`README.md`):**
-   - Update `README.md` if the feature introduced new environment variables, public CLI flags, or setup instructions.
+   - Update `README.md` only if setup instructions, env vars, or CLI flags changed.
 
-> **➡️ Sign-off & Transition to Step 3:** Permanent module documentation, architectural decisions, deferred backlog, and glossary are updated on disk with 1-fact-per-line formatting.
+> **➡️ Sign-off & Transition to Step 3:** Permanent module docs, decisions, backlog, and glossary are synced on disk.
 
 ---
 
 ## Step 3: Process Evolution ("Friction to Wisdom" from `04-refine.md`)
 
-Turn temporary friction into permanent wisdom so future agents never repeat the same mistakes:
+Review every entry in `lifecycle/04-refine.md`:
 
-1. **Review All Logged Friction:**
-   - Inspect every entry in `lifecycle/04-refine.md`.
-2. **Target A: Project Rules (`.agents/rules/*.md`):**
-   - **Preserve Managed SHA-256 Markers:** Installer-managed sections in `.agents/rules/*.md` are wrapped in `<!-- lifecycle:guideline:start sha256=... -->` and `<!-- lifecycle:guideline:end -->`. **Never edit inside those markers in a consumer project**, or future `./install-lifecycle.sh` runs will detect a hash mismatch and skip updates.
-   - For **project-specific rules**, append crisp 1-line invariants **below the `<!-- lifecycle:guideline:end -->` marker** (or in a separate project-local `.agents/rules/<project_rule>.md` file).
-   - For **universal framework/architecture rules** (when working in the central `skills` repo, edit `.agents/rules/*.md` directly; when working in a consumer project, include the rule in the **Upstream Improvement Block** below).
-   - In `04-refine.md`, update `Target File Updated: .agents/rules/<rule>.md`.
-3. **Target B: Lifecycle Skills & Upstream Rules Sync:**
-   - If an entry was caused by a lifecycle skill ambiguity, missing step, or universal rule gap:
-     - If working in the central `skills` repository, update the relevant `SKILL.md` or `.agents/rules/*.md` directly.
-     - If working in a consumer project, generate an **"Upstream Skill / Rule Improvement Block"** in chat so the user can paste it into the central `skills` repository:
-       ```markdown
-       ### 🔄 Upstream Skill / Rule Improvement
-       - **Target:** `<skill_name or .agents/rules/file.md>`
-       - **Problem:** <1-line description of what caused friction>
-       - **Recommended Upstream Fix:** <1-line concrete instruction or rule change>
-       ```
-     - In `04-refine.md`, update `Target File Updated: Upstream Sync`.
+1. **Target A — Project Rules (`.agents/rules/*.md`):**
+   - In consumer projects, append project-specific rules **below `<!-- lifecycle:guideline:end -->`** (or in a project-local rule file) so managed SHA-256 hashes stay intact.
+   - Update `Target File Updated` in `04-refine.md`.
+2. **Target B — Upstream Skills & Universal Rules Sync:**
+   - For universal framework rules or lifecycle skill improvements: update directly if inside the central `skills` repo, or output an **Upstream Skill / Rule Improvement Block** in chat for the user to copy back to the central `skills` repo:
+     ```markdown
+     ### 🔄 Upstream Skill / Rule Improvement
+     - **Target:** `<skill_name or .agents/rules/file.md>`
+     - **Problem:** <1-line friction summary>
+     - **Recommended Upstream Fix:** <1-line instruction or rule change>
+     ```
 
-> **➡️ Sign-off & Transition to Step 4:** Every entry in `04-refine.md` is addressed without breaking managed guideline hashes.
+> **➡️ Sign-off & Transition to Step 4:** All `04-refine.md` entries are resolved.
 
 ---
 
 ## Step 4: Copy-Paste PR Suite Generation
 
-Generate a complete, professional Pull Request description formatted in Markdown:
+Output a clean, copy-pasteable Pull Request description in chat:
 
 ```markdown
 # 🚀 Pull Request: <Concise Feature Title>
@@ -97,8 +78,6 @@ Generate a complete, professional Pull Request description formatted in Markdown
 ## 2. Key Changes & File Touchpoints
 - **<Core Capability 1>:**
   - `<path/to/file>`: <1-line change summary>
-- **<Core Capability 2>:**
-  - `<path/to/file>`: <1-line change summary>
 - **Documentation & Rules:**
   - Updated `docs/modules/<module>/`, `GLOSSARY.md`, and `.agents/rules/<rule>.md`
 
@@ -107,30 +86,19 @@ Generate a complete, professional Pull Request description formatted in Markdown
 - **Static Analysis:** `<analyzer command>` reported 0 issues.
 - **Manual Verification Steps:**
   1. <Action step 1> -> <Expected result>
-  2. <Action step 2> -> <Expected result>
 
 ## 4. Business Rules Enforced
 - **BR-1 (`<Rule Name>`):** <1-line invariant>
-- **BR-2 (`<Rule Name>`):** <1-line invariant>
 ```
 
-> **➡️ Sign-off & Transition to Step 5:** PR suite is generated in chat; manual git boundary is respected (no git commit or push commands run).
+> **➡️ Sign-off & Transition to Step 5:** Copy-paste PR suite is ready.
 
 ---
 
 ## Step 5: Final Handoff & Confirmed `lifecycle/` Cleanup
 
-1. **Update Status Dashboard:**
-   - Update `Finalize` in `lifecycle/00-status.md` to **`In Review`**.
-2. **Present Final Handoff in Chat:**
-   - Summarize the updated permanent documentation files (`docs/modules/`, `GLOSSARY.md`, rules).
-   - Present the copy-paste PR suite.
-   - Ask for confirmation to clean up the temporary directory:
-     > *"Finalize is complete. All permanent docs and rules are updated, and the PR summary is ready above. Once you approve, should I delete the temporary `lifecycle/` directory (`rm -rf lifecycle/`) or archive it before your manual git commit?"*
-3. **STOP.** Wait for explicit human approval.
-4. **On User Approval:**
-   - Mark `Finalize` as **`Done`** in `00-status.md`.
-   - If user confirms deletion: delete the temporary `lifecycle/` directory (`rm -rf lifecycle/`).
-   - If user confirms archiving: create `docs/lifecycle/<feature-name>/` and move `lifecycle/` there (or preferred archive path).
-   - Output final success message:
-     > *"Lifecycle complete! Workspace is clean and ready for your manual git commit and push."*
+1. Set `Finalize` to **`In Review`** in `lifecycle/00-status.md`.
+2. Present the updated permanent doc links, any Upstream Improvement Blocks, and the copy-paste PR suite in chat, then ask:
+   > *"Finalize is complete. Once you approve, should I delete the temporary `lifecycle/` directory (`rm -rf lifecycle/`) or archive it before your manual git commit?"*
+3. **STOP** and wait for user approval.
+4. **On User Approval:** Mark `Finalize` as **`Done`**, delete `lifecycle/` (`rm -rf lifecycle/`) or move it to `docs/lifecycle/<feature-name>/` as instructed, and confirm the workspace is clean for manual commit.
