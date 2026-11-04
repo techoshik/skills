@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > **MANDATORY FRONTEND RULES — STRICT ENFORCEMENT**
-> Every requirement is a strict system invariant. Creating `StatefulWidget`, bypassing Direct Client SDK, exceeding the 500-line hard limit, embedding queries in UI, or placing display logic in widgets is STRICTLY PROHIBITED. Production access or deployment requires explicit user authorization; use emulators/dev environments for automated testing.
+> Every requirement is a strict system invariant. Creating `StatefulWidget`, bypassing Direct Client SDK, exceeding the 1000-line hard limit, embedding queries in UI, or placing display logic in widgets is STRICTLY PROHIBITED. Production access or deployment requires explicit user authorization; use emulators/dev environments for automated testing.
 
 ## Direct Firebase Client SDK First (Hard Invariant)
 Application clients MUST interact directly with Firestore and Firebase Storage via Client SDK protected by server-side `firestore.rules`.
@@ -18,7 +18,7 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 - **No UI Logic in Widgets:** Widgets are renderers. Raw string manipulation, status mapping, and date formatting in UI are STRICTLY PROHIBITED. Encapsulate all display logic in module models via getters, methods, or enum extensions (e.g. `role.displayName`).
 - **Presentational Widgets vs. Self-Contained Feature Sections:**
   - *Reusable Presentational Widgets:* Cards, list rows, dialogs, and form controls MUST NOT call `ref.watch`/`ref.read` or import controllers/use-cases. Pass only plain module models, primitives, and callbacks (`VoidCallback`, `ValueChanged<T>`).
-  - *Root Screens & Self-Contained Feature Sections:* Root screens (`<feature>_page.dart` / `<feature>_screen.dart`), composite views (`<feature>_view.dart`), and independent module sections (`<section>_section.dart` managing their own edit/save lifecycle) may watch providers and orchestrate state directly so parent screens stay decoupled and under 500 lines.
+  - *Root Screens & Self-Contained Feature Sections:* Root screens (`<feature>_page.dart` / `<feature>_screen.dart`), composite views (`<feature>_view.dart`), and independent module sections (`<section>_section.dart` managing their own edit/save lifecycle) may watch providers and orchestrate state directly so parent screens stay decoupled and under 1000 lines.
 
 ## StatelessWidget & HookConsumerWidget Only (`StatefulWidget` & `HookWidget` Prohibited)
 - **Strict Two-Widget Rule:** Creating `StatefulWidget`, `State`, `ConsumerWidget`, `ConsumerStatefulWidget`, or standalone `HookWidget` classes is STRICTLY PROHIBITED. Every widget MUST use one of two base classes:
@@ -35,12 +35,12 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 
 ## 4-Tier Placement & File-Size Thresholds
 - **File-Size Thresholds (single definition — every lifecycle skill and template refers here):**
-  - *Evaluate threshold — 400 lines:* A handwritten file above this MUST be evaluated for a split along natural module seams before more code is added (UI files target ~300–400 lines).
-  - *Hard limit — 500 lines:* A handwritten file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `01-requirements.md` Section 5.
+  - *Evaluate threshold — 900 lines:* A handwritten file above this MUST be evaluated for a split along natural module seams before more code is added.
+  - *Hard limit — 1000 lines:* A handwritten file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `lifecycle/01-discover.md` Section 5.
   - Generated files (`*.g.dart`, `*.freezed.dart`) are exempt.
 - **4-Tier Placement Rule:**
   - *Tier 1 (Same File — Default):* Feature child widgets MUST be private classes (`class _SectionCard extends StatelessWidget`) in the same feature file to preserve locality of reference.
-  - *Tier 2 (Feature Sub-Widgets):* Extract to `features/<feature>/widgets/<widget>.dart` ONLY if independently complex (>150 lines) and the main file exceeds ~350 lines. Do not create `widgets/` by default.
+  - *Tier 2 (Feature Sub-Widgets):* Extract to `features/<feature>/widgets/<widget>.dart` ONLY if independently complex (>200 lines) and the main file exceeds ~900 lines. Do not create `widgets/` by default.
   - *Tier 3 (Module-Shared):* Reused across 2+ features in the same module -> `modules/<module>/widgets/`.
   - *Tier 4 (Universal):* Reused across multiple modules -> `core/widgets/` or design system.
 

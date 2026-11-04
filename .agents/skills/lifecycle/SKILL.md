@@ -1,190 +1,202 @@
 ---
 name: lifecycle
-description: Master orchestrator for the six-phase development lifecycle (Brainstorm → Prototype → Roadmap → Execute → Review → Finalize).
+description: Master orchestrator and status router for the five-phase development lifecycle (Discover → Flows → Plan → Build → Finalize). Maintains lifecycle/00-status.md, enforces approval gates, and guarantees session resumption.
 ---
 
-# Lifecycle — Master Orchestrator
+# Phase 0 — Lifecycle Orchestrator
 
-The orchestrator routes work through the existing six phases: **Brainstorm → Prototype → Roadmap → Execute → Review → Finalize**. Keep these phase names and their approval gates. Load the active phase skill rather than loading all phase skills at once.
+## 1. Purpose
 
-## 0. Global Rules & Guardrails
+> **Core Mental Model:** Route through the phases. Load one skill at a time. Track everything in `00-status.md`. Advance only with explicit approval.
 
-These rules apply in every phase. Phase-specific skills add detail; they do not override these guardrails.
+The Orchestrator manages the end-to-end development pipeline across the five phases: **Discover → Flows → Plan → Build → Finalize**.
 
-### Think carefully where it matters
-
-Before a consequential decision or implementation, work through this sequence:
-
-1. **Restate the outcome:** Identify the user's actual problem, desired result, scope, and constraints. Do not confuse the requested implementation with the underlying need.
-2. **Gather evidence:** Inspect relevant code, tests, module docs, project rules, callers, and prior approved decisions before deciding. Use external research when the answer depends on current or specialist information.
-3. **Consider credible options:** Include reuse or simplification of the existing system where relevant. Compare the options that could realistically work; do not invent alternatives just to fill a quota.
-4. **Compare consequences:** Evaluate the dimensions that matter for this decision, such as user experience, correctness, permissions, data integrity, failure recovery, concurrency, migration, performance, maintainability, compatibility, scope, and reversibility.
-5. **Stress-test the leading option:** Look for a counterexample, failure path, edge case, or downstream caller that could make the preferred solution wrong.
-6. **Recommend or ask:** Recommend the best-supported option when the decision is within the agent's authority. Ask the user when a material user-owned decision remains unresolved.
-7. **Record only useful reasoning:** Show the evidence, important trade-offs, key risks, recommendation, and unresolved decision in concise language. Do not output long internal monologues or claim certainty without evidence.
-
-Apply depth according to the tier below; do not decide depth by feel.
-
-### Depth tiers
-
-Set once in Brainstorm and reused by every later phase. Pick the tier from the change itself, not from how confident you feel.
-
-- **Light:** A small, reversible change that follows an established pattern and hits no Deep trigger.
-  - Required: restate the outcome, cite the evidence you inspected, proceed.
-- **Standard (default):** Any non-trivial change that hits no Deep trigger.
-  - Required: gather evidence, compare credible options where the choice is real, stress-test the leading option once, and record each consequential decision.
-- **Deep (automatic when any trigger applies):**
-  - Triggers: money or financial results; permissions, roles, or authentication; personal or tenant data; destructive actions, migrations, or backfills; concurrency or idempotency; security or secrets; shared infrastructure or cross-module architecture; externally visible contracts that are hard to reverse.
-  - Required: everything in Standard, plus the full decision record (alternatives, second-order effects, confidence) and a **pre-mortem**.
-  - Pre-mortem: assume the change shipped and failed; list the top 3 causes as `PM-1`…`PM-3` and map each to a task, an `AC-X.Y`, or a `BR-X` — or record that the user explicitly accepted that risk.
-  - Every `PM-n` needs verification evidence before Review can sign off.
-
-Tier rules:
-- Record the tier and the trigger(s) that set it in `01-requirements.md` (the `Depth tier` line) and in the Resume Checkpoint of `00-status.md`.
-- Raising the tier needs no approval. If a Deep trigger appears in a later phase, escalate immediately, pause the affected work, and complete the Deep requirements for that scope.
-- Only the user can lower a tier that was set to Deep.
-
-### Research facts; do not assume user decisions
-
-- **Investigate before asking:** Find facts that can be established from the codebase, tests, project rules, documentation, or reliable external sources yourself.
-- **Ask before deciding material behavior:** Ask the user when plausible interpretations would change business behavior, UX expectations, authorization, data retention, financial results, migration/destructive behavior, compatibility promises, or significant scope/cost.
-- **Do not hide assumptions:** For low-impact, reversible choices that follow established project conventions, proceed only when necessary, mark the assumption clearly in the relevant artifact, and explain it briefly at handoff.
-- **Pause on unsafe uncertainty:** Do not implement a consequential assumption simply to keep moving. Present the specific unknown, why it matters, viable options with trade-offs, and your recommendation; ask one focused question at a time (or at most two tightly linked questions).
-- **Respect approvals:** Approval of a phase or plan does not automatically approve a materially changed scope, a risky behavior change, or destructive cleanup.
-
-### Make documents fast to comprehend without losing engineering depth
-
-- Put a **quick read** first: problem, intended outcome, and scope or key decision.
-- Present findings to the user in chat using short, plain, scannable bullets—never dump prose walls, markdown tables, or raw Mermaid syntax in chat.
-- Across all `lifecycle/` and `docs/modules/` files, use scannable nested sub-bullets (`1 line = 1 atomic detail`) rather than multi-sentence prose paragraphs inside bullets.
-  - Exception: one optional `Why:` line (max 2 sentences) may explain the rationale behind a requirement or decision. It is the only prose allowed inside a bullet.
-- Make requirements, invariants, decisions, task outcomes, and acceptance criteria precise and independently understandable.
-- Keep each fact's detailed authoritative version in one place. Summaries may point to it but should not reproduce it.
-- Omit sections that are genuinely irrelevant or empty. Do not omit a relevant risk, requirement, dependency, edge case, or decision merely to make a document shorter.
-- Prefer meaningful headings, descriptive labels, and examples only when they prevent ambiguity. Avoid boilerplate, repeated explanations, empty placeholder sections, and decorative process text.
-- Label important claims where the distinction matters, using these exact tags:
-  - `[Fact]` — verified from code, tests, docs, or a command; cite the source (`path:line`, command, or URL).
-  - `[Decision]` — approved by the user.
-  - `[Assumption]` — believed but not verified or approved; say what would invalidate it.
-  - `[Recommendation]` — the agent's proposal, not yet approved.
-  - `[Open]` — unresolved question; say who owns it and whether it blocks.
-  - Untagged lines are routine requirement text. Never tag a line `[Fact]` without a source.
-- Under each artifact's **Quick read**, keep a **Needs your decision** line (see Section 4). It only points at open decisions; the detail stays in its authoritative section.
-
-### Source of truth for lifecycle artifacts
-
-- `lifecycle/00-status.md`: authoritative phase/task status and compact resume checkpoint ([Status Template](templates/00-status.md)).
-- `lifecycle/01-requirements.md`: authoritative user/system behavior, acceptance-criteria definitions, business rules, scope, and important decisions ([Requirements Template](templates/01-requirements.md)). Keep AC IDs stable; do not use it as an execution checklist.
-- `lifecycle/02-prototype.html` and `lifecycle/prototype/`: visual exploration and chosen interaction reference when prototyping is appropriate ([Prototype Hub Template](templates/02-prototype.html)).
-- `lifecycle/03-roadmap.md`: authoritative task breakdown, task-level verification checkboxes, dependencies, and execution plan ([Roadmap Template](templates/03-roadmap.md)).
-- `lifecycle/04-refine.md`: process friction and verified lessons for possible rule/skill improvement ([Refine Template](templates/04-refine.md)).
-- `lifecycle/05-traceability.md`: authoritative map from each `AC-X.Y` / `BR-X` (and `PM-n` at Deep tier) to its task, implementation location, verifying check, and result ([Traceability Template](templates/05-traceability.md)). Seeded in Roadmap; completed by Review from actual code and checks. Uses IDs and short labels only — requirement text stays in `01-requirements.md`.
-- Permanent `docs/modules/` ([Module README Template](templates/module_readme.md), [Feature Template](templates/module_feature.md)) and `GLOSSARY.md`: final, reviewed project documentation after Review.
-
-Do not duplicate execution checkboxes between `01-requirements.md` and `03-roadmap.md`. Keep requirements stable and track completion in the roadmap and status dashboard.
-
-### Non-negotiable safety boundaries
-
-- **Manual Git only:** Never run `git add`, `git commit`, `git push`, `git reset`, `git restore`, or `git checkout`. Read-only `git status`, `git diff`, and `git log` are allowed.
-- **No long-running watchers or background code generation:** Do not launch watchers, persistent dev servers, or daemon code generators (for example, a code generator in watch mode). Ask the user to run these in their terminal when needed.
-- **Preserve user work:** Never overwrite existing lifecycle work on resume. Inspect the working tree before cleanup or scope changes. Do not delete or discard user changes.
-- **Follow the repository's actual rules:** Read applicable `.agents/rules/` files and existing patterns. If two rules conflict or a required rule file is missing, report the conflict/blocker instead of silently inventing a resolution.
+It maintains a single source of truth for all progress at `lifecycle/00-status.md`, routes execution sequentially, enforces context hygiene by loading only the active phase's skill into the context window, and guarantees that no work advances without explicit human approval.
 
 ---
 
-## 1. Status Dashboard and Resume Checkpoint
+## 2. Guiding Principles & Global Guardrails
 
-Read `lifecycle/00-status.md` first when resuming or routing an existing lifecycle. Use concise, scannable task slugs (`Task 1: <Short Slug>`) so table columns never wrap. Status values are strictly: `Todo`, `In Progress`, `In Review`, `Done`, `Skipped`.
+These rules apply universally across every phase of the lifecycle. Phase skills add detail; they never override these global guardrails:
 
-Keep a compact `Resume Checkpoint` in `00-status.md`, updated at task/phase boundaries and before handoff:
+- **Facts Belong to the Agent; Decisions Belong to the User:** Investigate discoverable facts from the codebase, tests, documentation, and logs independently. Ask the user when a decision requires their judgment, preferences, priorities, or business intent.
+- **Silence Is Never Approval:** The Agent cannot declare its own work approved or assume consent from the absence of feedback. Explicit user approval is mandatory at every phase exit gate (and at every task/feature gate in Phase 4).
+- **Non-Negotiable Git Safety Boundary:** The Agent is permitted to execute **read-only** Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch modifications belong exclusively to the user.
+- **No Persistent Watchers or Daemons:** Never launch long-running watchers, daemon code generators, or persistent dev servers in background processes without explicit user direction.
+- **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`. The legacy `05-traceability.md` file is retired.
+- **Cross-Phase Friction Logging (`lifecycle/04-refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** can append entries to `lifecycle/04-refine.md` whenever workflow friction, prompt ambiguity, tool limitations, or repeatable defects occur. Phase 5 Finalize systematically reviews these entries at handover.
+- **Mid-Flight Scope Changes:** If requirements change mid-flight, update the upstream specification in place (`lifecycle/01-discover.md`, `lifecycle/02-flows.md`, or `lifecycle/03-plan.md`), inspect `git status` for discarded code, and realign `lifecycle/00-status.md` before writing new code.
+- **Context Hygiene:** Load **only** the active phase's skill file into context. Never load all skills simultaneously.
+- **The Universal Treeing Principle:** Decompose complex systems hierarchically: Trunk (Core Purpose / Happy Path) $\to$ Branches (Capabilities / Seams) $\to$ Leaves (Edge Cases, Invariants, Rules). In planning, tree tasks (Steel Thread $\to$ Feature Slices $\to$ Edge Hardening). In bug triage, tree root causes (Symptom $\to$ System Seams $\to$ Root Cause Line). In documentation, tree knowledge (Module $\to$ Features $\to$ Business Invariants).
 
-- **Current Phase / Task:** Active step in `00-status.md`.
-- **Depth Tier:** `Light`, `Standard`, or `Deep`, and the trigger(s) that set it.
-- **Approved Outcome:** What is being completed and why.
-- **Decisions & Constraints to Preserve:** Only those necessary to resume safely; link to the requirements/roadmap for detail.
-- **Current State & Verification:** Files changed, what was verified, and actual command outcomes.
-- **Open Blockers / Uncertainties:** State `None` when there is none; do not bury material uncertainty.
-- **Next Action:** One concrete next step.
+---
 
-The checkpoint is a navigation aid, not another copy of the spec. Keep details in their authoritative artifacts.
+## 3. Responsibilities & Sequence
 
-## 2. Context Hygiene and Delegation
+### 3.1 Initialize the Status Dashboard (Cold Start)
 
-- Load only the active phase's `SKILL.md` in addition to the orchestrator and relevant artifacts/rules (never load all 7 skills at once).
-- Use sub-agents only when supported and useful (for example, broad research across `10+` files in `Brainstorm`, one isolated coding task in `Execute`, or an independent audit in `Review`).
-- Give every delegated worker a task packet containing: approved outcome, exact scope, relevant REQ/AC/BR IDs, applicable project rules, known decisions/assumptions, files/callers to inspect, required tests, and boundaries.
-- The parent agent remains accountable. Review delegated diffs and evidence; do not accept “done” or “tests passed” without inspecting what changed and what actually ran.
-- Keep interviews, consequential decisions, and approval handoffs in the main conversation.
+If `lifecycle/00-status.md` does not exist:
+1. Create `lifecycle/00-status.md` using the standard structure in Section 7.
+2. Initialize all phases to `Todo`.
+3. Set `Phase 1 — Discover` to `In Progress`.
+4. Load `lifecycle-discover` into context and begin discovery.
 
-## 3. Phase Routing Matrix
+### 3.2 Route Work via the Phase Routing Matrix
+
+When starting a session or resuming work, read `lifecycle/00-status.md` first to determine the active phase and skill to load:
 
 | Condition in `00-status.md` | Active Phase | Next Action | Skill to Load |
-|---|---|---|---|
-| `00-status.md` does not exist | Cold Start | Initialize status and requirements; begin discovery | [`lifecycle-brainstorm`](../lifecycle-brainstorm/SKILL.md) |
-| `Brainstorm` is `Todo` or `In Progress` | Brainstorm | Investigate, clarify, and write the requirements | [`lifecycle-brainstorm`](../lifecycle-brainstorm/SKILL.md) |
-| `Brainstorm` is `In Review` | Brainstorm | Stop and wait for approval | [`lifecycle-brainstorm`](../lifecycle-brainstorm/SKILL.md) |
-| `Brainstorm` is `Done`; `Prototype` is `Todo` | Prototype | Assess whether a prototype is useful; prototype when warranted | [`lifecycle-prototype`](../lifecycle-prototype/SKILL.md) |
-| `Prototype` is `In Review` | Prototype | Stop and wait for UX/flow sign-off | [`lifecycle-prototype`](../lifecycle-prototype/SKILL.md) |
-| `Prototype` is `Done` or `Skipped`; `Roadmap` is `Todo` | Roadmap | Plan vertical tasks and verification | [`lifecycle-roadmap`](../lifecycle-roadmap/SKILL.md) |
-| `Roadmap` is `In Review` | Roadmap | Stop and wait for plan approval | [`lifecycle-roadmap`](../lifecycle-roadmap/SKILL.md) |
-| `Roadmap` is `Done`; any roadmap task is `Todo` or `In Progress` | Execute | Implement the active task only | [`lifecycle-execute`](../lifecycle-execute/SKILL.md) |
-| Any roadmap task is `In Review` | Execute | Stop and wait for task verification/approval | [`lifecycle-execute`](../lifecycle-execute/SKILL.md) |
-| All roadmap tasks are `Done`; `Review` is `Todo` or `In Progress` | Review | Audit integrated implementation | [`lifecycle-review`](../lifecycle-review/SKILL.md) |
-| `Review` is `In Review` | Review | Stop and wait for audit sign-off | [`lifecycle-review`](../lifecycle-review/SKILL.md) |
-| `Review` is `Done`; `Finalize` is `Todo` or `In Progress` | Finalize | Sync final docs, process lessons, prepare handoff | [`lifecycle-finalize`](../lifecycle-finalize/SKILL.md) |
-| `Finalize` is `In Review` | Finalize | Stop and wait for handoff/cleanup decision | [`lifecycle-finalize`](../lifecycle-finalize/SKILL.md) |
+| :--- | :--- | :--- | :--- |
+| `00-status.md` does not exist | **Cold Start** | Initialize `00-status.md`; start discovery | `lifecycle-discover` |
+| `Phase 1 — Discover` is `Todo` / `In Progress` | **Discover** | Investigate problem, define target features, author `01-discover.md` | `lifecycle-discover` |
+| `Phase 1 — Discover` is `In Review` | **Discover Gate** | Stop and wait for user approval | `lifecycle-discover` |
+| `Phase 1` is `Done`; `Phase 2` is `Todo` / `In Progress` | **Flows** | Model flows (side-by-side diff) & modular prototype (if UI) | `lifecycle-flows` |
+| `Phase 2 — Flows` is `In Review` | **Flows Gate** | Stop and wait for user approval | `lifecycle-flows` |
+| `Phase 2` is `Done` (or `Skipped`); `Phase 3` is `Todo` | **Plan** | Break down target features into verifiable tasks; populate `00-status.md` | `lifecycle-plan` |
+| `Phase 3 — Plan` is `In Review` | **Plan Gate** | Stop and wait for user approval | `lifecycle-plan` |
+| `Phase 3` is `Done`; any Phase 4 task is `Todo` / `In Progress` | **Build** | Implement active task or feature; verify tests & rules | `lifecycle-build` |
+| Phase 4 task/feature is `In Review` | **Build Gate** | Stop and wait for task or feature approval | `lifecycle-build` |
+| All Phase 4 tasks are `Done`; `Phase 5` is `Todo` | **Finalize** | Verify outcomes, review quality, assess improvements, sync docs | `lifecycle-finalize` |
+| `Phase 5 — Finalize` is `In Review` | **Final Gate** | Stop and wait for final handover & cleanup decision | `lifecycle-finalize` |
+| All phases are `Done` | **Complete** | Lifecycle finished; ready for user git commit | *(None)* |
 
-## 4. Phase Approval and Advancement
+### 3.3 Enforce the Chat Approval Protocol (Human-First)
 
-- The agent owns research, implementation, and evidence. The user owns approval and material product/business decisions.
-- At a phase/task approval gate, set status to `In Review`, present the Approval Request block below, then stop.
-- After explicit approval, set the status to `Done` (or `Skipped` if explicitly accepted), load the next phase's `SKILL.md`, and auto-advance immediately.
-- If the user requests changes, set the item to `In Progress`, update the authoritative artifacts in place, verify the revision, and return it to `In Review`.
-- Do not ask for approval again on unchanged decisions already explicitly approved. Do ask when new evidence materially changes the decision or scope.
+Whenever any phase, sub-stage, or implementation task reaches an exit gate:
+1. Update its status to `In Review` in `lifecycle/00-status.md`.
+2. Stop calling tools immediately.
+3. In chat, output a brief, high-signal 1–2 sentence summary linking the deliverable or artifact, include concrete testing steps (if in Phase 4 Build), and ask for explicit approval to advance.
+4. **Never output robotic multi-section forms, boilerplate templates, or repeat context the user already knows.**
+5. Wait for explicit user response:
+   - **If Approved:** Mark item `Done` in `lifecycle/00-status.md`, load the next skill, and advance.
+   - **If Changes Requested:** Mark item `In Progress`, address feedback, re-verify, and present again.
+   - **If Blocked:** Mark item `Blocked`, resolve the blocker with the user before proceeding.
 
-### Approval Request block
+### 3.4 Handle Mid-Flight Scope Changes Across Any Phase
 
-Use this exact four-part structure in chat at every phase/task gate. Each phase skill says what goes in each part. No chat tables, no raw Mermaid.
+When new requirements emerge, scope expands, or direction changes in ANY active phase:
+1. **Pause Current Activity:** Stop coding or generating downstream artifacts immediately.
+2. **Update Upstream Source of Truth in Place:**
+   - If the change affects core problem, goal, or capabilities: Update `lifecycle/01-discover.md` (`## 3. Target Features`) in place.
+   - If the change affects UX or screen journeys: Update `lifecycle/02-flows.md` in place.
+   - If the change affects implementation tasks: Update `lifecycle/03-plan.md` in place.
+   - Realign `lifecycle/00-status.md` so active rows accurately reflect the revised plan.
+3. **Working Tree Safety Check:** Run read-only `git status` to identify any uncommitted, discarded code so the user can stash or discard it before new work begins.
+4. **Resume:** Present a 1-sentence summary of the realignment and continue.
+
+### 3.5 Manage Session Resumption via Dashboard Status
+
+When resuming work after context compaction or a session break, the Agent simply inspects the status table in `lifecycle/00-status.md`. The active step is unambiguously indicated by the row marked `In Progress` or `In Review`, eliminating the need for duplicate prose notes.
+
+---
+
+## 4. Completion Criteria
+
+The overall development lifecycle is considered complete only when:
+
+- All five phases (`Discover`, `Flows`, `Plan`, `Build`, `Finalize`) are marked `Done` in `lifecycle/00-status.md`.
+- All Phase 4 implementation tasks are verified and marked `Done`.
+- Permanent documentation in `docs/modules/` is updated and verified.
+- Upstream friction and lessons (if any) are recorded in `lifecycle/04-refine.md`.
+- The user has executed the Phase 5 Artifact Cleanup Decision (Delete, Archive, or Keep `lifecycle/`).
+- The working tree is clean and ready for the user's manual Git commit.
+
+---
+
+## 5. Exit Gate
+
+The Orchestrator marks the entire lifecycle complete only when all five phase exit gates have been approved and the Phase 5 handover is accepted.
+
+### Exit Gate Outcomes
+
+- **Approved:** All phases are `Done`, permanent docs are synchronized, and the cleanup choice is executed. Lifecycle is officially complete.
+- **Changes Requested:** Feedback on any deliverable returns that specific phase to `In Progress` in `lifecycle/00-status.md`.
+- **Blocked:** If a critical dependency, architecture question, or user decision blocks progress, the active phase is marked `Blocked` in `lifecycle/00-status.md` until resolved.
+
+---
+
+## 6. Phase Boundary
+
+This section defines the responsibilities and strict boundaries of Phase 0.
+
+### 6.1 What Belongs to Phase 0 (Orchestrator)
+
+- Initializing and maintaining `lifecycle/00-status.md`.
+- Reading `00-status.md` and routing work to the active phase skill.
+- Enforcing context hygiene (loading only one phase skill at a time).
+- Enforcing exit gates, gate transitions, and the chat approval protocol.
+- Guaranteeing that no code or decisions advance without explicit user approval.
+
+### 6.2 What Does NOT Belong to Phase 0
+
+- Investigating requirements or defining target features (belongs to Phase 1 — Discover).
+- Designing visual flows or creating HTML prototypes (belongs to Phase 2 — Flows).
+- Defining technical architectures or writing task breakdowns (belongs to Phase 3 — Plan).
+- Writing production code or running unit tests (belongs to Phase 4 — Build).
+- Performing code audits, documenting modules, or executing cleanups (belongs to Phase 5 — Finalize).
+
+---
+
+## 7. Phase Output
+
+The primary deliverable of Phase 0 is the **Status Dashboard** maintained at `lifecycle/00-status.md`.
+
+### Lifecycle Artifact Architecture
+
+All temporary development artifacts live in `lifecycle/` using crisp 1-word headings:
+
+| Phase | Live Artifact | Format & Key Contents | Owning Skill |
+| :--- | :--- | :--- | :--- |
+| **Phase 0** | `lifecycle/00-status.md`<br>`lifecycle/04-refine.md` | 3-column live dashboard (`Phase`, `Stage / Task`, `Status`)<br>Cross-phase friction log (any phase appends; Phase 5 reviews) | `lifecycle` |
+| **Phase 1** | `lifecycle/01-discover.md` | Desired Goal, Target Features (`### <Name>`), Scope Boundaries, Decisions | `lifecycle-discover` |
+| **Phase 2** | `lifecycle/02-flows.md`<br>+ `02-prototype.html` | Visual diffs & sequences (Mermaid), Prototype Hub & Modular Variants (`prototype/`) | `lifecycle-flows` |
+| **Phase 3** | `lifecycle/03-plan.md` | Feature tasks, assigned Rule Files, Two-Tier Verification (`Setup`, `Action`, `Expected`) | `lifecycle-plan` |
+| **Phase 4** | *(None)* | Implements code, executes Agent Verification, marks checkboxes (`- [x]`) in `03-plan.md` | `lifecycle-build` |
+| **Phase 5** | `docs/modules/<module>/` | Permanent architectural docs sync; PR summary (chat); reviews `04-refine.md` | `lifecycle-finalize` |
+
+---
+
+### Recommended Structure for `lifecycle/00-status.md`
 
 ```markdown
-✅ **Approval needed: <Phase or Task name>**
-**What I did:** <≤3 bullets — the outcome, plus exact verification commands with Passed / Failed / Not Run>
-**What to check:** <≤3 bullets — where to look first, with links to the artifact; human verification steps when the phase has them>
-**What I need from you:** <The exact decision(s); mark blocking questions; write "Nothing besides approval." when none>
-**How to reply:** `approve` to advance · describe changes to revise · or answer the decision above
+# Status: [Requirement / Feature Name]
+
+- **Execution Mode:** [Task Mode / Feature Mode] (selected during Phase 3)
+
+| Phase | Stage / Task | Status |
+| :--- | :--- | :--- |
+| **Phase 1 — Discover** | 1.1 Problem & Target Features ([01-discover.md](lifecycle/01-discover.md)) | `Todo` |
+| **Phase 2 — Flows** | 2.1 Flow Design ([02-flows.md](lifecycle/02-flows.md)) | `Todo` |
+| | 2.2 Interactive Prototype ([02-prototype.html](lifecycle/02-prototype.html)) | `Todo` |
+| **Phase 3 — Plan** | 3.1 Technical Approach & Task Breakdown ([03-plan.md](lifecycle/03-plan.md)) | `Todo` |
+| **Phase 4 — Build** | *(Populated directly by Phase 3 Plan)* | |
+| | Task 4.1: [Task 1 Title] | `Todo` |
+| | Task 4.2: [Task 2 Title] | `Todo` |
+| | Task 4.3: [Task 3 Title] | `Todo` |
+| **Phase 5 — Finalize** | 5.1 Outcome & Quality Verification | `Todo` |
+| | 5.2 Application Improvements | `Todo` |
+| | 5.3 Documentation & PR Summary | `Todo` |
+
+<!-- Status Values: Todo, In Progress, In Review, Blocked, Done, Skipped -->
 ```
 
-Keep the artifact side in sync:
-- `01-requirements.md`, `03-roadmap.md`, `00-status.md`, and the prototype hub each carry a `Needs your decision` line near the top.
-- The line lists one pointer per open user-owned decision (topic → section link → recommended default). Detail stays in `01-requirements.md` Sections 5 and 9.
-- Set it to `None — ready for sign-off` only when no user-owned decision is open; update it each time a decision is answered.
-- Use the `❓ Decision needed` format (see `lifecycle-brainstorm`) for mid-phase questions; reference those questions in the block's *What I need from you* part.
+---
 
-## 5. Smart Prototype Assessment
+### Recommended Structure for `lifecycle/04-refine.md` (Optional)
 
-- Anytime a feature adds, rearranges, or consolidates user-facing screens, navigation, cards, forms, tabs, or multi-step flows—even when reusing existing UI widgets—run `Prototype` so the user can visually verify and simplify the UX before coding starts.
-- For tiny, reversible UI changes that clearly follow an approved existing pattern, the agent may recommend `Prototype: Skipped` with a one-line reason.
-- Pure backend/model/config work may also skip Prototype when no visual decision or user-flow diagram would reduce risk.
-- The user can override the recommendation. Never skip a phase solely to save time when uncertainty about the UX is material.
+```markdown
+# Refine: [Requirement / Feature Name]
 
-## 6. Mid-Flight Requirement or UX Change
+Use this log to capture friction, prompt ambiguity, tool limitations, or rule improvements observed during development. Any active phase can append entries; Phase 5 Finalize reviews this file to propose upstream enhancements.
 
-When the user changes scope or a better solution is discovered during Prototype, Roadmap, Execute, or Review:
+## Active Friction & Lessons Learned
 
-1. **Pause & Micro-Brainstorm:** Pause implementation of the affected work. Clarify the underlying goal, inspect consequences and callers, compare plausible options, and ask about any material unresolved decision. Re-check the depth tier and escalate to `Deep` if a trigger now applies.
-2. **Update `01-requirements.md` In Place:** Replace superseded statements in place so `01-requirements.md` expresses one coherent current truth; preserve stable IDs where behavior remains the same and retire superseded requirements clearly.
-3. **Update `03-roadmap.md` & `00-status.md` (No Unstructured Amendment Footers):** Never dump new scope into an untracked footer at the bottom of `03-roadmap.md`. If an earlier task was superseded, mark its replaced lines as `~(Superseded by Task N)~` (or collapse a fully superseded task heading to `## Task X: <Name> — ~(Superseded by Task N)~`) and add a proper numbered `Task N: <Short Slug>` using the canonical five-part task anatomy in `03-roadmap.md` and a matching row in `00-status.md`. Update `05-traceability.md` the same way: mark retired IDs `Superseded` and add rows for new `AC`/`BR` IDs.
-4. **Dirty Tree Check:** Inspect read-only `git status` and `git diff`. If uncommitted code from a discarded approach conflicts with the new direction, list the affected files and ask the user to stash or discard them manually before writing new code.
-5. **Confirm & Resume:** Summarize the change and revised plan concisely in chat and stop for user approval before implementing newly scoped work.
-
-## 7. Session Resumption and Crash Recovery
-
-1. Read `00-status.md` and its Resume Checkpoint.
-2. Inspect read-only `git status --short` and `git diff` before changing files.
-3. Re-read the active task, its acceptance criteria, the relevant requirements/business rules, and applicable `.agents/rules/` files.
-4. Summarize in two short sentences what is complete and what remains; correct the checkpoint if stale.
-5. Resume the active phase without repeating completed work, and without treating an assumption as an approved decision.
-
-## 8. Process Refinement (`04-refine.md`)
-
-Whenever a meaningful mistake, recurring ambiguity, rule conflict, or avoidable rework occurs in any phase, immediately append an entry to `lifecycle/04-refine.md` (initializing from [Refine Template](templates/04-refine.md) if needed). Avoid promoting every one-off mistake into a permanent rule. During Finalize, classify each lesson, apply only generalizable improvements, and record whether the change was actually verified.
+### Entry 1: [Short Title]
+- **Phase / Task:** [Phase or Task where friction occurred]
+- **Classification:** One-off / Project-specific / Framework-wide
+- **Observed Failure:** [What actually happened; not a guess]
+- **Root Cause / Evidence:** [Why current code, rule, or workflow allowed it]
+- **Preventive Change:** [Specific change to an artifact, rule, template, or skill]
+- **Target:** [File path or upstream skill/rule]
+- **Status:** Proposed / Applied / Verified / Deferred
+```
