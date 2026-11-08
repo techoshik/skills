@@ -47,7 +47,7 @@ Explore the initial problem, opportunity, or request through evidence-based inve
    - If a fact can be determined from the repo, verify it yourself; never ask the user for discoverable codebase facts.
 3. **Domain Vocabulary Settle (Early Alignment):**
    - Check the project root `GLOSSARY.md` (if present) to reuse established terminology.
-   - Settle any new or clarified domain terms (e.g. user roles, session entities, revocation actions) early and record them under `## 1. At a Glance` as **Core Terms**. Pinned vocabulary prevents subtle semantic bugs across downstream phases, and will be promoted to the project's root `GLOSSARY.md` during Phase 5 Finalize.
+   - Settle any new or clarified domain terms (e.g. user roles, session entities, revocation actions) early and record them under `## 1. At a Glance` as **Core Terms**. Pinned vocabulary prevents subtle semantic bugs across downstream phases, and will be promoted to the project's root `GLOSSARY.md` during Phase 5 Finalize. Express all user-facing concepts in simple, everyday English (5th-grade reading standard), strictly avoiding technical or abstract corporate jargon.
 
 ### 3.2 Step 2 — Uncover Requirements & Probe Blind Spots
 

@@ -38,6 +38,7 @@ This phase has two sequential stages:
 - **Prevent "God-File" Prototypes:** Never create monolithic single-file prototypes for multi-feature or multi-variant projects. Use a central Prototype Hub (`lifecycle/02-prototype.html`) linking to focused, self-contained option files in `lifecycle/prototype/<feature>/`. Prototypes are temporary validation artifacts—prioritize realistic interaction and modularity over arbitrary line-count limits.
 - **Interactive State Toggling:** Every prototype option must feature a sticky top state-switcher bar allowing instant toggling between key interactive states (`Default`, `Empty`, `Loading`, `Error`, `Edge / Restricted`).
 - **Self-Contained & Zero-Build:** Prototypes must open directly in any browser with zero build steps, bundlers, or local servers. Embed styles, mock data, and minimal vanilla JS directly in each file.
+- **Design System Primitive Alignment (Keep It Simple):** Prototypes are HTML models—not Flutter code. Do not write complex custom CSS or obsess over pixel perfection. However, HTML structures must mirror the project's design system primitives conceptually (cards, primary/secondary buttons, dialogs, toasts, message views, semantic theme roles, and plain-language copy). Aligning these primitives in HTML allows Phase 4 Build to translate prototypes directly into canonical Flutter components without redesigning the UX.
 - **Synchronize Discoveries Upstream:** If prototyping reveals missing requirements, edge cases, or UX simplifications, immediately update `lifecycle/01-discover.md` in place.
 - **Single Live Document (`lifecycle/02-flows.md`):** All flow diagrams, prototype references, and UX decisions live in `lifecycle/02-flows.md`.
 - **Strict Phase Boundaries (Negative Constraints):**
@@ -76,7 +77,9 @@ flowchart LR
 3. **Mermaid Diagram Robustness & Syntax Rules:**
    - Always quote node labels containing special characters, brackets, or parentheses (e.g. `id["Action (Details)"]`).
    - Use only supported diagram types: `flowchart TD`, `flowchart LR`, `sequenceDiagram`, and `stateDiagram-v2`.
-   - For sequence diagrams, use `autonumber` and clear participant labels.
+   - For sequence diagrams, use `autonumber` and clear participant labels; quote participant labels or aliases containing slashes, hyphens, or parentheses.
+   - **No Parentheses in Edge Labels:** Avoid parentheses in flowchart edge labels (e.g. use hyphens or clean phrases `|No - Option A|` instead of `|No (Option A)|`) because Mermaid grammar breaks on unescaped parentheses inside `|...|` delimiters.
+   - **No Nested `alt` in Sequence Diagrams:** Prohibit nested `alt` blocks (use sequential `opt` blocks or flat sequential checks); standard Mermaid sequence grammar strictly forbids nested `alt` and crashes markdown renderers.
 4. **Enforce Zero Dead-Ends & Highlight What Changes:**
    - Verify that every error branch, validation failure, and timeout loops back to an actionable user recovery step or a safe exit. Never leave an orphaned error box.
    - For modifications to existing systems, distinguish current behavior from proposed behavior using side-by-side visual diffs or concise change delta tables.
@@ -120,6 +123,14 @@ flowchart LR
      - `Error / Validation`: Field-level errors, banner alerts, retry prompts.
      - `Edge / Permissions`: Restricted view, read-only state, or modal confirmation.
    - **Async Communication Drawer:** For multi-step async flows (e.g. email verification links, magic links, SMS OTPs), embed a simulated collapsible drawer or modal in the prototype so reviewers can inspect payloads and click links directly.
+   - **Simplified Design System Alignment (Mirroring Primitives in HTML):** Keep HTML/CSS simple (e.g. modern Tailwind via CDN or utility classes). Map design system primitives conceptually so Phase 4 Build can translate them effortlessly:
+     - *Cards & Containers:* Standard rounded container cards (`rounded-2xl border bg-slate-800/900`) representing design system cards (`ThanksCard`).
+     - *Buttons:* Clear visual hierarchy: solid brand primary button, secondary/ghost button, and disabled/loading spinner state representing design system buttons (`ThanksButton`).
+     - *Dialogs & Modals:* Centered overlay cards with dimmed backdrop, clear title, body, and primary/cancel actions representing design system dialogs (`ThanksDialog`).
+     - *Toasts & Feedback:* Top banners or status cards (success toast, error banner with explicit retry button, empty state card) representing design system feedback (`ThanksToast`, `ThanksMessageView`).
+     - *Spacing & Sizing Rhythm:* Use standard spacing scales (`p-4`, `p-6`, `gap-3`, `gap-4`) and standard icon sizes (`w-5 h-5` ~20px, `w-10 h-10` ~40px) rather than arbitrary odd pixel values.
+     - *Plain-Language Copy (5th-Grade Standard):* Write all prototype dialog titles, button labels, toasts, and notices in simple, everyday English that a 5th-grade student can easily read and understand. Ban technical and corporate jargon (e.g. use "Add New Shop" instead of "Manage Store Branches", "Open Website" instead of "Launch Web Portal"). If the prototype uses plain language, production code will automatically inherit it without rework.
+     - *No Over-Engineering:* Never get stuck attempting to implement pixel-perfect Flutter look-alikes. Aligning on component primitives and vocabulary is all that is needed.
 4. **Assemble the Central Prototype Hub (`lifecycle/02-prototype.html`):**
    - Provide an index of all prototype options organized by feature.
    - Include a **"Needs Decision"** banner highlighting the specific trade-offs between options.
@@ -140,7 +151,7 @@ Before requesting user approval, verify that:
 - **Requirement Traceability:** Visual flows directly reflect all confirmed requirements from `lifecycle/01-discover.md`.
 - **Zero Dead-Ends Verified:** Every error, validation, and timeout branch loops back to an actionable user recovery step or safe exit.
 - **Change Delta Clarified:** For modifications to existing systems, current vs. proposed behavior is clearly distinguished via visual diffs or delta tables.
-- **Mermaid Syntax Validated:** All diagrams use supported types (`flowchart`, `sequenceDiagram`, `stateDiagram-v2`) with quoted labels for special characters.
+- **Mermaid Syntax Validated:** All diagrams use supported types (`flowchart`, `sequenceDiagram`, `stateDiagram-v2`) with quoted labels for special characters, zero parentheses in edge labels, and zero nested `alt` blocks.
 - **Modular Prototype Hub Assembled:** (UI only) Prototypes follow the modular hub structure (`02-prototype.html` index hub + `prototype/<feature>/option-X.html`).
 - **State-Switcher Bar Functional:** (UI only) Sticky bar allows instant toggling between Default, Empty, Loading, Error, and Edge states.
 - **Async Inspection Drawer Included:** (UI only) Simulated drawer allows testing email/magic link payloads without external mail servers.

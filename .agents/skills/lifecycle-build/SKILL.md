@@ -25,7 +25,7 @@ Tasks are executed strictly one task at a time. The Agent must stop for explicit
 - **Rule Compliance Is Mandatory:** Read and apply all Rule Files assigned to the task (e.g. database migrations, file creation thresholds, security invariants). Verify compliance before review.
 - **Red-Green Seam Proof (Proof of Cause):** For bugfixes and new logic, prove the seam: verify the failing behavior or error log before editing (Red), implement the targeted change, and prove the automated check passes after (Green). Never claim a fix works without proving the causal link.
 - **Implement the Smallest Coherent Slice:** Keep changes focused, minimal, and compile-clean. Avoid horizontal fragmentation or sweeping refactors that touch unrelated files.
-- **Pre-Handoff Diff Scrub (Hypo-Allergenic Diffs):** Audit `git diff` line-by-line before requesting review: ensure zero accidental whitespace modifications to untouched code, zero leftover `console.log`, `debugger`, or temporary shims, and zero orphaned imports. Every line in the diff must directly serve the task.
+- **Pre-Handoff Diff Scrub (Hypo-Allergenic Diffs):** Audit `git diff` line-by-line before requesting review: ensure zero accidental whitespace modifications to untouched code, zero leftover `console.log`, `debugger`, or temporary shims, zero orphaned imports, zero hardcoded design literals (magic numbers on padding, margins, icon sizes, spacers, or raw colors) bypassing canonical design system tokens, and clear plain-language copy. Every line in the diff must directly serve the task.
 - **Honest Evidence Reporting (`Passed` / `Failed` / `Not Run`):** Never claim a check passed unless it was actually executed. Distinguish pre-existing baseline test failures from new regressions; never silently broaden scope to fix unrelated baseline issues.
 - **Improve Proactively, Change Only With Approval:** Actively spot opportunities to improve code quality, performance, or security, but present them as recommendations in chat. Never implement extra changes without explicit user approval.
 - **Strict Phase Boundaries (Negative Constraints):**
@@ -79,7 +79,10 @@ Implementation follows three disciplined chronological steps for each task:
 2. **Verify Assigned Rule Files:**
    - Verify modified files against assigned Rule Files (e.g. file size thresholds, idempotent migration rollback).
 3. **Pre-Handoff Diff Scrub:**
-   - Run read-only `git diff` line-by-line to ensure zero accidental whitespace modifications, zero debug statements (`console.log`, `print`, `debugger`), zero unused imports, and zero temporary mocks.
+   - Run read-only `git diff` line-by-line to verify:
+     - Zero accidental whitespace modifications to untouched code, zero debug statements (`console.log`, `print`, `debugger`), zero unused imports, and zero temporary mocks.
+     - **Design System Token & Component Primacy:** Zero raw integer sizes on icons (`Icon(size: ...)`), zero ad-hoc spacers (`SizedBox(width/height: ...)`), zero hardcoded padding/margins, and zero raw color literals. All UI must strictly consume the project's canonical design system library (widgets, spacing tokens, typography, theme colors, dialogs, toasts, loaders). If any widget, spacing guideline, icon size token, or style appears to be missing in the design system library, **ask the user first** for direction rather than creating ad-hoc custom solutions, raw literals, or bespoke widgets.
+     - **Plain-Language Copy Audit (5th-Grade Standard):** Audit all user-facing text (dialog titles, buttons, form hints, descriptions, toasts, and error messages). Zero developer or corporate jargon allowed (e.g. no "synchronize", "manage tiers", "submitting payload"). Text MUST be simple, clear, everyday English that a 5th-grade student can easily read, understand, and use without confusion.
 4. **Halt for Human Review (Strictly Serial Gate):**
    - Keep the main task checkbox unchecked (`- [ ]`) in `lifecycle/03-plan.md` (only the user checks this upon approval).
    - Update the task status to `In Review` in `lifecycle/00-status.md`.
@@ -110,7 +113,7 @@ Before requesting user review for any task, verify that:
 - **Rule Compliance Verified:** Assigned Rule Files are satisfied with zero unapproved deviations.
 - **Automated Checks Passed:** All **Agent Verification** commands have been executed and passed.
 - **Agent Checkboxes Checked:** Passing Agent Verification checkboxes are marked `- [x]` in `lifecycle/03-plan.md`.
-- **Pre-Handoff Diff Scrubbed:** `git diff` is clean (no debug logs, dead code, secrets, or accidental whitespace edits).
+- **Pre-Handoff Diff Scrubbed:** `git diff` is clean (no debug logs, dead code, secrets, accidental whitespace edits, raw design literals, or jargon copy).
 - **Task Checkbox Unchecked:** Main task checkbox remains `- [ ]` in `lifecycle/03-plan.md` while awaiting review.
 - **Status Dashboard Updated:** Task row in `lifecycle/00-status.md` is set to `In Review`.
 - **User Verification Actionable:** Setup, Action, and Expected instructions are clear and testable.
