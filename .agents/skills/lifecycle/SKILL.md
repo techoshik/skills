@@ -20,7 +20,7 @@ It maintains a single source of truth for all progress at `lifecycle/00-status.m
 These rules apply universally across every phase of the lifecycle. Phase skills add detail; they never override these global guardrails:
 
 - **Facts Belong to the Agent; Decisions Belong to the User:** Investigate discoverable facts from the codebase, tests, documentation, and logs independently. Ask the user when a decision requires their judgment, preferences, priorities, or business intent.
-- **Silence Is Never Approval:** The Agent cannot declare its own work approved or assume consent from the absence of feedback. Explicit user approval is mandatory at every phase exit gate (and at every task/feature gate in Phase 4).
+- **Silence Is Never Approval:** The Agent cannot declare its own work approved or assume consent from the absence of feedback. Explicit user approval is mandatory at every phase exit gate and after every individual task in Phase 4.
 - **Non-Negotiable Git Safety Boundary:** The Agent is permitted to execute **read-only** Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch modifications belong exclusively to the user.
 - **No Persistent Watchers or Daemons:** Never launch long-running watchers, daemon code generators, or persistent dev servers in background processes without explicit user direction.
 - **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`. The legacy `05-traceability.md` file is retired.
@@ -50,12 +50,14 @@ When starting a session or resuming work, read `lifecycle/00-status.md` first to
 | `00-status.md` does not exist | **Cold Start** | Initialize `00-status.md`; start discovery | `lifecycle-discover` |
 | `Phase 1 — Discover` is `Todo` / `In Progress` | **Discover** | Investigate problem, define target features, author `01-discover.md` | `lifecycle-discover` |
 | `Phase 1 — Discover` is `In Review` | **Discover Gate** | Stop and wait for user approval | `lifecycle-discover` |
-| `Phase 1` is `Done`; `Phase 2` is `Todo` / `In Progress` | **Flows** | Model flows (side-by-side diff) & modular prototype (if UI) | `lifecycle-flows` |
-| `Phase 2 — Flows` is `In Review` | **Flows Gate** | Stop and wait for user approval | `lifecycle-flows` |
+| `Phase 1` is `Done`; `Stage 2.1` is `Todo` / `In Progress` | **Flows (2.1)** | Model flows (side-by-side diff & Mermaid diagrams); author `02-flows.md` | `lifecycle-flows` |
+| `Stage 2.1 — Flow Design` is `In Review` | **Flow Gate** | Stop and wait for user approval of flow diagrams | `lifecycle-flows` |
+| `Stage 2.1` is `Done`; `Stage 2.2` is `Todo` / `In Progress` | **Prototype (2.2)** | Build modular interactive prototype in `02-prototype.html` (or mark `Skipped` if non-UI) | `lifecycle-flows` |
+| `Stage 2.2 — Interactive Prototype` is `In Review` | **Prototype Gate** | Stop and wait for user prototype option selection and approval | `lifecycle-flows` |
 | `Phase 2` is `Done` (or `Skipped`); `Phase 3` is `Todo` | **Plan** | Break down target features into verifiable tasks; populate `00-status.md` | `lifecycle-plan` |
 | `Phase 3 — Plan` is `In Review` | **Plan Gate** | Stop and wait for user approval | `lifecycle-plan` |
-| `Phase 3` is `Done`; any Phase 4 task is `Todo` / `In Progress` | **Build** | Implement active task or feature; verify tests & rules | `lifecycle-build` |
-| Phase 4 task/feature is `In Review` | **Build Gate** | Stop and wait for task or feature approval | `lifecycle-build` |
+| `Phase 3` is `Done`; any Phase 4 task is `Todo` / `In Progress` | **Build** | Implement active task strictly one at a time; verify tests & rules | `lifecycle-build` |
+| Phase 4 task is `In Review` | **Task Gate** | Stop and wait for explicit human task approval | `lifecycle-build` |
 | All Phase 4 tasks are `Done`; `Phase 5` is `Todo` | **Finalize** | Verify outcomes, review quality, assess improvements, sync docs | `lifecycle-finalize` |
 | `Phase 5 — Finalize` is `In Review` | **Final Gate** | Stop and wait for final handover & cleanup decision | `lifecycle-finalize` |
 | All phases are `Done` | **Complete** | Lifecycle finished; ready for user git commit | *(None)* |
@@ -148,11 +150,11 @@ All temporary development artifacts live in `lifecycle/` using crisp 1-word head
 | Phase | Live Artifact | Format & Key Contents | Owning Skill |
 | :--- | :--- | :--- | :--- |
 | **Phase 0** | `lifecycle/00-status.md`<br>`lifecycle/04-refine.md` | 3-column live dashboard (`Phase`, `Stage / Task`, `Status`)<br>Cross-phase friction log (any phase appends; Phase 5 reviews) | `lifecycle` |
-| **Phase 1** | `lifecycle/01-discover.md` | Desired Goal, Target Features (`### <Name>`), Scope Boundaries, Decisions | `lifecycle-discover` |
-| **Phase 2** | `lifecycle/02-flows.md`<br>+ `02-prototype.html` | Visual diffs & sequences (Mermaid), Prototype Hub & Modular Variants (`prototype/`) | `lifecycle-flows` |
+| **Phase 1** | `lifecycle/01-discover.md` | At a Glance (Problem, Current System, Goal), Target Features, Scope Boundaries | `lifecycle-discover` |
+| **Phase 2** | `lifecycle/02-flows.md`<br>+ `02-prototype.html` | At a Glance (Prototypes & UX rules), Visual Workflows & Sequences (Mermaid) | `lifecycle-flows` |
 | **Phase 3** | `lifecycle/03-plan.md` | Feature tasks, assigned Rule Files, Two-Tier Verification (`Setup`, `Action`, `Expected`) | `lifecycle-plan` |
-| **Phase 4** | *(None)* | Implements code, executes Agent Verification, marks checkboxes (`- [x]`) in `03-plan.md` | `lifecycle-build` |
-| **Phase 5** | `docs/modules/<module>/` | Permanent architectural docs sync; PR summary (chat); reviews `04-refine.md` | `lifecycle-finalize` |
+| **Phase 4** | *(None)* | Implements code, executes Agent Verification, marks checkboxes (`- [x]`) in `03-plan.md` upon explicit user approval | `lifecycle-build` |
+| **Phase 5** | `lifecycle/05-finalize.md`<br>+ `docs/modules/<module>/` | Verification & audit evidence, assessed improvements, PR summary, permanent docs links | `lifecycle-finalize` |
 
 ---
 
@@ -161,21 +163,19 @@ All temporary development artifacts live in `lifecycle/` using crisp 1-word head
 ```markdown
 # Status: [Requirement / Feature Name]
 
-- **Execution Mode:** [Task Mode / Feature Mode] (selected during Phase 3)
-
 | Phase | Stage / Task | Status |
 | :--- | :--- | :--- |
-| **Phase 1 — Discover** | 1.1 Problem & Target Features ([01-discover.md](lifecycle/01-discover.md)) | `Todo` |
-| **Phase 2 — Flows** | 2.1 Flow Design ([02-flows.md](lifecycle/02-flows.md)) | `Todo` |
-| | 2.2 Interactive Prototype ([02-prototype.html](lifecycle/02-prototype.html)) | `Todo` |
-| **Phase 3 — Plan** | 3.1 Technical Approach & Task Breakdown ([03-plan.md](lifecycle/03-plan.md)) | `Todo` |
+| **Phase 1 — Discover** | 1.1 At a Glance & Target Features ([01-discover.md](01-discover.md)) | `Todo` |
+| **Phase 2 — Flows** | 2.1 Flow Design ([02-flows.md](02-flows.md)) | `Todo` |
+| | 2.2 Interactive Prototype ([02-prototype.html](02-prototype.html)) | `Todo` |
+| **Phase 3 — Plan** | 3.1 Technical Approach & Task Breakdown ([03-plan.md](03-plan.md)) | `Todo` |
 | **Phase 4 — Build** | *(Populated directly by Phase 3 Plan)* | |
 | | Task 4.1: [Task 1 Title] | `Todo` |
 | | Task 4.2: [Task 2 Title] | `Todo` |
 | | Task 4.3: [Task 3 Title] | `Todo` |
-| **Phase 5 — Finalize** | 5.1 Outcome & Quality Verification | `Todo` |
-| | 5.2 Application Improvements | `Todo` |
-| | 5.3 Documentation & PR Summary | `Todo` |
+| **Phase 5 — Finalize** | 5.1 Outcome & Quality Verification ([05-finalize.md](05-finalize.md)) | `Todo` |
+| | 5.2 Application Improvements ([05-finalize.md](05-finalize.md)) | `Todo` |
+| | 5.3 Documentation & PR Summary ([05-finalize.md](05-finalize.md)) | `Todo` |
 
 <!-- Status Values: Todo, In Progress, In Review, Blocked, Done, Skipped -->
 ```

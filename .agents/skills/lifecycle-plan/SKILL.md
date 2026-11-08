@@ -26,11 +26,12 @@ The purpose of this phase is to ensure that, before Phase 4 — Build begins, th
 - **Feature-driven Breakdown & Task Treeing:** Directly map the Discover requirement tree into a task tree: Goal (Trunk) $\to$ Target Features (Branches) $\to$ Steel Thread and Edge Tasks (Leaves).
 - **Vertical "Steel Thread" Slicing:** Ban horizontal layer-cake task plans (e.g., Task 1: all DB models, Task 2: all API controllers, Task 3: all UI screens). Every task must implement a thin vertical slice through the stack. Task 1 is always the **Steel Thread** (the minimal end-to-end happy path from data to UI that compiles and runs immediately); subsequent tasks add edge recovery, validation, and hardening.
 - **Blast Radius Tagging:** Tag every task with its blast radius to govern execution risk:
-  - `🟢 Low (Isolated):` Local UI widget, internal helper, self-contained file. *(Eligible for Feature Mode batching)*.
-  - `🔴 High (Shared):` Modifies shared database schemas, public APIs, authentication guards, or global route tables. *(Mandates Task Mode review)*.
+  - `🟢 Low (<5 words reason):` e.g., `🟢 Low (isolated component)`
+  - `🔴 High (<5 words reason):` e.g., `🔴 High (shared database schema)`
 - **Task-Level Architecture:** Architectural touchpoints, data schemas, and file modifications are defined directly inside the tasks responsible for them, eliminating duplicate documentation.
 - **Prefactoring Check (Rule Thresholds — 900/1000 lines):** Inspect existing target files before planning feature changes. If a target file already exceeds the 900-line evaluate threshold, or the planned change would push it past the 1000-line hard limit, schedule an upfront `Prefactor <Target>` task (*"Make the change easy, then make the easy change"*) to extract sub-components or helpers before feature implementation begins.
 - **Compile-Clean Slices & Temporary Alias Cleanup:** Every task must leave the codebase in a compile-clean, testable state. If an early task renames or removes a symbol needed by later tasks, either update all callers in that task or introduce a temporary compatibility alias that is explicitly scheduled for deletion in the task that migrates the final caller.
+- **Backward Compatibility & Multi-Tier Fallback Invariant:** When modifying database schemas, storage collections, or API contracts across independently deployed layers (e.g., client apps vs. backend cloud functions/microservices), tasks must explicitly account for live data coexistence. Readers must include fallback handling for legacy fields or unmigrated documents, guaranteeing zero disruption for active sessions or older client versions during phased rollouts.
 - **Task-Specific Rule Enforcement:** Assign relevant Rule Files (e.g., file creation thresholds, API conventions, database migration rules) directly to each task so the agent checks them where the code changes.
 - **Two-Tier Verification:** Separate Agent Verification (automated tests and rule compliance checks the agent must run first) from User Verification (clear Setup, Action, and Expected steps for the user).
 - **Dependency-aware Sequencing:** Foundation tasks (migrations, core domain utilities) must be sequenced before dependent feature and UI tasks.
@@ -69,23 +70,27 @@ Divide each target feature into small, logically independent implementation task
      - *Validation & Error Recovery:* Input validators, timeout/retry logic, user-facing error banners.
      - *Permissions & Tenancy:* Route guards, role-based checks, tenant isolation enforcement.
      - *State & Concurrency:* Double-submit guards, debouncing, optimistic locking.
-     - *Data Lifecycle:* Cascading deletes, retention policies, audit logging, and cleanup.
+     - *Data Lifecycle & Migration Fallbacks:* Cascading deletes, retention policies, audit logging, cleanup, and explicit read fallbacks for unmigrated legacy records during schema transitions.
 
 To ensure maximum clarity for the implementer and user, every task must follow this explicit anatomy:
 
 ```markdown
 - [ ] **Task 4.1: Database Schema & Migration**
-  - **Scope:** Create PostgreSQL migration for `users` and `tokens` tables with unique lowercase index on `email`.
-  - **Blast Radius:** 🔴 High (Shared database schema & models)
-  - **Files:**
-    - `src/migrations/001_auth_tables.sql`
-    - `src/models/user.ts`
+  - **Blast Radius:** 🔴 High (shared database schema & models)
+  - **Touchpoints:**
+    - `src/migrations/001_auth_tables.sql`:
+      - Add: Create `users` and `tokens` tables with unique lowercase index on `email`.
+    - `src/models/user.ts`:
+      - Update: Add `sessionCount` and `activeDeviceIds` fields with fallback defaults.
   - **Applicable Rules:**
-    - `.agents/rules/database_migrations.md`
-    - `.agents/rules/security_invariants.md`
+    - `.agents/rules/database_migrations.md`:
+      - Section 2: Idempotent Migration Guidelines
+      - Section 4: Safe Rollback Verification
+    - `.agents/rules/security_invariants.md`:
+      - Section 3: Token Validation & Expiry Invariants
   - **Agent Verification:**
-    - Run `npm run migrate:up` $\rightarrow$ tables created cleanly.
-    - Run `npm run migrate:down` $\rightarrow$ rollback drops tables cleanly.
+    - [ ] Run `npm run migrate:up` -> tables created cleanly.
+    - [ ] Run `npm run migrate:down` -> rollback drops tables cleanly.
   - **User Verification:**
     - **Setup:** Ensure local PostgreSQL service is running (`pg_isready`).
     - **Action:** Run `psql -d app_dev -c "\d users"` in terminal.
@@ -106,14 +111,18 @@ Foundational tasks must be completed and verified before dependent UI or integra
 
 ### 3.5 Assign Task-Specific Rule Files
 
-Assign applicable project Rule Files directly to each task rather than relying on a vague global declaration:
+Assign applicable project Rule Files directly to each task rather than relying on a vague global declaration. List the rule file as a bullet, and list the specific relevant section(s) as sub-bullets so the agent knows precisely which rules to inspect:
 
-- When creating or modifying database schemas, assign `.agents/rules/database_migrations.md`.
-- When creating new component files, assign `.agents/rules/file_creation.md` (e.g., single responsibility, line count thresholds).
-- When developing security-critical paths (auth, tokens, encryption), assign `.agents/rules/security_invariants.md`.
-- When writing UI screens, assign `.agents/rules/frontend_conventions.md`.
+```markdown
+  - **Applicable Rules:**
+    - `.agents/rules/database_migrations.md`:
+      - Section 2: Idempotent Migration Guidelines
+      - Section 4: Safe Rollback Verification
+    - `.agents/rules/security_invariants.md`:
+      - Section 3: Token Validation & Expiry Invariants
+```
 
-This ensures that during Phase 4 — Build, the agent checks the exact rules governing the specific files being modified.
+This ensures that during Phase 4 — Build, the agent checks the exact rule sections governing the specific files and changes being made without ambiguity.
 
 ### 3.6 Define Two-Tier Verification Criteria (Agent vs. User)
 
@@ -121,6 +130,7 @@ Every task must establish clear, separated verification expectations:
 
 1. **Agent Verification (Automated Pre-Flight Gate):**
    - The automated tests, CLI commands, build checks, and rule validations the Agent **must** run and pass before declaring the task ready for review.
+   - Format each check as a markdown checkbox (`- [ ]`). During Phase 4 — Build, the Agent must execute each check and check it off (`- [x]`) upon passing before handing off to the user.
    - The Agent must never claim a task is complete based on assumptions; all commands under Agent Verification must be executed.
 2. **User Verification (Human Testing Guide):**
    - A foolproof 3-line testing guide enabling the user to immediately validate the deliverable without guessing:
@@ -133,7 +143,8 @@ Every task must establish clear, separated verification expectations:
 Review the complete Implementation Plan and ensure that:
 
 - All Target Features from Discover are covered.
-- Task scopes, files, and rules are explicitly defined.
+- Task Blast Radius, Touchpoints (with explicit action verbs), and Applicable Rules (with sections) are explicitly defined.
+- Backward compatibility and live data fallbacks are accounted for if storage schemas or contracts are altered.
 - Agent and User verification steps are complete and actionable.
 - Dependencies and execution sequence are logical.
 - No unresolved technical questions remain.
@@ -144,7 +155,8 @@ Phase 3 is considered complete only when:
 
 - All Target Features from Discover are mapped into the Implementation Plan as `## <Feature Name>` headings.
 - Features are divided into logical, independently verifiable tasks.
-- Every task includes Scope, Files, Applicable Rules, Agent Verification, and User Verification (`Setup`, `Action`, `Expected`).
+- Every task includes Blast Radius (<= 5 words reason), Touchpoints (files with action sub-bullets), Applicable Rules (with sections), Agent Verification checkboxes, and User Verification (`Setup`, `Action`, `Expected`).
+- Schema, collection, or contract changes include explicit backward-compatibility fallbacks for unmigrated data and live client rollout.
 - Task dependencies and execution sequences are established.
 - The complete plan has passed completeness review.
 - The Implementation Plan (`lifecycle/03-plan.md`) has been explicitly approved by the user.
@@ -156,7 +168,6 @@ Phase 4 — Build may begin only when:
 - All Phase 3 Completion Criteria have been satisfied.
 - The complete Implementation Plan (`lifecycle/03-plan.md`) has received explicit user approval.
 - All tasks are populated into `lifecycle/00-status.md` under Phase 4 as `Todo`.
-- The Execution Mode (Task Mode or Feature Mode) is selected.
 
 ### Exit Gate Outcomes
 
@@ -166,7 +177,7 @@ Phase 4 — Build may begin only when:
 
 ### Requesting User Approval
 
-Follow the **Phase 0 Chat Approval Protocol** to present `lifecycle/03-plan.md`, declare the selected Execution Mode, and request explicit approval to begin Phase 4 — Build.
+Follow the **Phase 0 Chat Approval Protocol** to present `lifecycle/03-plan.md` and request explicit approval to begin Phase 4 — Build.
 
 ## 6. Phase Boundary
 
@@ -198,17 +209,21 @@ The primary deliverable of Phase 3 is the **Centralized Implementation Plan** sa
 ## [Feature Name]
 
 - [ ] **Task 4.1: [Task Title]**
-  - **Scope:** [Concise description of work]
-  - **Blast Radius:** [🟢 Low (Isolated) / 🔴 High (Shared)]
-  - **Files:**
-    - `path/to/file1.ts`
-    - `path/to/file2.ts`
+  - **Blast Radius:** [🟢 Low (<5 words reason) / 🔴 High (<5 words reason)]
+  - **Touchpoints:**
+    - `path/to/file1.ts`:
+      - [Add / Update / Delete / Refactor / Fix]: [Specific change description]
+    - `path/to/file2.ts`:
+      - [Add / Update / Delete / Refactor / Fix]: [Specific change description]
   - **Applicable Rules:**
-    - `.agents/rules/rule1.md`
-    - `.agents/rules/rule2.md`
+    - `.agents/rules/rule1.md`:
+      - Section X: [Specific rule/topic]
+      - Section Y: [Specific rule/topic]
+    - `.agents/rules/rule2.md`:
+      - Section Z: [Specific rule/topic]
   - **Agent Verification:**
-    - [Specific automated test command or verification check]
-    - [Rule compliance check]
+    - [ ] [Specific automated test command or build verification check]
+    - [ ] [Rule compliance check]
   - **User Verification:**
     - **Setup:** [Prerequisite state or server command]
     - **Action:** [Exact steps to test]

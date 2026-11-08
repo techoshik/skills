@@ -45,12 +45,14 @@ This phase has two sequential stages:
 
 ## 3. Responsibilities & Sequence
 
-Phase 2 progresses through three clean stages:
+Phase 2 progresses through three clean stages with explicit human gates:
 
 ```mermaid
 flowchart LR
-    S1["Stage 1: Flow Design\n(Mermaid Diagrams & Diffs)"] --> S2["Stage 2: Modular Prototyping\n(Hub & Option Variants)"]
+    S1["Stage 1: Flow Design\n(Mermaid Diagrams & Diffs)"] --> G1{"Stage 2.1 Gate\n(Flow Review)"}
+    G1 -- Approved --> S2["Stage 2: Modular Prototyping\n(Hub & Option Variants)"]
     S2 --> S3["Stage 3: Validation & Handoff\n(Sync Discoveries & Chat Approval)"]
+    S3 --> G2{"Phase 2 Exit Gate\n(Prototype Review)"}
 ```
 
 ---
@@ -67,13 +69,22 @@ flowchart LR
    - **Level 1 (Trunk — Happy Path):** Author Mermaid flowcharts or sequence diagrams representing the primary journey from user entry to successful completion.
    - **Level 2 (Branches — Scenarios):** Model user decision forks, alternative pathways, role permissions, and conditional sub-flows.
    - **Level 3 (Leaves — Recovery & Edges):** Model edge conditions, timeout branches, and error recovery loops, strictly enforcing the **Zero Dead-Ends Law**.
-   - **Delta Modeling for Existing Workflows:** For modifications to existing systems, use a **Side-by-Side Visual Diff** (`subgraph Current` vs. `subgraph Proposed`) or a concise **Change Delta Table** to clearly contrast before vs. after without redundant prose.
+   - **Feature-Driven Flow Modeling:** Group visual workflows directly by the Target Feature names from Discover, ensuring direct 1:1 traceability from requirement to visual execution without duplicating Discover's current-system analysis.
 
 3. **Verify Flow Completeness & The Zero Dead-Ends Law**
    - **Enforce Zero Dead-Ends:** Verify that every error branch, validation failure, and timeout loops back to an actionable user recovery step or a safe exit. Never leave an orphaned error box.
    - Check against edge cases: empty states, invalid inputs, network failures, session timeouts, and permission boundaries.
    - Ensure caller contracts remain backward-compatible unless explicit breaking changes are approved.
-   - Document flows in `lifecycle/02-flows.md` under `## 1. Flow Diagrams`.
+   - Document flows in `lifecycle/02-flows.md` under `## 2. Visual Workflows & Sequences`.
+
+4. **Stage 1 Exit Gate (Flow Design Approval Gate)**
+   - Once flows are documented in `lifecycle/02-flows.md`, update row `2.1 Flow Design` to `In Review` in `lifecycle/00-status.md`.
+   - Stop calling tools immediately.
+   - Follow the **Phase 0 Chat Approval Protocol** to present the visual workflows in chat and request explicit user approval.
+   - **Stop and wait for user approval.** Never proceed to Stage 2 (Modular Prototyping) or generate prototype code in the same turn without explicit user approval of the flow design.
+   - **Gate Outcome:**
+     - *If Approved:* Mark `2.1 Flow Design` as `Done` in `00-status.md`. For UI tasks, set `2.2 Interactive Prototype` to `In Progress` and advance to Stage 2. For pure backend/non-UI tasks, mark `2.2` as `Skipped (N/A)` and advance directly to Phase 3 — Plan.
+     - *If Changes Requested:* Keep `2.1 Flow Design` as `In Progress`, revise `02-flows.md`, and re-present.
 
 ---
 
@@ -206,26 +217,39 @@ The primary deliverable is `lifecycle/02-flows.md`, supported by `lifecycle/02-p
 ```markdown
 # Flows: [Requirement / Feature Name]
 
-## 1. Flow Diagrams
+## 1. At a Glance
 
-### Side-by-Side Visual Diff: Current vs. Proposed
-(Mermaid flowchart or sequence diagram using subgraph Current and subgraph Proposed, OR a concise Change Delta table)
+- **The Core Journey:** [1-sentence summary of what this end-to-end user flow accomplishes].
 
-### [Feature / Flow Name] Sequence
-(Mermaid sequence diagram showing actor, UI, services, and error branches)
+- **UI Prototypes:**
+  - **Prototype Hub:** [02-prototype.html](02-prototype.html) *(or "Skipped (N/A for Non-UI)")*
+  - **[Screen 1 / Workflow Name]:** [Option B](prototype/<feature>/screen-1-b.html) ([Short title]) selected over Option A ([Short title & why rejected]).
+  - **[Screen 2 / Workflow Name]:** [Option A](prototype/<feature>/screen-2-a.html) ([Short title]) selected over Option B ([Short title & why rejected]).
 
-## 2. UI/UX Prototype Reference
+- **Key Interaction Rules (UX Decisions):**
+  - **DEC-01 ([Topic / Copy]):** [Plain-language terminology or dialog copy]
+  - **DEC-02 ([Topic / Protection]):** [Current device attribution or state protection]
+  - **DEC-03 ([Topic / Zero Dead-Ends]):** [Inline retry banner on failure rather than trapped modal]
+  - **DEC-04 ([Topic / Navigation]):** [Exact navigation entry point]
 
-- **Status:** [Created / Skipped (N/A for Non-UI)]
-- **Hub Location:** `lifecycle/02-prototype.html`
-- **Modular Options:**
-  - `lifecycle/prototype/<feature>/option-a.html`: [1-line description of approach & trade-off]
-  - `lifecycle/prototype/<feature>/option-b.html`: [1-line description of approach & trade-off]
-- **Key States Covered:** Default, Empty, Loading, Error, Edge / Restricted
-- **Async Simulation:** [Simulated drawer included for email/SMS tokens / N/A]
+## 2. Visual Workflows & Sequences
 
-## 3. Key UX & Interaction Decisions
+- **Workflow 1: [Feature 1 Name]:**
+  ```mermaid
+  sequenceDiagram
+    autonumber
+    ...
+  ```
 
-- **DEC-01:** [UX decision, e.g. slide-over drawer vs full modal] — *Rationale:* ...
-- **DEC-02:** [Error recovery pattern, e.g. inline retry vs banner alert] — *Rationale:* ...
+- **Workflow 2: [Feature 2 Name]:**
+  ```mermaid
+  sequenceDiagram
+    autonumber
+    ...
+  ```
+  - **Zero Dead-Ends Error Recovery:**
+    ```mermaid
+    flowchart TD
+      ...
+    ```
 ```

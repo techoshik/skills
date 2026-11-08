@@ -29,10 +29,11 @@ This phase establishes what we want to achieve, not how we will design or implem
 
 ## 3. Responsibilities & Sequence
 
-### 3.1 Investigate Problem & Context Through Evidence
+### 3.1 Investigate Problem & Current System Through Evidence
 
 - Understand what is broken, missing, or needed, and who is affected.
 - For existing workflows, bugs, or feature extensions, use concrete evidence (code search via `grep`, tests, error logs) to discover facts independently rather than asking the user to supply discoverable details.
+- Clearly separate the human/business **Problem** (what hurts) from the **Current System** (the technical schema, code seams, and business policies causing it).
 - Challenge assumptions: look for unnecessary complexity, duplicate screens or endpoints, and simpler ways to achieve the goal.
 - Focus on what needs to be solved, not how to implement it.
 
@@ -41,13 +42,16 @@ This phase establishes what we want to achieve, not how we will design or implem
 Instead of a flat catalog of requirements, build a structured requirement tree that captures both **Depth** (vertical fidelity) and **Breadth** (horizontal coverage across the problem space):
 
 #### Vertical Depth (Trunk to Leaves)
-1. **Level 1 — Desired Goal (Trunk):** Formulate a 1–2 sentence high-level outcome describing what should become true after the work is complete.
-2. **Level 2 — Target Features (Branches):** Group capabilities cleanly under distinct feature headings (`### <Feature Name>`).
-3. **Level 3 — Sub-Features (Leaves):** Break down each feature into crisp, atomic bullet points describing observable capabilities and behaviors.
+1. **Level 1 — At a Glance (Trunk):** Formulate the core foundation under `## 1. At a Glance` using three structured anchor blocks with bold sub-bullet hooks:
+   - **The Problem:** Distinct sub-bullets (`- **[Pain / Symptom]:**`) capturing observable user pain and operational friction.
+   - **Current System:** Distinct sub-bullets (`- **[Schema / Seam]:**`) capturing existing data schemas, code seams, and historical policies.
+   - **Desired Goal:** Distinct sub-bullets (`- **[Outcome / Scope]:**`) capturing target outcomes and preserved system invariants.
+2. **Level 2 — Target Features (Branches):** Structure each feature as a distinct top-level bullet (`- **<Feature Name>:**`), avoiding noisy `###` headings to eliminate visual heading fatigue and keep document outlines scannable.
+3. **Level 3 — Sub-Features & Acceptance Anchors (Leaves):** Break down each feature into crisp, atomic sub-bullets using **bold leading hooks** (`- **[Dimension / Hook]:** [Specific requirement detail]`) so reviewers can scan criteria in seconds without reading unstructured sentence soup.
 4. **Level 4 — Key Decisions & Invariants:** Document critical constraints, trade-offs, and non-negotiables attached to each feature.
 
 #### Horizontal Breadth (The 5 Universal Edge Lenses)
-Probe the requirement tree across these 5 essential dimensions to ensure complete operational coverage without guessing:
+Probe the requirement tree across these 5 essential dimensions and record them directly under `## 3. Scope & Operating Boundaries` as **Operating Invariants (Resilience Boundaries)**:
 - **1. Zero / Empty State:** What happens on first use, when 0 records exist, or when unconfigured?
 - **2. Validation & Errors:** What constitutes invalid input? How does the user recover from network drops or service errors?
 - **3. Permissions & Access:** Who is authorized to view, create, edit, or delete? What happens when access is denied?
@@ -81,16 +85,17 @@ To keep alignment fast, engaging, and frictionless:
 4. **Update `01-discover.md` Immediately:**
    As each decision is confirmed, immediately record it in `lifecycle/01-discover.md`. Do not wait until the end of the conversation.
 
-### 3.4 Establish Scope Boundaries
+### 3.4 Establish Scope & Operating Boundaries
 
-In `## 4. Scope Boundaries`, explicitly separate:
-- **In Scope:** What is included in this initiative.
-- **Out of Scope / Non-Goals:** What is explicitly excluded, deferred, or intentionally avoided.
+In `## 3. Scope & Operating Boundaries`, use structured bullet blocks with bold leading hooks to maintain visual consistency and outline hygiene (avoiding unnecessary `###` sub-headings):
+- **In Scope:** Distinct sub-bullets (`- **[Deliverable / Layer]:**`) defining core implementation, touched layers, and verification scope.
+- **Out of Scope / Non-Goals:** Distinct sub-bullets (`- **[Excluded Item]:**`) highlighting explicitly excluded features, deferred functionality, or untouched business workflows with concise reasoning.
+- **Operating Invariants (Resilience Boundaries):** Distinct sub-bullets capturing the 5 Universal Edge Lenses: Zero / Empty State, Validation & Recovery, Permissions & Security, State & Concurrency, and Data Lifecycle.
 
 ### 3.5 Record Key Decisions & Resolve Blockers
 
-In `## 5. Key Decisions & Rationale`:
-- Record consequential product or technical decisions along with their rationale and trade-offs.
+In `## 4. Key Decisions & Rationale`:
+- Record consequential product or technical decisions (`- **DEC-X (<Topic>):** ...`) along with their rationale and trade-offs.
 - Distinguish between **Blocking Questions** (strategic decisions that materially alter the problem, goal, or scope, which must be resolved with the user now) and **Non-Blocking Questions** (details that can legitimately be explored during Design or Plan).
 
 ### 3.6 Maintain `lifecycle/01-discover.md` & Request Approval
@@ -165,26 +170,49 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
 ```markdown
 # Discover: [Requirement / Feature Name]
 
-## 1. Problem & Context
-(Concise summary of what is broken or missing, relevant evidence/logs, and who is affected)
+## 1. At a Glance
 
-## 2. Desired Goal
-(High-level target outcome to achieve once completed)
+- **The Problem:**
+  - **[Symptom / Pain 1]:** [What fails, breaks, or is blocked for the user]
+  - **[Symptom / Pain 2]:** [Operational, UX, or business friction]
+- **Current System:**
+  - **[Data Schema / Models]:** [How the current database, collection, or state stores data]
+  - **[Code Seam / Watcher]:** [Existing logic or triggers enforcing current behavior]
+  - **[Policy Background]:** [Why the system was originally built this way]
+- **Desired Goal:**
+  - **[Target Outcome 1]:** [What should become true for primary users]
+  - **[Scope / Invariant]:** [Key rule or role boundary preserved]
 
-## 3. Target Features
+## 2. Target Features
 
-### [Feature Name]
+- **[Feature 1 Name]:**
+  - **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
+  - **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
+  - **[User Interface / Interaction]:** [Presentation, feedback, or interactive controls]
 
-- [Sub-feature or specific functional change]
-- [Sub-feature or specific functional change]
+- **[Feature 2 Name]:**
+  - **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
+  - **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
 
-## 4. Scope Boundaries
-### In Scope
-- ...
-### Out of Scope / Non-Goals
-- ...
+## 3. Scope & Operating Boundaries
 
-## 5. Key Decisions & Rationale
+- **In Scope:**
+  - **[Key Deliverable 1]:** [Specific capability, layer touched, or component]
+  - **[Key Deliverable 2]:** [Verification scope or security boundary]
 
-- **DEC-1:** [Decision made] — _Rationale / Trade-offs:_ ...
+- **Out of Scope / Non-Goals:**
+  - **[Excluded Item 1]:** [What will not be modified and concise why]
+  - **[Excluded Item 2]:** [Deferred functionality or untouched existing workflow]
+
+- **Operating Invariants (Resilience Boundaries):**
+  - **Zero / Empty State:** [Behavior on first use, 0 records, or unconfigured state]
+  - **Validation & Recovery:** [Invalid input handling, network drop, service failure recovery]
+  - **Permissions & Security:** [Role authorization, resource isolation, access denied behavior]
+  - **State & Concurrency:** [Rapid double-action, debouncing, optimistic concurrency, conflict resolution]
+  - **Data Lifecycle:** [Cascade deletions, retention rules, persistence, and cleanup]
+
+## 4. Key Decisions & Rationale
+
+- **DEC-1 ([Topic]):** [Decision made] — _Rationale / Trade-offs:_ ...
+- **DEC-2 ([Topic]):** [Decision made] — _Rationale / Trade-offs:_ ...
 ```

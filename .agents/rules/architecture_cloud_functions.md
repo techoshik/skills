@@ -34,6 +34,9 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 - **Use Cases vs Repositories:** Module business logic, authorization, and validation MUST happen in the Use Case layer (`use_cases/`). Callable handlers act only as thin dispatchers; repositories strictly handle data access and persistence via Firebase Admin SDK.
 - **Single Repository per Module:** All Firestore reads/writes for a module MUST belong to its single `<module>_repository.ts`. Creating sibling `*_lookup.ts`, `*_store.ts`, `*_reader.ts`, or `*_writer.ts` files is STRICTLY PROHIBITED.
 - **Cross-Module Access:** Cross-module workflows MUST consume the other module's public repository contract or compose injected repository interfaces inside use cases. Direct Firestore access across module boundaries is STRICTLY PROHIBITED.
+  - **Strict Barrel Import Boundary:** All cross-module access MUST import strictly from the target module's `index.ts` boundary (`from '../<module>'`). Deep imports into another module's internal files (`from '../<module>/<module>_models'` or `from '../<module>/<module>_repository'`) are STRICTLY PROHIBITED.
+  - **Circular Evaluation Prevention:** Sibling files within the same module import directly from each other (e.g., `./<module>_models`), never through their own `index.ts`. In `index.ts`, constants, models, and types MUST be exported *before* repositories, managers, or functions to guarantee zero runtime circular-evaluation glitches.
+  - **Strict Snake_case Naming:** All module files MUST follow the invariant `<module>_<type>.ts` (`_models.ts`, `_repository.ts`, `_functions.ts`, `_constants.ts`), banning dot notation (`.models.ts`, `.repository.ts`).
 
 ## Transport vs. Persistence Separation
 - **Firestore Persistence:** Persist `DateTime` as Firestore Admin SDK `Timestamp`. Server timestamps MUST be used for create/update/delete metadata.
@@ -67,4 +70,4 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   - `<module>_commands.ts`: Callable request/response contracts and payload readers.
   - `<module>_functions.ts`: HTTP/Callable entry points parsing requests and dispatching to Use Cases.
   - `<capability>_adapter.ts`: Optional external capability implementations.
-  - `index.ts`: Public module boundary.
+  - `index.ts`: Mandatory public module boundary exporting all public types, constants, models, repositories, and functions.
