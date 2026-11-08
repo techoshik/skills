@@ -9,21 +9,20 @@ description: Convert approved flows and prototypes into an actionable implementa
 
 > **Core Mental Model:** Map target features to verifiable tasks. Assign rules where the code changes. Specify what the agent verifies first, then how the user verifies.
 
-Convert the approved Flow Designs and Prototypes from Phase 2 into a complete, technically clear, and actionable Implementation Plan.
+Convert approved Flow Designs and Prototypes from Phase 2 into a complete, technically clear, and actionable **Implementation Plan** (`lifecycle/03-plan.md`).
 
-The purpose of this phase is to ensure that, before Phase 4 — Build begins, the Agent has sufficient clarity about:
+This phase ensures that before Phase 4 — Build begins, the Agent and User have total alignment on:
+- Target features divided into logical, independently verifiable vertical tasks.
+- Dependency ordering and execution sequence (Steel Thread first, then hardening).
+- Touchpoints, schemas, and architecture introduced directly within their owning tasks.
+- Specific project Rule Files and exact sections assigned to each task.
+- Two-Tier verification: automated checks the Agent verifies first, followed by clear Setup, Action, and Expected steps for the User.
 
-- Which target features and execution flows are being implemented.
-- How each feature is divided into logical, independently verifiable tasks.
-- The dependencies and execution sequence of those tasks.
-- How architecture, database schemas, and contracts are introduced directly within their respective tasks.
-- Which specific project guidelines and Rule Files govern each task.
-- How the agent will independently verify automated tests and rule compliance before requesting user approval.
-- How the user will verify the delivered functionality through concise Setup, Action, and Expected steps.
+---
 
 ## 2. Guiding Principles
 
-- **Feature-driven Breakdown & Task Treeing:** Directly map the Discover requirement tree into a task tree: Goal (Trunk) $\to$ Target Features (Branches) $\to$ Steel Thread and Edge Tasks (Leaves).
+- **Feature-Driven Breakdown & Task Treeing:** Directly map the Discover requirement tree into a task tree: Goal (Trunk) $\to$ Target Features (Branches) $\to$ Steel Thread and Edge Tasks (Leaves).
 - **Vertical "Steel Thread" Slicing:** Ban horizontal layer-cake task plans (e.g., Task 1: all DB models, Task 2: all API controllers, Task 3: all UI screens). Every task must implement a thin vertical slice through the stack. Task 1 is always the **Steel Thread** (the minimal end-to-end happy path from data to UI that compiles and runs immediately); subsequent tasks add edge recovery, validation, and hardening.
 - **Blast Radius Tagging:** Tag every task with its blast radius to govern execution risk:
   - `🟢 Low (<5 words reason):` e.g., `🟢 Low (isolated component)`
@@ -31,173 +30,124 @@ The purpose of this phase is to ensure that, before Phase 4 — Build begins, th
 - **Task-Level Architecture:** Architectural touchpoints, data schemas, and file modifications are defined directly inside the tasks responsible for them, eliminating duplicate documentation.
 - **Prefactoring Check (Rule Thresholds — 900/1000 lines):** Inspect existing target files before planning feature changes. If a target file already exceeds the 900-line evaluate threshold, or the planned change would push it past the 1000-line hard limit, schedule an upfront `Prefactor <Target>` task (*"Make the change easy, then make the easy change"*) to extract sub-components or helpers before feature implementation begins.
 - **Compile-Clean Slices & Temporary Alias Cleanup:** Every task must leave the codebase in a compile-clean, testable state. If an early task renames or removes a symbol needed by later tasks, either update all callers in that task or introduce a temporary compatibility alias that is explicitly scheduled for deletion in the task that migrates the final caller.
-- **Backward Compatibility & Multi-Tier Fallback Invariant:** When modifying database schemas, storage collections, or API contracts across independently deployed layers (e.g., client apps vs. backend cloud functions/microservices), tasks must explicitly account for live data coexistence. Readers must include fallback handling for legacy fields or unmigrated documents, guaranteeing zero disruption for active sessions or older client versions during phased rollouts.
-- **Task-Specific Rule Enforcement:** Assign relevant Rule Files (e.g., file creation thresholds, API conventions, database migration rules) directly to each task so the agent checks them where the code changes.
+- **Backward Compatibility & Live Data Fallbacks:** When modifying database schemas, storage collections, or API contracts across independently deployed layers (e.g., client apps vs. backend cloud functions/microservices), tasks must explicitly account for live data coexistence. Readers must include fallback handling for legacy fields or unmigrated documents, guaranteeing zero disruption for active sessions or older client versions during phased rollouts.
+- **Task-Specific Rule Enforcement:** Assign relevant Rule Files directly to each task with specific section sub-bullets so the agent checks them where the code changes.
 - **Two-Tier Verification:** Separate Agent Verification (automated tests and rule compliance checks the agent must run first) from User Verification (clear Setup, Action, and Expected steps for the user).
-- **Dependency-aware Sequencing:** Foundation tasks (migrations, core domain utilities) must be sequenced before dependent feature and UI tasks.
+- **Verifiable Execution Order (Producer-Before-Consumer Invariant):** Sequence capabilities so every task is verifiable with real state—never hypothetical guesswork. Producers (Create/Ingest) must precede Consumers (Read/List), and Consumers must precede Modifiers/Teardown (Update/Delete). You cannot verify a list without data, and you cannot verify an edit or deletion without seeing state before and after.
+- **Dependency-Aware Sequencing:** Foundational slices (migrations, core domain utilities) must be sequenced before dependent feature and UI tasks.
 - **No Unnecessary Fragmentation:** Tasks must be small enough to implement and verify easily, without creating unnecessary handoffs or trivial one-line tasks.
-- **No Premature Implementation:** This phase defines the blueprint and verification contracts; actual coding belongs to Phase 4 — Build.
+- **Strict Phase Boundaries (Negative Constraints):**
+  - **No Production Code:** Writing or modifying application source code, tests, or database schemas belongs to Phase 4 — Build.
+  - **No Test Execution:** Executing test suites or verifying code compliance belongs to Phase 4 — Build.
+  - **No Layer-Cake Batching:** Ban horizontal batching (all DB, then all API, then all UI). Tasks must remain vertical slices.
+  - **No Unilateral Scope Changes:** Never invent new capabilities or reopen settled scope; always trace directly to `lifecycle/01-discover.md`.
+
+---
 
 ## 3. Responsibilities & Sequence
 
-### 3.1 Review Approved Inputs
+Phase 3 progresses through three natural chronological steps:
 
-- Review confirmed Target Features from Phase 1 (`lifecycle/01-discover.md`).
-- Review approved Flow Designs and Prototypes from Phase 2 (`lifecycle/02-flows.md` and `lifecycle/02-prototype.html` if UI).
-- Understand the existing application architecture, project structure, and relevant modules.
-- Understand existing functionality, data models, and implementation constraints.
-- **File-Size & Prefactoring Inspection:** Check line counts of target files likely to be modified against Rule File thresholds. If any target file exceeds the 900-line evaluate threshold (or the change would push it past the 1000-line hard limit), plan an upfront extraction task before adding feature logic.
-- Identify missing, conflicting, or ambiguous information.
-- Do not finalize the plan based on assumptions when necessary clarification is still required.
+### 3.1 Step 1 — Input Review & Prefactoring Inspection
 
-### 3.2 Map Target Features Directly from Discover
+1. **Review Approved Upstream Deliverables:**
+   - Review confirmed Target Features and Core Terms from `lifecycle/01-discover.md`.
+   - Review approved visual flows and prototypes from `lifecycle/02-flows.md` (and `lifecycle/02-prototype.html` if UI).
+   - Understand existing architecture, dependencies, and constraints via read-only searches.
+2. **File-Size & Prefactoring Inspection:**
+   - Check line counts of target files likely to be modified against Rule File thresholds.
+   - If any target file exceeds the 900-line evaluate threshold (or planned changes would push it past the 1000-line hard limit), plan an upfront extraction task before adding feature logic.
+3. **Map Target Features 1:1:**
+   - Structure `lifecycle/03-plan.md` around the exact **Target Features** from Discover.
+   - Each top-level feature heading in `03-plan.md` must match the corresponding feature in Discover and Flows **1:1** as a level-2 header (e.g. `## User Sign Up & Verification`).
+   - Do not create intermediate "Outcomes" layers, Section 1 architecture preambles, or prefix headings with `Feature 1:`.
 
-- Structure the implementation plan around the exact **Target Features** established in `lifecycle/01-discover.md`.
-- Each top-level feature heading in `lifecycle/03-plan.md` must match the corresponding feature in Discover and Design **1:1** as a level-2 header (e.g. `## User Sign Up & Verification`).
-- Do not create an artificial intermediate "Outcomes" layer, Section 1 architecture preamble, or prefix headings with `Feature 1:`. Maintain direct, intuitive naming across all lifecycle documents.
+### 3.2 Step 2 — Task Treeing & Full Task Anatomy
 
-### 3.3 Decompose Features via Task Treeing
+1. **Decompose Features via Task Treeing:**
+   - **Level 1 (Trunk — The Steel Thread):** Task 1 for any feature must be the minimal end-to-end slice across all layers (DB $\to$ API $\to$ UI) that handles the simplest happy path. It must compile and run immediately.
+   - **Level 2 (Branches — Feature Slices):** Subsequent tasks branch out into full business logic, multi-step actions, and secondary workflows.
+   - **Level 3 (Leaves — Hardening & Edge Tasks):** Translate the 5 edge lenses (*Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle*) into concrete hardening tasks.
+2. **Author Explicit Task Anatomy:**
+   Every task in `lifecycle/03-plan.md` must adhere to this standardized structure:
 
-Divide each target feature into small, logically independent implementation tasks following the **Task Treeing Methodology**:
+   ```markdown
+   - [ ] **Task 4.1: Database Schema & Migration**
+     - **Blast Radius:** 🔴 High (shared database schema & models)
+     - **Touchpoints:**
+       - `src/migrations/001_auth_tables.sql`:
+         - Add: Create `users` and `tokens` tables with unique lowercase index on `email`.
+       - `src/models/user.ts`:
+         - Update: Add `sessionCount` and `activeDeviceIds` fields with fallback defaults.
+     - **Applicable Rules:**
+       - `.agents/rules/database_migrations.md`:
+         - Section 2: Idempotent Migration Guidelines
+         - Section 4: Safe Rollback Verification
+       - `.agents/rules/security_invariants.md`:
+         - Section 3: Token Validation & Expiry Invariants
+     - **Agent Verification:**
+       - [ ] Run `npm run migrate:up` -> tables created cleanly.
+       - [ ] Run `npm run migrate:down` -> rollback drops tables cleanly.
+     - **User Verification:**
+       - **Setup:** Ensure local PostgreSQL service is running (`pg_isready`).
+       - **Action:** Run `psql -d app_dev -c "\d users"` in terminal.
+       - **Expected:** Displays `users` table schema showing expected columns and index.
+   ```
 
-1. **Level 1 (Trunk — The Steel Thread / Walking Skeleton):**
-   - The primary task for any feature MUST be the **Steel Thread**: the minimal end-to-end slice across all layers (database schema $\to$ API route/controller $\to$ minimal UI component) that handles the simplest happy path.
-   - It must compile, run, and be verified immediately. Banning horizontal layer cakes (all DB first, all API second, all UI third) ensures architectural assumptions are proven on Task 1.
-2. **Level 2 (Branches — Feature Capabilities):**
-   - Subsequent tasks branch out into full business logic, multi-step actions, and secondary workflows.
-3. **Level 3 (Leaves — The 5 Breadth Lens Hardening Tasks):**
-   - Systematically translate the 5 Breadth Lenses from Phase 1 Discover into concrete hardening tasks:
-     - *Validation & Error Recovery:* Input validators, timeout/retry logic, user-facing error banners.
-     - *Permissions & Tenancy:* Route guards, role-based checks, tenant isolation enforcement.
-     - *State & Concurrency:* Double-submit guards, debouncing, optimistic locking.
-     - *Data Lifecycle & Migration Fallbacks:* Cascading deletes, retention policies, audit logging, cleanup, and explicit read fallbacks for unmigrated legacy records during schema transitions.
+3. **Assign Task-Specific Rule Files:**
+   - Assign relevant Rule Files directly to each task with specific section sub-bullets so the implementer checks them where the code changes.
+4. **Define Two-Tier Verification Contracts:**
+   - **Agent Verification (Automated Pre-Flight):** Automated test commands, CLI checks, and rule validations formatted as checkboxes (`- [ ]`). In Phase 4 Build, the agent must run and check these off before requesting human review.
+   - **User Verification (Human Testing Guide):** Foolproof 3-line guide (`Setup`, `Action`, `Expected`) enabling the user to validate the feature in seconds.
 
-To ensure maximum clarity for the implementer and user, every task must follow this explicit anatomy:
+### 3.3 Step 3 — Sequencing, Compatibility & Dashboard Population
 
-```markdown
-- [ ] **Task 4.1: Database Schema & Migration**
-  - **Blast Radius:** 🔴 High (shared database schema & models)
-  - **Touchpoints:**
-    - `src/migrations/001_auth_tables.sql`:
-      - Add: Create `users` and `tokens` tables with unique lowercase index on `email`.
-    - `src/models/user.ts`:
-      - Update: Add `sessionCount` and `activeDeviceIds` fields with fallback defaults.
-  - **Applicable Rules:**
-    - `.agents/rules/database_migrations.md`:
-      - Section 2: Idempotent Migration Guidelines
-      - Section 4: Safe Rollback Verification
-    - `.agents/rules/security_invariants.md`:
-      - Section 3: Token Validation & Expiry Invariants
-  - **Agent Verification:**
-    - [ ] Run `npm run migrate:up` -> tables created cleanly.
-    - [ ] Run `npm run migrate:down` -> rollback drops tables cleanly.
-  - **User Verification:**
-    - **Setup:** Ensure local PostgreSQL service is running (`pg_isready`).
-    - **Action:** Run `psql -d app_dev -c "\d users"` in terminal.
-    - **Expected:** Displays `users` table schema showing expected columns and index.
-```
+1. **Sequence Tasks by Verifiable Dependency Order:**
+   - `Task 4.0 (Prefactoring):` Behavior-preserving extraction if files breach line thresholds (*"Make the change easy, then make the easy change"*).
+   - `Foundational Slices:` Database migrations, core data schemas, cryptographic/domain utilities.
+   - `Verifiable CRUD & Feature Slices (The Producer-Before-Consumer Order):`
+     1. *Create / Ingest (The Producer):* Minimal vertical Steel Thread that creates real records and handles the primary happy path.
+     2. *Read / List / Detail (The Consumer):* Screens and queries that render the real data produced in Step 1.
+     3. *Update / Edit (The Modifier):* Edits existing verified records and verifies changes persist.
+     4. *Delete / Revoke (The Teardown):* Removes or archives records cleanly and verifies absence.
+   - `Hardening & Edge Recovery:` Concurrency guards, debouncing, cascade policies, error banners, and end-to-end regression test suite.
+2. **Enforce Backward Compatibility & Live Data Fallbacks:**
+   - Verify that readers handle legacy fields and unmigrated documents gracefully during phased rollout.
+3. **Populate Status Dashboard Upon Approval:**
+   - When the plan is approved, populate all planned tasks into `lifecycle/00-status.md` under Phase 4 Build with status `Todo` and direct links: `[Task 4.1: <Title>](03-plan.md)`.
 
-### 3.4 Sequence Tasks by Dependency & Priority
+---
 
-Organize tasks according to their logical dependencies:
+## 4. Exit Gate & Completion Criteria
 
-0. **Prefactoring Tasks (When Target File > 900 Lines / Approaching 1000-Line Limit):** Upfront behavior-preserving extraction of sub-components or utilities (*"Make the change easy, then make the easy change"*).
-1. **Foundational Slices:** Database migrations, cryptographic utilities, and core data models.
-2. **Backend & Business Logic:** API endpoints, services, middleware, and domain validations.
-3. **Frontend & Interactions:** UI components, form state management, and prototype alignment.
-4. **Integration & Regression Suite:** End-to-end integration tests verifying the completed feature.
+Phase 3 can transition to Phase 4 — Build only when the completion checklist is fully satisfied and the user grants explicit approval in chat.
 
-Foundational tasks must be completed and verified before dependent UI or integration tasks begin.
+### Completion Checklist (Pre-Flight Gate)
 
-### 3.5 Assign Task-Specific Rule Files
+Before requesting user approval, verify that:
+- **1:1 Feature Mapping:** All Target Features from Discover are mapped directly as `## <Feature Name>` headings.
+- **Vertical Steel Thread First:** The primary task for every feature is a thin, end-to-end slice compiling immediately.
+- **Complete Task Anatomy:** Every task specifies Blast Radius ($\le 5$ words), Touchpoints (files with action verbs), Applicable Rules (with sections), Agent Verification checkboxes (`- [ ]`), and User Verification (`Setup`, `Action`, `Expected`).
+- **Prefactoring Scheduled:** Any file approaching the 900/1000-line threshold has an upfront extraction task.
+- **Backward Compatibility:** Schema and contract changes include live data fallback handling.
+- **Logical & Verifiable Sequencing:** Foundation tasks precede dependent UI tasks, and Producer capabilities (Create/Ingest) precede consumers (Read/List) and modifiers (Update/Delete), guaranteeing testability with real state on every task without synthetic mocks.
+- **Zero Ambiguity:** No unresolved architectural questions or placeholder tasks remain.
 
-Assign applicable project Rule Files directly to each task rather than relying on a vague global declaration. List the rule file as a bullet, and list the specific relevant section(s) as sub-bullets so the agent knows precisely which rules to inspect:
+### Requesting User Approval (Phase 0 Protocol)
 
-```markdown
-  - **Applicable Rules:**
-    - `.agents/rules/database_migrations.md`:
-      - Section 2: Idempotent Migration Guidelines
-      - Section 4: Safe Rollback Verification
-    - `.agents/rules/security_invariants.md`:
-      - Section 3: Token Validation & Expiry Invariants
-```
+1. Update Phase 3 status to `In Review` in `lifecycle/00-status.md`.
+2. In chat, output a concise 1–2 sentence summary linking `[03-plan.md](03-plan.md)` with total task count, blast radius summary, and ask for explicit approval to advance to Phase 4 — Build.
+3. Stop calling tools immediately and wait for the user's explicit response.
 
-This ensures that during Phase 4 — Build, the agent checks the exact rule sections governing the specific files and changes being made without ambiguity.
+### Gate Outcomes
 
-### 3.6 Define Two-Tier Verification Criteria (Agent vs. User)
+- **Approved:** Mark Phase 3 as `Done` in `lifecycle/00-status.md`, populate all planned tasks under Phase 4 as `Todo` (with hyperlinks `[Task 4.X: ...](03-plan.md)`), load `lifecycle-build`, and advance to Phase 4 — Build.
+- **Changes Requested:** Mark Phase 3 `In Progress`, revise tasks in `lifecycle/03-plan.md`, and re-present.
+- **Blocked:** An architectural unknown or requirement conflict prevents planning. Return to Discover or Flows for clarification.
 
-Every task must establish clear, separated verification expectations:
+---
 
-1. **Agent Verification (Automated Pre-Flight Gate):**
-   - The automated tests, CLI commands, build checks, and rule validations the Agent **must** run and pass before declaring the task ready for review.
-   - Format each check as a markdown checkbox (`- [ ]`). During Phase 4 — Build, the Agent must execute each check and check it off (`- [x]`) upon passing before handing off to the user.
-   - The Agent must never claim a task is complete based on assumptions; all commands under Agent Verification must be executed.
-2. **User Verification (Human Testing Guide):**
-   - A foolproof 3-line testing guide enabling the user to immediately validate the deliverable without guessing:
-     - **Setup:** Starting environment state, running dev server, URL, or test account credentials.
-     - **Action:** Exact steps the user takes in the browser or terminal.
-     - **Expected:** Observable behavior or output that confirms success.
-
-### 3.7 Review Plan Completeness
-
-Review the complete Implementation Plan and ensure that:
-
-- All Target Features from Discover are covered.
-- Task Blast Radius, Touchpoints (with explicit action verbs), and Applicable Rules (with sections) are explicitly defined.
-- Backward compatibility and live data fallbacks are accounted for if storage schemas or contracts are altered.
-- Agent and User verification steps are complete and actionable.
-- Dependencies and execution sequence are logical.
-- No unresolved technical questions remain.
-
-## 4. Completion Criteria
-
-Phase 3 is considered complete only when:
-
-- All Target Features from Discover are mapped into the Implementation Plan as `## <Feature Name>` headings.
-- Features are divided into logical, independently verifiable tasks.
-- Every task includes Blast Radius (<= 5 words reason), Touchpoints (files with action sub-bullets), Applicable Rules (with sections), Agent Verification checkboxes, and User Verification (`Setup`, `Action`, `Expected`).
-- Schema, collection, or contract changes include explicit backward-compatibility fallbacks for unmigrated data and live client rollout.
-- Task dependencies and execution sequences are established.
-- The complete plan has passed completeness review.
-- The Implementation Plan (`lifecycle/03-plan.md`) has been explicitly approved by the user.
-
-## 5. Exit Gate
-
-Phase 4 — Build may begin only when:
-
-- All Phase 3 Completion Criteria have been satisfied.
-- The complete Implementation Plan (`lifecycle/03-plan.md`) has received explicit user approval.
-- All tasks are populated into `lifecycle/00-status.md` under Phase 4 as `Todo`.
-
-### Exit Gate Outcomes
-
-- **Approved:** All completion criteria are satisfied and the plan is approved. Populate all planned tasks into `lifecycle/00-status.md` under Phase 4 as `Todo`, mark Phase 3 as `Done`, and proceed to Phase 4 — Build.
-- **Changes Requested:** Feedback requires revisions. Update `lifecycle/03-plan.md`, re-check task breakdown, and present it again.
-- **Blocked:** A critical architectural unknown, missing requirement, or dependency remains unresolved. Return to the owning earlier phase (Discover or Design) or seek the required user input.
-
-### Requesting User Approval
-
-Follow the **Phase 0 Chat Approval Protocol** to present `lifecycle/03-plan.md` and request explicit approval to begin Phase 4 — Build.
-
-## 6. Phase Boundary
-
-This section defines the scope and limitations of Phase 3 to prevent performing work that belongs to other phases.
-
-### 6.1 What Belongs to Phase 3 (Plan)
-
-- Review of approved target features, flows, and prototypes (`lifecycle/01-discover.md`, `lifecycle/02-flows.md`).
-- Feature and verifiable task breakdown.
-- Task dependency sequencing and priority ordering.
-- Task-specific Rule File assignments.
-- Defining two-tier verification contracts (Agent Verification vs. User Verification with `Setup`, `Action`, `Expected`).
-- Implementation Plan review, refinement, and user approval in `lifecycle/03-plan.md`.
-
-### 6.2 What Does NOT Belong to Phase 3
-
-- Writing or modifying production source code, tests, or database schemas (belongs to Phase 4 — Build).
-- Executing tests or verifying implementation code compliance (belongs to Phase 4 — Build).
-
-## 7. Phase Output
+## 5. Phase Output
 
 The primary deliverable of Phase 3 is the **Centralized Implementation Plan** saved to `lifecycle/03-plan.md`.
 
@@ -206,7 +156,7 @@ The primary deliverable of Phase 3 is the **Centralized Implementation Plan** sa
 ```markdown
 # Plan: [Requirement / Feature Name]
 
-## [Feature Name]
+## [Feature 1 Name]
 
 - [ ] **Task 4.1: [Task Title]**
   - **Blast Radius:** [🟢 Low (<5 words reason) / 🔴 High (<5 words reason)]
@@ -230,5 +180,10 @@ The primary deliverable of Phase 3 is the **Centralized Implementation Plan** sa
     - **Expected:** [What to observe]
 
 - [ ] **Task 4.2: [Task Title]**
+  - ...
+
+## [Feature 2 Name]
+
+- [ ] **Task 4.3: [Task Title]**
   - ...
 ```

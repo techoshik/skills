@@ -7,7 +7,7 @@ A portable, agentic development system for engineering teams and AI agents, driv
 | **0. Orchestrator** | `lifecycle` | Master router, status dashboard, cross-phase friction log, Git safety boundary | `lifecycle/00-status.md`<br>`lifecycle/refine.md` |
 | **1. Discover** | `lifecycle-discover` | Evidence-based problem investigation (`grep`/logs), target features, boundaries, decisions | `lifecycle/01-discover.md` |
 | **2. Flows** | `lifecycle-flows` | Visual sequences/diffs (Mermaid), Modular Prototype Hub (`02-prototype.html` + `prototype/`), state switcher | `lifecycle/02-flows.md` |
-| **3. Plan** | `lifecycle-plan` | Feature-driven task breakdown, assigned Rule Files, prefactoring check (900/1000 lines), two-tier verification | `lifecycle/03-plan.md` |
+| **3. Plan** | `lifecycle-plan` | Feature-driven task breakdown, Producer-Before-Consumer sequencing, assigned Rule Files, prefactoring check (900/1000 lines), two-tier verification | `lifecycle/03-plan.md` |
 | **4. Build** | `lifecycle-build` | Strict task-by-task execution, instruction re-anchoring, caller inspection, diff hygiene, honest evidence | *(Checked tasks in `03-plan.md`)* |
 | **5. Finalize** | `lifecycle-finalize` | Integrated audit, orphaned symbols check, smart deduplication, permanent doc sync (`docs/`), PR summary, cleanup | `lifecycle/05-finalize.md`<br>+ `docs/modules/` |
 

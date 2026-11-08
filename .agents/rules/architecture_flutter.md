@@ -36,7 +36,7 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
 ## 4-Tier Placement & File-Size Thresholds
 - **File-Size Thresholds (single definition — every lifecycle skill and template refers here):**
   - *Evaluate threshold — 900 lines:* A handwritten file above this MUST be evaluated for a split along natural module seams before more code is added.
-  - *Hard limit — 1000 lines:* A handwritten file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `lifecycle/01-discover.md` Section 5.
+  - *Hard limit — 1000 lines:* A handwritten file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `lifecycle/01-discover.md` (under `## 4. Key Decisions & Rationale`).
   - Generated files (`*.g.dart`, `*.freezed.dart`) are exempt.
 - **4-Tier Placement Rule:**
   - *Tier 1 (Same File — Default):* Feature child widgets MUST be private classes (`class _SectionCard extends StatelessWidget`) in the same feature file to preserve locality of reference.

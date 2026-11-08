@@ -7,70 +7,63 @@ description: Explore the problem or opportunity, challenge assumptions, define t
 
 ## 1. Purpose
 
-> **Core Mental Model:** Understand the problem. Challenge the assumptions. Define target features. Agree on scope boundaries. Record what we know.
+> **Core Mental Model:** Uncover the requirements. Clarify the problem through codebase facts. Settle core terms. Triage scope with the user.
 
-Understand what deserves attention, why it matters, what we want to achieve, and how we will recognize success.
-
-The Agent must explore the initial idea, request, problem, bug, improvement, or opportunity through meaningful discussion and investigation until its underlying purpose and intended outcomes are sufficiently clear.
-
-The goal is to produce a concise, agreed-upon **Discovery document** (`lifecycle/01-discover.md`) that captures the validated problem or opportunity, desired goal, target features and sub-features, important decisions, and scope boundaries.
-
-This phase establishes what we want to achieve, not how we will design or implement it.
+Explore the initial problem, opportunity, or request through evidence-based investigation until the Decision Frontier is empty (zero unexamined assumptions). The output is an approved **Discovery document** (`lifecycle/01-discover.md`) establishing what to achieve (target features, settled core terms, scope, and edge cases)—not how to design or implement it.
 
 ## 2. Guiding Principles
 
-- **Understand Before Solving:** Investigate the actual problem, affected users, and root causes before proposing features or solutions.
-- **Outcomes Over Implementation:** Define what should become true and what capabilities are needed, not the underlying technical implementation.
-- **Evidence Over Guesswork:** Ground existing behavior, bugs, and workflows in concrete code searches (`grep`), error logs, and tests. Facts belong to the Agent; decisions belong to the User.
-- **Progressive Treeing over Flat Catalogs:** Structure requirements hierarchically from Goal (trunk) to Target Features (branches) and Sub-features (leaves), covering breadth via the 5 edge lenses.
-- **Zero Decision Fatigue:** Ask one focused question at a time in dependency order, providing viable options and a recommended default. Never dump open-ended questionnaires.
-- **Live Document, Not Transcript:** Capture confirmed goals, target features, and decisions directly in `lifecycle/01-discover.md`; avoid conversational transcripts.
-- **Explicit Scope Boundaries:** Clearly separate what is in scope from what is explicitly out of scope or non-goals.
+- **Expansive Exploration First:** Collect and uncover all requirements, possibilities, edge cases, and user desires without premature filtering. Never act as a critic or dismiss ideas in early stages.
+- **User-Owned Scope Prioritization:** Triage into *In Scope* vs. *Deferred* occurs late in the phase, and is 100% owned by the user. The agent never assumes, filters, or drops requirements unilaterally.
+- **Adaptive Entry Matching User Starting Point:** Meet the user where they start (brief thought, rough idea, or detailed spec) instead of forcing a rigid intake questionnaire.
+- **Problem vs. Solution Framing:** Distinguish the underlying problem (what hurts) and desired outcome (what becomes true) from the proposed solution (the user's suggested mechanism). Solve the real problem, not just a suggested symptom.
+- **Never Convert Inferences into Requirements:** A plausible inference or reasonable guess is never an established requirement. If not backed by codebase facts or explicit user confirmation, it remains an open question.
+- **Domain Vocabulary Settle:** Pin exact domain concepts and terms early so everyone speaks the exact same language from Day 1.
+- **Evidence Over Guesswork:** Ground existing behavior, bugs, and workflows in concrete code searches (`grep`), error logs, and tests. Facts belong to the Agent; decisions belong to the User. Existing code proves how the system *currently behaves*, never what the user *wants*; never assume legacy implementation represents desired requirements.
+- **The Decision Frontier & Risk Priority:** Map open decisions whose prerequisites are confirmed. Prioritize high-impact uncertainties (security, permissions, data integrity, session lifecycle) over low-impact cosmetic choices; exit only when the frontier is empty.
+- **Depth-First Continuity (Anti-Popcorn Rule):** Resolve one branch deeply before moving to another; ban jumping randomly across unrelated topics on consecutive turns.
+- **Self-Challenge Before Settling:** Actively probe for blind spots. Do not accept the first happy-path interpretation as complete; verify failure modes, role boundaries, and collateral effects.
+- **Zero Decision Fatigue:** Ask one focused decision at a time in dependency order, providing viable options and a recommended default. Never dump open-ended questionnaires.
+- **Live Document, Not Transcript:** Capture confirmed goals, target features, and decisions directly in `lifecycle/01-discover.md` after every turn; avoid conversational transcripts.
+- **Strict Phase Boundaries (Negative Constraints):**
+  - **No UI Design or Visual Flows:** Screen flows, Mermaid sequence diagrams, and interactive prototypes belong to Phase 2 — Flows.
+  - **No Technical Architecture or Slices:** Database schemas, API endpoints, file modifications, and task breakdowns belong to Phase 3 — Plan.
+  - **No Production Code:** Writing or modifying application source code and running test suites belongs to Phase 4 — Build.
+  - **Never Filter Scope Unilaterally:** The agent must never declare features out of scope or not worth doing without explicit user direction during late-stage triage.
 
 ## 3. Responsibilities & Sequence
 
-### 3.1 Investigate Problem & Current System Through Evidence
+### 3.1 Step 1 — Intake, Fact-Finding & Vocabulary
 
-- Understand what is broken, missing, or needed, and who is affected.
-- For existing workflows, bugs, or feature extensions, use concrete evidence (code search via `grep`, tests, error logs) to discover facts independently rather than asking the user to supply discoverable details.
-- Clearly separate the human/business **Problem** (what hurts) from the **Current System** (the technical schema, code seams, and business policies causing it).
-- Challenge assumptions: look for unnecessary complexity, duplicate screens or endpoints, and simpler ways to achieve the goal.
-- Focus on what needs to be solved, not how to implement it.
+1. **Adaptive Entry & Problem Framing:**
+   - *If brief or fuzzy:* State the apparent underlying objective, highlight the most critical missing context, and ask the root framing question.
+   - *If a rough idea:* Separate the core problem from the proposed solution, surface unseen angles, and explore possibilities collaboratively without judging.
+   - *If an existing detailed spec:* Skip intake questioning and proceed directly to branch mapping, edge lenses, and trade-off analysis.
+   - *Distinguish Problem vs. Solution:* Separate the **Underlying Problem** (what hurts or fails), the **Desired Outcome** (what becomes true), and the **Proposed Solution** (one suggested path to get there). Ensure requirements solve the underlying problem rather than mechanically transcribing a suggested implementation.
+2. **Fact-Finding via Codebase Search (Pre-Flight Rule):**
+   - For existing workflows, bugs, or feature extensions, use concrete evidence (code search via `grep`, tests, error logs) to discover facts independently before asking questions.
+   - Clearly separate the human/business **Problem** (what hurts) from the **Current System** (the technical schema, code seams, and business policies causing it).
+   - *Existing Code $\ne$ Desired Behavior:* Codebase search confirms current state, not user intent. Never assume legacy logic or schemas are what the user wants to preserve without confirmation.
+   - If a fact can be determined from the repo, verify it yourself; never ask the user for discoverable codebase facts.
+3. **Domain Vocabulary Settle (Early Alignment):**
+   - Check the project root `GLOSSARY.md` (if present) to reuse established terminology.
+   - Settle any new or clarified domain terms (e.g. user roles, session entities, revocation actions) early and record them under `## 1. At a Glance` as **Core Terms**. Pinned vocabulary prevents subtle semantic bugs across downstream phases, and will be promoted to the project's root `GLOSSARY.md` during Phase 5 Finalize.
 
-### 3.2 Progressive Requirement Treeing (Depth & Breadth)
+### 3.2 Step 2 — Uncover Requirements & Probe Blind Spots
 
-Instead of a flat catalog of requirements, build a structured requirement tree that captures both **Depth** (vertical fidelity) and **Breadth** (horizontal coverage across the problem space):
-
-#### Vertical Depth (Trunk to Leaves)
-1. **Level 1 — At a Glance (Trunk):** Formulate the core foundation under `## 1. At a Glance` using three structured anchor blocks with bold sub-bullet hooks:
-   - **The Problem:** Distinct sub-bullets (`- **[Pain / Symptom]:**`) capturing observable user pain and operational friction.
-   - **Current System:** Distinct sub-bullets (`- **[Schema / Seam]:**`) capturing existing data schemas, code seams, and historical policies.
-   - **Desired Goal:** Distinct sub-bullets (`- **[Outcome / Scope]:**`) capturing target outcomes and preserved system invariants.
-2. **Level 2 — Target Features (Branches):** Structure each feature as a distinct top-level bullet (`- **<Feature Name>:**`), avoiding noisy `###` headings to eliminate visual heading fatigue and keep document outlines scannable.
-3. **Level 3 — Sub-Features & Acceptance Anchors (Leaves):** Break down each feature into crisp, atomic sub-bullets using **bold leading hooks** (`- **[Dimension / Hook]:** [Specific requirement detail]`) so reviewers can scan criteria in seconds without reading unstructured sentence soup.
-4. **Level 4 — Key Decisions & Invariants:** Document critical constraints, trade-offs, and non-negotiables attached to each feature.
-
-#### Horizontal Breadth (The 5 Universal Edge Lenses)
-Probe the requirement tree across these 5 essential dimensions and record them directly under `## 3. Scope & Operating Boundaries` as **Operating Invariants (Resilience Boundaries)**:
-- **1. Zero / Empty State:** What happens on first use, when 0 records exist, or when unconfigured?
-- **2. Validation & Errors:** What constitutes invalid input? How does the user recover from network drops or service errors?
-- **3. Permissions & Access:** Who is authorized to view, create, edit, or delete? What happens when access is denied?
-- **4. State & Concurrency:** What happens on rapid double-submits, debouncing, or conflicting updates?
-- **5. Data Lifecycle:** What are the cascade effects, persistence requirements, audit trails, and cleanup rules?
-
-### 3.3 Focused Questioning Protocol (Eliminating Decision Fatigue)
-
-To keep alignment fast, engaging, and frictionless:
-
-1. **Top-Down Dependency Order:**
-   - Always ask questions from **Trunk $\to$ Branches $\to$ Leaves**.
-   - Confirm the Problem & Goal first $\to$ align on Target Capabilities & Scope second $\to$ resolve critical edge cases or UX trade-offs third.
-   - *Strict Rule:* Never ask detailed leaf/edge-case questions before trunk goals and scope are established.
-2. **One Decision at a Time:**
-   - Present exactly **one** decision per turn (or at most two tightly coupled choices).
-   - Never present a laundry list or questionnaire of open-ended questions.
+1. **Progressive Requirement Treeing (Depth & Breadth):**
+   - **Level 1 (Trunk — At a Glance):** Formulate the core foundation under `## 1. At a Glance` with bold sub-bullet hooks (*The Problem*, *Current System*, *Desired Goal*, *Core Terms*).
+   - **Level 2 (Branches — Target Features):** Structure each feature as a distinct top-level bullet (`- **<Feature Name>:**`). Capture all user-requested capabilities without premature filtering.
+   - **Level 3 (Leaves — Sub-Features & Acceptance Anchors):** Break down each feature into crisp, atomic sub-bullets using **bold leading hooks** (`- **[Dimension / Hook]:** [Specific requirement detail]`) for instant readability.
+   - **Horizontal Breadth (The 5 Edge Lenses):** Probe requirements across all 5 edge dimensions (*Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle*).
+2. **The Decision Frontier & Anti-Popcorn Rule:**
+   - Track open decisions as a tree: Trunk $\to$ Branches $\to$ Leaves. The **Frontier** consists of decisions whose parent prerequisites are confirmed.
+   - *Depth-First Branch Continuity:* Stay on the active branch until resolved into a confirmed decision or explicitly parked question; ban jumping randomly across topics.
+   - *Cross-Feature Dependency Exception:* If resolving a branch reveals an impact on a shared entity, permission, or state (e.g. user deactivation affecting active sessions, billing, or ownership transfer), immediately identify and note the dependent capability in the requirement tree before resuming depth-first resolution.
 3. **Interactive Option Card Pattern:**
-   State the verified codebase context, provide 2–3 concrete choices with trade-offs, and offer a recommended default worded so that typing `"yes"` or pressing Enter immediately accepts it:
+   - Present exactly **one** decision per turn (or at most two tightly coupled choices).
+   - Search the codebase before asking; if facts exist in code, state them as verified context.
+   - Provide 2–3 concrete choices with trade-offs, and offer a recommended default worded so that typing `"yes"` or pressing Enter immediately accepts it:
 
    ```markdown
    ❓ **Decision Needed: <Short Title>**
@@ -82,86 +75,71 @@ To keep alignment fast, engaging, and frictionless:
    👉 **Recommendation:** <Option A + 1-sentence rationale. Worded so typing "yes" accepts it.>
    ```
 
-4. **Update `01-discover.md` Immediately:**
-   As each decision is confirmed, immediately record it in `lifecycle/01-discover.md`. Do not wait until the end of the conversation.
+4. **Blind-Spot & Self-Challenge Probe:**
+   Before considering a feature capability understood, internally probe both functional completeness and resilience blind spots:
+   - **Functional Completeness Lenses:**
+     - *Trigger & Entry Event:* What exact event, action, or schedule initiates this behavior?
+     - *Mandatory vs. Optional Inputs:* What data is strictly required, what has defaults, and what is rejected?
+     - *Business Rules & Calculations:* What explicit calculations, state conditions, or policies govern the output?
+     - *Downstream Notifications & Recipients:* Who or what must be notified, audited, or synchronized when this occurs?
+   - **Resilience Lenses:**
+     - *Role & Self Boundaries:* Can actors perform this on themselves or peers (e.g., an administrator deactivating another administrator or self)?
+     - *In-Flight State & Sessions:* What happens to active tokens, cached client state, or running background jobs?
+     - *Failure Halfway:* What happens if the operation fails midway, network drops, or validation rejects?
+     - *Reversibility:* Is this a one-way or two-way door? What are the restoration/rollback rules?
+     - *Collateral Impact:* What existing system behaviors or workflows could this unintentionally break?
+5. **Continuous Document Update:**
+   - Continuously update `lifecycle/01-discover.md` in place after every user turn. Never wait until the end of the phase.
 
-### 3.4 Establish Scope & Operating Boundaries
+### 3.3 Step 3 — Late-Stage Scope Triage & Document Decisions
 
-In `## 3. Scope & Operating Boundaries`, use structured bullet blocks with bold leading hooks to maintain visual consistency and outline hygiene (avoiding unnecessary `###` sub-headings):
-- **In Scope:** Distinct sub-bullets (`- **[Deliverable / Layer]:**`) defining core implementation, touched layers, and verification scope.
-- **Out of Scope / Non-Goals:** Distinct sub-bullets (`- **[Excluded Item]:**`) highlighting explicitly excluded features, deferred functionality, or untouched business workflows with concise reasoning.
-- **Operating Invariants (Resilience Boundaries):** Distinct sub-bullets capturing the 5 Universal Edge Lenses: Zero / Empty State, Validation & Recovery, Permissions & Security, State & Concurrency, and Data Lifecycle.
+1. **User-Owned Scope Triage (Never Filter Early):**
+   - Present the full scope of discovered features to the user alongside honest technical trade-offs (effort, complexity, and dependencies).
+   - Ask the **User** to triage requirements into three clear buckets:
+     - **In Scope:** The essential core to deliver in this lifecycle cycle.
+     - **Deferred:** Genuine requirements and ideas that are acknowledged and preserved for future cycles (never lost or deleted).
+     - **Out of Scope:** Deliberately excluded items with concise rationale.
+   - *Strict Rule:* The User has 100% final authority on priorities. The Agent provides technical trade-offs, but never assumes or filters requirements unilaterally.
+2. **Document Edge Cases:**
+   Under `## 3. Scope & Edge Cases`, document the 5 essential edge behaviors in plain, non-academic language:
+   - **Zero / Empty State:** Behavior on first use, when 0 records exist, or when unconfigured.
+   - **Validation & Recovery:** Invalid input handling, timeout/network drops, and user failure recovery.
+   - **Permissions & Access:** Who is authorized, resource isolation, and access denied behavior.
+   - **State & Concurrency:** Rapid double-submits, debouncing, and conflicting update guards.
+   - **Data Lifecycle:** Cascade deletions, retention rules, persistence, and cleanup.
+3. **Record Key Decisions (`DEC-X`):**
+   In `## 4. Key Decisions & Rationale`, record consequential product or technical decisions (`- **DEC-X (<Topic>):** ...`) along with their rationale and trade-offs.
+4. **Handle Non-Blocking Questions:**
+   Non-blocking technical investigations are either recorded under `Deferred` in `01-discover.md` or handed off as open investigations for Phase 3 Plan (never left dangling without an owner). Once the Decision Frontier is empty, proceed directly to Section 4 for user approval.
 
-### 3.5 Record Key Decisions & Resolve Blockers
+## 4. Exit Gate & Completion Criteria
 
-In `## 4. Key Decisions & Rationale`:
-- Record consequential product or technical decisions (`- **DEC-X (<Topic>):** ...`) along with their rationale and trade-offs.
-- Distinguish between **Blocking Questions** (strategic decisions that materially alter the problem, goal, or scope, which must be resolved with the user now) and **Non-Blocking Questions** (details that can legitimately be explored during Design or Plan).
+Phase 1 can transition to Phase 2 — Flows only when the completion checklist is fully satisfied and the user grants explicit approval in chat.
 
-### 3.6 Maintain `lifecycle/01-discover.md` & Request Approval
+### Completion Checklist (Pre-Flight Gate)
 
-- Initialize and update `lifecycle/01-discover.md` continuously as information is confirmed.
-- When ready, follow the Phase 0 Chat Approval Protocol to present `lifecycle/01-discover.md` and request approval to proceed to Phase 2 — Flows.
+Before requesting user approval, verify that:
+- **Evidence-Based Problem:** Grounded in concrete codebase facts (for existing workflows/bugs) or explicit user business goals and constraints (for greenfield capabilities).
+- **Trunk Goal:** The Desired Goal clearly defines the intended outcome and preserved boundaries.
+- **Domain Terms:** Core Terms (domain vocabulary) are settled under `## 1. At a Glance`.
+- **Hierarchical Tree:** Target features and sub-features are structured hierarchically (Trunk $\to$ Branches $\to$ Leaves) without premature filtering.
+- **User-Triaged Scope:** Requirements are triaged by the user into **In Scope**, **Deferred**, and **Out of Scope**.
+- **Edge Cases:** Documented across all 5 dimensions (Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle).
+- **Consequential Decisions:** All `DEC-X` decisions are recorded with their reasoning and trade-offs.
+- **Resolved High-Impact Uncertainties:** All critical questions (security, authorization, data integrity, session lifecycle) are verified from code facts or confirmed by the user, with zero concealed assumptions.
+- **Document Hygiene:** `lifecycle/01-discover.md` is concise, consistent, and up to date.
 
-## 4. Completion Criteria
+### Requesting User Approval (Phase 0 Protocol)
+1. Update Phase 1 status to `In Review` in `lifecycle/00-status.md`.
+2. In chat, output a concise 1–2 sentence summary linking `[01-discover.md](01-discover.md)` and ask for explicit approval to advance to Phase 2 — Flows.
+3. Stop calling tools immediately and wait for the user's explicit response.
 
-Phase 1 is ready for user approval when:
+### Gate Outcomes
+- **Approved:** Mark Phase 1 `Done` in `lifecycle/00-status.md` and proceed to Phase 2 — Flows.
+- **Changes Requested:** Mark Phase 1 `In Progress`, address feedback, re-verify, and present again.
+- **Blocked:** Mark Phase 1 `Blocked` if a strategic unknown or external blocker prevents alignment.
 
-- The underlying Problem or Opportunity is understood based on concrete evidence.
-- The Goal clearly describes the intended outcome (trunk).
-- Target features and sub-features are structured hierarchically under `### <Feature Name>` and tested across the 5 breadth lenses (branches & leaves).
-- Scope boundaries (In Scope vs. Out of Scope) are explicitly established.
-- Consequential decisions are recorded with their reasoning.
-- No unresolved blocking questions remain; user decisions were resolved via the Focused Questioning Protocol.
-- The Discovery document (`lifecycle/01-discover.md`) is concise, consistent, and understandable.
-- The user has reviewed and explicitly approved the document.
-
-## 5. Exit Gate
-
-Phase 1 can transition to Phase 2 — Flows only when:
-
-- All Completion Criteria are satisfied.
-- The user has explicitly approved the Discovery document (`lifecycle/01-discover.md`).
-
-### Exit Gate Outcomes
-
-- **Approved:** All completion criteria are satisfied and explicit user approval is granted. Set Phase 1 status to `Done` in `lifecycle/00-status.md` and proceed to Phase 2 — Flows.
-- **Changes Requested:** Feedback requires revisions. Update `lifecycle/01-discover.md`, resolve uncertainties, and present it again.
-- **Blocked:** A critical blocker, dependency, or unresolved strategic decision remains. Seek the required user input before proceeding.
-
-### Requesting User Approval
-
-Follow the Phase 0 Chat Approval Protocol to present `lifecycle/01-discover.md` and request explicit approval to advance to Phase 2 — Flows.
-
-## 6. Phase Boundary
-
-This section defines the scope and limitations of Phase 1 to prevent performing work that belongs to other phases.
-
-### 6.1 What Belongs to Phase 1 (Discover)
-
-- Understanding the initial request, problem, bug, improvement, or opportunity.
-- Investigating the underlying situation and relevant evidence.
-- Identifying affected users, workflows, and important consequences.
-- Challenging assumptions and discovering missing considerations.
-- Establishing the Problem or Opportunity.
-- Defining the desired Goal.
-- Defining target features and sub-features.
-- Identifying important boundaries and constraints.
-- Recording confirmed decisions and unresolved blocking questions.
-- Maintaining and obtaining approval of `lifecycle/01-discover.md`.
-
-### 6.2 What Does NOT Belong to Phase 1
-
-- Designing detailed user flows or interaction behavior (belongs to Phase 2 — Flows).
-- Creating UI prototypes or visual designs (belongs to Phase 2 — Flows).
-- Deciding detailed UX or presentation choices (belongs to Phase 2 — Flows).
-- Defining technical architecture or database structures (belongs to Phase 3 — Plan).
-- Specifying APIs, classes, interfaces, or implementation details (belongs to Phase 3 — Plan).
-- Breaking work into development tasks (belongs to Phase 3 — Plan).
-- Writing or modifying production code (belongs to Phase 4 — Build).
-- Silently deciding on user-owned product preferences or priorities.
-
-## 7. Phase Output
+## 5. Phase Output
 
 The final output of Phase 1 is an approved **Discovery document** saved to `lifecycle/01-discover.md`.
 
@@ -181,7 +159,10 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
   - **[Policy Background]:** [Why the system was originally built this way]
 - **Desired Goal:**
   - **[Target Outcome 1]:** [What should become true for primary users]
-  - **[Scope / Invariant]:** [Key rule or role boundary preserved]
+  - **[Scope / Boundary]:** [Key rule or role boundary preserved]
+- **Core Terms:**
+  - **[Domain Term 1]:** [Crisp definition of key business concept, entity, or role]
+  - **[Domain Term 2]:** [Crisp definition of key business concept, entity, or role]
 
 ## 2. Target Features
 
@@ -194,20 +175,24 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
   - **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
   - **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
 
-## 3. Scope & Operating Boundaries
+## 3. Scope & Edge Cases
 
 - **In Scope:**
-  - **[Key Deliverable 1]:** [Specific capability, layer touched, or component]
+  - **[Key Deliverable 1]:** [Specific capability, layer touched, or component for this cycle]
   - **[Key Deliverable 2]:** [Verification scope or security boundary]
 
-- **Out of Scope / Non-Goals:**
-  - **[Excluded Item 1]:** [What will not be modified and concise why]
-  - **[Excluded Item 2]:** [Deferred functionality or untouched existing workflow]
+- **Deferred:**
+  - **[Future Feature 1]:** [Acknowledged requirement preserved for future iterations]
+  - **[Future Feature 2]:** [Edge enhancement or secondary workflow planned for later]
 
-- **Operating Invariants (Resilience Boundaries):**
+- **Out of Scope:**
+  - **[Excluded Item 1]:** [What will not be modified and concise rationale]
+  - **[Excluded Item 2]:** [Untouched existing workflow or explicitly rejected path]
+
+- **Edge Cases:**
   - **Zero / Empty State:** [Behavior on first use, 0 records, or unconfigured state]
   - **Validation & Recovery:** [Invalid input handling, network drop, service failure recovery]
-  - **Permissions & Security:** [Role authorization, resource isolation, access denied behavior]
+  - **Permissions & Access:** [Role authorization, resource isolation, access denied behavior]
   - **State & Concurrency:** [Rapid double-action, debouncing, optimistic concurrency, conflict resolution]
   - **Data Lifecycle:** [Cascade deletions, retention rules, persistence, and cleanup]
 

@@ -23,25 +23,31 @@ These rules apply universally across every phase of the lifecycle. Phase skills 
 - **Silence Is Never Approval:** The Agent cannot declare its own work approved or assume consent from the absence of feedback. Explicit user approval is mandatory at every phase exit gate and after every individual task in Phase 4.
 - **Non-Negotiable Git Safety Boundary:** The Agent is permitted to execute **read-only** Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch modifications belong exclusively to the user.
 - **No Persistent Watchers or Daemons:** Never launch long-running watchers, daemon code generators, or persistent dev servers in background processes without explicit user direction.
-- **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`. The legacy `05-traceability.md` file is retired.
+- **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`.
 - **Cross-Phase Friction Logging (`lifecycle/refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** can append entries to `lifecycle/refine.md` whenever workflow friction, prompt ambiguity, tool limitations, or repeatable defects occur. Phase 5 Finalize systematically reviews these entries at handover.
-- **Mid-Flight Scope Changes:** If requirements change mid-flight, update the upstream specification in place (`lifecycle/01-discover.md`, `lifecycle/02-flows.md`, or `lifecycle/03-plan.md`), inspect `git status` for discarded code, and realign `lifecycle/00-status.md` before writing new code.
 - **Context Hygiene:** Load **only** the active phase's skill file into context. Never load all skills simultaneously.
-- **The Universal Treeing Principle:** Decompose complex systems hierarchically: Trunk (Core Purpose / Happy Path) $\to$ Branches (Capabilities / Seams) $\to$ Leaves (Edge Cases, Invariants, Rules). In planning, tree tasks (Steel Thread $\to$ Feature Slices $\to$ Edge Hardening). In bug triage, tree root causes (Symptom $\to$ System Seams $\to$ Root Cause Line). In documentation, tree knowledge (Module $\to$ Features $\to$ Business Invariants).
+- **The Universal Treeing Principle:** Decompose complex systems hierarchically: Trunk (Core Purpose / Happy Path) $\to$ Branches (Capabilities / Seams) $\to$ Leaves (Edge Cases, Invariants, Rules).
+- **Strict Phase Boundaries (Negative Constraints):**
+  - **No Mutating Git Operations:** Never run `git commit`, `git push`, `git checkout`, `git reset`, or `git restore`. All Git state mutations belong to the user.
+  - **No Phase Skipping:** Never advance to subsequent phases without explicit human approval in chat.
+  - **No Multi-Skill Context Bloat:** Never load multiple phase skills into context simultaneously; unload prior skills and load only the active phase skill.
+  - **No Direct Implementation in Phase 0:** The Orchestrator routes work; it never investigates requirements, designs flows, writes plans, or implements application code directly.
 
 ---
 
 ## 3. Responsibilities & Sequence
 
-### 3.1 Initialize the Status Dashboard (Cold Start)
+Phase 0 orchestrates work through four core execution steps:
+
+### 3.1 Step 1 — Initialize Status Dashboard (Cold Start)
 
 If `lifecycle/00-status.md` does not exist:
-1. Create `lifecycle/00-status.md` using the standard structure in Section 7.
+1. Create `lifecycle/00-status.md` using the standard structure in Section 5.
 2. Initialize all phases to `Todo`.
 3. Set `Phase 1 — Discover` to `In Progress`.
 4. Load `lifecycle-discover` into context and begin discovery.
 
-### 3.2 Route Work via the Phase Routing Matrix
+### 3.2 Step 2 — Route Work via Phase Routing Matrix
 
 When starting a session or resuming work, read `lifecycle/00-status.md` first to determine the active phase and skill to load:
 
@@ -62,7 +68,7 @@ When starting a session or resuming work, read `lifecycle/00-status.md` first to
 | `Phase 5 — Finalize` is `In Review` | **Final Gate** | Stop and wait for final handover & cleanup decision | `lifecycle-finalize` |
 | All phases are `Done` | **Complete** | Lifecycle finished; ready for user git commit | *(None)* |
 
-### 3.3 Enforce the Chat Approval Protocol (Human-First)
+### 3.3 Step 3 — Enforce Chat Approval Protocol (Human-First Gate)
 
 Whenever any phase, sub-stage, or implementation task reaches an exit gate:
 1. Update its status to `In Review` in `lifecycle/00-status.md`.
@@ -74,89 +80,45 @@ Whenever any phase, sub-stage, or implementation task reaches an exit gate:
    - **If Changes Requested:** Mark item `In Progress`, address feedback, re-verify, and present again.
    - **If Blocked:** Mark item `Blocked`, resolve the blocker with the user before proceeding.
 
-### 3.4 Handle Mid-Flight Scope Changes Across Any Phase
+### 3.4 Step 4 — Mid-Flight Scope Realignment & Session Resumption
 
-When new requirements emerge, scope expands, or direction changes in ANY active phase:
-1. **Pause Current Activity:** Stop coding or generating downstream artifacts immediately.
-2. **Update Upstream Source of Truth in Place:**
-   - If the change affects core problem, goal, or capabilities: Update `lifecycle/01-discover.md` (`## 3. Target Features`) in place.
-   - If the change affects UX or screen journeys: Update `lifecycle/02-flows.md` in place.
-   - If the change affects implementation tasks: Update `lifecycle/03-plan.md` in place.
-   - Realign `lifecycle/00-status.md` so active rows accurately reflect the revised plan.
-3. **Working Tree Safety Check:** Run read-only `git status` to identify any uncommitted, discarded code so the user can stash or discard it before new work begins.
-4. **Resume:** Present a 1-sentence summary of the realignment and continue.
-
-### 3.5 Manage Session Resumption via Dashboard Status
-
-When resuming work after context compaction or a session break, the Agent simply inspects the status table in `lifecycle/00-status.md`. The active step is unambiguously indicated by the row marked `In Progress` or `In Review`, eliminating the need for duplicate prose notes.
+1. **Mid-Flight Scope Changes Across Any Phase:**
+   When new requirements emerge, scope expands, or direction changes in ANY active phase:
+   - *Pause Current Activity:* Stop coding or generating downstream artifacts immediately.
+   - *Update Upstream Source of Truth in Place:* Realign `01-discover.md`, `02-flows.md`, or `03-plan.md` in place.
+   - *Realign Dashboard:* Update `lifecycle/00-status.md` so active rows accurately reflect the revised plan.
+   - *Working Tree Safety Check:* Run read-only `git status` to identify any uncommitted, discarded code so the user can stash or discard it.
+2. **Session Resumption via Dashboard:**
+   When resuming work after context compaction or a session break, inspect `lifecycle/00-status.md`. The active step is unambiguously indicated by the row marked `In Progress` or `In Review`.
 
 ---
 
-## 4. Completion Criteria
+## 4. Exit Gate & Completion Criteria
 
-The overall development lifecycle is considered complete only when:
+The overall development lifecycle is complete only when all five phase exit gates are satisfied and approved.
 
-- All five phases (`Discover`, `Flows`, `Plan`, `Build`, `Finalize`) are marked `Done` in `lifecycle/00-status.md`.
-- All Phase 4 implementation tasks are verified and marked `Done`.
-- Permanent documentation in `docs/modules/` is updated and verified.
-- Upstream friction and lessons (if any) are recorded in `lifecycle/refine.md`.
-- The user has executed the Phase 5 Artifact Cleanup Decision (Delete, Archive, or Keep `lifecycle/`).
-- The working tree is clean and ready for the user's manual Git commit.
+### Lifecycle Completion Checklist
 
----
+Before declaring the lifecycle complete, verify that:
+- **All Phases Approved:** All phases (`Discover`, `Flows`, `Plan`, `Build`, `Finalize`) are marked `Done` in `lifecycle/00-status.md`.
+- **All Build Tasks Verified:** Every Phase 4 task in `lifecycle/03-plan.md` is marked `- [x]` with passing automated verification.
+- **Permanent Docs Synchronized:** Updated documentation in `docs/modules/` accurately reflects the final implementation.
+- **Domain Terms Promoted:** Core terms from `01-discover.md` are promoted to root `GLOSSARY.md`.
+- **Upstream Friction Logged:** Entries in `lifecycle/refine.md` (if any) are reviewed for central skill improvements.
+- **Artifact Cleanup Executed:** User's decision (Delete, Archive, or Keep `lifecycle/`) is executed.
+- **Clean Working Tree:** Working tree is clean and ready for the user's manual Git commit.
 
-## 5. Exit Gate
+### Gate Outcomes
 
-The Orchestrator marks the entire lifecycle complete only when all five phase exit gates have been approved and the Phase 5 handover is accepted.
-
-### Exit Gate Outcomes
-
-- **Approved:** All phases are `Done`, permanent docs are synchronized, and the cleanup choice is executed. Lifecycle is officially complete.
-- **Changes Requested:** Feedback on any deliverable returns that specific phase to `In Progress` in `lifecycle/00-status.md`.
-- **Blocked:** If a critical dependency, architecture question, or user decision blocks progress, the active phase is marked `Blocked` in `lifecycle/00-status.md` until resolved.
+- **Approved:** All phases marked `Done` in `lifecycle/00-status.md`. Lifecycle is complete.
+- **Changes Requested:** Feedback returns the specific phase to `In Progress` in `lifecycle/00-status.md`.
+- **Blocked:** Strategic unknown or blocker halts progress; active row is marked `Blocked` until resolved.
 
 ---
 
-## 6. Phase Boundary
-
-This section defines the responsibilities and strict boundaries of Phase 0.
-
-### 6.1 What Belongs to Phase 0 (Orchestrator)
-
-- Initializing and maintaining `lifecycle/00-status.md`.
-- Reading `00-status.md` and routing work to the active phase skill.
-- Enforcing context hygiene (loading only one phase skill at a time).
-- Enforcing exit gates, gate transitions, and the chat approval protocol.
-- Guaranteeing that no code or decisions advance without explicit user approval.
-
-### 6.2 What Does NOT Belong to Phase 0
-
-- Investigating requirements or defining target features (belongs to Phase 1 — Discover).
-- Designing visual flows or creating HTML prototypes (belongs to Phase 2 — Flows).
-- Defining technical architectures or writing task breakdowns (belongs to Phase 3 — Plan).
-- Writing production code or running unit tests (belongs to Phase 4 — Build).
-- Performing code audits, documenting modules, or executing cleanups (belongs to Phase 5 — Finalize).
-
----
-
-## 7. Phase Output
+## 5. Phase Output
 
 The primary deliverable of Phase 0 is the **Status Dashboard** maintained at `lifecycle/00-status.md`.
-
-### Lifecycle Artifact Architecture
-
-All temporary development artifacts live in `lifecycle/` using crisp 1-word headings:
-
-| Phase | Live Artifact | Format & Key Contents | Owning Skill |
-| :--- | :--- | :--- | :--- |
-| **Phase 0** | `lifecycle/00-status.md`<br>`lifecycle/refine.md` | 3-column live dashboard (`Phase`, `Task`, `Status`)<br>Cross-phase friction log (any phase appends; Phase 5 reviews) | `lifecycle` |
-| **Phase 1** | `lifecycle/01-discover.md` | At a Glance (Problem, Current System, Goal), Target Features, Scope Boundaries | `lifecycle-discover` |
-| **Phase 2** | `lifecycle/02-flows.md`<br>+ `02-prototype.html` | At a Glance (Prototypes & UX rules), Visual Workflows & Sequences (Mermaid) | `lifecycle-flows` |
-| **Phase 3** | `lifecycle/03-plan.md` | Feature tasks, assigned Rule Files, Two-Tier Verification (`Setup`, `Action`, `Expected`) | `lifecycle-plan` |
-| **Phase 4** | *(None)* | Implements code, executes Agent Verification, marks checkboxes (`- [x]`) in `03-plan.md` upon explicit user approval | `lifecycle-build` |
-| **Phase 5** | `lifecycle/05-finalize.md`<br>+ `docs/modules/<module>/` | Verification & audit evidence, assessed improvements, PR summary, permanent docs links | `lifecycle-finalize` |
-
----
 
 ### Recommended Structure for `lifecycle/00-status.md`
 
@@ -165,17 +127,14 @@ All temporary development artifacts live in `lifecycle/` using crisp 1-word head
 
 | Phase | Task | Status |
 | :--- | :--- | :--- |
-| **Phase 1 — Discover** | 1.1 At a Glance & Target Features ([01-discover.md](01-discover.md)) | `Todo` |
-| **Phase 2 — Flows** | 2.1 Flow Design ([02-flows.md](02-flows.md)) | `Todo` |
-| | 2.2 Interactive Prototype ([02-prototype.html](02-prototype.html)) | `Todo` |
-| **Phase 3 — Plan** | 3.1 Technical Approach & Task Breakdown ([03-plan.md](03-plan.md)) | `Todo` |
-| **Phase 4 — Build** | *(Populated directly by Phase 3 Plan)* | |
-| | [Task 4.1: Task 1 Title](03-plan.md) | `Todo` |
-| | [Task 4.2: Task 2 Title](03-plan.md) | `Todo` |
-| | [Task 4.3: Task 3 Title](03-plan.md) | `Todo` |
-| **Phase 5 — Finalize** | 5.1 Outcome & Quality Verification ([05-finalize.md](05-finalize.md)) | `Todo` |
-| | 5.2 Application Improvements ([05-finalize.md](05-finalize.md)) | `Todo` |
-| | 5.3 Documentation & PR Summary ([05-finalize.md](05-finalize.md)) | `Todo` |
+| **Phase 1 — Discover** | Problem, Target Features & Scope ([01-discover.md](01-discover.md)) | `Todo` |
+| **Phase 2 — Flows** | Stage 2.1 — Flow Design ([02-flows.md](02-flows.md)) | `Todo` |
+| | Stage 2.2 — Interactive Prototype ([02-prototype.html](02-prototype.html)) | `Todo` |
+| **Phase 3 — Plan** | Task Breakdown & Verification Matrix ([03-plan.md](03-plan.md)) | `Todo` |
+| **Phase 4 — Build** | [Task 4.1: Database Schema & Migration](03-plan.md) | `Todo` |
+| | [Task 4.2: Core Endpoint & Logic](03-plan.md) | `Todo` |
+| | [Task 4.3: UI Screen & State](03-plan.md) | `Todo` |
+| **Phase 5 — Finalize** | Quality Audit, Improvements & Handover ([05-finalize.md](05-finalize.md)) | `Todo` |
 
 <!-- Status Values: Todo, In Progress, In Review, Blocked, Done, Skipped -->
 ```

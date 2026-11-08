@@ -52,7 +52,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 - **Idempotency:** Non-idempotent operations MUST implement idempotency keys or transaction checks to prevent duplicate execution.
 - **File-Size Thresholds (single definition — every lifecycle skill and template refers here):**
   - *Evaluate threshold — 900 lines:* A handwritten backend file above this MUST be evaluated for a split along natural module seams (separate use cases, dedicated validators, modular adapters) before more code is added.
-  - *Hard limit — 1000 lines:* A handwritten backend file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `lifecycle/01-discover.md` Section 5.
+  - *Hard limit — 1000 lines:* A handwritten backend file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `lifecycle/01-discover.md` (under `## 4. Key Decisions & Rationale`).
 
 ## Error Handling, Logging & Secrets
 - **Safe Error Mapping:** Map module and technical errors once to safe `HttpsError` responses at the callable boundary. Raw database exceptions, stack traces, storage errors, or internal service errors MUST NEVER be returned to clients.
