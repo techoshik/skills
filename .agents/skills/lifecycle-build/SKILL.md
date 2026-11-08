@@ -103,15 +103,22 @@ Phase 4 operates strictly **Task-by-Task**:
 
 ### 3.5 Present Task for User Approval
 
-Follow the **Phase 0 Chat Approval Protocol**:
-1. Present a concise 1–2 sentence summary of what was implemented and the automated verification results (`Passed` / `Failed`).
-2. Provide the exact **User Verification** instructions from `lifecycle/03-plan.md`:
-   - **Setup:** Starting environment state, running server command, or test account credentials.
-   - **Action:** Exact steps for the user to execute in the app or terminal.
-   - **Expected:** Observable outcome confirming the feature works.
-3. Explicitly ask for user approval to advance to the next task.
-4. Stop and wait for the user's explicit response before proceeding.
-5. Upon user approval, mark the task `- [x]` in `lifecycle/03-plan.md` and set its status to `Done` in `lifecycle/00-status.md` before picking up the next `Todo` task.
+Follow the **Phase 0 Chat Approval Protocol**. Output strictly the minimal essential information for the active task without repeating background narrative:
+
+```markdown
+**Task 4.X: [Task Title] Complete**
+- **Changes:** [1-sentence summary of implemented slice]
+- **Automated Checks:** [Commands run] -> `Passed`
+- **User Verification:**
+  - **Setup:** [Prerequisite or None]
+  - **Action:** [Exact steps to test]
+  - **Expected:** [Observable result]
+
+*Ready to proceed to Task 4.Y? Please confirm.*
+```
+
+1. Stop calling tools immediately and wait for explicit user response.
+2. Upon user approval, mark the task `- [x]` in `lifecycle/03-plan.md` and set its status to `Done` in `lifecycle/00-status.md` before picking up the next `Todo` task.
 
 ---
 
@@ -194,4 +201,4 @@ The deliverables of Phase 4 are:
 2. **Updated Implementation Plan:** All completed tasks marked `- [x]` in `lifecycle/03-plan.md`.
 3. **Updated Status Dashboard:** All completed tasks and features marked `Done` in `lifecycle/00-status.md`.
 4. **Verification Evidence:** Documented passing automated test runs and verified User Verification steps.
-5. **Upstream Lessons (Optional):** Any friction or rule improvements recorded in `lifecycle/04-refine.md` for review in Phase 5.
+5. **Upstream Lessons (Optional):** Any friction or rule improvements recorded in `lifecycle/refine.md` for review in Phase 5.

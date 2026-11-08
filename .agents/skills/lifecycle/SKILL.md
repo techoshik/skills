@@ -24,7 +24,7 @@ These rules apply universally across every phase of the lifecycle. Phase skills 
 - **Non-Negotiable Git Safety Boundary:** The Agent is permitted to execute **read-only** Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch modifications belong exclusively to the user.
 - **No Persistent Watchers or Daemons:** Never launch long-running watchers, daemon code generators, or persistent dev servers in background processes without explicit user direction.
 - **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`. The legacy `05-traceability.md` file is retired.
-- **Cross-Phase Friction Logging (`lifecycle/04-refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** can append entries to `lifecycle/04-refine.md` whenever workflow friction, prompt ambiguity, tool limitations, or repeatable defects occur. Phase 5 Finalize systematically reviews these entries at handover.
+- **Cross-Phase Friction Logging (`lifecycle/refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** can append entries to `lifecycle/refine.md` whenever workflow friction, prompt ambiguity, tool limitations, or repeatable defects occur. Phase 5 Finalize systematically reviews these entries at handover.
 - **Mid-Flight Scope Changes:** If requirements change mid-flight, update the upstream specification in place (`lifecycle/01-discover.md`, `lifecycle/02-flows.md`, or `lifecycle/03-plan.md`), inspect `git status` for discarded code, and realign `lifecycle/00-status.md` before writing new code.
 - **Context Hygiene:** Load **only** the active phase's skill file into context. Never load all skills simultaneously.
 - **The Universal Treeing Principle:** Decompose complex systems hierarchically: Trunk (Core Purpose / Happy Path) $\to$ Branches (Capabilities / Seams) $\to$ Leaves (Edge Cases, Invariants, Rules). In planning, tree tasks (Steel Thread $\to$ Feature Slices $\to$ Edge Hardening). In bug triage, tree root causes (Symptom $\to$ System Seams $\to$ Root Cause Line). In documentation, tree knowledge (Module $\to$ Features $\to$ Business Invariants).
@@ -99,7 +99,7 @@ The overall development lifecycle is considered complete only when:
 - All five phases (`Discover`, `Flows`, `Plan`, `Build`, `Finalize`) are marked `Done` in `lifecycle/00-status.md`.
 - All Phase 4 implementation tasks are verified and marked `Done`.
 - Permanent documentation in `docs/modules/` is updated and verified.
-- Upstream friction and lessons (if any) are recorded in `lifecycle/04-refine.md`.
+- Upstream friction and lessons (if any) are recorded in `lifecycle/refine.md`.
 - The user has executed the Phase 5 Artifact Cleanup Decision (Delete, Archive, or Keep `lifecycle/`).
 - The working tree is clean and ready for the user's manual Git commit.
 
@@ -149,7 +149,7 @@ All temporary development artifacts live in `lifecycle/` using crisp 1-word head
 
 | Phase | Live Artifact | Format & Key Contents | Owning Skill |
 | :--- | :--- | :--- | :--- |
-| **Phase 0** | `lifecycle/00-status.md`<br>`lifecycle/04-refine.md` | 3-column live dashboard (`Phase`, `Stage / Task`, `Status`)<br>Cross-phase friction log (any phase appends; Phase 5 reviews) | `lifecycle` |
+| **Phase 0** | `lifecycle/00-status.md`<br>`lifecycle/refine.md` | 3-column live dashboard (`Phase`, `Task`, `Status`)<br>Cross-phase friction log (any phase appends; Phase 5 reviews) | `lifecycle` |
 | **Phase 1** | `lifecycle/01-discover.md` | At a Glance (Problem, Current System, Goal), Target Features, Scope Boundaries | `lifecycle-discover` |
 | **Phase 2** | `lifecycle/02-flows.md`<br>+ `02-prototype.html` | At a Glance (Prototypes & UX rules), Visual Workflows & Sequences (Mermaid) | `lifecycle-flows` |
 | **Phase 3** | `lifecycle/03-plan.md` | Feature tasks, assigned Rule Files, Two-Tier Verification (`Setup`, `Action`, `Expected`) | `lifecycle-plan` |
@@ -163,16 +163,16 @@ All temporary development artifacts live in `lifecycle/` using crisp 1-word head
 ```markdown
 # Status: [Requirement / Feature Name]
 
-| Phase | Stage / Task | Status |
+| Phase | Task | Status |
 | :--- | :--- | :--- |
 | **Phase 1 — Discover** | 1.1 At a Glance & Target Features ([01-discover.md](01-discover.md)) | `Todo` |
 | **Phase 2 — Flows** | 2.1 Flow Design ([02-flows.md](02-flows.md)) | `Todo` |
 | | 2.2 Interactive Prototype ([02-prototype.html](02-prototype.html)) | `Todo` |
 | **Phase 3 — Plan** | 3.1 Technical Approach & Task Breakdown ([03-plan.md](03-plan.md)) | `Todo` |
 | **Phase 4 — Build** | *(Populated directly by Phase 3 Plan)* | |
-| | Task 4.1: [Task 1 Title] | `Todo` |
-| | Task 4.2: [Task 2 Title] | `Todo` |
-| | Task 4.3: [Task 3 Title] | `Todo` |
+| | [Task 4.1: Task 1 Title](03-plan.md) | `Todo` |
+| | [Task 4.2: Task 2 Title](03-plan.md) | `Todo` |
+| | [Task 4.3: Task 3 Title](03-plan.md) | `Todo` |
 | **Phase 5 — Finalize** | 5.1 Outcome & Quality Verification ([05-finalize.md](05-finalize.md)) | `Todo` |
 | | 5.2 Application Improvements ([05-finalize.md](05-finalize.md)) | `Todo` |
 | | 5.3 Documentation & PR Summary ([05-finalize.md](05-finalize.md)) | `Todo` |
@@ -182,7 +182,7 @@ All temporary development artifacts live in `lifecycle/` using crisp 1-word head
 
 ---
 
-### Recommended Structure for `lifecycle/04-refine.md` (Optional)
+### Recommended Structure for `lifecycle/refine.md` (Optional)
 
 ```markdown
 # Refine: [Requirement / Feature Name]

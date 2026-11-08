@@ -17,7 +17,7 @@ This phase progresses through three sequential stages:
 
 1. **Verify & Review:** Verify that the integrated solution achieves the original Goal and requirements, and conduct an independent technical audit of code hygiene and integration seams.
 2. **Improvement Assessment & Smart Deduplication:** Actively identify deduplication, cleanup, and enhancement opportunities across the feature and connected modules, presenting recommendations for user approval.
-3. **Documentation & Handover:** Synchronize verified permanent documentation, log upstream lessons in `lifecycle/04-refine.md`, provide a copyable PR summary, and execute the user's artifact cleanup decision.
+3. **Documentation & Handover:** Synchronize verified permanent documentation, log upstream lessons in `lifecycle/refine.md`, provide a copyable PR summary, and execute the user's artifact cleanup decision.
 
 ---
 
@@ -71,7 +71,7 @@ flowchart LR
    - Ensure diff hygiene: verify zero leftover `console.log`, `debugger`, or temporary test shims.
 4. **Global Verification Suite & Audit Record**
    - Run the project-level analyzer, linter, and full test suite.
-   - Record exact commands and outcomes honestly (`Passed`, `Failed`, `Not Run`) in `lifecycle/05-finalize.md` under `## 1. Outcome & Quality Verification`. Distinguish pre-existing baseline issues from new code.
+   - Record exact commands and outcomes honestly (`Passed`, `Failed`, `Not Run`) in `lifecycle/05-finalize.md` under `## 1. At a Glance` (Global Checks table). Distinguish pre-existing baseline issues from new code.
 5. **Handle Findings**
    - *Narrow mechanical fix:* Fix trivial typos or unused imports in-place and re-verify.
    - *Behavioral or security defect:* Halt Finalize, record the finding, return to Phase 4 — Build, and implement a proper task.
@@ -89,7 +89,7 @@ flowchart LR
    - **Intra-Module:** Safe consolidation of helpers or sub-components within the active module.
    - **Cross-Module:** Never touch shared infrastructure or files consumed by unrelated modules without explicit user permission.
 3. **Classify, Document & Recommend (Never Change Without Approval)**
-   - Record every identified opportunity in `lifecycle/05-finalize.md` under `## 2. Assessed Improvements & Deduplication`.
+   - Record every identified opportunity in `lifecycle/05-finalize.md` under `## 2. Quality & Audit Evidence` (Assessed Improvements).
    - For every worthwhile opportunity, present a concise recommendation in chat:
      - **Location:** Affected files and current behavior.
      - **Proposed Change:** What should change and the expected benefit.
@@ -109,16 +109,16 @@ flowchart LR
    - **Level 3 (Leaves — Invariants & Decisions):** Scoped non-negotiable Business Rules (`BR-X`) and Consequential Architectural Decisions (`DEC-X`).
    - **Root Updates (`README.md` / `GLOSSARY.md`):** Update only if setup, environment variables, commands, or project-wide terminology changed.
    - *Format Rule:* Document verified truth with scannable nested sub-bullets. Link rather than duplicate.
-2. **Review Upstream Friction (`lifecycle/04-refine.md`)**
-   - Review entries recorded in `lifecycle/04-refine.md` across earlier phases (or append any Finalize-specific friction) to synthesize actionable framework or project rule recommendations.
+2. **Review Upstream Friction (`lifecycle/refine.md`)**
+   - Review entries recorded in `lifecycle/refine.md` across earlier phases (or append any Finalize-specific friction) to synthesize actionable framework or project rule recommendations.
 3. **Prepare Copyable PR Summary**
-   Author a clean, evidence-based PR summary directly in `lifecycle/05-finalize.md` under `## 4. Copyable PR Summary` and present it in chat for the user to copy into GitHub/GitLab:
+   Author a clean, evidence-based PR summary directly in `lifecycle/05-finalize.md` under `## 3. Pull Request Summary` and present it in chat for the user to copy into GitHub/GitLab:
    - **Outcome Summary:** Problem solved and delivered user capability.
    - **Key Changes & Files:** Core files created or modified with 1-line descriptions.
    - **Verification Evidence:** Exact test runner commands, results, and manual check proofs.
    - **Known Limitations:** Any unrun checks or explicitly deferred edge cases.
 4. **Execute the Artifact Cleanup Gate (Delete, Archive, or Keep)**
-   Because `lifecycle/` contains temporary development artifacts (`01-discover.md`, `02-flows.md`, `03-plan.md`, `04-refine.md`, `05-finalize.md`) and permanent knowledge is now in `docs/`:
+   Because `lifecycle/` contains temporary development artifacts (`01-discover.md`, `02-flows.md`, `03-plan.md`, `refine.md`, `05-finalize.md`) and permanent knowledge is now in `docs/`:
    - Run read-only `git status` to inspect existing lifecycle files.
    - Ask the user in chat to make the **Artifact Decision for `lifecycle/`**:
      - **1. Delete:** Remove the temporary `lifecycle/` directory (cleanest; docs already committed in `docs/`).
@@ -138,7 +138,7 @@ Phase 5 is complete only when:
 - Global test suite and analyzer have been run and results are honestly documented.
 - Improvement assessment was performed; all recommendations were either approved, declined, or deferred by the user.
 - Permanent documentation (`docs/modules/...`) accurately reflects the final verified implementation.
-- Upstream friction in `lifecycle/04-refine.md` (if any) is reviewed and addressed.
+- Upstream friction in `lifecycle/refine.md` (if any) is reviewed and addressed.
 - Copyable PR summary is presented in chat.
 - The user has made the Artifact Cleanup Decision and the authorized action is executed.
 - All rows in `lifecycle/00-status.md` are marked `Done`.
@@ -174,7 +174,7 @@ Follow the **Phase 0 Chat Approval Protocol** to present verified outcomes, upda
 - Running project-wide test suites and static analysis.
 - Identifying and recommending improvement opportunities across the application.
 - Synchronizing permanent documentation in `docs/modules/`, `README.md`, and `GLOSSARY.md`.
-- Reviewing and actioning workflow friction in `lifecycle/04-refine.md`.
+- Reviewing and actioning workflow friction in `lifecycle/refine.md`.
 - Authoring the copyable PR summary in chat.
 - Executing the user's explicit artifact cleanup decision.
 
@@ -194,47 +194,43 @@ The deliverables of Phase 5 are:
 1. **Finalize Audit & Handover Document:** `lifecycle/05-finalize.md` capturing verification proof, assessed improvements, permanent doc links, and copyable PR summary.
 2. **Synchronized Permanent Documentation:** Updated files under `docs/modules/<module>/README.md`, `docs/modules/<module>/feature_<name>.md`, or root `README.md`.
 3. **Completed Status Dashboard:** `lifecycle/00-status.md` showing all phases marked `Done`.
-4. **Reviewed Refinement Log (`lifecycle/04-refine.md` — Optional):** Upstream friction reviewed for central skills improvement.
+4. **Reviewed Refinement Log (`lifecycle/refine.md` — Optional):** Upstream friction reviewed for central skills improvement.
 
 ### Recommended Structure for `lifecycle/05-finalize.md`
 
 ```markdown
 # Finalize: [Requirement / Feature Name]
 
-## 1. Outcome & Quality Verification
+## 1. At a Glance
+- **Outcome:** ✅ All target features verified against code and test evidence.
+- **Global Checks:**
+  | Suite / Command | Result | Notes |
+  | :--- | :--- | :--- |
+  | `npm test` | `Passed` | 42 passed, 0 failed |
+  | `flutter analyze` | `Passed` | 0 issues found |
+- **Permanent Docs:** Updated [`docs/modules/<module>/README.md`](../docs/modules/<module>/README.md) and [`docs/modules/<module>/feature_<name>.md`](../docs/modules/<module>/feature_<name>.md).
 
-### Target Feature Traceability
-- **[Feature 1]:** Verified against unit tests and manual user steps.
-- **[Feature 2]:** Verified against Cloud Functions integration tests.
+## 2. Quality & Audit Evidence
+- **Feature Traceability:**
+  - `[Feature 1]`: Verified against unit tests and manual steps.
+  - `[Feature 2]`: Verified against Cloud Functions integration tests.
+- **Code Hygiene & Orphans:** 0 orphaned routes/exports, 0 temporary mocks, 0 debug logs.
+- **Assessed Improvements:**
+  - `[Opportunity 1]`: [Brief note + Decision: Approved (created Task 4.x) / Deferred / Declined]
 
-### Technical & Quality Audit
-- **Orphan Hunter Audit:** Ran grep on deleted/renamed symbols; 0 orphaned routes, exports, or dead mocks found.
-- **Diff & Code Hygiene:** Zero temporary test shims, debug logs, or style violations across touched files.
+## 3. Pull Request Summary
+```markdown
+### Summary
+[1-2 paragraph summary of delivered functionality]
 
-### Global Verification Suite
-| Suite / Command | Scope | Result | Details |
-| :--- | :--- | :--- | :--- |
-| `npm test` | Unit / Integration Tests | `Passed` | 42 passed, 0 failed |
-| `flutter analyze` | Static Analysis | `Passed` | 0 issues found |
+### Key Changes & Touchpoints
+- `path/to/file1.ext`: [Change description]
+- `path/to/file2.ext`: [Change description]
 
-## 2. Assessed Improvements & Deduplication
-- **Opportunity 1:** [Location, Proposed Change, User Decision: Approved (created Task 4.x) / Deferred / Declined]
-
-## 3. Permanent Documentation
-- [`docs/modules/<module>/README.md`](file:///path/to/docs/modules/...): Updated module scope and schema tables.
-- [`docs/modules/<module>/feature_<name>.md`](file:///path/to/docs/modules/...): Authored complete feature workflows and invariants.
-
-## 4. Copyable PR Summary
-### Summary of Changes
-[1-2 paragraph high-signal summary of what this PR introduces and delivers]
-
-### Key Files Changed
-- `path/to/file1.ext`: [1-line description of changes]
-- `path/to/file2.ext`: [1-line description of changes]
-
-### Verification Evidence
-- [Exact test commands run and green results]
-- [Manual user verification steps confirmed]
+### Verification
+- [Passing automated test suites]
+- [User verification confirmed]
+\```
 ```
 
 ### Recommended Structure for `docs/modules/<module>/README.md`
