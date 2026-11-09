@@ -34,6 +34,7 @@ This phase ensures that before Phase 4 — Build begins, the Agent and User have
 - **Task-Specific Rule Enforcement:** Assign relevant rules individually inside the task's **Agent Verification** section with explicit rule names and file paths (`- Rule [<Rule Name>]: <path/to/rule.md>`) so the agent has semantic clarity and verifies compliance where the code changes.
 - **Two-Tier Verification:** Separate Agent Verification (automated tests and rule compliance checks the agent must run first) from User Verification (clear Setup, Action, and Expected steps for the user).
 - **Verifiable Execution Order (Producer-Before-Consumer Invariant):** Sequence capabilities so every task is verifiable with real state—never hypothetical guesswork. Producers (Create/Ingest) must precede Consumers (Read/List), and Consumers must precede Modifiers/Teardown (Update/Delete). You cannot verify a list without data, and you cannot verify an edit or deletion without seeing state before and after.
+- **Producer-Consumer Wire Invariant:** Every boundary crossing (URL query param, webhook, emitted event, job queue) MUST have a 1:1 pair of scheduled tasks: exactly one Producer task (emits/redirects) and exactly one Consumer task (ingests/persists). Planning an emitter without its receiver, or a consumer without its extractor, is strictly prohibited.
 - **Dependency-Aware Sequencing:** Foundational slices (migrations, core domain utilities) must be sequenced before dependent feature and UI tasks.
 - **No Unnecessary Fragmentation:** Tasks must be small enough to implement and verify easily, without creating unnecessary handoffs or trivial one-line tasks.
 - **Strict Phase Boundaries (Negative Constraints):**
@@ -138,6 +139,8 @@ Before requesting user approval, verify that:
 - **Prefactoring Scheduled:** Any file approaching the 900/1000-line threshold has an upfront extraction task.
 - **Backward Compatibility:** Schema and contract changes include live data fallback handling.
 - **Logical & Verifiable Sequencing:** Foundation tasks precede dependent UI tasks, and Producer capabilities (Create/Ingest) precede consumers (Read/List) and modifiers (Update/Delete), guaranteeing testability with real state on every task without synthetic mocks.
+- **Wire Completeness:** Every boundary crossing (URL query param, webhook, emitted event, job queue) has both an emitting task and an ingesting task explicitly scheduled.
+- **Design-to-Plan Reconciliation:** Reconcile every interactive element, input field, and status badge from `02-design.md` against task changes. Zero visual or interactive elements may be silently omitted.
 - **Zero Ambiguity:** No unresolved architectural questions or placeholder tasks remain.
 
 ### Requesting User Approval (Phase 0 Protocol)

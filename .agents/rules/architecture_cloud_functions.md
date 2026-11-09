@@ -17,10 +17,11 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 ## Strict Model Adherence & Remote Contract Literals
 - **Module Source of Truth:** Backend module models represent the absolute source of truth. Incoming request objects (DTOs) MUST strictly map into internal module models.
 - **Reject Unknown Fields:** Backend models and validators MUST explicitly reject unknown or caller-controlled lifecycle/tenant fields. Silently ignoring or passing through unvalidated payload fields is STRICTLY PROHIBITED.
-- **Ban on Raw Contract Literals:** External contract names, callable names, request payload keys, Firestore/Storage paths, persisted collection names, and persisted field names MUST live once in an owner-owned module contract container (`*_constants.ts` or `*_models.ts`).
+- **Ban on Raw Contract Literals & Centralized Constants:** External contract names, callable names, request payload keys, Firestore/Storage paths, persisted collection names, and persisted field names/statuses MUST live once in the module's dedicated `<module>_constants.ts` file.
   - Raw string literals in Firestore reads, writes, collection queries (`.where()`, `.orderBy()`, `.select()`, `.collection()`, `.collectionGroup()`), or callable handlers are STRICTLY PROHIBITED.
+  - **Runtime Constant Companion Law:** Whenever a TypeScript union type is declared for persisted entities, fields, or statuses (`type Status = "pending" | "completed"`), runtime `static readonly` constants (or `as const` values) MUST be defined in `<module>_constants.ts`. Pure type-only unions for persisted values are forbidden because they force query code into raw string literals.
   - Map remote records at the repository boundary; typed models MUST NOT permit direct snapshot-property access with raw field-name strings.
-- **Static Model Constants:** Static constants in `*_models.ts` MUST be declared as `static readonly`, never mutable `static`.
+- **Static Model Constants:** Static constants in `*_constants.ts` and `*_models.ts` MUST be declared as `static readonly`, never mutable `static`.
 - **Node Runtime:** Active Node runtime MUST be `nodejs22` in `firebase.json` and engine `"22"` in `functions/package.json`.
 
 ## Multi-Tenancy & Authorization (Admin SDK Security)
