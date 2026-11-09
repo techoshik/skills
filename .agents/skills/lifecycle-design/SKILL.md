@@ -1,9 +1,9 @@
 ---
-name: lifecycle-flows
-description: Transform confirmed requirements into validated visual flows and modular interactive HTML prototypes (Lifecycle: Phase 2 — Flows).
+name: lifecycle-design
+description: Transform confirmed requirements into validated visual flows and modular interactive HTML prototypes (Lifecycle: Phase 2 — Design).
 ---
 
-# Phase 2 — Lifecycle Flows
+# Phase 2 — Lifecycle Design
 
 ## 1. Purpose
 
@@ -40,7 +40,7 @@ This phase has two sequential stages:
 - **Self-Contained & Zero-Build:** Prototypes must open directly in any browser with zero build steps, bundlers, or local servers. Embed styles, mock data, and minimal vanilla JS directly in each file.
 - **Design System Primitive Alignment (Keep It Simple):** Prototypes are HTML models—not Flutter code. Do not write complex custom CSS or obsess over pixel perfection. However, HTML structures must mirror the project's design system primitives conceptually (cards, primary/secondary buttons, dialogs, toasts, message views, semantic theme roles, and plain-language copy). Aligning these primitives in HTML allows Phase 4 Build to translate prototypes directly into canonical Flutter components without redesigning the UX.
 - **Synchronize Discoveries Upstream:** If prototyping reveals missing requirements, edge cases, or UX simplifications, immediately update `lifecycle/01-discover.md` in place.
-- **Single Live Document (`lifecycle/02-flows.md`):** All flow diagrams, prototype references, and UX decisions live in `lifecycle/02-flows.md`.
+- **Single Live Document (`lifecycle/02-design.md`):** All flow diagrams, prototype references, and UX decisions live in `lifecycle/02-design.md`.
 - **Strict Phase Boundaries (Negative Constraints):**
   - **No Production Code:** Writing or modifying application source code and running test suites belongs to Phase 4 — Build. Never treat prototype HTML/JS code as production code.
   - **No Technical Architecture or Slices:** Database schemas, API endpoints, file modifications, and task breakdowns belong to Phase 3 — Plan.
@@ -80,17 +80,18 @@ flowchart LR
    - For sequence diagrams, use `autonumber` and clear participant labels; quote participant labels or aliases containing slashes, hyphens, or parentheses.
    - **No Parentheses in Edge Labels:** Avoid parentheses in flowchart edge labels (e.g. use hyphens or clean phrases `|No - Option A|` instead of `|No (Option A)|`) because Mermaid grammar breaks on unescaped parentheses inside `|...|` delimiters.
    - **No Nested `alt` in Sequence Diagrams:** Prohibit nested `alt` blocks (use sequential `opt` blocks or flat sequential checks); standard Mermaid sequence grammar strictly forbids nested `alt` and crashes markdown renderers.
+   - **Flush Column-0 Fenced Code Blocks:** Never nest Mermaid code blocks inside bullet points; place them under level-3 headings (`### Workflow X: [Feature Name]`) flush at column 0 to prevent markdown rendering errors.
 4. **Enforce Zero Dead-Ends & Highlight What Changes:**
    - Verify that every error branch, validation failure, and timeout loops back to an actionable user recovery step or a safe exit. Never leave an orphaned error box.
    - For modifications to existing systems, distinguish current behavior from proposed behavior using side-by-side visual diffs or concise change delta tables.
-   - Document flows in `lifecycle/02-flows.md` under `## 2. Visual Workflows & Sequences`.
+   - Document flows in `lifecycle/02-design.md` under `## 2. Visual Workflows & Sequences`.
 5. **Gate 2.1 Approval Protocol:**
    - Update row `Stage 2.1 — Flow Design` to `In Review` in `lifecycle/00-status.md`.
    - Stop calling tools immediately.
    - Follow the **Phase 0 Chat Approval Protocol** to present visual workflows in chat and ask for explicit approval before writing prototype code.
    - **Gate Outcome:**
      - *If Approved:* Mark `Stage 2.1 — Flow Design` as `Done` in `00-status.md`. For UI tasks, set `Stage 2.2 — Interactive Prototype` to `In Progress` and advance to Stage 2.2. For pure backend/non-UI tasks, mark `Stage 2.2` as `Skipped (N/A)` and advance directly to Phase 3 — Plan.
-     - *If Changes Requested:* Keep `Stage 2.1` as `In Progress`, revise `02-flows.md`, and re-present.
+     - *If Changes Requested:* Keep `Stage 2.1` as `In Progress`, revise `02-design.md`, and re-present.
 
 ---
 
@@ -106,7 +107,7 @@ flowchart LR
 2. **Directory Structure (Modular Hub Architecture):**
    ```text
    lifecycle/
-   ├── 02-flows.md             # Primary flow documentation and decisions
+   ├── 02-design.md            # Primary design documentation and decisions
    ├── 02-prototype.html       # Central Hub: feature index, option trade-offs, decision cards
    └── prototype/
        └── <feature-slug>/     # e.g., auth, dashboard, billing
@@ -137,7 +138,7 @@ flowchart LR
    - Embed lightweight Mermaid sub-flow diagrams where visual process context clarifies the screen being viewed.
 5. **Synchronize Discoveries Upstream & Record Decisions:**
    - If prototyping reveals an unhandled edge case, conflicting requirement, or valuable simplification, immediately update `lifecycle/01-discover.md` in place.
-   - Record UX decisions in `lifecycle/02-flows.md` under `## 1. At a Glance` (`Key Interaction Rules`).
+   - Record UX decisions in `lifecycle/02-design.md` under `## 1. At a Glance` (`Key Interaction Rules`).
 
 ---
 
@@ -157,79 +158,84 @@ Before requesting user approval, verify that:
 - **Async Inspection Drawer Included:** (UI only) Simulated drawer allows testing email/magic link payloads without external mail servers.
 - **Non-UI Explicitly Skipped:** For pure backend tasks, prototyping is explicitly marked `Skipped (N/A)` in `lifecycle/00-status.md`.
 - **Upstream Sync Complete:** Any requirements or edge cases uncovered during flow modeling or prototyping are updated in `lifecycle/01-discover.md` in place.
-- **Consequential UX Decisions:** Key interaction rules (`DEC-X`) are documented in `lifecycle/02-flows.md`.
+- **Consequential UX Decisions:** Key interaction rules (`DEC-X`) are documented in `lifecycle/02-design.md`.
 
 ### Requesting User Approval (Phase 0 Protocol)
 
 1. Update `Stage 2.2 — Interactive Prototype` (or Phase 2 overall) to `In Review` in `lifecycle/00-status.md`.
-2. In chat, output a concise 1–2 sentence summary linking `[02-flows.md](02-flows.md)` (and `[02-prototype.html](02-prototype.html)` if UI) and ask for explicit approval to advance to Phase 3 — Plan.
+2. In chat, output a concise 1–2 sentence summary linking `[02-design.md](02-design.md)` (and `[02-prototype.html](02-prototype.html)` if UI) and ask for explicit approval to advance to Phase 3 — Plan.
 3. Stop calling tools immediately and wait for the user's explicit response.
 
 ### Gate Outcomes
 
 - **Approved:** Mark Phase 2 as `Done` in `lifecycle/00-status.md`, load `lifecycle-plan`, and advance to Phase 3 — Plan.
-- **Changes Requested:** Mark active stage as `In Progress`, revise `02-flows.md` or prototype files, re-verify, and present again.
+- **Changes Requested:** Mark active stage as `In Progress`, revise `02-design.md` or prototype files, re-verify, and present again.
 - **Blocked:** An unresolved design question, architectural constraint, or requirement conflict blocks progress. Return to Phase 1 — Discover or request clarification.
 
 ---
 
 ## 5. Phase Output
 
-The primary deliverable is `lifecycle/02-flows.md`, supported by `lifecycle/02-prototype.html` and `lifecycle/prototype/` for UI features.
+The primary deliverable is `lifecycle/02-design.md`, supported by `lifecycle/02-prototype.html` and `lifecycle/prototype/` for UI features.
 
-### Recommended Structure for `lifecycle/02-flows.md`
+### Recommended Structure for `lifecycle/02-design.md`
 
 ```markdown
-# Flows: [Requirement / Feature Name]
+# Design: [Requirement / Feature Name]
 
 ## 1. At a Glance
 
-- **The Core Journey:** [1-sentence summary of what this end-to-end user flow accomplishes].
+**The Core Journey:**
+[1-sentence summary of what this end-to-end user flow accomplishes].
 
-- **UI Prototypes:**
-  - **Prototype Hub:** [02-prototype.html](02-prototype.html) *(or "Skipped (N/A for Non-UI)")*
-  - **[Screen 1 / Workflow Name]:** [Option B](prototype/<feature>/screen-1-b.html) ([Short title]) selected over Option A ([Short title & why rejected]).
-  - **[Screen 2 / Workflow Name]:** [Option A](prototype/<feature>/screen-2-a.html) ([Short title]) selected over Option B ([Short title & why rejected]).
+**UI Prototypes:**
+- **Prototype Hub:** [02-prototype.html](02-prototype.html) *(or "Skipped (N/A for Non-UI)")*
+- **[Screen 1 / Workflow Name]:** [Option B](prototype/<feature>/screen-1-b.html) ([Short title]) selected over Option A ([Short title & why rejected]).
+- **[Screen 2 / Workflow Name]:** [Option A](prototype/<feature>/screen-2-a.html) ([Short title]) selected over Option B ([Short title & why rejected]).
 
-- **Key Interaction Rules (UX Decisions):**
-  - **DEC-1 ([Topic / Copy]):** [Plain-language terminology or dialog copy]
-  - **DEC-2 ([Topic / Protection]):** [Current device attribution or state protection]
-  - **DEC-3 ([Topic / Zero Dead-Ends]):** [Inline retry banner on failure rather than trapped modal]
-  - **DEC-4 ([Topic / Navigation]):** [Exact navigation entry point]
+**Key Interaction Rules (UX Decisions):**
+- **DEC-1 ([Topic / Copy]):** [Plain-language terminology or dialog copy]
+- **DEC-2 ([Topic / Protection]):** [Current device attribution or state protection]
+- **DEC-3 ([Topic / Zero Dead-Ends]):** [Inline retry banner on failure rather than trapped modal]
+- **DEC-4 ([Topic / Navigation]):** [Exact navigation entry point]
 
 ## 2. Visual Workflows & Sequences
 
-- **Workflow 1: [Feature 1 Name]:**
-  ```mermaid
-  sequenceDiagram
-    autonumber
-    actor User
-    participant Frontend
-    participant Backend
-    participant DB
-    User->>Frontend: Action
-    Frontend->>Backend: Request
-    Backend->>DB: Query
-    DB-->>Backend: Result
-    Backend-->>Frontend: Response
-    Frontend-->>User: Visual feedback
-  ```
+### Workflow 1: [Feature 1 Name]
 
-- **Workflow 2: [Feature 2 Name]:**
-  ```mermaid
-  flowchart TD
-    Start["User Triggers Action"] --> Validate{"Input Valid?"}
-    Validate -- No --> Recover["Show Inline Error & Recovery Path"]
-    Recover --> Start
-    Validate -- Yes --> Submit["Execute Request"]
-    Submit --> Success["Display Success Confirmation"]
-  ```
-  - **Zero Dead-Ends Error Recovery:**
-    ```mermaid
-    flowchart TD
-      Err["Network Drop / Server 500"] --> Banner["Show Retry Banner with Cached Input"]
-      Banner --> Action{"User Action"}
-      Action -- "Click Retry" --> Submit["Re-execute Request"]
-      Action -- "Cancel" --> SafeExit["Return to Previous Safe State"]
-    ```
+```mermaid
+sequenceDiagram
+  autonumber
+  actor User
+  participant Frontend
+  participant Backend
+  participant DB
+  User->>Frontend: Action
+  Frontend->>Backend: Request
+  Backend->>DB: Query
+  DB-->>Backend: Result
+  Backend-->>Frontend: Response
+  Frontend-->>User: Visual feedback
+```
+
+### Workflow 2: [Feature 2 Name]
+
+```mermaid
+flowchart TD
+  Start["User Triggers Action"] --> Validate{"Input Valid?"}
+  Validate -- No --> Recover["Show Inline Error & Recovery Path"]
+  Recover --> Start
+  Validate -- Yes --> Submit["Execute Request"]
+  Submit --> Success["Display Success Confirmation"]
+```
+
+**Zero Dead-Ends Error Recovery:**
+
+```mermaid
+flowchart TD
+  Err["Network Drop / Server 500"] --> Banner["Show Retry Banner with Cached Input"]
+  Banner --> Action{"User Action"}
+  Action -- "Click Retry" --> Submit["Re-execute Request"]
+  Action -- "Cancel" --> SafeExit["Return to Previous Safe State"]
+```
 ```

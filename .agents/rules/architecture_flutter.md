@@ -89,4 +89,4 @@ Application clients MUST interact directly with Firestore and Firebase Storage v
   - `<module>_repository.dart`: Data persistence contracts and Firestore implementations.
   - `<module>_validator.dart`: Pure module validation, eligibility filtering, and business rules.
   - `<module>_constants.dart`: Collection paths and module field names.
-  - `<module>_providers.dart`: Public Riverpod providers for the module.
+  - `<module>_contract.dart`: Mandatory public module boundary contract serving as the sole gateway for external callers (exposing public Riverpod providers, navigation contracts, and repository interfaces; replaces `<module>_providers.dart`).

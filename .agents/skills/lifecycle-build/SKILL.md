@@ -19,10 +19,10 @@ Tasks are executed strictly one task at a time. The Agent must stop for explicit
 
 ## 2. Guiding Principles
 
-- **Follow the Approved Plan:** Implement only the approved scope, touchpoints, and task sequence from `lifecycle/03-plan.md`. Do not silently add files or change architecture. If an architectural flaw or vulnerability is uncovered, follow the In-Flight Plan Amendment Protocol.
+- **Follow the Approved Plan:** Implement only the approved scope, changes (`C1`, `C2`...), and file targets from `lifecycle/03-plan.md`. Do not silently add files or change architecture. If an architectural flaw or vulnerability is uncovered, follow the In-Flight Plan Amendment Protocol.
 - **Instruction Re-Anchoring:** Before editing, re-read the active task in `lifecycle/03-plan.md`, its assigned Rule Files, and its verification criteria. Never rely on conversational memory across multi-task sessions.
 - **Understand Before Changing (Caller & Seam Inspection):** Read target files and trace callers via read-only search (`grep`) before writing code. Know why the change is needed, what contracts must remain unbroken, and how success will be verified.
-- **Rule Compliance Is Mandatory:** Read and apply all Rule Files assigned to the task (e.g. database migrations, file creation thresholds, security invariants). Verify compliance before review.
+- **Rule Compliance Is Mandatory:** Inspect each individual `Rule [<Rule Name>]` declared under Agent Verification before writing code and before requesting review. Verify strict compliance against its documented invariants.
 - **Red-Green Seam Proof (Proof of Cause):** For bugfixes and new logic, prove the seam: verify the failing behavior or error log before editing (Red), implement the targeted change, and prove the automated check passes after (Green). Never claim a fix works without proving the causal link.
 - **Implement the Smallest Coherent Slice:** Keep changes focused, minimal, and compile-clean. Avoid horizontal fragmentation or sweeping refactors that touch unrelated files.
 - **Pre-Handoff Diff Scrub (Hypo-Allergenic Diffs):** Audit `git diff` line-by-line before requesting review: ensure zero accidental whitespace modifications to untouched code, zero leftover `console.log`, `debugger`, or temporary shims, zero orphaned imports, zero hardcoded design literals (magic numbers on padding, margins, icon sizes, spacers, or raw colors) bypassing canonical design system tokens, and clear plain-language copy. Every line in the diff must directly serve the task.
@@ -44,7 +44,7 @@ Implementation follows three disciplined chronological steps for each task:
 
 1. **Re-Anchor to the Active Task:**
    - Read `lifecycle/00-status.md` and `lifecycle/03-plan.md`. Identify the active `In Progress` task (or next `Todo` task).
-   - Re-read the task's **Blast Radius**, **Touchpoints** (files & planned changes), **Applicable Rules** (and specific sections), and **Agent Verification** commands.
+   - Re-read the task's **Blast Radius**, **Changes** (`C1`, `C2`...), **Files** (mapped targets with action verbs), **Agent Verification** (assigned rules & automated checks), and **User Verification**.
 2. **Inspect Callers & Target Files:**
    - Read target files in full—not just snippets.
    - Inspect immediate callers, routes, and data models via read-only searches (`grep`) to prevent broken contracts or unexpected side effects.
@@ -60,25 +60,23 @@ Implementation follows three disciplined chronological steps for each task:
 2. **Maintain a Compile-Clean Slice:**
    - Keep the codebase buildable and testable after each task.
    - If an early task renames a shared symbol, either update callers in the same task or introduce a temporary compatibility alias explicitly scheduled for removal in a subsequent task.
-3. **Enforce Task-Specific Rules:**
-   - Apply the specific Rule Files assigned to the task (e.g., file-size limits, naming conventions, migration constraints).
+3. **Enforce Named Rules:**
+   - Inspect each `Rule [<Rule Name>]: <file>` declared under **Agent Verification**. Follow every invariant strictly without exception.
 4. **In-Flight Plan Amendment Protocol (Mid-Build Discoveries):**
    When an architectural defect, security flaw, race condition, or broken contract is discovered during implementation:
    - *Halt Coding Immediately:* Stop writing code that implements an unworkable design. Never silently diverge from `lifecycle/03-plan.md`.
    - *Formulate Correction Proposal:* State the verified finding with concrete evidence, explain why the plan fails, and outline the adjustment.
    - *Obtain Explicit Human Approval:* Present the proposal in chat. Stop and wait for explicit user approval before modifying the plan or proceeding.
-   - *Update Upstream Source of Truth in Place:* Update the affected task in `lifecycle/03-plan.md`, realign `lifecycle/01-discover.md` / `lifecycle/02-flows.md` if core flows changed, and update `lifecycle/00-status.md` if tasks were added/split.
+   - *Update Upstream Source of Truth in Place:* Update the affected task in `lifecycle/03-plan.md`, realign `lifecycle/01-discover.md` / `lifecycle/02-design.md` if core flows changed, and update `lifecycle/00-status.md` if tasks were added/split.
    - *Resume Implementation:* Proceed under the updated specification.
 
 ### 3.3 Step 3 — Verification, Diff Scrub & Serial Task Handoff
 
-1. **Execute Agent Verification Commands & Red-Green Proof:**
+1. **Execute Agent Verification (Named Rules & Automated Proof):**
+   - Verify modified files against each individual `Rule [<Rule Name>]` listed under **Agent Verification** in `lifecycle/03-plan.md` (e.g. file size thresholds, idempotent migration rollback).
    - Run the exact automated test and verification commands declared under **Agent Verification** in `lifecycle/03-plan.md`.
    - For bugfixes or logic changes, verify the Red-Green evidence (failing before, passing after).
-   - Check off each passing checkbox (`- [x]`) under Agent Verification in `lifecycle/03-plan.md`.
-2. **Verify Assigned Rule Files:**
-   - Verify modified files against assigned Rule Files (e.g. file size thresholds, idempotent migration rollback).
-3. **Pre-Handoff Diff Scrub:**
+2. **Pre-Handoff Diff Scrub:**
    - Run read-only `git diff` line-by-line to verify:
      - Zero accidental whitespace modifications to untouched code, zero debug statements (`console.log`, `print`, `debugger`), zero unused imports, and zero temporary mocks.
      - **Design System Token & Component Primacy:** Zero raw integer sizes on icons (`Icon(size: ...)`), zero ad-hoc spacers (`SizedBox(width/height: ...)`), zero hardcoded padding/margins, and zero raw color literals. All UI must strictly consume the project's canonical design system library (widgets, spacing tokens, typography, theme colors, dialogs, toasts, loaders). If any widget, spacing guideline, icon size token, or style appears to be missing in the design system library, **ask the user first** for direction rather than creating ad-hoc custom solutions, raw literals, or bespoke widgets.
@@ -109,10 +107,9 @@ Phase 4 operates strictly **Task-by-Task**. A task is complete only when the pre
 ### Task Completion Checklist (Pre-Flight Gate)
 
 Before requesting user review for any task, verify that:
-- **Scope Implemented:** Approved touchpoints and changes have been implemented cleanly.
-- **Rule Compliance Verified:** Assigned Rule Files are satisfied with zero unapproved deviations.
+- **Scope Implemented:** Approved changes (`C1`, `C2`...) across target files have been implemented cleanly.
+- **Rule Compliance Verified:** Every `Rule [<Rule Name>]` listed under **Agent Verification** is satisfied with zero unapproved deviations.
 - **Automated Checks Passed:** All **Agent Verification** commands have been executed and passed.
-- **Agent Checkboxes Checked:** Passing Agent Verification checkboxes are marked `- [x]` in `lifecycle/03-plan.md`.
 - **Pre-Handoff Diff Scrubbed:** `git diff` is clean (no debug logs, dead code, secrets, accidental whitespace edits, raw design literals, or jargon copy).
 - **Task Checkbox Unchecked:** Main task checkbox remains `- [ ]` in `lifecycle/03-plan.md` while awaiting review.
 - **Status Dashboard Updated:** Task row in `lifecycle/00-status.md` is set to `In Review`.
@@ -120,7 +117,7 @@ Before requesting user review for any task, verify that:
 
 ### Gate Outcomes
 
-- **Approved:** Mark the active task `- [x]` in `lifecycle/03-plan.md` and set its status to `Done` in `lifecycle/00-status.md`. Proceed to the next `Todo` task, or advance to Phase 5 — Finalize if all tasks are complete.
+- **Approved:** Mark the active task `- [x]` in `lifecycle/03-plan.md` and set its status to `Done` in `lifecycle/00-status.md`. Proceed to the next `Todo` task, or advance to Phase 5 — Close if all tasks are complete.
 - **Changes Requested:** Mark active task `In Progress`, implement corrections, re-run verification and diff scrub, and present the updated handoff.
 - **Blocked:** An unpredicted architectural conflict or broken dependency halts progress. Follow the In-Flight Amendment Protocol or return to earlier phases.
 
@@ -134,4 +131,4 @@ The deliverables of Phase 4 are:
 2. **Updated Implementation Plan:** Completed tasks marked `- [x]` in `lifecycle/03-plan.md` upon user approval.
 3. **Updated Status Dashboard:** Completed tasks marked `Done` in `lifecycle/00-status.md`.
 4. **Verification Evidence:** Passing automated test logs and verified User Verification steps.
-5. **Upstream Lessons (Optional):** Any friction or rule improvements recorded in `lifecycle/refine.md` for review in Phase 5.
+5. **Upstream Lessons (Optional):** Any friction or rule improvements recorded in `lifecycle/refine.md` for review in Phase 5 Close.

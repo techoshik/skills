@@ -26,7 +26,7 @@ Explore the initial problem, opportunity, or request through evidence-based inve
 - **Zero Decision Fatigue:** Ask one focused decision at a time in dependency order, providing viable options and a recommended default. Never dump open-ended questionnaires.
 - **Live Document, Not Transcript:** Capture confirmed goals, target features, and decisions directly in `lifecycle/01-discover.md` after every turn; avoid conversational transcripts.
 - **Strict Phase Boundaries (Negative Constraints):**
-  - **No UI Design or Visual Flows:** Screen flows, Mermaid sequence diagrams, and interactive prototypes belong to Phase 2 — Flows.
+  - **No UI Design or Visual Flows:** Screen flows, Mermaid sequence diagrams, and interactive prototypes belong to Phase 2 — Design.
   - **No Technical Architecture or Slices:** Database schemas, API endpoints, file modifications, and task breakdowns belong to Phase 3 — Plan.
   - **No Production Code:** Writing or modifying application source code and running test suites belongs to Phase 4 — Build.
   - **Never Filter Scope Unilaterally:** The agent must never declare features out of scope or not worth doing without explicit user direction during late-stage triage.
@@ -47,14 +47,14 @@ Explore the initial problem, opportunity, or request through evidence-based inve
    - If a fact can be determined from the repo, verify it yourself; never ask the user for discoverable codebase facts.
 3. **Domain Vocabulary Settle (Early Alignment):**
    - Check the project root `GLOSSARY.md` (if present) to reuse established terminology.
-   - Settle any new or clarified domain terms (e.g. user roles, session entities, revocation actions) early and record them under `## 1. At a Glance` as **Core Terms**. Pinned vocabulary prevents subtle semantic bugs across downstream phases, and will be promoted to the project's root `GLOSSARY.md` during Phase 5 Finalize. Express all user-facing concepts in simple, everyday English (5th-grade reading standard), strictly avoiding technical or abstract corporate jargon.
+   - Settle any new or clarified domain terms (e.g. user roles, session entities, revocation actions) early and record them under `## 1. At a Glance` as **Core Terms**. Pinned vocabulary prevents subtle semantic bugs across downstream phases, and will be promoted to the project's root `GLOSSARY.md` during Phase 5 Close. Express all user-facing concepts in simple, everyday English (5th-grade reading standard), strictly avoiding technical or abstract corporate jargon.
 
 ### 3.2 Step 2 — Uncover Requirements & Probe Blind Spots
 
 1. **Progressive Requirement Treeing (Depth & Breadth):**
-   - **Level 1 (Trunk — At a Glance):** Formulate the core foundation under `## 1. At a Glance` with bold sub-bullet hooks (*The Problem*, *Current System*, *Desired Goal*, *Core Terms*).
-   - **Level 2 (Branches — Target Features):** Structure each feature as a distinct top-level bullet (`- **<Feature Name>:**`). Capture all user-requested capabilities without premature filtering.
-   - **Level 3 (Leaves — Sub-Features & Acceptance Anchors):** Break down each feature into crisp, atomic sub-bullets using **bold leading hooks** (`- **[Dimension / Hook]:** [Specific requirement detail]`) for instant readability.
+   - **Level 1 (Trunk — At a Glance):** Formulate the core foundation under `## 1. At a Glance` with bold paragraph headers (*The Problem*, *Current System*, *Desired Goal*, *Core Terms*) followed by flat, single-level bullets.
+   - **Level 2 (Branches — Target Features):** Structure each feature as a distinct heading (`### [Feature Name]`). Capture all user-requested capabilities without premature filtering.
+   - **Level 3 (Leaves — Sub-Features & Acceptance Anchors):** Break down each feature into crisp, atomic flat bullets using **bold leading hooks** (`- **[Dimension / Hook]:** [Specific requirement detail]`) for instant readability.
    - **Horizontal Breadth (The 5 Edge Lenses):** Probe requirements across all 5 edge dimensions (*Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle*).
 2. **The Decision Frontier & Anti-Popcorn Rule:**
    - Track open decisions as a tree: Trunk $\to$ Branches $\to$ Leaves. The **Frontier** consists of decisions whose parent prerequisites are confirmed.
@@ -114,7 +114,7 @@ Explore the initial problem, opportunity, or request through evidence-based inve
 
 ## 4. Exit Gate & Completion Criteria
 
-Phase 1 can transition to Phase 2 — Flows only when the completion checklist is fully satisfied and the user grants explicit approval in chat.
+Phase 1 can transition to Phase 2 — Design only when the completion checklist is fully satisfied and the user grants explicit approval in chat.
 
 ### Completion Checklist (Pre-Flight Gate)
 
@@ -131,11 +131,11 @@ Before requesting user approval, verify that:
 
 ### Requesting User Approval (Phase 0 Protocol)
 1. Update Phase 1 status to `In Review` in `lifecycle/00-status.md`.
-2. In chat, output a concise 1–2 sentence summary linking `[01-discover.md](01-discover.md)` and ask for explicit approval to advance to Phase 2 — Flows.
+2. In chat, output a concise 1–2 sentence summary linking `[01-discover.md](01-discover.md)` and ask for explicit approval to advance to Phase 2 — Design.
 3. Stop calling tools immediately and wait for the user's explicit response.
 
 ### Gate Outcomes
-- **Approved:** Mark Phase 1 `Done` in `lifecycle/00-status.md` and proceed to Phase 2 — Flows.
+- **Approved:** Mark Phase 1 `Done` in `lifecycle/00-status.md` and proceed to Phase 2 — Design.
 - **Changes Requested:** Mark Phase 1 `In Progress`, address feedback, re-verify, and present again.
 - **Blocked:** Mark Phase 1 `Blocked` if a strategic unknown or external blocker prevents alignment.
 
@@ -150,51 +150,54 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
 
 ## 1. At a Glance
 
-- **The Problem:**
-  - **[Symptom / Pain 1]:** [What fails, breaks, or is blocked for the user]
-  - **[Symptom / Pain 2]:** [Operational, UX, or business friction]
-- **Current System:**
-  - **[Data Schema / Models]:** [How the current database, collection, or state stores data]
-  - **[Code Seam / Watcher]:** [Existing logic or triggers enforcing current behavior]
-  - **[Policy Background]:** [Why the system was originally built this way]
-- **Desired Goal:**
-  - **[Target Outcome 1]:** [What should become true for primary users]
-  - **[Scope / Boundary]:** [Key rule or role boundary preserved]
-- **Core Terms:**
-  - **[Domain Term 1]:** [Crisp definition of key business concept, entity, or role]
-  - **[Domain Term 2]:** [Crisp definition of key business concept, entity, or role]
+**The Problem:**
+- **[Symptom / Pain 1]:** [What fails, breaks, or is blocked for the user]
+- **[Symptom / Pain 2]:** [Operational, UX, or business friction]
+
+**Current System:**
+- **[Data Schema / Models]:** [How the current database, collection, or state stores data]
+- **[Code Seam / Watcher]:** [Existing logic or triggers enforcing current behavior]
+- **[Policy Background]:** [Why the system was originally built this way]
+
+**Desired Goal:**
+- **[Target Outcome 1]:** [What should become true for primary users]
+- **[Scope / Boundary]:** [Key rule or role boundary preserved]
+
+**Core Terms:**
+- **[Domain Term 1]:** [Crisp definition of key business concept, entity, or role]
+- **[Domain Term 2]:** [Crisp definition of key business concept, entity, or role]
 
 ## 2. Target Features
 
-- **[Feature 1 Name]:**
-  - **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
-  - **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
-  - **[User Interface / Interaction]:** [Presentation, feedback, or interactive controls]
+### [Feature 1 Name]
+- **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
+- **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
+- **[User Interface / Interaction]:** [Presentation, feedback, or interactive controls]
 
-- **[Feature 2 Name]:**
-  - **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
-  - **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
+### [Feature 2 Name]
+- **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
+- **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
 
 ## 3. Scope & Edge Cases
 
-- **In Scope:**
-  - **[Key Deliverable 1]:** [Specific capability, layer touched, or component for this cycle]
-  - **[Key Deliverable 2]:** [Verification scope or security boundary]
+**In Scope:**
+- **[Key Deliverable 1]:** [Specific capability, layer touched, or component for this cycle]
+- **[Key Deliverable 2]:** [Verification scope or security boundary]
 
-- **Deferred:**
-  - **[Future Feature 1]:** [Acknowledged requirement preserved for future iterations]
-  - **[Future Feature 2]:** [Edge enhancement or secondary workflow planned for later]
+**Deferred:**
+- **[Future Feature 1]:** [Acknowledged requirement preserved for future iterations]
+- **[Future Feature 2]:** [Edge enhancement or secondary workflow planned for later]
 
-- **Out of Scope:**
-  - **[Excluded Item 1]:** [What will not be modified and concise rationale]
-  - **[Excluded Item 2]:** [Untouched existing workflow or explicitly rejected path]
+**Out of Scope:**
+- **[Excluded Item 1]:** [What will not be modified and concise rationale]
+- **[Excluded Item 2]:** [Untouched existing workflow or explicitly rejected path]
 
-- **Edge Cases:**
-  - **Zero / Empty State:** [Behavior on first use, 0 records, or unconfigured state]
-  - **Validation & Recovery:** [Invalid input handling, network drop, service failure recovery]
-  - **Permissions & Access:** [Role authorization, resource isolation, access denied behavior]
-  - **State & Concurrency:** [Rapid double-action, debouncing, optimistic concurrency, conflict resolution]
-  - **Data Lifecycle:** [Cascade deletions, retention rules, persistence, and cleanup]
+**Edge Cases:**
+- **Zero / Empty State:** [Behavior on first use, 0 records, or unconfigured state]
+- **Validation & Recovery:** [Invalid input handling, network drop, service failure recovery]
+- **Permissions & Access:** [Role authorization, resource isolation, access denied behavior]
+- **State & Concurrency:** [Rapid double-action, debouncing, optimistic concurrency, conflict resolution]
+- **Data Lifecycle:** [Cascade deletions, retention rules, persistence, and cleanup]
 
 ## 4. Key Decisions & Rationale
 

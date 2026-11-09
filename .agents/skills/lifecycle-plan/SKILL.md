@@ -1,6 +1,6 @@
 ---
 name: lifecycle-plan
-description: Convert approved flows and prototypes into an actionable implementation plan with feature-mapped tasks, task-specific rules, and two-tier verification (Lifecycle: Phase 3 — Plan).
+description: Convert approved designs and prototypes into an actionable implementation plan with feature-mapped tasks, task-specific rules, and two-tier verification (Lifecycle: Phase 3 — Plan).
 ---
 
 # Phase 3 — Lifecycle Plan
@@ -9,14 +9,14 @@ description: Convert approved flows and prototypes into an actionable implementa
 
 > **Core Mental Model:** Map target features to verifiable tasks. Assign rules where the code changes. Specify what the agent verifies first, then how the user verifies.
 
-Convert approved Flow Designs and Prototypes from Phase 2 into a complete, technically clear, and actionable **Implementation Plan** (`lifecycle/03-plan.md`).
+Convert approved Designs and Prototypes from Phase 2 into a complete, technically clear, and actionable **Implementation Plan** (`lifecycle/03-plan.md`).
 
 This phase ensures that before Phase 4 — Build begins, the Agent and User have total alignment on:
 - Target features divided into logical, independently verifiable vertical tasks.
 - Dependency ordering and execution sequence (Steel Thread first, then hardening).
-- Touchpoints, schemas, and architecture introduced directly within their owning tasks.
-- Specific project Rule Files and exact sections assigned to each task.
-- Two-Tier verification: automated checks the Agent verifies first, followed by clear Setup, Action, and Expected steps for the User.
+- Atomic changes (`C1`, `C2`...), file targets, and schemas introduced directly within their owning tasks.
+- Applicable project rules assigned individually by name and file path under Agent Verification.
+- Two-Tier verification: automated checks and rule compliance the Agent verifies first, followed by clear Setup, Action, and Expected steps for the User.
 
 ---
 
@@ -27,11 +27,11 @@ This phase ensures that before Phase 4 — Build begins, the Agent and User have
 - **Blast Radius Tagging:** Tag every task with its blast radius to govern execution risk:
   - `🟢 Low (<5 words reason):` e.g., `🟢 Low (isolated component)`
   - `🔴 High (<5 words reason):` e.g., `🔴 High (shared database schema)`
-- **Task-Level Architecture:** Architectural touchpoints, data schemas, and file modifications are defined directly inside the tasks responsible for them, eliminating duplicate documentation.
+- **Task-Level Architecture:** Concrete changes (`C1`, `C2`...), target file mappings, schemas, and logic are defined directly inside the tasks responsible for them, eliminating duplicate documentation.
 - **Prefactoring Check (Rule Thresholds — 900/1000 lines):** Inspect existing target files before planning feature changes. If a target file already exceeds the 900-line evaluate threshold, or the planned change would push it past the 1000-line hard limit, schedule an upfront `Prefactor <Target>` task (*"Make the change easy, then make the easy change"*) to extract sub-components or helpers before feature implementation begins.
 - **Compile-Clean Slices & Temporary Alias Cleanup:** Every task must leave the codebase in a compile-clean, testable state. If an early task renames or removes a symbol needed by later tasks, either update all callers in that task or introduce a temporary compatibility alias that is explicitly scheduled for deletion in the task that migrates the final caller.
 - **Backward Compatibility & Live Data Fallbacks:** When modifying database schemas, storage collections, or API contracts across independently deployed layers (e.g., client apps vs. backend cloud functions/microservices), tasks must explicitly account for live data coexistence. Readers must include fallback handling for legacy fields or unmigrated documents, guaranteeing zero disruption for active sessions or older client versions during phased rollouts.
-- **Task-Specific Rule Enforcement:** Assign relevant Rule Files directly to each task with specific section sub-bullets so the agent checks them where the code changes.
+- **Task-Specific Rule Enforcement:** Assign relevant rules individually inside the task's **Agent Verification** section with explicit rule names and file paths (`- Rule [<Rule Name>]: <path/to/rule.md>`) so the agent has semantic clarity and verifies compliance where the code changes.
 - **Two-Tier Verification:** Separate Agent Verification (automated tests and rule compliance checks the agent must run first) from User Verification (clear Setup, Action, and Expected steps for the user).
 - **Verifiable Execution Order (Producer-Before-Consumer Invariant):** Sequence capabilities so every task is verifiable with real state—never hypothetical guesswork. Producers (Create/Ingest) must precede Consumers (Read/List), and Consumers must precede Modifiers/Teardown (Update/Delete). You cannot verify a list without data, and you cannot verify an edit or deletion without seeing state before and after.
 - **Dependency-Aware Sequencing:** Foundational slices (migrations, core domain utilities) must be sequenced before dependent feature and UI tasks.
@@ -52,14 +52,14 @@ Phase 3 progresses through three natural chronological steps:
 
 1. **Review Approved Upstream Deliverables:**
    - Review confirmed Target Features and Core Terms from `lifecycle/01-discover.md`.
-   - Review approved visual flows and prototypes from `lifecycle/02-flows.md` (and `lifecycle/02-prototype.html` if UI).
+   - Review approved visual flows and prototypes from `lifecycle/02-design.md` (and `lifecycle/02-prototype.html` if UI).
    - Understand existing architecture, dependencies, and constraints via read-only searches.
 2. **File-Size & Prefactoring Inspection:**
    - Check line counts of target files likely to be modified against Rule File thresholds.
    - If any target file exceeds the 900-line evaluate threshold (or planned changes would push it past the 1000-line hard limit), plan an upfront extraction task before adding feature logic.
 3. **Map Target Features 1:1:**
    - Structure `lifecycle/03-plan.md` around the exact **Target Features** from Discover.
-   - Each top-level feature heading in `03-plan.md` must match the corresponding feature in Discover and Flows **1:1** as a level-2 header (e.g. `## User Sign Up & Verification`).
+   - Each top-level feature heading in `03-plan.md` must match the corresponding feature in Discover and Design **1:1** as a level-2 header (e.g. `## User Sign Up & Verification`).
    - Do not create intermediate "Outcomes" layers, Section 1 architecture preambles, or prefix headings with `Feature 1:`.
 
 ### 3.2 Step 2 — Task Treeing & Full Task Anatomy
@@ -72,32 +72,39 @@ Phase 3 progresses through three natural chronological steps:
    Every task in `lifecycle/03-plan.md` must adhere to this standardized structure:
 
    ```markdown
-   - [ ] **Task 4.1: Database Schema & Migration**
-     - **Blast Radius:** 🔴 High (shared database schema & models)
-     - **Touchpoints:**
-       - `src/migrations/001_auth_tables.sql`:
-         - Add: Create `users` and `tokens` tables with unique lowercase index on `email`.
-       - `src/models/user.ts`:
-         - Update: Add `sessionCount` and `activeDeviceIds` fields with fallback defaults.
-     - **Applicable Rules:**
-       - `.agents/rules/database_migrations.md`:
-         - Section 2: Idempotent Migration Guidelines
-         - Section 4: Safe Rollback Verification
-       - `.agents/rules/security_invariants.md`:
-         - Section 3: Token Validation & Expiry Invariants
-     - **Agent Verification:**
-       - [ ] Run `npm run migrate:up` -> tables created cleanly.
-       - [ ] Run `npm run migrate:down` -> rollback drops tables cleanly.
-     - **User Verification:**
-       - **Setup:** Ensure local PostgreSQL service is running (`pg_isready`).
-       - **Action:** Run `psql -d app_dev -c "\d users"` in terminal.
-       - **Expected:** Displays `users` table schema showing expected columns and index.
+   - [ ] **Task 4.1: Database Schema & Session Models**
+
+     **Blast Radius:** 🔴 High (shared database schema & user models)
+
+     **Changes:**
+     - **C1:** Create `users` table with unique lowercase index on `email`.
+     - **C2:** Create `tokens` table with foreign key cascade to `users.id`.
+     - **C3:** Add session tracking fields to User model:
+       - Add `sessionCount` integer defaulting to 0 for unmigrated records.
+       - Add `activeDeviceIds` array with null-safe fallback to `[]`.
+       - Enforce max 5 concurrent devices limit.
+
+     **Files:**
+     - C1, C2: `src/migrations/001_auth_tables.sql` (Add)
+     - C3: `src/models/user.ts` (Update)
+
+     **Agent Verification:**
+     - Rule [Idempotent Migrations]: `.agents/rules/database_migrations.md`
+     - Rule [Safe Rollback Verification]: `.agents/rules/database_migrations.md`
+     - Rule [Token Validation & Expiry Invariant]: `.agents/rules/security_invariants.md`
+     - Run `npm run migrate:up` -> tables created cleanly.
+     - Run `npm run migrate:down` -> rollback drops tables cleanly.
+
+     **User Verification:**
+     - **Setup:** Ensure local PostgreSQL service is running (`pg_isready`).
+     - **Action:** Run `psql -d app_dev -c "\d users"` in terminal.
+     - **Expected:** Displays `users` table schema showing expected columns and index.
    ```
 
-3. **Assign Task-Specific Rule Files:**
-   - Assign relevant Rule Files directly to each task with specific section sub-bullets so the implementer checks them where the code changes.
+3. **Assign Individual Named Rules Under Agent Verification:**
+   - Assign every relevant rule as its own dedicated bullet (`- Rule [<Rule Name>]: <path/to/rule.md>`). Never use vague section numbers (e.g. "Section 2"); explicit rule names activate the agent's semantic attention and provide exact, drift-proof guidance.
 4. **Define Two-Tier Verification Contracts:**
-   - **Agent Verification (Automated Pre-Flight):** Automated test commands, CLI checks, and rule validations formatted as checkboxes (`- [ ]`). In Phase 4 Build, the agent must run and check these off before requesting human review.
+   - **Agent Verification (Automated Pre-Flight & Rule Compliance):** Dedicated bullets for each applicable named rule followed by automated test and verification commands. In Phase 4 Build, the agent must execute these and include passing evidence in the chat completion report before requesting human review.
    - **User Verification (Human Testing Guide):** Foolproof 3-line guide (`Setup`, `Action`, `Expected`) enabling the user to validate the feature in seconds.
 
 ### 3.3 Step 3 — Sequencing, Compatibility & Dashboard Population
@@ -127,7 +134,7 @@ Phase 3 can transition to Phase 4 — Build only when the completion checklist i
 Before requesting user approval, verify that:
 - **1:1 Feature Mapping:** All Target Features from Discover are mapped directly as `## <Feature Name>` headings.
 - **Vertical Steel Thread First:** The primary task for every feature is a thin, end-to-end slice compiling immediately.
-- **Complete Task Anatomy:** Every task specifies Blast Radius ($\le 5$ words), Touchpoints (files with action verbs), Applicable Rules (with sections), Agent Verification checkboxes (`- [ ]`), and User Verification (`Setup`, `Action`, `Expected`).
+- **Complete Task Anatomy:** Every task specifies Blast Radius ($\le 5$ words), Changes (`C1`, `C2`... with sub-bullets for multi-point details), Files (mapped to C-IDs with action verbs), Agent Verification (individual named rules `- Rule [<Rule Name>]: <path>` and automated test commands), and User Verification (`Setup`, `Action`, `Expected`).
 - **Prefactoring Scheduled:** Any file approaching the 900/1000-line threshold has an upfront extraction task.
 - **Backward Compatibility:** Schema and contract changes include live data fallback handling.
 - **Logical & Verifiable Sequencing:** Foundation tasks precede dependent UI tasks, and Producer capabilities (Create/Ingest) precede consumers (Read/List) and modifiers (Update/Delete), guaranteeing testability with real state on every task without synthetic mocks.
@@ -143,7 +150,7 @@ Before requesting user approval, verify that:
 
 - **Approved:** Mark Phase 3 as `Done` in `lifecycle/00-status.md`, populate all planned tasks under Phase 4 as `Todo` (with hyperlinks `[Task 4.X: ...](03-plan.md)`), load `lifecycle-build`, and advance to Phase 4 — Build.
 - **Changes Requested:** Mark Phase 3 `In Progress`, revise tasks in `lifecycle/03-plan.md`, and re-present.
-- **Blocked:** An architectural unknown or requirement conflict prevents planning. Return to Discover or Flows for clarification.
+- **Blocked:** An architectural unknown or requirement conflict prevents planning. Return to Discover or Design for clarification.
 
 ---
 
@@ -159,25 +166,29 @@ The primary deliverable of Phase 3 is the **Centralized Implementation Plan** sa
 ## [Feature 1 Name]
 
 - [ ] **Task 4.1: [Task Title]**
-  - **Blast Radius:** [🟢 Low (<5 words reason) / 🔴 High (<5 words reason)]
-  - **Touchpoints:**
-    - `path/to/file1.ts`:
-      - [Add / Update / Delete / Refactor / Fix]: [Specific change description]
-    - `path/to/file2.ts`:
-      - [Add / Update / Delete / Refactor / Fix]: [Specific change description]
-  - **Applicable Rules:**
-    - `.agents/rules/rule1.md`:
-      - Section X: [Specific rule/topic]
-      - Section Y: [Specific rule/topic]
-    - `.agents/rules/rule2.md`:
-      - Section Z: [Specific rule/topic]
-  - **Agent Verification:**
-    - [ ] [Specific automated test command or build verification check]
-    - [ ] [Rule compliance check]
-  - **User Verification:**
-    - **Setup:** [Prerequisite state or server command]
-    - **Action:** [Exact steps to test]
-    - **Expected:** [What to observe]
+
+  **Blast Radius:** [🟢 Low (<5 words reason) / 🔴 High (<5 words reason)]
+
+  **Changes:**
+  - **C1:** [Single atomic change description]
+  - **C2:** [Multi-point change description]:
+    - [Specific constraint, field, or validation detail 1]
+    - [Specific fallback, error handling, or lifecycle detail 2]
+
+  **Files:**
+  - C1: `path/to/file1.ts` ([Add / Update / Delete / Refactor / Fix])
+  - C2: `path/to/file2.ts` ([Add / Update / Delete / Refactor / Fix])
+
+  **Agent Verification:**
+  - Rule [<Rule 1 Name>]: `.agents/rules/rule1.md`
+  - Rule [<Rule 2 Name>]: `.agents/rules/rule2.md`
+  - [Specific automated test command or build verification check]
+  - [Second automated check if applicable]
+
+  **User Verification:**
+  - **Setup:** [Prerequisite state or server command]
+  - **Action:** [Exact steps to test]
+  - **Expected:** [What to observe]
 
 - [ ] **Task 4.2: [Task Title]**
   - ...

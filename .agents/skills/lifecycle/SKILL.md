@@ -1,6 +1,6 @@
 ---
 name: lifecycle
-description: Master orchestrator and status router for the five-phase development lifecycle (Discover → Flows → Plan → Build → Finalize). Maintains lifecycle/00-status.md, enforces approval gates, and guarantees session resumption.
+description: Master orchestrator and status router for the five-phase development lifecycle (Discover → Design → Plan → Build → Close). Maintains lifecycle/00-status.md, enforces approval gates, and guarantees session resumption.
 ---
 
 # Phase 0 — Lifecycle Orchestrator
@@ -9,7 +9,7 @@ description: Master orchestrator and status router for the five-phase developmen
 
 > **Core Mental Model:** Route through the phases. Load one skill at a time. Track everything in `00-status.md`. Advance only with explicit approval.
 
-The Orchestrator manages the end-to-end development pipeline across the five phases: **Discover → Flows → Plan → Build → Finalize**.
+The Orchestrator manages the end-to-end development pipeline across the five phases: **Discover → Design → Plan → Build → Close**.
 
 It maintains a single source of truth for all progress at `lifecycle/00-status.md`, routes execution sequentially, enforces context hygiene by loading only the active phase's skill into the context window, and guarantees that no work advances without explicit human approval.
 
@@ -24,7 +24,7 @@ These rules apply universally across every phase of the lifecycle. Phase skills 
 - **Non-Negotiable Git Safety Boundary:** The Agent is permitted to execute **read-only** Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch modifications belong exclusively to the user.
 - **No Persistent Watchers or Daemons:** Never launch long-running watchers, daemon code generators, or persistent dev servers in background processes without explicit user direction.
 - **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`.
-- **Cross-Phase Friction Logging (`lifecycle/refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** can append entries to `lifecycle/refine.md` whenever workflow friction, prompt ambiguity, tool limitations, or repeatable defects occur. Phase 5 Finalize systematically reviews these entries at handover.
+- **Cross-Phase Friction Logging (`lifecycle/refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** can append entries to `lifecycle/refine.md` whenever workflow friction, prompt ambiguity, tool limitations, or repeatable defects occur. Phase 5 Close systematically reviews these entries at handover.
 - **Context Hygiene:** Load **only** the active phase's skill file into context. Never load all skills simultaneously.
 - **The Universal Treeing Principle:** Decompose complex systems hierarchically: Trunk (Core Purpose / Happy Path) $\to$ Branches (Capabilities / Seams) $\to$ Leaves (Edge Cases, Invariants, Rules).
 - **Strict Phase Boundaries (Negative Constraints):**
@@ -56,16 +56,16 @@ When starting a session or resuming work, read `lifecycle/00-status.md` first to
 | `00-status.md` does not exist | **Cold Start** | Initialize `00-status.md`; start discovery | `lifecycle-discover` |
 | `Phase 1 — Discover` is `Todo` / `In Progress` | **Discover** | Investigate problem, define target features, author `01-discover.md` | `lifecycle-discover` |
 | `Phase 1 — Discover` is `In Review` | **Discover Gate** | Stop and wait for user approval | `lifecycle-discover` |
-| `Phase 1` is `Done`; `Stage 2.1` is `Todo` / `In Progress` | **Flows (2.1)** | Model flows (side-by-side diff & Mermaid diagrams); author `02-flows.md` | `lifecycle-flows` |
-| `Stage 2.1 — Flow Design` is `In Review` | **Flow Gate** | Stop and wait for user approval of flow diagrams | `lifecycle-flows` |
-| `Stage 2.1` is `Done`; `Stage 2.2` is `Todo` / `In Progress` | **Prototype (2.2)** | Build modular interactive prototype in `02-prototype.html` (or mark `Skipped` if non-UI) | `lifecycle-flows` |
-| `Stage 2.2 — Interactive Prototype` is `In Review` | **Prototype Gate** | Stop and wait for user prototype option selection and approval | `lifecycle-flows` |
+| `Phase 1` is `Done`; `Stage 2.1` is `Todo` / `In Progress` | **Design (2.1)** | Model flows (side-by-side diff & Mermaid diagrams); author `02-design.md` | `lifecycle-design` |
+| `Stage 2.1 — Flow Design` is `In Review` | **Flow Gate** | Stop and wait for user approval of flow diagrams | `lifecycle-design` |
+| `Stage 2.1` is `Done`; `Stage 2.2` is `Todo` / `In Progress` | **Prototype (2.2)** | Build modular interactive prototype in `02-prototype.html` (or mark `Skipped` if non-UI) | `lifecycle-design` |
+| `Stage 2.2 — Interactive Prototype` is `In Review` | **Prototype Gate** | Stop and wait for user prototype option selection and approval | `lifecycle-design` |
 | `Phase 2` is `Done` (or `Skipped`); `Phase 3` is `Todo` | **Plan** | Break down target features into verifiable tasks; populate `00-status.md` | `lifecycle-plan` |
 | `Phase 3 — Plan` is `In Review` | **Plan Gate** | Stop and wait for user approval | `lifecycle-plan` |
 | `Phase 3` is `Done`; any Phase 4 task is `Todo` / `In Progress` | **Build** | Implement active task strictly one at a time; verify tests & rules | `lifecycle-build` |
 | Phase 4 task is `In Review` | **Task Gate** | Stop and wait for explicit human task approval | `lifecycle-build` |
-| All Phase 4 tasks are `Done`; `Phase 5` is `Todo` | **Finalize** | Verify outcomes, review quality, assess improvements, sync docs | `lifecycle-finalize` |
-| `Phase 5 — Finalize` is `In Review` | **Final Gate** | Stop and wait for final handover & cleanup decision | `lifecycle-finalize` |
+| All Phase 4 tasks are `Done`; `Phase 5` is `Todo` | **Close** | Verify outcomes, review quality, assess improvements, sync docs | `lifecycle-close` |
+| `Phase 5 — Close` is `In Review` | **Final Gate** | Stop and wait for final handover & cleanup decision | `lifecycle-close` |
 | All phases are `Done` | **Complete** | Lifecycle finished; ready for user git commit | *(None)* |
 
 ### 3.3 Step 3 — Enforce Chat Approval Protocol (Human-First Gate)
@@ -85,7 +85,7 @@ Whenever any phase, sub-stage, or implementation task reaches an exit gate:
 1. **Mid-Flight Scope Changes Across Any Phase:**
    When new requirements emerge, scope expands, or direction changes in ANY active phase:
    - *Pause Current Activity:* Stop coding or generating downstream artifacts immediately.
-   - *Update Upstream Source of Truth in Place:* Realign `01-discover.md`, `02-flows.md`, or `03-plan.md` in place.
+   - *Update Upstream Source of Truth in Place:* Realign `01-discover.md`, `02-design.md`, or `03-plan.md` in place.
    - *Realign Dashboard:* Update `lifecycle/00-status.md` so active rows accurately reflect the revised plan.
    - *Working Tree Safety Check:* Run read-only `git status` to identify any uncommitted, discarded code so the user can stash or discard it.
 2. **Session Resumption via Dashboard:**
@@ -100,7 +100,7 @@ The overall development lifecycle is complete only when all five phase exit gate
 ### Lifecycle Completion Checklist
 
 Before declaring the lifecycle complete, verify that:
-- **All Phases Approved:** All phases (`Discover`, `Flows`, `Plan`, `Build`, `Finalize`) are marked `Done` in `lifecycle/00-status.md`.
+- **All Phases Approved:** All phases (`Discover`, `Design`, `Plan`, `Build`, `Close`) are marked `Done` in `lifecycle/00-status.md`.
 - **All Build Tasks Verified:** Every Phase 4 task in `lifecycle/03-plan.md` is marked `- [x]` with passing automated verification.
 - **Permanent Docs Synchronized:** Updated documentation in `docs/modules/` accurately reflects the final implementation.
 - **Domain Terms Promoted:** Core terms from `01-discover.md` are promoted to root `GLOSSARY.md`.
@@ -128,13 +128,13 @@ The primary deliverable of Phase 0 is the **Status Dashboard** maintained at `li
 | Phase | Task | Status |
 | :--- | :--- | :--- |
 | **Phase 1 — Discover** | Problem, Target Features & Scope ([01-discover.md](01-discover.md)) | `Todo` |
-| **Phase 2 — Flows** | Stage 2.1 — Flow Design ([02-flows.md](02-flows.md)) | `Todo` |
+| **Phase 2 — Design** | Stage 2.1 — Flow Design ([02-design.md](02-design.md)) | `Todo` |
 | | Stage 2.2 — Interactive Prototype ([02-prototype.html](02-prototype.html)) | `Todo` |
 | **Phase 3 — Plan** | Task Breakdown & Verification Matrix ([03-plan.md](03-plan.md)) | `Todo` |
 | **Phase 4 — Build** | [Task 4.1: Database Schema & Migration](03-plan.md) | `Todo` |
 | | [Task 4.2: Core Endpoint & Logic](03-plan.md) | `Todo` |
 | | [Task 4.3: UI Screen & State](03-plan.md) | `Todo` |
-| **Phase 5 — Finalize** | Quality Audit, Improvements & Handover ([05-finalize.md](05-finalize.md)) | `Todo` |
+| **Phase 5 — Close** | Quality Audit, Improvements & Handover ([05-close.md](05-close.md)) | `Todo` |
 
 <!-- Status Values: Todo, In Progress, In Review, Blocked, Done, Skipped -->
 ```
@@ -146,7 +146,7 @@ The primary deliverable of Phase 0 is the **Status Dashboard** maintained at `li
 ```markdown
 # Refine: [Requirement / Feature Name]
 
-Use this log to capture friction, prompt ambiguity, tool limitations, or rule improvements observed during development. Any active phase can append entries; Phase 5 Finalize reviews this file to propose upstream enhancements.
+Use this log to capture friction, prompt ambiguity, tool limitations, or rule improvements observed during development. Any active phase can append entries; Phase 5 Close reviews this file to propose upstream enhancements.
 
 ## Active Friction & Lessons Learned
 
