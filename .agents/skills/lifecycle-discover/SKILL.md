@@ -7,23 +7,36 @@ description: Explore the problem or opportunity, challenge assumptions, define t
 
 ## 1. Purpose
 
-> **Core Mental Model:** Uncover the requirements. Clarify the problem through codebase facts. Settle core terms. Triage scope with the user.
+> **Core Mental Model:** Every user request is a starting signal, never a complete specification. The agent's job is to surface the full problem space — including dimensions the user has not yet thought of — through exhaustive research, structured probing, and evidence-grounded investigation. No block of requirements may advance until it has been explicitly confirmed by the user in chat.
 
 Explore the initial problem, opportunity, or request through evidence-based investigation until the Decision Frontier is empty (zero unexamined assumptions). The output is an approved **Discovery document** (`lifecycle/01-discover.md`) establishing what to achieve (target features, settled core terms, scope, and edge cases)—not how to design or implement it.
 
 ## 2. Guiding Principles
 
+- **Treat Every Request as Incomplete Until Proven Otherwise:** No matter how detailed a request appears, treat it as a starting signal. The agent must independently identify gaps, unstated constraints, implicit assumptions, and overlooked domains before triaging. A request that _sounds_ complete is often the most dangerous — it hides missing edge behaviors behind apparent clarity.
+- **Research Before Surfacing (Mandatory Pre-Flight):** Before presenting any finding, decision card, or feature block to the user, the agent MUST conduct exhaustive pre-flight research: (a) search the codebase for every related entity, event, and policy; (b) cross-check related modules and tests; (c) enumerate all plausible interpretations of the request. Only after this pre-flight is complete may the agent surface findings. Never ask the user for a fact that code, logs, or existing documentation can supply.
 - **Expansive Exploration First:** Collect and uncover all requirements, possibilities, edge cases, and user desires without premature filtering. Never act as a critic or dismiss ideas in early stages.
 - **User-Owned Scope Prioritization:** Triage into *In Scope* vs. *Deferred* occurs late in the phase, and is 100% owned by the user. The agent never assumes, filters, or drops requirements unilaterally.
 - **Adaptive Entry Matching User Starting Point:** Meet the user where they start (brief thought, rough idea, or detailed spec) instead of forcing a rigid intake questionnaire.
 - **Problem vs. Solution Framing:** Distinguish the underlying problem (what hurts) and desired outcome (what becomes true) from the proposed solution (the user's suggested mechanism). Solve the real problem, not just a suggested symptom.
-- **Never Convert Inferences into Requirements:** A plausible inference or reasonable guess is never an established requirement. If not backed by codebase facts or explicit user confirmation, it remains an open question.
+- **Never Convert Inferences into Requirements:** A plausible inference or reasonable guess is never an established requirement. If not backed by codebase facts or explicit user confirmation, it remains an open question. Every inference must be logged as `ASM-X` in the Assumption Register and explicitly confirmed by the user before it may be treated as a requirement.
+- **Mandatory Assumption Register (with Sharpness & HITL/AFK Classification):** Every inference, guess, or plausible-but-unconfirmed belief must be recorded in `## 5. Open Assumptions` with two mandatory tags:
+  - **Sharpness:** `[Sharp]` if the question can be precisely stated right now (even if unanswerable yet) → surface immediately as a `❓ Decision Needed` card to the user. `[Foggy]` if it cannot yet be precisely phrased because upstream decisions are still open → record in `Fog (Not Yet Specifiable)` and do NOT ask the user yet; it graduates to Sharp as the Decision Frontier advances.
+  - **Resolution Owner:** `[HITL]` if only the user can resolve it (business intent, priority judgment, domain authority) → must be surfaced as a user question. `[AFK]` if the agent can resolve it independently through codebase search, documentation, or tooling → agent must resolve it without asking the user.
+  - Format: `- **ASM-X ([Topic]) [Sharp/Foggy] [HITL/AFK]:** [The assumption] — _Basis:_ [why inferred] — _Status:_ ⚠️ Pending`
+  - An assumption register may never be empty on the first pass of a non-trivial request. No assumption may be promoted to a requirement until its sharpness is confirmed and it has been explicitly resolved (HITL: user confirms; AFK: agent verifies).
 - **Domain Vocabulary Settle:** Pin exact domain concepts and terms early so everyone speaks the exact same language from Day 1.
-- **Evidence Over Guesswork:** Ground existing behavior, bugs, and workflows in concrete code searches (`grep`), error logs, and tests. Facts belong to the Agent; decisions belong to the User. Existing code proves how the system *currently behaves*, never what the user *wants*; never assume legacy implementation represents desired requirements.
+- **Evidence Over Guesswork — Zero Tolerance:** Ground existing behavior, bugs, and workflows in concrete code searches (`grep`), error logs, and tests. Facts belong to the Agent; decisions belong to the User. Existing code proves how the system *currently behaves*, never what the user *wants*; never assume legacy implementation represents desired requirements. When evidence is missing, the agent must state: "I could not confirm this from the codebase — logging it as ASM-X for your review" and never proceed on the unconfirmed assumption.
 - **The Decision Frontier & Risk Priority:** Map open decisions whose prerequisites are confirmed. Prioritize high-impact uncertainties (security, permissions, data integrity, session lifecycle) over low-impact cosmetic choices; exit only when the frontier is empty.
 - **Depth-First Continuity (Anti-Popcorn Rule):** Resolve one branch deeply before moving to another; ban jumping randomly across unrelated topics on consecutive turns.
 - **Self-Challenge Before Settling:** Actively probe for blind spots. Do not accept the first happy-path interpretation as complete; verify failure modes, role boundaries, and collateral effects.
-- **Zero Decision Fatigue:** Ask one focused decision at a time in dependency order, providing viable options and a recommended default. Never dump open-ended questionnaires.
+- **Zero Decision Fatigue — No Silent Assumptions:** Ask one focused decision at a time in dependency order, providing viable options and a recommended default. The recommended default is a _suggestion_, never a decision: even a `"yes"` or Enter from the user counts as an explicit confirmation of that specific option only — it never grants permission to advance unrelated or unchosen assumptions. Never dump open-ended questionnaires.
+- **Warm Collaborative Tone (Anti-Interrogation Rule):** Discovery conversations must feel like a thoughtful colleague exploring a problem together — not an audit or a form to fill in. Concretely:
+  - **One human question per turn:** Never ask more than one question at a time, even when multiple are ready. The user's answer to one question frequently renders others unnecessary.
+  - **Show your thinking before asking:** Before asking a question, briefly share what you found and why the question matters ("I found X in the codebase, which means Y — I'm unsure whether you want to preserve that or change it"). Users answer better when they understand the context.
+  - **Acknowledge before advancing:** After a user answers, reflect the answer back in one sentence ("Got it — so the session token should expire immediately on logout, not lazily") before moving to the next question. This confirms understanding and builds trust.
+  - **Never use corporate or technical jargon in user-facing questions.** Ask in the same language the user used. If they said "users can't log out properly", don't ask about "session revocation lifecycle events."
+  - **For fuzzy or emotional requests:** Lead with empathy before structure. "It sounds like this is causing real friction for your users — let's make sure we understand the full picture before deciding anything." Then ask the single most important clarifying question.
 - **Live Document, Not Transcript:** Capture confirmed goals, target features, and decisions directly in `lifecycle/01-discover.md` after every turn; avoid conversational transcripts.
 - **Strict Phase Boundaries (Negative Constraints):**
   - **No UI Design or Visual Flows:** Screen flows, Mermaid sequence diagrams, and interactive prototypes belong to Phase 2 — Design.
@@ -35,48 +48,110 @@ Explore the initial problem, opportunity, or request through evidence-based inve
 
 ### 3.1 Step 1 — Intake, Fact-Finding & Vocabulary
 
-1. **Adaptive Entry & Problem Framing:**
-   - *If brief or fuzzy:* State the apparent underlying objective, highlight the most critical missing context, and ask the root framing question.
+> **Standing Rule — Live Document:** Update `lifecycle/01-discover.md` in place after every agent turn throughout Steps 1, 2, and 3. Never batch updates to the end of a step.
+
+> **Standing Rule — Session Resumption:** At the start of every agent session, before taking any action, check whether `lifecycle/01-discover.md` already exists and contains content.
+> - **If resuming (file exists):** Load the document as the working map. Re-read the **Destination** statement aloud in chat ("Resuming discovery — our destination is: [X]"). Scan `## 5. Open Assumptions` for any `⚠️ Pending` items and identify the current Decision Frontier position (the last confirmed branch). Ask the user: "Shall we continue from [last open branch], or is there anything that has changed since we last spoke?" Do not restart the intake process.
+> - **If new session (file absent or empty):** Proceed normally with Step 1 below.
+
+1. **Adaptive Entry & Problem Framing (Classify the Request First):**
+   Read and classify the incoming request before doing anything else. This determines how much is already known vs. must be researched.
+   - *If brief or fuzzy:* State the apparent underlying objective, highlight the most critical missing context, and ask the single root framing question that unlocks the most unknowns.
    - *If a rough idea:* Separate the core problem from the proposed solution, surface unseen angles, and explore possibilities collaboratively without judging.
-   - *If an existing detailed spec:* Skip intake questioning and proceed directly to branch mapping, edge lenses, and trade-off analysis.
+   - *If an existing detailed spec:* Do NOT skip intake. Treat the detailed spec as a rich starting point and independently verify every stated assumption, identify what is _not_ stated (missing states, missing roles, missing failure modes), and surface gaps the spec author may not have considered. A detailed spec shifts the probe effort from "what do you want?" to "is this complete and correct?"
    - *Distinguish Problem vs. Solution:* Separate the **Underlying Problem** (what hurts or fails), the **Desired Outcome** (what becomes true), and the **Proposed Solution** (one suggested path to get there). Ensure requirements solve the underlying problem rather than mechanically transcribing a suggested implementation.
-2. **Fact-Finding via Codebase Search (Pre-Flight Rule):**
-   - For existing workflows, bugs, or feature extensions, use concrete evidence (code search via `grep`, tests, error logs) to discover facts independently before asking questions.
+2. **Name the Destination (Before Any Research or Vocabulary Work):**
+   The destination is the first committed output of this phase. It anchors every subsequent scoping decision — what goes In Scope, what is Fog, and what is Out of Scope are all defined relative to it.
+   - Produce a 1–2 line **Destination Statement** and write it into `## 1. At a Glance` as `**Destination:** [What reaching the end of this discovery looks like — the approved feature, resolved problem, or confirmed change]`.
+   - If brief or fuzzy: state the most plausible destination as a hypothesis and ask the user to confirm or correct it in one sentence. Do not proceed to research until the destination is acknowledged.
+   - If a detailed spec: extract the destination from the spec's stated goal and write it explicitly. Even if obvious, naming it creates a shared anchor.
+   - *Rule:* No item may be declared Out of Scope, Deferred, or Fog unless it has first been tested against the destination. The destination is the boundary — not the agent's judgment.
+3. **Domain Vocabulary Settle (Before Research Begins):**
+   Pin core terms *before* codebase search so that all research, findings, and documents use agreed-upon language from the start.
+   - Check the project root `GLOSSARY.md` (if present) to reuse established terminology.
+   - Identify and settle key domain concepts (e.g. user roles, session entities, state transitions, revocation actions) apparent from the request and record them under `## 1. At a Glance` as **Core Terms**.
+   - Express all user-facing concepts in simple, everyday English (5th-grade reading standard), strictly avoiding technical or abstract corporate jargon.
+   - Terms may be refined during codebase search (step 4) if the code reveals a different or more precise concept; update `Core Terms` accordingly.
+4. **Fact-Finding (Evidence Gathering — Two Tracks):**
+   Conduct the full research pass using the pinned vocabulary from step 3. Apply the correct track based on whether a codebase exists.
+
+   **Track A — Existing Codebase:**
+   - Use concrete evidence (code search via `grep`, tests, error logs) to discover facts independently before asking questions.
    - Clearly separate the human/business **Problem** (what hurts) from the **Current System** (the technical schema, code seams, and business policies causing it).
    - *Existing Code $\ne$ Desired Behavior:* Codebase search confirms current state, not user intent. Never assume legacy logic or schemas are what the user wants to preserve without confirmation.
    - If a fact can be determined from the repo, verify it yourself; never ask the user for discoverable codebase facts.
-3. **Domain Vocabulary Settle (Early Alignment):**
-   - Check the project root `GLOSSARY.md` (if present) to reuse established terminology.
-   - Settle any new or clarified domain terms (e.g. user roles, session entities, revocation actions) early and record them under `## 1. At a Glance` as **Core Terms**. Pinned vocabulary prevents subtle semantic bugs across downstream phases, and will be promoted to the project's root `GLOSSARY.md` during Phase 5 Close. Express all user-facing concepts in simple, everyday English (5th-grade reading standard), strictly avoiding technical or abstract corporate jargon.
+
+   **Track B — Greenfield (No Codebase):**
+   Greenfield requests have no code to grep — but they are not fact-free. The agent must substitute structured domain research with equal rigor:
+   - **User Goals & Constraints:** Extract every explicit goal, constraint, non-negotiable, and anti-goal the user has stated. Record each as a Verified Fact (source: "user stated in [turn X]").
+   - **Comparable Domain Patterns:** Identify 2–3 well-understood systems or patterns in the same domain (e.g. "auth flows in SaaS products", "pagination conventions in REST APIs"). Note which patterns are relevant to the destination and why — these form the baseline for sensible defaults.
+   - **Implicit Industry Constraints:** Research known constraints the domain imposes regardless of user preference (e.g. OAuth token lifetimes, GDPR retention rules, mobile platform push notification limits). Record each as a Verified Fact with its source.
+   - **Technology & Integration Constraints:** If a tech stack has been mentioned or implied, research its known limitations, conventions, and sharp edges relevant to the destination. Record findings; mark gaps as ASM-X.
+   - **What "Current System" Means for Greenfield:** For a greenfield project, the "Current System" section documents the *absence* of a system: what manual process, workaround, or competing tool the user currently uses, and what its pain points are. Never leave "Current System" blank on a greenfield request — there is always a status quo.
+   - *Greenfield ≠ Assumption-Free:* Greenfield requests often carry the most hidden assumptions, because nothing in code exists to contradict them. The Assumption Register (step 5) is especially critical on greenfield work.
+5. **Mandatory Research Summary (Populate After Search, Surface Before Questions):**
+   Only after steps 1–4 are complete, document the research output in `## 0. Research Summary` of `lifecycle/01-discover.md`. This block must include:
+   - **Verified Facts:** Concrete things confirmed from codebase, logs, or referenced docs (cite file + line or source).
+   - **Plausible Inferences (→ Open Assumptions):** Things deduced but not confirmed — each promoted immediately to an `ASM-X` entry in `## 5. Open Assumptions`.
+   - **Identified Gaps:** Dimensions of the request not yet addressed by any evidence.
+   - **High-Risk Unknowns:** Questions where the wrong assumption could cause security, data integrity, or UX failures.
+   Only after this block is populated may the agent begin presenting findings or decision cards to the user.
 
 ### 3.2 Step 2 — Uncover Requirements & Probe Blind Spots
 
-1. **Progressive Requirement Treeing (Depth & Breadth):**
+1. **Breadth-First Surface Map (Before Any Depth-First Probing):**
+   Before going deep on any single feature or question, fan out breadth-first across the *entire* problem space. This surfaces unknown unknowns — features, roles, states, integrations, constraints — that depth-first probing on any single branch would miss entirely.
+   - Scan the full request (and codebase if applicable) and list *every* dimension at the surface level: candidate features, actors/roles, system states, external integrations, implicit constraints, and open questions — without resolving any of them yet.
+   - Write these as **stub entries** under `## 2. Target Features` (feature name + one-line description only). No sub-features, no edge probing yet.
+   - Review the stub list against the Destination Statement. Anything clearly beyond the destination → flag immediately as `Out of Scope (Beyond Destination)`. Anything that can be felt but not yet precisely stated → flag as `Fog (Not Yet Specifiable)`.
+   - Only after the full surface map is complete does depth-first probing of individual branches begin (item 2 below).
+   - *Anti-tunnel Rule:* If depth-first probing on any branch reveals a new surface dimension not yet in the stub list, pause, add it to the surface map, and re-check against the destination before continuing depth probing.
+
+2. **Progressive Requirement Treeing (Depth & Breadth):**
    - **Level 1 (Trunk — At a Glance):** Formulate the core foundation under `## 1. At a Glance` with bold paragraph headers (*The Problem*, *Current System*, *Desired Goal*, *Core Terms*) followed by flat, single-level bullets.
    - **Level 2 (Branches — Target Features):** Structure each feature as a distinct heading (`### [Feature Name]`). Capture all user-requested capabilities without premature filtering.
    - **Level 3 (Leaves — Sub-Features & Acceptance Anchors):** Break down each feature into crisp, atomic flat bullets using **bold leading hooks** (`- **[Dimension / Hook]:** [Specific requirement detail]`) for instant readability.
-   - **Horizontal Breadth (The 5 Edge Lenses):** Probe requirements across all 5 edge dimensions (*Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle*).
-2. **The Decision Frontier & Anti-Popcorn Rule:**
+   - **Horizontal Breadth (Mandatory 5 Edge Lenses):** Cover ALL 5 edge dimensions (*Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle*) for every feature. Each lens must produce at least one confirmed finding or an explicit "not applicable — rationale" entry. A feature may not be promoted to `In Scope` until all 5 lenses are addressed.
+3. **The Decision Frontier, Fog Graduation & Anti-Popcorn Rule:**
    - Track open decisions as a tree: Trunk $\to$ Branches $\to$ Leaves. The **Frontier** consists of decisions whose parent prerequisites are confirmed.
    - *Depth-First Branch Continuity:* Stay on the active branch until resolved into a confirmed decision or explicitly parked question; ban jumping randomly across topics.
    - *Cross-Feature Dependency Exception:* If resolving a branch reveals an impact on a shared entity, permission, or state (e.g. user deactivation affecting active sessions, billing, or ownership transfer), immediately identify and note the dependent capability in the requirement tree before resuming depth-first resolution.
-3. **Interactive Option Card Pattern:**
+   - **Fog Graduation Trigger (mandatory after every ASM-X resolution):** Immediately after any `ASM-X` entry is resolved (HITL confirmed by user OR AFK verified by agent), the agent MUST pause and scan `## 5. Open Assumptions` for any `🌫 In Fog` entries whose graduation condition is now met. For each one that can now be precisely stated:
+     1. Change its tag from `[Foggy]` to `[Sharp]`.
+     2. Update its Status from `🌫 In Fog` to `⚠️ Pending`.
+     3. Remove it from the `Fog (Not Yet Specifiable)` bucket in `## 3`.
+     4. Surface it immediately as a `❓ Decision Needed` card (if HITL) or resolve it silently (if AFK).
+   - *Never let a Fog item sit stale after its blocking dependency has resolved.* A Fog item that could graduate but hasn't is a hidden assumption — treat it with the same urgency as a pending ASM-X.
+4. **Interactive Option Card Pattern:**
    - Present exactly **one** decision per turn (or at most two tightly coupled choices).
    - Search the codebase before asking; if facts exist in code, state them as verified context.
-   - Provide 2–3 concrete choices with trade-offs, and offer a recommended default worded so that typing `"yes"` or pressing Enter immediately accepts it:
+   - Provide 2–3 concrete choices with trade-offs, and offer a recommended default. The recommended default is a _suggestion only_ — it must receive explicit user acknowledgment before being treated as a confirmed decision. Never carry a recommendation forward without an explicit user response in chat:
 
    ```markdown
-   ❓ **Decision Needed: <Short Title>**
+   ❓ **Decision Needed: <Short Title>** [HITL]
    **Context:** <1 sentence of verified facts from codebase search or logs, and the specific uncertainty.>
+   **Why HITL:** <1 phrase — why only the user can resolve this, not the agent>
 
    - **Option A:** <Description, primary benefit, and key trade-off>
    - **Option B:** <Description, primary benefit, and key trade-off>
 
-   👉 **Recommendation:** <Option A + 1-sentence rationale. Worded so typing "yes" accepts it.>
+   👉 **Recommendation:** <Option A + 1-sentence rationale.>
    ```
 
-4. **Blind-Spot & Self-Challenge Probe:**
-   Before considering a feature capability understood, internally probe both functional completeness and resilience blind spots:
+   > **[AFK] Rule:** If a question is tagged AFK, the agent must NEVER present it as a Decision Needed card. It must be resolved silently through research or codebase search and recorded as a Verified Fact in `## 0. Research Summary`.
+
+5. **Blind-Spot & Self-Challenge Probe (with Inline Contradiction Surfacing):**
+   Before considering a feature capability understood, internally probe all functional completeness, resilience, and extended lenses. **If any lens reveals a contradiction between the user's stated intent and existing system behavior, surface it immediately as a `❗ Conflict Found` card** (see format below) and pause depth-first probing on that branch until the user resolves the conflict. Never silently pick one side of a contradiction and continue.
+
+   ```markdown
+   ❗ **Conflict Found: <Short Title>**
+   **What You Asked:** <User's intent>
+   **What the System Currently Does:** <Evidence from codebase — cite file:line>
+   **Why These Conflict:** <1–2 sentence explanation>
+
+   Please clarify which behavior should win, or whether a migration/transition approach is needed.
+   ```
+
    - **Functional Completeness Lenses:**
      - *Trigger & Entry Event:* What exact event, action, or schedule initiates this behavior?
      - *Mandatory vs. Optional Inputs:* What data is strictly required, what has defaults, and what is rejected?
@@ -88,25 +163,33 @@ Explore the initial problem, opportunity, or request through evidence-based inve
      - *Failure Halfway:* What happens if the operation fails midway, network drops, or validation rejects?
      - *Reversibility:* Is this a one-way or two-way door? What are the restoration/rollback rules?
      - *Collateral Impact:* What existing system behaviors or workflows could this unintentionally break?
-5. **Continuous Document Update:**
-   - Continuously update `lifecycle/01-discover.md` in place after every user turn. Never wait until the end of the phase.
+   - **Extended Discovery Lenses (apply to every feature branch):**
+     - *External Dependency:* Does this feature depend on a third-party API, service, or platform? What happens if that dependency is unavailable, rate-limited, or returns unexpected data?
+     - *Rollout & Migration:* Is there existing data, users, or state that this change affects retroactively? What is the migration or backward-compatibility strategy?
+     - *Observability:* How will the team know if this feature is working correctly in production? What logging, monitoring, or alerting does it require?
+     - *Internationalization & Locale:* Does this feature involve user-visible text, dates, currencies, or time zones that must behave differently across locales?
 
 ### 3.3 Step 3 — Late-Stage Scope Triage & Document Decisions
 
-1. **User-Owned Scope Triage (Never Filter Early):**
-   - Present the full scope of discovered features to the user alongside honest technical trade-offs (effort, complexity, and dependencies).
-   - Ask the **User** to triage requirements into three clear buckets:
-     - **In Scope:** The essential core to deliver in this lifecycle cycle.
-     - **Deferred:** Genuine requirements and ideas that are acknowledged and preserved for future cycles (never lost or deleted).
-     - **Out of Scope:** Deliberately excluded items with concise rationale.
-   - *Strict Rule:* The User has 100% final authority on priorities. The Agent provides technical trade-offs, but never assumes or filters requirements unilaterally.
-2. **Document Edge Cases:**
-   Under `## 3. Scope & Edge Cases`, document the 5 essential edge behaviors in plain, non-academic language:
+1. **Document Edge Cases (Before Triage — User Needs Full Picture First):**
+   Before presenting scope options to the user, complete the edge case record for every discovered feature under `## 3. Scope & Edge Cases`. The user cannot make informed triage decisions without knowing the edge behaviors each feature carries. Document all 5 dimensions in plain, non-academic language:
    - **Zero / Empty State:** Behavior on first use, when 0 records exist, or when unconfigured.
    - **Validation & Recovery:** Invalid input handling, timeout/network drops, and user failure recovery.
    - **Permissions & Access:** Who is authorized, resource isolation, and access denied behavior.
    - **State & Concurrency:** Rapid double-submits, debouncing, and conflicting update guards.
    - **Data Lifecycle:** Cascade deletions, retention rules, persistence, and cleanup.
+2. **User-Owned Scope Triage (After Full Picture is Visible):**
+   Present the complete scope — features, sub-features, edge cases, and technical trade-offs — to the user, then ask them to triage into **four** clearly distinct buckets. Before presenting any item for triage, the agent must run the **Destination Check**: *"Does this item sit beyond the stated Destination, or is it simply not yet fully understood?"* Only items confirmed to be beyond the destination may be proposed as Out of Scope. Everything else stays in-scope as Fog or Deferred until the user explicitly decides otherwise.
+
+   - **In Scope:** The essential core to deliver in this lifecycle cycle.
+   - **Fog (Not Yet Specifiable):** In-scope requirements the agent *can tell are coming* but cannot yet precisely define, because they depend on upstream decisions still open. These are NOT deferred — they are actively in-scope and will graduate to sharp requirements as the Decision Frontier advances. The agent must never ask the user to decide on Fog items — they must first be made sharp.
+   - **Deferred:** Requirements the user has explicitly reviewed, understood, and consciously chosen not to include in this lifecycle cycle. Preserved for future cycles — never deleted.
+   - **Out of Scope:** Work that sits *beyond the stated Destination*. This is a scope boundary ruling, not a priority judgment. The agent proposes candidates; the user makes the final call. Rationale must be recorded.
+   - *Strict Rules:*
+     - The User has 100% final authority on all triage decisions.
+     - The Agent must never move Fog into Deferred or Out of Scope unilaterally — Fog must first be made sharp through probing.
+     - Before proposing any item as Out of Scope, the agent must verify it sits beyond the Destination, not merely that it's unknown or complex.
+     - Items that are "not yet understood" are always Fog, never Out of Scope.
 3. **Record Key Decisions (`DEC-X`):**
    In `## 4. Key Decisions & Rationale`, record consequential product or technical decisions (`- **DEC-X (<Topic>):** ...`) along with their rationale and trade-offs.
 4. **Handle Non-Blocking Questions:**
@@ -119,20 +202,27 @@ Phase 1 can transition to Phase 2 — Design only when the completion checklist 
 ### Completion Checklist (Pre-Flight Gate)
 
 Before requesting user approval, verify that:
+- **Destination Confirmed:** A 1–2 line Destination Statement is recorded in `## 1. At a Glance` and has been explicitly acknowledged by the user. All scope decisions reference it.
 - **Evidence-Based Problem:** Grounded in concrete codebase facts (for existing workflows/bugs) or explicit user business goals and constraints (for greenfield capabilities).
 - **Trunk Goal:** The Desired Goal clearly defines the intended outcome and preserved boundaries.
 - **Domain Terms:** Core Terms (domain vocabulary) are settled under `## 1. At a Glance`.
+- **No AFK Items Asked of User:** Every AFK-tagged assumption has been resolved by the agent through research; none were surfaced as user questions.
+- **No Foggy Items in Triage:** Every item in Deferred or Out of Scope was Sharp (precisely statable) before the user triaged it. No Foggy items were presented for triage without first being made Sharp.
+- **Fog Section Current:** All remaining Foggy items are explicitly recorded in the `Fog (Not Yet Specifiable)` bucket with their graduation condition stated.
 - **Hierarchical Tree:** Target features and sub-features are structured hierarchically (Trunk $\to$ Branches $\to$ Leaves) without premature filtering.
 - **User-Triaged Scope:** Requirements are triaged by the user into **In Scope**, **Deferred**, and **Out of Scope**.
 - **Edge Cases:** Documented across all 5 dimensions (Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle).
 - **Consequential Decisions:** All `DEC-X` decisions are recorded with their reasoning and trade-offs.
 - **Resolved High-Impact Uncertainties:** All critical questions (security, authorization, data integrity, session lifecycle) are verified from code facts or confirmed by the user, with zero concealed assumptions.
+- **Assumption Register Cleared:** Every `ASM-X` entry in `## 5. Open Assumptions` has been either (a) explicitly confirmed by the user and promoted to a confirmed requirement, or (b) explicitly resolved as "not applicable" with the user's reasoning recorded. No assumption may remain at `⚠️ Pending` status at the time of exit-gate review.
+- **Block-Level Confirmation:** At least once during the discovery phase, the agent presented the current state of `lifecycle/01-discover.md` to the user and received explicit per-feature-block confirmation before requesting final approval.
 - **Document Hygiene:** `lifecycle/01-discover.md` is concise, consistent, and up to date.
 
 ### Requesting User Approval (Phase 0 Protocol)
 1. Update Phase 1 status to `In Review` in `lifecycle/00-status.md`.
-2. In chat, output a concise 1–2 sentence summary linking `[01-discover.md](01-discover.md)` and ask for explicit approval to advance to Phase 2 — Design.
-3. Stop calling tools immediately and wait for the user's explicit response.
+2. Before the final approval request, present a block-level confirmation summary in chat: for each major feature block, state what was confirmed, what assumptions were resolved, and ask the user to explicitly affirm or correct each block. A single "looks good overall" at the end is NOT sufficient if individual feature blocks were never reviewed by the user.
+3. Only after block-level confirmation is complete, output a concise 1–2 sentence summary linking `[01-discover.md](01-discover.md)` and ask for explicit approval to advance to Phase 2 — Design.
+4. Stop calling tools immediately and wait for the user's explicit response.
 
 ### Gate Outcomes
 - **Approved:** Mark Phase 1 `Done` in `lifecycle/00-status.md` and proceed to Phase 2 — Design.
@@ -148,7 +238,23 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
 ```markdown
 # Discover: [Requirement / Feature Name]
 
+## 0. Research Summary
+
+**Verified Facts:**
+- **[file:line or source]:** [What was confirmed and what it means for the request]
+
+**Plausible Inferences (→ Open Assumptions):**
+- **ASM-1:** [What was inferred] — [Evidence basis] — ⚠️ Needs user confirmation
+
+**Identified Gaps:**
+- [Dimension not yet addressed by any evidence]
+
+**High-Risk Unknowns:**
+- [Question whose wrong answer could cause security / data integrity / UX failure]
+
 ## 1. At a Glance
+
+**Destination:** [What reaching the end of this discovery looks like — the approved feature, resolved problem, or confirmed change. 1–2 lines. Every scope decision is tested against this.]
 
 **The Problem:**
 - **[Symptom / Pain 1]:** [What fails, breaks, or is blocked for the user]
@@ -184,13 +290,16 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
 - **[Key Deliverable 1]:** [Specific capability, layer touched, or component for this cycle]
 - **[Key Deliverable 2]:** [Verification scope or security boundary]
 
-**Deferred:**
-- **[Future Feature 1]:** [Acknowledged requirement preserved for future iterations]
-- **[Future Feature 2]:** [Edge enhancement or secondary workflow planned for later]
+**Fog (Not Yet Specifiable):**
+- **[Foggy Area 1]:** [In-scope requirement that can't yet be precisely defined — depends on upstream decisions still open. Will graduate to a sharp requirement as the Decision Frontier advances.]
 
-**Out of Scope:**
-- **[Excluded Item 1]:** [What will not be modified and concise rationale]
-- **[Excluded Item 2]:** [Untouched existing workflow or explicitly rejected path]
+**Deferred:**
+- **[Future Feature 1]:** [Explicitly reviewed requirement the user has chosen to exclude from this cycle, preserved for future iterations]
+- **[Future Feature 2]:** [Edge enhancement or secondary workflow consciously parked for later]
+
+**Out of Scope (Beyond Destination):**
+- **[Excluded Item 1]:** [What sits beyond the stated Destination and will not be addressed — with rationale tied to scope boundary]
+- **[Excluded Item 2]:** [Untouched existing workflow or explicitly rejected path — confirmed by user]
 
 **Edge Cases:**
 - **Zero / Empty State:** [Behavior on first use, 0 records, or unconfigured state]
@@ -203,4 +312,11 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
 
 - **DEC-1 ([Topic]):** [Decision made] — _Rationale / Trade-offs:_ ...
 - **DEC-2 ([Topic]):** [Decision made] — _Rationale / Trade-offs:_ ...
+
+## 5. Open Assumptions
+
+- **ASM-1 ([Topic]) [Sharp] [HITL]:** [What was assumed] — _Basis:_ [why inferred, not confirmed] — _Status:_ ⚠️ Pending → surface as ❓ Decision Needed card
+- **ASM-2 ([Topic]) [Sharp] [AFK]:** [What was assumed] — _Basis:_ [why inferred] — _Status:_ ⚠️ Pending → agent resolves via codebase search
+- **ASM-3 ([Topic]) [Foggy] [HITL]:** [What was assumed] — _Basis:_ [why it can't yet be precisely stated] — _Status:_ 🌫 In Fog → graduates when upstream ASM-X resolves
+- **ASM-4 ([Topic]) [Sharp] [HITL]:** [What was assumed] — _Status:_ ✅ Confirmed / ❌ Rejected
 ```
