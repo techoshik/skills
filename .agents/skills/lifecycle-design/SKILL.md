@@ -39,8 +39,14 @@ This phase has two sequential stages:
 - **Interactive State Toggling:** Every prototype option must feature a sticky top state-switcher bar allowing instant toggling between key interactive states (`Default`, `Empty`, `Loading`, `Error`, `Edge / Restricted`).
 - **Self-Contained & Zero-Build:** Prototypes must open directly in any browser with zero build steps, bundlers, or local servers. Embed styles, mock data, and minimal vanilla JS directly in each file.
 - **Design System Primitive Alignment (Anti-Translation Reflex):** Prototypes are HTML models—not production code. Do not write complex custom CSS or obsess over pixel perfection. Align HTML structures conceptually with the target project's canonical design system primitives (cards, buttons, dialogs, toasts, spacing tokens, semantic theme roles). In Phase 4 Build, production code must NEVER translate raw HTML/CSS primitives 1:1 into ad-hoc framework widgets (e.g. manual `Container` with arbitrary gradients and raw numeric paddings); it must bind directly to canonical design system components and tokens.
-- **Synchronize Discoveries Upstream:** If prototyping reveals missing requirements, edge cases, or UX simplifications, immediately update `lifecycle/01-discover.md` in place.
+- **Synchronize Discoveries Upstream — Design is a Validator, Not a Decision Record:** `02-design.md` is a visual validation artifact, not a requirements or decision document. Any gap, missing requirement, or unhandled edge case uncovered during flow modeling or prototyping must be pushed back to `lifecycle/01-discover.md` immediately:
+  - **Missing Feature Includes item** → add it to the relevant feature's Includes list in `01-discover.md` and confirm with the user
+  - **New consequential decision** → record it as a `DEC-N` entry in `## 4. Key Decisions & Rationale` in `01-discover.md` — not in `02-design.md`
+  - **New open assumption** → add it as `ASM-N` in `## 5. Open Assumptions` in `01-discover.md`
+  - If Plan is already approved when a gap is found, follow the Mid-Flight Scope Change rule in the lifecycle orchestrator: affected tasks return to `In Progress` before Design can be re-approved.
+  `02-design.md` records only: visual flows, prototype file references, and which prototype option was selected per screen (and why the other was rejected). Nothing else.
 - **Single Live Document (`lifecycle/02-design.md`):** All flow diagrams, prototype references, and UX decisions live in `lifecycle/02-design.md`.
+- **Friction Logging (`lifecycle/refine.md`):** Whenever a Mermaid syntax limitation forces a workaround, a prototyping constraint causes a design compromise, a skill instruction is unclear, or any friction arises that would recur on the next project — immediately append an entry to `lifecycle/refine.md`. Do not wait until phase exit.
 - **Strict Phase Boundaries (Negative Constraints):**
   - **No Production Code:** Writing or modifying application source code and running test suites belongs to Phase 4 — Build. Never treat prototype HTML/JS code as production code.
   - **No Technical Architecture or Slices:** Database schemas, API endpoints, file modifications, and task breakdowns belong to Phase 3 — Plan.
@@ -81,11 +87,27 @@ flowchart LR
    - **No Parentheses in Edge Labels:** Avoid parentheses in flowchart edge labels (e.g. use hyphens or clean phrases `|No - Option A|` instead of `|No (Option A)|`) because Mermaid grammar breaks on unescaped parentheses inside `|...|` delimiters.
    - **No Nested `alt` in Sequence Diagrams:** Prohibit nested `alt` blocks (use sequential `opt` blocks or flat sequential checks); standard Mermaid sequence grammar strictly forbids nested `alt` and crashes markdown renderers.
    - **Flush Column-0 Fenced Code Blocks:** Never nest Mermaid code blocks inside bullet points; place them under level-3 headings (`### Workflow X: [Feature Name]`) flush at column 0 to prevent markdown rendering errors.
-4. **Enforce Zero Dead-Ends & Highlight What Changes:**
+4. **Enforce Zero Dead-Ends & Sync Gaps Upstream:**
    - Verify that every error branch, validation failure, and timeout loops back to an actionable user recovery step or a safe exit. Never leave an orphaned error box.
    - For modifications to existing systems, distinguish current behavior from proposed behavior using side-by-side visual diffs or concise change delta tables.
+   - If flow modeling reveals a missing Feature Includes item or an unresolved decision, push it back to `lifecycle/01-discover.md` before the Gate 2.1 approval request.
    - Document flows in `lifecycle/02-design.md` under `## 2. Visual Workflows & Sequences`.
 5. **Gate 2.1 Approval Protocol:**
+   - **Pre-Gate Reconciliation Audit (Mandatory):** Before marking Stage 2.1 as `In Review`, scan every node, action, branch, and state in the completed flow diagrams. For each functionality found, verify it maps to an item in a feature's Includes list in `lifecycle/01-discover.md`. For any functionality present in the flows but absent from the Includes list, surface it to the user using this format before requesting approval:
+
+     ```
+     🔍 Found in Flow, Not in Discover: <Short Title>
+     - **What it is:** [What this functionality does, in plain English]
+     - **Where it appears:** [Which flow diagram / which step]
+     - **Not found in:** [F-N — Feature Name]
+
+     What should we do with this?
+     - **A — Add to Discover:** Add it to the Feature Includes list for F-N and confirm scope
+     - **B — Remove from Flow:** Remove it from the diagram — it was added by mistake
+     - **C — Defer:** Note it as a Deferred item in `01-discover.md` and remove it from this flow
+     ```
+
+     Wait for the user's explicit decision on every unlisted item before proceeding. Never request Gate 2.1 approval while any unlisted functionality remains unresolved.
    - Update row `Stage 2.1 — Flow Design` to `In Review` in `lifecycle/00-status.md`.
    - Stop calling tools immediately.
    - Follow the **Phase 0 Chat Approval Protocol** to present visual workflows in chat and ask for explicit approval before writing prototype code.
@@ -136,9 +158,11 @@ flowchart LR
    - Provide an index of all prototype options organized by feature.
    - Include a **"Needs Decision"** banner highlighting the specific trade-offs between options.
    - Embed lightweight Mermaid sub-flow diagrams where visual process context clarifies the screen being viewed.
-5. **Synchronize Discoveries Upstream & Record Decisions:**
-   - If prototyping reveals an unhandled edge case, conflicting requirement, or valuable simplification, immediately update `lifecycle/01-discover.md` in place.
-   - Record UX decisions in `lifecycle/02-design.md` under `## 1. At a Glance` (`Key Interaction Rules`).
+5. **Synchronize Gaps Upstream & Record Prototype Decision:**
+   - For every gap, missing Includes item, or new decision uncovered during prototyping: push it back to `lifecycle/01-discover.md` (Feature Includes list, `DEC-N`, or `ASM-N` as appropriate). Never record decisions in `02-design.md`.
+   - Record only the prototype option selection in `lifecycle/02-design.md` under `## 1. At a Glance`: which option was chosen per screen and in one sentence why the other was rejected.
+6. **Pre-Exit Reconciliation Audit — Prototype (Mandatory):**
+   Before requesting Phase 2 exit approval, scan every screen, control, input, action, state, and navigation path visible in the finalized prototype. For each element, verify it maps to an item in a feature's Includes list in `lifecycle/01-discover.md`. For any element present in the prototype but absent from the Includes list, surface it using the same format as the Gate 2.1 audit card (`🔍 Found in Prototype, Not in Discover`) and wait for the user's explicit decision before proceeding. Only after every unlisted element is resolved may the Phase 2 exit gate be requested.
 
 ---
 
@@ -157,8 +181,10 @@ Before requesting user approval, verify that:
 - **State-Switcher Bar Functional:** (UI only) Sticky bar allows instant toggling between Default, Empty, Loading, Error, and Edge states.
 - **Async Inspection Drawer Included:** (UI only) Simulated drawer allows testing email/magic link payloads without external mail servers.
 - **Non-UI Explicitly Skipped:** For pure backend tasks, prototyping is explicitly marked `Skipped (N/A)` in `lifecycle/00-status.md`.
-- **Upstream Sync Complete:** Any requirements or edge cases uncovered during flow modeling or prototyping are updated in `lifecycle/01-discover.md` in place.
-- **Consequential UX Decisions:** Key interaction rules (`DEC-X`) are documented in `lifecycle/02-design.md`.
+- **Feature Includes Coverage (Two-Directional):** Every item in every feature's Includes list from `01-discover.md` is represented by at least one flow or prototype screen. Conversely, every interactive element in the prototype traces back to an Includes list item — no phantom UI elements added during Design without first updating `01-discover.md`.
+- **Reconciliation Audit Completed:** Both pre-gate audits have been run — one after flows (Gate 2.1) and one after prototypes (Phase 2 exit). Every functionality found in flows or prototypes but absent from the Feature Includes list was surfaced to the user and explicitly resolved (Added to Discover / Removed from Design / Deferred). Zero unresolved unlisted elements remain.
+- **Gaps Synced to Discover:** Any missing requirement, unhandled edge case, new decision, or new assumption found during flow modeling or prototyping has been pushed back to `lifecycle/01-discover.md` (Feature Includes list, `DEC-N`, or `ASM-N`). Zero decisions or requirements remain recorded only in `02-design.md`.
+- **Upstream Sync Complete:** `lifecycle/01-discover.md` reflects the full current understanding after Design — it is the single source of truth for requirements and decisions.
 
 ### Requesting User Approval (Phase 0 Protocol)
 
@@ -190,14 +216,12 @@ The primary deliverable is `lifecycle/02-design.md`, supported by `lifecycle/02-
 
 **UI Prototypes:**
 - **Prototype Hub:** [02-prototype.html](02-prototype.html) *(or "Skipped (N/A for Non-UI)")*
-- **[Screen 1 / Workflow Name]:** [Option B](prototype/<feature>/screen-1-b.html) ([Short title]) selected over Option A ([Short title & why rejected]).
-- **[Screen 2 / Workflow Name]:** [Option A](prototype/<feature>/screen-2-a.html) ([Short title]) selected over Option B ([Short title & why rejected]).
+- **[Screen 1 / Workflow Name]:** [Option B](prototype/<feature>/screen-1-b.html) selected — [1 sentence why Option A was rejected].
+- **[Screen 2 / Workflow Name]:** [Option A](prototype/<feature>/screen-2-a.html) selected — [1 sentence why Option B was rejected].
 
-**Key Interaction Rules (UX Decisions):**
-- **DEC-1 ([Topic / Copy]):** [Plain-language terminology or dialog copy]
-- **DEC-2 ([Topic / Protection]):** [Current device attribution or state protection]
-- **DEC-3 ([Topic / Zero Dead-Ends]):** [Inline retry banner on failure rather than trapped modal]
-- **DEC-4 ([Topic / Navigation]):** [Exact navigation entry point]
+**Gaps Synced to Discover:**
+> All gaps, decisions, and assumptions found during Design are recorded in `lifecycle/01-discover.md` — not here.
+- **[Gap / Decision]:** [What was found] → Synced to `01-discover.md` as [DEC-N / ASM-N / Feature Includes item on F-X]
 
 ## 2. Visual Workflows & Sequences
 

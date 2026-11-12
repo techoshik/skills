@@ -22,7 +22,8 @@ This phase ensures that before Phase 4 — Build begins, the Agent and User have
 
 ## 2. Guiding Principles
 
-- **Feature-Driven Breakdown & Task Treeing:** Directly map the Discover requirement tree into a task tree: Goal (Trunk) $\to$ Target Features (Branches) $\to$ Steel Thread and Edge Tasks (Leaves).
+- **Feature-Driven Breakdown & Task Treeing:** Directly map the Discover requirement tree into a task tree: Goal (Trunk) → Target Features (Branches) → Steel Thread and Edge Tasks (Leaves). The **Feature Includes list** in `lifecycle/01-discover.md` is the authoritative source of what every feature contains — Plan's job is to assign implementation order and file targets to each item, not to rediscover or reinterpret what to build.
+- **Feature Includes → Task Traceability (Mandatory):** Every item in a feature's Includes list from Discover must map to at least one task change (`C1`, `C2`...). No item may be silently skipped, collapsed, or reworded. If an item cannot map to a concrete task, it must be flagged and returned to Discover for clarification before Plan proceeds.
 - **Vertical "Steel Thread" Slicing:** Ban horizontal layer-cake task plans (e.g., Task 1: all DB models, Task 2: all API controllers, Task 3: all UI screens). Every task must implement a thin vertical slice through the stack. Task 1 is always the **Steel Thread** (the minimal end-to-end happy path from data to UI that compiles and runs immediately); subsequent tasks add edge recovery, validation, and hardening.
 - **Blast Radius Tagging:** Tag every task with its blast radius to govern execution risk:
   - `🟢 Low (<5 words reason):` e.g., `🟢 Low (isolated component)`
@@ -42,6 +43,7 @@ This phase ensures that before Phase 4 — Build begins, the Agent and User have
   - **No Test Execution:** Executing test suites or verifying code compliance belongs to Phase 4 — Build.
   - **No Layer-Cake Batching:** Ban horizontal batching (all DB, then all API, then all UI). Tasks must remain vertical slices.
   - **No Unilateral Scope Changes:** Never invent new capabilities or reopen settled scope; always trace directly to `lifecycle/01-discover.md`.
+- **Friction Logging (`lifecycle/refine.md`):** Whenever a Feature Includes item cannot be directly mapped to a task (indicating a gap in Discover), a sequencing rule produces an unworkable order, a skill instruction is ambiguous, or any planning friction arises that would recur on the next project — immediately append an entry to `lifecycle/refine.md`. Do not wait until phase exit.
 
 ---
 
@@ -52,8 +54,8 @@ Phase 3 progresses through three natural chronological steps:
 ### 3.1 Step 1 — Input Review & Prefactoring Inspection
 
 1. **Review Approved Upstream Deliverables:**
-   - Review confirmed Target Features and Core Terms from `lifecycle/01-discover.md`.
-   - Review approved visual flows and prototypes from `lifecycle/02-design.md` (and `lifecycle/02-prototype.html` if UI).
+   - For each feature in `lifecycle/01-discover.md`, extract its **Feature Includes list** — the complete, user-confirmed list of every element, action, interaction, and navigation the feature must contain. This list is the non-negotiable scope input for Plan; do not reinterpret or expand it.
+   - Review approved visual flows and prototypes from `lifecycle/02-design.md` (and `lifecycle/02-prototype.html` if UI). Every interactive element in the prototype must trace back to an item in the Feature Includes list.
    - Understand existing architecture, dependencies, and constraints via read-only searches.
 2. **File-Size & Prefactoring Inspection:**
    - Check line counts of target files likely to be modified against Rule File thresholds.
@@ -111,6 +113,7 @@ Phase 3 progresses through three natural chronological steps:
 ### 3.3 Step 3 — Sequencing, Compatibility & Dashboard Population
 
 1. **Sequence Tasks by Verifiable Dependency Order:**
+   > **This is Plan's primary contribution:** Discover defines *what* each feature includes (the Feature Includes list). Plan defines *in what order* those items are built and *which files* they live in. The ordering below is mandatory:
    - `Task 4.0 (Prefactoring):` Behavior-preserving extraction if files breach line thresholds (*"Make the change easy, then make the easy change"*).
    - `Foundational Slices:` Database migrations, core data schemas, cryptographic/domain utilities.
    - `Verifiable CRUD & Feature Slices (The Producer-Before-Consumer Order):`
@@ -134,6 +137,7 @@ Phase 3 can transition to Phase 4 — Build only when the completion checklist i
 
 Before requesting user approval, verify that:
 - **1:1 Feature Mapping:** All Target Features from Discover are mapped directly as `## <Feature Name>` headings.
+- **Feature Includes Traceability:** Every item in each feature's Includes list from `lifecycle/01-discover.md` maps to at least one task change (`C1`, `C2`...). No item is silently skipped, collapsed, or reworded without an explicit scope decision.
 - **Vertical Steel Thread First:** The primary task for every feature is a thin, end-to-end slice compiling immediately.
 - **Complete Task Anatomy:** Every task specifies Blast Radius ($\le 5$ words), Changes (`C1`, `C2`... with sub-bullets for multi-point details), Files (mapped to C-IDs with action verbs), Agent Verification (individual named rules `- Rule [<Rule Name>]: <path>` and automated test commands), and User Verification (`Setup`, `Action`, `Expected`).
 - **Prefactoring Scheduled:** Any file approaching the 900/1000-line threshold has an upfront extraction task.

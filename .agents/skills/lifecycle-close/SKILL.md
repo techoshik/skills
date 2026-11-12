@@ -89,8 +89,11 @@ Finalize progresses through three disciplined chronological steps:
    - **Level 3 (Leaves — Invariants & Decisions):** Scoped non-negotiable Business Rules (`BR-X`) and Consequential Architectural Decisions (`DEC-X`).
    - **Root Updates (`README.md` / `GLOSSARY.md`):** Update root `README.md` if setup or commands changed; promote new or updated `Core Terms` from `lifecycle/01-discover.md` into the root `GLOSSARY.md` so domain vocabulary is permanently preserved after `lifecycle/` cleanup.
    - *Format Rule:* Document verified truth with scannable nested sub-bullets. Link rather than duplicate.
-2. **Review Upstream Friction (`lifecycle/refine.md`):**
-   - Review entries recorded in `lifecycle/refine.md` across earlier phases (or append any Close-specific friction) to synthesize actionable framework or project rule recommendations.
+2. **Review Upstream Friction (`lifecycle/refine.md`) — Mandatory Synthesis:**
+   - Review every entry recorded in `lifecycle/refine.md` across all earlier phases. If no entries exist, explicitly note in `lifecycle/05-close.md` that the log was checked and was empty — do not silently skip it.
+   - For each entry, classify: *One-off* (project-specific, no action needed) or *Framework-wide* (would recur on the next project — a skill or rule needs updating).
+   - For every *Framework-wide* entry, produce a concrete Preventive Change recommendation: the specific skill, rule, or template to update and what the update should say.
+   - Record the synthesis in `lifecycle/05-close.md` under a `## 4. Friction Log Review` section. These recommendations are the primary mechanism for continuously improving the lifecycle skills themselves.
 3. **Prepare Copyable PR Summary:**
    Author a clean, evidence-based PR summary directly in `lifecycle/05-close.md` under `## 3. Pull Request Summary` and present it in chat for the user to copy into GitHub/GitLab:
    - **Outcome Summary:** Problem solved and delivered user capability.
@@ -123,7 +126,7 @@ Before requesting user approval, verify that:
 - **Improvement Assessment Complete:** All identified opportunities were presented and decided by the user (approved, declined, or deferred).
 - **Permanent Docs Synchronized:** `docs/modules/` accurately reflects the final implementation.
 - **Core Terms Promoted:** New domain vocabulary from `01-discover.md` promoted to root `GLOSSARY.md`.
-- **Friction Log Reviewed:** `lifecycle/refine.md` reviewed for upstream skill or rule improvements.
+- **Friction Log Reviewed:** `lifecycle/refine.md` reviewed; every entry classified as one-off or framework-wide; framework-wide entries have concrete Preventive Change recommendations recorded in `lifecycle/05-close.md`.
 - **PR Summary Ready:** Copyable PR summary prepared in `lifecycle/05-close.md`.
 - **Artifact Cleanup Decision Authorized:** User's choice (Delete, Archive, or Keep) executed.
 

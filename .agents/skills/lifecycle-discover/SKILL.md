@@ -23,7 +23,13 @@ Explore the initial problem, opportunity, or request through evidence-based inve
 - **Mandatory Assumption Register (with Sharpness & HITL/AFK Classification):** Every inference, guess, or plausible-but-unconfirmed belief must be recorded in `## 5. Open Assumptions` with two mandatory tags:
   - **Sharpness:** `[Sharp]` if the question can be precisely stated right now (even if unanswerable yet) → surface immediately as a `❓ Decision Needed` card to the user. `[Foggy]` if it cannot yet be precisely phrased because upstream decisions are still open → record in `Fog (Not Yet Specifiable)` and do NOT ask the user yet; it graduates to Sharp as the Decision Frontier advances.
   - **Resolution Owner:** `[HITL]` if only the user can resolve it (business intent, priority judgment, domain authority) → must be surfaced as a user question. `[AFK]` if the agent can resolve it independently through codebase search, documentation, or tooling → agent must resolve it without asking the user.
-  - Format: `- **ASM-X ([Topic]) [Sharp/Foggy] [HITL/AFK]:** [The assumption] — _Basis:_ [why inferred] — _Status:_ ⚠️ Pending`
+  - **Format:** Each `ASM-X` entry uses three lines — no bullet on the title line, details and status as sub-bullets:
+    ```
+    **ASM-N (Topic) [Sharp/Foggy] [HITL/AFK]:** [The assumption]
+    - _Basis:_ [Why this was inferred, not confirmed]
+    - _Status:_ ⚠️ Pending / ✅ Confirmed / ❌ Rejected
+    ```
+  - **Relationship to `## 0. Research Summary`:** The Research Summary is the *inbox* — raw inferences captured during fact-finding, written as evidence narrative. `## 5. Open Assumptions` is the *action register* — structured, tagged, and tracked to resolution. Every inference from `## 0` must be immediately promoted to an `ASM-X` entry in `## 5`. The two sections mirror each other but serve different purposes: one is evidence record, the other is resolution tracker.
   - An assumption register may never be empty on the first pass of a non-trivial request. No assumption may be promoted to a requirement until its sharpness is confirmed and it has been explicitly resolved (HITL: user confirms; AFK: agent verifies).
 - **Domain Vocabulary Settle:** Pin exact domain concepts and terms early so everyone speaks the exact same language from Day 1.
 - **Evidence Over Guesswork — Zero Tolerance:** Ground existing behavior, bugs, and workflows in concrete code searches (`grep`), error logs, and tests. Facts belong to the Agent; decisions belong to the User. Existing code proves how the system *currently behaves*, never what the user *wants*; never assume legacy implementation represents desired requirements. When evidence is missing, the agent must state: "I could not confirm this from the codebase — logging it as ASM-X for your review" and never proceed on the unconfirmed assumption.
@@ -50,6 +56,8 @@ Explore the initial problem, opportunity, or request through evidence-based inve
 
 > **Standing Rule — Live Document:** Update `lifecycle/01-discover.md` in place after every agent turn throughout Steps 1, 2, and 3. Never batch updates to the end of a step.
 
+> **Standing Rule — Friction Logging:** Whenever a skill instruction is ambiguous, a tool forces an unintended workaround, or a workflow step causes unnecessary back-and-forth during discovery, immediately append an entry to `lifecycle/refine.md`. Do not wait until phase exit. If `lifecycle/refine.md` does not yet exist, create it using the standard structure from the lifecycle orchestrator skill.
+
 > **Standing Rule — Session Resumption:** At the start of every agent session, before taking any action, check whether `lifecycle/01-discover.md` already exists and contains content.
 > - **If resuming (file exists):** Load the document as the working map. Re-read the **Destination** statement aloud in chat ("Resuming discovery — our destination is: [X]"). Scan `## 5. Open Assumptions` for any `⚠️ Pending` items and identify the current Decision Frontier position (the last confirmed branch). Ask the user: "Shall we continue from [last open branch], or is there anything that has changed since we last spoke?" Do not restart the intake process.
 > - **If new session (file absent or empty):** Proceed normally with Step 1 below.
@@ -63,6 +71,7 @@ Explore the initial problem, opportunity, or request through evidence-based inve
 2. **Name the Destination (Before Any Research or Vocabulary Work):**
    The destination is the first committed output of this phase. It anchors every subsequent scoping decision — what goes In Scope, what is Fog, and what is Out of Scope are all defined relative to it.
    - Produce a 1–2 line **Destination Statement** and write it into `## 1. At a Glance` as `**Destination:** [What reaching the end of this discovery looks like — the approved feature, resolved problem, or confirmed change]`.
+   - **Destination vs. Desired Goal — Key Distinction:** The *Destination* is the exit condition for Phase 1 — it describes what a successfully completed Discovery looks like (e.g. "An approved discovery doc covering user logout with session revocation"). The *Desired Goal* (also in `## 1. At a Glance`) describes what the product/feature must achieve for users once built (e.g. "Users can log out from any device and all active sessions are immediately invalidated"). The Destination tells the agent when to leave Phase 1; the Desired Goal tells Phase 4 — Build what to deliver.
    - If brief or fuzzy: state the most plausible destination as a hypothesis and ask the user to confirm or correct it in one sentence. Do not proceed to research until the destination is acknowledged.
    - If a detailed spec: extract the destination from the spec's stated goal and write it explicitly. Even if obvious, naming it creates a shared anchor.
    - *Rule:* No item may be declared Out of Scope, Deferred, or Fog unless it has first been tested against the destination. The destination is the boundary — not the agent's judgment.
@@ -109,9 +118,11 @@ Explore the initial problem, opportunity, or request through evidence-based inve
 
 2. **Progressive Requirement Treeing (Depth & Breadth):**
    - **Level 1 (Trunk — At a Glance):** Formulate the core foundation under `## 1. At a Glance` with bold paragraph headers (*The Problem*, *Current System*, *Desired Goal*, *Core Terms*) followed by flat, single-level bullets.
-   - **Level 2 (Branches — Target Features):** Structure each feature as a distinct heading (`### [Feature Name]`). Capture all user-requested capabilities without premature filtering.
-   - **Level 3 (Leaves — Sub-Features & Acceptance Anchors):** Break down each feature into crisp, atomic flat bullets using **bold leading hooks** (`- **[Dimension / Hook]:** [Specific requirement detail]`) for instant readability.
-   - **Horizontal Breadth (Mandatory 5 Edge Lenses):** Cover ALL 5 edge dimensions (*Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle*) for every feature. Each lens must produce at least one confirmed finding or an explicit "not applicable — rationale" entry. A feature may not be promoted to `In Scope` until all 5 lenses are addressed.
+   - **Level 2 (Branches — Target Features):** List each feature as a bold bullet with an `F-N` prefix — no heading, no leading bullet on the name line itself, just bold text (e.g. `**F1 — Feature Name**`). Capture all user-requested capabilities without premature filtering. Under each feature, produce a **Feature Includes list** (see rule below) followed by the five edge-case lenses.
+   - **Level 3 — Feature Includes List (Mandatory, Concrete, Complete):** For every feature, produce a flat, plain-English list of **every element, action, interaction, state, and navigation** the feature must contain. Each bullet must be specific enough that a developer can derive a build task directly from it — if a bullet is too vague to generate a task, it must be split into more specific bullets. This list is the single source of truth for what the feature includes; it must be confirmed by the user during Discovery and must not change between phases without an explicit scope decision.
+     - Examples of **too vague** (never acceptable): `- User can manage the list`, `- Filter options available`
+     - Examples of **concrete** (required level): `- Role dropdown filter with options: Admin, Editor, Viewer`, `- Search by username text input`, `- Active / Inactive status dropdown`, `- Edit action button on each user card`, `- Delete action button on each user card`, `- Tapping a user card navigates to User Detail screen`
+   - **Horizontal Breadth (Mandatory 5 Edge Lenses — Inline per Feature):** Cover ALL 5 edge dimensions (*Zero State, Validation & Recovery, Permissions & Access, State & Concurrency, Data Lifecycle*) for every feature **inside that feature's block** (not in a separate section). Each lens must produce at least one confirmed finding or an explicit "not applicable — rationale" entry. A feature may not be promoted to `In Scope` until all 5 lenses are addressed.
 3. **The Decision Frontier, Fog Graduation & Anti-Popcorn Rule:**
    - Track open decisions as a tree: Trunk $\to$ Branches $\to$ Leaves. The **Frontier** consists of decisions whose parent prerequisites are confirmed.
    - *Depth-First Branch Continuity:* Stay on the active branch until resolved into a confirmed decision or explicitly parked question; ban jumping randomly across topics.
@@ -182,7 +193,7 @@ Explore the initial problem, opportunity, or request through evidence-based inve
    Present the complete scope — features, sub-features, edge cases, and technical trade-offs — to the user, then ask them to triage into **four** clearly distinct buckets. Before presenting any item for triage, the agent must run the **Destination Check**: *"Does this item sit beyond the stated Destination, or is it simply not yet fully understood?"* Only items confirmed to be beyond the destination may be proposed as Out of Scope. Everything else stays in-scope as Fog or Deferred until the user explicitly decides otherwise.
 
    - **In Scope:** The essential core to deliver in this lifecycle cycle.
-   - **Fog (Not Yet Specifiable):** In-scope requirements the agent *can tell are coming* but cannot yet precisely define, because they depend on upstream decisions still open. These are NOT deferred — they are actively in-scope and will graduate to sharp requirements as the Decision Frontier advances. The agent must never ask the user to decide on Fog items — they must first be made sharp.
+   - **Fog (Not Yet Specifiable):** In-scope requirements the agent *can tell are coming* but cannot yet precisely define, because they depend on upstream decisions still open. **Fog ≠ Unknown:** a Fog item is *known to exist* — the agent is certain it will need to be addressed — but it cannot yet be precisely stated because an upstream decision blocks it. These are NOT deferred — they are actively in-scope and will graduate to sharp requirements as the Decision Frontier advances. The agent must never ask the user to decide on Fog items — they must first be made sharp.
    - **Deferred:** Requirements the user has explicitly reviewed, understood, and consciously chosen not to include in this lifecycle cycle. Preserved for future cycles — never deleted.
    - **Out of Scope:** Work that sits *beyond the stated Destination*. This is a scope boundary ruling, not a priority judgment. The agent proposes candidates; the user makes the final call. Rationale must be recorded.
    - *Strict Rules:*
@@ -191,7 +202,13 @@ Explore the initial problem, opportunity, or request through evidence-based inve
      - Before proposing any item as Out of Scope, the agent must verify it sits beyond the Destination, not merely that it's unknown or complex.
      - Items that are "not yet understood" are always Fog, never Out of Scope.
 3. **Record Key Decisions (`DEC-X`):**
-   In `## 4. Key Decisions & Rationale`, record consequential product or technical decisions (`- **DEC-X (<Topic>):** ...`) along with their rationale and trade-offs.
+   In `## 4. Key Decisions & Rationale`, record each consequential decision using this format — the title line has **no bullet**, and the detail + rationale appear as sub-bullets on separate lines:
+   ```
+   **DEC-N — Topic Title**
+   - [The decision made and what it means]
+   - _Rationale:_ [Why this option was chosen and what trade-offs were accepted]
+   ```
+   > **Note:** `01-discover.md` is the single home for ALL decisions across the lifecycle. If Phase 2 — Design uncovers a new decision during flow modeling or prototyping, it is recorded here as `DEC-N`, not in `02-design.md`. The Discover document is updated in place and remains the source of truth.
 4. **Handle Non-Blocking Questions:**
    Non-blocking technical investigations are either recorded under `Deferred` in `01-discover.md` or handed off as open investigations for Phase 3 Plan (never left dangling without an owner). Once the Decision Frontier is empty, proceed directly to Section 4 for user approval.
 
@@ -275,14 +292,28 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
 
 ## 2. Target Features
 
-### [Feature 1 Name]
-- **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
-- **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
-- **[User Interface / Interaction]:** [Presentation, feedback, or interactive controls]
+**F1 — [Feature 1 Name]**
+- [Specific element, action, or interaction — e.g. "Role dropdown filter with options: Admin, Editor, Viewer"]
+- [Specific element — e.g. "Search by username text input"]
+- [Specific action — e.g. "Active / Inactive status dropdown"]
+- [Specific per-item action — e.g. "Edit action button on each user card"]
+- [Specific per-item action — e.g. "Delete action button on each user card"]
+- [Specific navigation — e.g. "Tapping a user card navigates to User Detail screen"]
+- **Zero / Empty State:** [Behavior on first use or when no records exist]
+- **Validation & Recovery:** [Invalid input handling, timeout / network failure recovery]
+- **Permissions & Access:** [Who is authorized, resource isolation, access denied behavior]
+- **State & Concurrency:** [Rapid double-submit, debouncing, conflict guards]
+- **Data Lifecycle:** [Cascade deletions, retention rules, persistence, and cleanup]
 
-### [Feature 2 Name]
-- **[Key Dimension / Trigger]:** [Specific access rule, entry point, or trigger]
-- **[Expected Behavior / Data]:** [Expected system calculation, storage, or output]
+**F2 — [Feature 2 Name]**
+- [Specific element or action]
+- [Specific element or action]
+- [Specific navigation]
+- **Zero / Empty State:** ...
+- **Validation & Recovery:** ...
+- **Permissions & Access:** ...
+- **State & Concurrency:** ...
+- **Data Lifecycle:** ...
 
 ## 3. Scope & Edge Cases
 
@@ -291,7 +322,7 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
 - **[Key Deliverable 2]:** [Verification scope or security boundary]
 
 **Fog (Not Yet Specifiable):**
-- **[Foggy Area 1]:** [In-scope requirement that can't yet be precisely defined — depends on upstream decisions still open. Will graduate to a sharp requirement as the Decision Frontier advances.]
+- **[Foggy Area 1]:** [In-scope requirement known to exist but can't yet be precisely stated — blocked by an upstream open decision. Will graduate to a sharp requirement as the Decision Frontier advances. Not unknown; just not yet specifiable.]
 
 **Deferred:**
 - **[Future Feature 1]:** [Explicitly reviewed requirement the user has chosen to exclude from this cycle, preserved for future iterations]
@@ -301,22 +332,31 @@ The final output of Phase 1 is an approved **Discovery document** saved to `life
 - **[Excluded Item 1]:** [What sits beyond the stated Destination and will not be addressed — with rationale tied to scope boundary]
 - **[Excluded Item 2]:** [Untouched existing workflow or explicitly rejected path — confirmed by user]
 
-**Edge Cases:**
-- **Zero / Empty State:** [Behavior on first use, 0 records, or unconfigured state]
-- **Validation & Recovery:** [Invalid input handling, network drop, service failure recovery]
-- **Permissions & Access:** [Role authorization, resource isolation, access denied behavior]
-- **State & Concurrency:** [Rapid double-action, debouncing, optimistic concurrency, conflict resolution]
-- **Data Lifecycle:** [Cascade deletions, retention rules, persistence, and cleanup]
-
 ## 4. Key Decisions & Rationale
 
-- **DEC-1 ([Topic]):** [Decision made] — _Rationale / Trade-offs:_ ...
-- **DEC-2 ([Topic]):** [Decision made] — _Rationale / Trade-offs:_ ...
+**DEC-1 — [Topic Title]**
+- [The decision made and what it means]
+- _Rationale:_ [Why this option was chosen and what trade-offs were accepted]
+
+**DEC-2 — [Topic Title]**
+- [The decision made and what it means]
+- _Rationale:_ [Why this option was chosen and what trade-offs were accepted]
 
 ## 5. Open Assumptions
 
-- **ASM-1 ([Topic]) [Sharp] [HITL]:** [What was assumed] — _Basis:_ [why inferred, not confirmed] — _Status:_ ⚠️ Pending → surface as ❓ Decision Needed card
-- **ASM-2 ([Topic]) [Sharp] [AFK]:** [What was assumed] — _Basis:_ [why inferred] — _Status:_ ⚠️ Pending → agent resolves via codebase search
-- **ASM-3 ([Topic]) [Foggy] [HITL]:** [What was assumed] — _Basis:_ [why it can't yet be precisely stated] — _Status:_ 🌫 In Fog → graduates when upstream ASM-X resolves
-- **ASM-4 ([Topic]) [Sharp] [HITL]:** [What was assumed] — _Status:_ ✅ Confirmed / ❌ Rejected
+**ASM-1 ([Topic]) [Sharp] [HITL]:** [What was assumed]
+- _Basis:_ [Why inferred, not confirmed]
+- _Status:_ ⚠️ Pending → surface as ❓ Decision Needed card
+
+**ASM-2 ([Topic]) [Sharp] [AFK]:** [What was assumed]
+- _Basis:_ [Why inferred]
+- _Status:_ ⚠️ Pending → agent resolves via codebase search
+
+**ASM-3 ([Topic]) [Foggy] [HITL]:** [What was assumed]
+- _Basis:_ [Why it can't yet be precisely stated — which upstream decision blocks it]
+- _Status:_ 🌫 In Fog → graduates when upstream ASM-X resolves
+
+**ASM-4 ([Topic]) [Sharp] [HITL]:** [What was assumed]
+- _Basis:_ [Why inferred]
+- _Status:_ ✅ Confirmed / ❌ Rejected
 ```

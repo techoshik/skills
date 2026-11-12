@@ -33,6 +33,7 @@ Tasks are executed strictly one task at a time. The Agent must stop for explicit
   - **No Task Batching:** Implement strictly one task at a time. Never touch files or write code for subsequent tasks while the current task is awaiting review.
   - **No Silent Plan Divergence:** Never alter requirements, flows, or task scope unilaterally; follow the In-Flight Plan Amendment Protocol for mid-build discoveries.
   - **No Unapproved Improvements:** Spot improvement opportunities proactively, but never implement extra changes without explicit user approval.
+- **Friction Logging (`lifecycle/refine.md` — Mandatory):** Whenever a rule file invariant is impossible to satisfy as written, a task's Changes (`C1`, `C2`...) are ambiguous or incomplete, a repeatable defect pattern emerges during implementation, an in-flight plan amendment is required, or any build friction arises that would recur on the next project — immediately append an entry to `lifecycle/refine.md`. Do not wait until Phase 5 Close. This is the most friction-rich phase; every entry is valuable.
   - **No Unverified Handoffs:** Never mark an agent check passed without executing it; never present unverified work.
 
 ---
@@ -133,4 +134,4 @@ The deliverables of Phase 4 are:
 2. **Updated Implementation Plan:** Completed tasks marked `- [x]` in `lifecycle/03-plan.md` upon user approval.
 3. **Updated Status Dashboard:** Completed tasks marked `Done` in `lifecycle/00-status.md`.
 4. **Verification Evidence:** Passing automated test logs and verified User Verification steps.
-5. **Upstream Lessons (Optional):** Any friction or rule improvements recorded in `lifecycle/refine.md` for review in Phase 5 Close.
+5. **Friction Log (`lifecycle/refine.md`):** Any friction, rule ambiguity, repeatable defect, or in-flight amendment encountered during Build — logged immediately to `lifecycle/refine.md` for review in Phase 5 Close.

@@ -24,7 +24,13 @@ These rules apply universally across every phase of the lifecycle. Phase skills 
 - **Non-Negotiable Git Safety Boundary:** The Agent is permitted to execute **read-only** Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch modifications belong exclusively to the user.
 - **No Persistent Watchers or Daemons:** Never launch long-running watchers, daemon code generators, or persistent dev servers in background processes without explicit user direction.
 - **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`.
-- **Cross-Phase Friction Logging (`lifecycle/refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** can append entries to `lifecycle/refine.md` whenever workflow friction, prompt ambiguity, tool limitations, or repeatable defects occur. Phase 5 Close systematically reviews these entries at handover.
+- **Cross-Phase Friction Logging (`lifecycle/refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** MUST append an entry to `lifecycle/refine.md` **immediately** whenever any of the following occur — do not wait until phase exit:
+  - A skill instruction is ambiguous, missing, or contradicts another rule
+  - A tool limitation forces an unintended workaround
+  - A repeatable defect pattern is discovered during Build
+  - A workflow step causes unnecessary back-and-forth or decision fatigue
+  - Any friction that, if fixed upstream in a skill or rule, would prevent the same problem recurring on the next project
+  Phase 5 Close systematically reviews all entries and synthesizes actionable skill improvement recommendations.
 - **Context Hygiene:** Load **only** the active phase's skill file into context. Never load all skills simultaneously.
 - **The Universal Treeing Principle:** Decompose complex systems hierarchically: Trunk (Core Purpose / Happy Path) $\to$ Branches (Capabilities / Seams) $\to$ Leaves (Edge Cases, Invariants, Rules).
 - **Strict Phase Boundaries (Negative Constraints):**
@@ -67,6 +73,7 @@ When starting a session or resuming work, read `lifecycle/00-status.md` first to
 | All Phase 4 tasks are `Done`; `Phase 5` is `Todo` | **Close** | Verify outcomes, review quality, assess improvements, sync docs | `lifecycle-close` |
 | `Phase 5 — Close` is `In Review` | **Final Gate** | Stop and wait for final handover & cleanup decision | `lifecycle-close` |
 | All phases are `Done` | **Complete** | Lifecycle finished; ready for user git commit | *(None)* |
+| Any phase or task is `Blocked` | **Blocked** | Surface the blocker and its evidence in chat; do not load any phase skill; wait for user resolution before resuming | *(None)* |
 
 ### 3.3 Step 3 — Enforce Chat Approval Protocol (Human-First Gate)
 
@@ -86,6 +93,7 @@ Whenever any phase, sub-stage, or implementation task reaches an exit gate:
    When new requirements emerge, scope expands, or direction changes in ANY active phase:
    - *Pause Current Activity:* Stop coding or generating downstream artifacts immediately.
    - *Update Upstream Source of Truth in Place:* Realign `01-discover.md`, `02-design.md`, or `03-plan.md` in place.
+   - *Feature Includes Change After Plan Approval (Critical):* If any item is added to, removed from, or changed in a feature's Includes list in `01-discover.md` after Phase 3 — Plan is already approved, the affected feature's tasks in `03-plan.md` MUST be returned to `In Progress`, re-verified for traceability against the updated Includes list, and re-approved by the user before Build resumes. No change to a Feature Includes list is silent.
    - *Realign Dashboard:* Update `lifecycle/00-status.md` so active rows accurately reflect the revised plan.
    - *Working Tree Safety Check:* Run read-only `git status` to identify any uncommitted, discarded code so the user can stash or discard it.
 2. **Session Resumption via Dashboard:**
@@ -131,12 +139,12 @@ The primary deliverable of Phase 0 is the **Status Dashboard** maintained at `li
 | **Phase 2 — Design** | Stage 2.1 — Flow Design ([02-design.md](02-design.md)) | `Todo` |
 | | Stage 2.2 — Interactive Prototype ([02-prototype.html](02-prototype.html)) | `Todo` |
 | **Phase 3 — Plan** | Task Breakdown & Verification Matrix ([03-plan.md](03-plan.md)) | `Todo` |
-| **Phase 4 — Build** | [Task 4.1: Database Schema & Migration](03-plan.md) | `Todo` |
-| | [Task 4.2: Core Endpoint & Logic](03-plan.md) | `Todo` |
-| | [Task 4.3: UI Screen & State](03-plan.md) | `Todo` |
+| **Phase 4 — Build** | *(Rows populated by Plan phase — one row per task from 03-plan.md)* | `Todo` |
 | **Phase 5 — Close** | Quality Audit, Improvements & Handover ([05-close.md](05-close.md)) | `Todo` |
 
 <!-- Status Values: Todo, In Progress, In Review, Blocked, Done, Skipped -->
+<!-- Phase 4 rows are added when Plan is approved. Example row format: -->
+<!-- | | [Task 4.1: Title](03-plan.md) | `Todo` | -->
 ```
 
 ---
