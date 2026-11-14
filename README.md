@@ -4,12 +4,12 @@ A portable, agentic development system for engineering teams and AI agents, driv
 
 | Phase | Skill | Responsibility | Live Artifact |
 | :--- | :--- | :--- | :--- |
-| **0. Orchestrator** | `lifecycle` | Master router, status dashboard, cross-phase friction log, Git safety boundary | `lifecycle/00-status.md`<br>`lifecycle/refine.md` |
-| **1. Discover** | `lifecycle-discover` | Evidence-based problem investigation (`grep`/logs), target features, boundaries, decisions | `lifecycle/01-discover.md` |
-| **2. Design** | `lifecycle-design` | Visual sequences/diffs (Mermaid), Modular Prototype Hub (`02-prototype.html` + `prototype/`), state switcher | `lifecycle/02-design.md` |
-| **3. Plan** | `lifecycle-plan` | Feature-driven task breakdown, Producer-Before-Consumer sequencing, assigned Rule Files, prefactoring check (900/1000 lines), two-tier verification | `lifecycle/03-plan.md` |
-| **4. Build** | `lifecycle-build` | Strict task-by-task execution, instruction re-anchoring, caller inspection, diff hygiene, honest evidence | *(Checked tasks in `03-plan.md`)* |
-| **5. Close** | `lifecycle-close` | Integrated audit, orphaned symbols check, smart deduplication, permanent doc sync (`docs/`), PR summary, cleanup | `lifecycle/05-close.md`<br>+ `docs/modules/` |
+| **0. Orchestrator** | `lifecycle` | Master router, status dashboard, automatic friction log, Git safety boundary | `lifecycle/00-status.md`<br>`lifecycle/refine.md` |
+| **1. Discover** | `lifecycle-discover` | Evidence-based problem investigation, target features (`Includes` & `Edge Cases`), deferred/out-of-scope triage, decisions | `lifecycle/01-discover.md` |
+| **2. Design** | `lifecycle-design` | Mermaid workflows (`F-N`), 3-option light-theme prototypes (`02-prototype.html` + `prototype/`), two-way audit | `lifecycle/02-design.md` |
+| **3. Plan** | `lifecycle-plan` | Coverage Map (`Discover → Plan`), small feature-scoped tasks, assigned Rule Files, prefactoring check, two-tier verification | `lifecycle/03-plan.md` |
+| **4. Build** | `lifecycle-build` | Strict task-by-task execution, `design_system.md` & lint checks, caller inspection, honest test evidence | *(Tracked in `00-status.md`)* |
+| **5. Close** | `lifecycle-close` | Integrated audit, orphaned symbols check, permanent docs + deferred backlog sync (`docs/modules/`), PR summary, cleanup | `lifecycle/05-close.md`<br>+ `docs/modules/` |
 
 ---
 

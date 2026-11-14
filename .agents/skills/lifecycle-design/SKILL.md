@@ -30,19 +30,15 @@ This phase has two sequential stages:
 - **Flow & State Treeing:** Tree flows systematically: Primary Happy Path (Trunk) $\to$ Alternate Scenarios (Branches) $\to$ Edge & Error Recovery Loops (Leaves).
 - **Visualize Before Prototyping:** Model and validate flow diagrams before writing HTML prototype code.
 - **Highlight What Changes:** For modifications to existing systems, distinguish current behavior from proposed behavior using side-by-side visual diffs or concise change delta tables.
-- **1-Hypothesis Prototype Fork:** Every comparative option (Option A vs. Option B) must test a singular, explicit UX hypothesis (e.g., Speed of Entry vs. Guided Error Prevention). Cosmetic or color variations do not count as distinct options.
-- **Scale Exploration to Uncertainty:**
-  - *Focused (1 option):* Minor adjustments or flows following established design conventions.
-  - *Comparative (2 options):* Meaningful UX decisions with two viable interaction models.
-  - *Broad (up to 3 options):* Complex or novel workflows with structurally distinct approaches.
+- **Always Create 3 Distinct Options (Pick One or Mix & Merge):** For every UI feature, create **3 structurally distinct prototype variants** (`Option A`, `Option B`, `Option C`) in `lifecycle/prototype/<feature>/` linked from `lifecycle/02-prototype.html`. Cosmetic or color-only tweaks do not count as distinct options. After reviewing all 3, the user can either pick one option or **mix and merge** parts from multiple options into the final approved design.
 - **Prevent "God-File" Prototypes:** Never create monolithic single-file prototypes for multi-feature or multi-variant projects. Use a central Prototype Hub (`lifecycle/02-prototype.html`) linking to focused, self-contained option files in `lifecycle/prototype/<feature>/`. Prototypes are temporary validation artifacts—prioritize realistic interaction and modularity over arbitrary line-count limits.
 - **Interactive State Toggling:** Every prototype option must feature a sticky top state-switcher bar allowing instant toggling between key interactive states (`Default`, `Empty`, `Loading`, `Error`, `Edge / Restricted`).
 - **Self-Contained & Zero-Build:** Prototypes must open directly in any browser with zero build steps, bundlers, or local servers. Embed styles, mock data, and minimal vanilla JS directly in each file.
 - **Design System Primitive Alignment (Anti-Translation Reflex):** Prototypes are HTML models—not production code. Do not write complex custom CSS or obsess over pixel perfection. Align HTML structures conceptually with the target project's canonical design system primitives (cards, buttons, dialogs, toasts, spacing tokens, semantic theme roles). In Phase 4 Build, production code must NEVER translate raw HTML/CSS primitives 1:1 into ad-hoc framework widgets (e.g. manual `Container` with arbitrary gradients and raw numeric paddings); it must bind directly to canonical design system components and tokens.
 - **Synchronize Discoveries Upstream — Design is a Validator, Not a Decision Record:** `02-design.md` is a visual validation artifact, not a requirements or decision document. Any gap, missing requirement, or unhandled edge case uncovered during flow modeling or prototyping must be pushed back to `lifecycle/01-discover.md` immediately:
-  - **Missing Feature Includes item** → add it to the relevant feature's Includes list in `01-discover.md` and confirm with the user
+  - **Missing Feature Item (`F-N.x`)** → add it under the relevant `### F-N` feature in `01-discover.md` and confirm with the user
   - **New consequential decision** → record it as a `DEC-N` entry in `## 4. Key Decisions & Rationale` in `01-discover.md` — not in `02-design.md`
-  - **New open assumption** → add it as `ASM-N` in `## 5. Open Assumptions` in `01-discover.md`
+  - **New open assumption** → add it as `ASM-N` under `**Open Assumptions:**` in `## 0. Research Summary` of `01-discover.md`
   - If Plan is already approved when a gap is found, follow the Mid-Flight Scope Change rule in the lifecycle orchestrator: affected tasks return to `In Progress` before Design can be re-approved.
   `02-design.md` records only: visual flows, prototype file references, and which prototype option was selected per screen (and why the other was rejected). Nothing else.
 - **Single Live Document (`lifecycle/02-design.md`):** All flow diagrams, prototype references, and UX decisions live in `lifecycle/02-design.md`.
@@ -86,14 +82,14 @@ flowchart LR
    - For sequence diagrams, use `autonumber` and clear participant labels; quote participant labels or aliases containing slashes, hyphens, or parentheses.
    - **No Parentheses in Edge Labels:** Avoid parentheses in flowchart edge labels (e.g. use hyphens or clean phrases `|No - Option A|` instead of `|No (Option A)|`) because Mermaid grammar breaks on unescaped parentheses inside `|...|` delimiters.
    - **No Nested `alt` in Sequence Diagrams:** Prohibit nested `alt` blocks (use sequential `opt` blocks or flat sequential checks); standard Mermaid sequence grammar strictly forbids nested `alt` and crashes markdown renderers.
-   - **Flush Column-0 Fenced Code Blocks:** Never nest Mermaid code blocks inside bullet points; place them under level-3 headings (`### Workflow X: [Feature Name]`) flush at column 0 to prevent markdown rendering errors.
+   - **Flush Column-0 Fenced Code Blocks:** Never nest Mermaid code blocks inside bullet points; place them under level-3 headings (`### F-N — [Action / Flow Name]` or `### Shared — Error Recovery Flow`) flush at column 0 to prevent markdown rendering errors.
 4. **Enforce Zero Dead-Ends & Sync Gaps Upstream:**
    - Verify that every error branch, validation failure, and timeout loops back to an actionable user recovery step or a safe exit. Never leave an orphaned error box.
    - For modifications to existing systems, distinguish current behavior from proposed behavior using side-by-side visual diffs or concise change delta tables.
-   - If flow modeling reveals a missing Feature Includes item or an unresolved decision, push it back to `lifecycle/01-discover.md` before the Gate 2.1 approval request.
-   - Document flows in `lifecycle/02-design.md` under `## 2. Visual Workflows & Sequences`.
+   - If flow modeling reveals a missing `F-N.x` feature item or an unresolved decision, push it back to `lifecycle/01-discover.md` before the Gate 2.1 approval request.
+   - Document flows in `lifecycle/02-design.md` under `## 2. Workflows`.
 5. **Gate 2.1 Approval Protocol:**
-   - **Pre-Gate Reconciliation Audit (Mandatory):** Before marking Stage 2.1 as `In Review`, scan every node, action, branch, and state in the completed flow diagrams. For each functionality found, verify it maps to an item in a feature's Includes list in `lifecycle/01-discover.md`. For any functionality present in the flows but absent from the Includes list, surface it to the user using this format before requesting approval:
+   - **Pre-Gate Reconciliation Audit (Mandatory):** Before marking Stage 2.1 as `In Review`, scan every node, action, branch, and state in the completed flow diagrams. For each functionality found, verify it maps to an `F-N.x` item in `lifecycle/01-discover.md`. For any functionality present in the flows but absent from `01-discover.md`, surface it to the user using this format before requesting approval:
 
      ```
      🔍 Found in Flow, Not in Discover: <Short Title>
@@ -102,12 +98,24 @@ flowchart LR
      - **Not found in:** [F-N — Feature Name]
 
      What should we do with this?
-     - **A — Add to Discover:** Add it to the Feature Includes list for F-N and confirm scope
+     - **A — Add to Discover:** Add it as an `F-N.x` item under `### F-N` and confirm scope
      - **B — Remove from Flow:** Remove it from the diagram — it was added by mistake
      - **C — Defer:** Note it as a Deferred item in `01-discover.md` and remove it from this flow
      ```
 
      Wait for the user's explicit decision on every unlisted item before proceeding. Never request Gate 2.1 approval while any unlisted functionality remains unresolved.
+   - **Forward Coverage Check (Discover → Flow):** Also verify that every `F-N.x` item in `lifecycle/01-discover.md` appears in the flows. For any item missing from the flows, surface it before Gate 2.1:
+
+     ```
+     🔍 Missing from Flow (Found in Discover): <Short Title>
+     - **From Feature:** [F-N — Feature Name]
+     - **Feature item:** [F-N.x — exact item text from 01-discover.md]
+
+     What should we do with this?
+     - **A — Add to Flow:** Include it in the workflow diagrams now
+     - **B — Move to Deferred:** Move it to Deferred in `01-discover.md`
+     - **C — Remove from Discover:** Remove it from `01-discover.md` as Out of Scope
+     ```
    - Update row `Stage 2.1 — Flow Design` to `In Review` in `lifecycle/00-status.md`.
    - Stop calling tools immediately.
    - Follow the **Phase 0 Chat Approval Protocol** to present visual workflows in chat and ask for explicit approval before writing prototype code.
@@ -123,22 +131,25 @@ flowchart LR
 
 > **Applicability Note:** Pure non-UI / backend changes explicitly skip this stage. Mark Stage 2.2 as `Skipped (N/A)` in `lifecycle/00-status.md` and advance directly to Phase 3 — Plan.
 
-1. **Select Exploration Depth & Apply the 1-Hypothesis Fork:**
-   - Assess UX uncertainty: Focused (1 option), Comparative (2 options), or Broad (3 options).
-   - Ensure each option tests a singular, distinct hypothesis (e.g. Option A: Speed of Entry via in-place table editing vs. Option B: Error Prevention via a dedicated slide-over wizard).
+1. **Create 3 Distinct Prototype Variants (Option A, B, C):**
+   - Build **3 genuinely different interaction models** for each UI feature (e.g. Option A: inline table editing, Option B: slide-over drawer, Option C: step-by-step modal wizard).
+   - Let the user either pick one option or mix and merge parts from different options into the final design.
 2. **Directory Structure (Modular Hub Architecture):**
    ```text
    lifecycle/
-   ├── 02-design.md            # Primary design documentation and decisions
+   ├── 02-design.md            # Primary design documentation and workflows
    ├── 02-prototype.html       # Central Hub: feature index, option trade-offs, decision cards
    └── prototype/
        └── <feature-slug>/     # e.g., auth, dashboard, billing
            ├── option-a.html   # Self-contained variant A
-           └── option-b.html   # Self-contained variant B
+           ├── option-b.html   # Self-contained variant B
+           └── option-c.html   # Self-contained variant C
    ```
 3. **Build Self-Contained Prototype Options:**
    - **Focused Scope:** Keep each option file focused on the specific screen or workflow being tested. It is a throwaway validation artifact—prioritize realistic interaction over line count limits.
    - **Self-Contained & Zero-Build:** Include inline `<style>` and minimal vanilla JS inside each HTML file. Avoid npm/build tooling (modern CSS or Tailwind via CDN is acceptable).
+   - **Default Light Theme:** Always use a clean light theme matching `.agents/rules/design_system.md` if present (page `#F5F5F5`, cards `#FFFFFF`, borders `#E2DFD8`, hover `#F0EEE9`, primary `#1B4FD8`, dark text `#212121`), or neutral light surfaces (`#F5F5F5` / `#FFFFFF` / `#E2DFD8`) if no design system rule file exists.
+   - **No Native Browser Popups:** Never use `window.alert()`, `window.confirm()`, or `window.prompt()`. Always build real HTML modal dialogs and toast banners so reviewers can check exact titles, warnings, and button labels.
    - **Prototype State Treeing (Sticky State-Switcher Bar):** Include a sticky top header bar to toggle between states instantly:
      - `Default`: Standard loaded state with realistic mock data.
      - `Empty`: Zero-data state with onboarding cues.
@@ -146,23 +157,23 @@ flowchart LR
      - `Error / Validation`: Field-level errors, banner alerts, retry prompts.
      - `Edge / Permissions`: Restricted view, read-only state, or modal confirmation.
    - **Async Communication Drawer:** For multi-step async flows (e.g. email verification links, magic links, SMS OTPs), embed a simulated collapsible drawer or modal in the prototype so reviewers can inspect payloads and click links directly.
-   - **Simplified Design System Alignment (Mirroring Primitives in HTML):** Keep HTML/CSS simple (e.g. modern Tailwind via CDN or utility classes). Map design system primitives conceptually so Phase 4 Build can translate them effortlessly:
-     - *Cards & Containers:* Standard rounded container cards (`rounded-2xl border bg-slate-800/900`) representing design system cards (`ThanksCard`).
-     - *Buttons:* Clear visual hierarchy: solid brand primary button, secondary/ghost button, and disabled/loading spinner state representing design system buttons (`ThanksButton`).
-     - *Dialogs & Modals:* Centered overlay cards with dimmed backdrop, clear title, body, and primary/cancel actions representing design system dialogs (`ThanksDialog`).
-     - *Toasts & Feedback:* Top banners or status cards (success toast, error banner with explicit retry button, empty state card) representing design system feedback (`ThanksToast`, `ThanksMessageView`).
-     - *Spacing & Sizing Rhythm:* Use standard spacing scales (`p-4`, `p-6`, `gap-3`, `gap-4`) and standard icon sizes (`w-5 h-5` ~20px, `w-10 h-10` ~40px) rather than arbitrary odd pixel values.
-     - *Plain-Language Copy (5th-Grade Standard):* Write all prototype dialog titles, button labels, toasts, and notices in simple, everyday English that a 5th-grade student can easily read and understand. Ban technical and corporate jargon (e.g. use "Add New Shop" instead of "Manage Store Branches", "Open Website" instead of "Launch Web Portal"). If the prototype uses plain language, production code will automatically inherit it without rework.
-     - *No Over-Engineering:* Never get stuck attempting to implement pixel-perfect Flutter look-alikes. Aligning on component primitives and vocabulary is all that is needed.
+   - **Design System Alignment (Read Project Rules First):** Always read `.agents/rules/design_system.md` (or the project's UI rule file) *before* writing prototype HTML so colors, spacing, radii, icon sizes, and component names stay automatically in sync with production rules:
+     - Mirror the project's canonical cards, buttons, dialogs, toasts, and empty/loading/error views in clean Tailwind/HTML.
+     - Use the project's spacing and icon scale (`4 / 8 / 16px` spacing, `20 / 40px` icons) rather than arbitrary pixel values.
+     - *Plain-Language Copy (5th-Grade Standard):* Write all prototype dialog titles, button labels, toasts, and notices in simple, everyday English. Ban technical and corporate jargon.
+     - *No Over-Engineering:* Never try to build pixel-perfect framework look-alikes — aligning on component primitives, spacing, and plain-language copy is enough.
 4. **Assemble the Central Prototype Hub (`lifecycle/02-prototype.html`):**
-   - Provide an index of all prototype options organized by feature.
-   - Include a **"Needs Decision"** banner highlighting the specific trade-offs between options.
+   - Provide an index of all 3 prototype options organized by feature.
+   - Include a **"Needs Decision"** banner highlighting the specific trade-offs between Option A, B, and C, and note that parts can be mixed and merged.
    - Embed lightweight Mermaid sub-flow diagrams where visual process context clarifies the screen being viewed.
 5. **Synchronize Gaps Upstream & Record Prototype Decision:**
-   - For every gap, missing Includes item, or new decision uncovered during prototyping: push it back to `lifecycle/01-discover.md` (Feature Includes list, `DEC-N`, or `ASM-N` as appropriate). Never record decisions in `02-design.md`.
-   - Record only the prototype option selection in `lifecycle/02-design.md` under `## 1. At a Glance`: which option was chosen per screen and in one sentence why the other was rejected.
+   - For every gap, missing `F-N.x` item, or new decision uncovered during prototyping: push it back to `lifecycle/01-discover.md` (`### F-N`, `DEC-N`, or `ASM-N` as appropriate). Never record decisions in `02-design.md`.
+   - At Gate 2.2 (`In Review`), list `[02-prototype.html](02-prototype.html)` under `## 1. UI Prototypes` with status `Pending Selection (Options A / B / C ready for review)`. Once the user selects an option (or mixes and merges parts), update that line with the chosen option and a 1-sentence rationale for why rejected parts were not used before marking Stage 2.2 `Done`.
 6. **Pre-Exit Reconciliation Audit — Prototype (Mandatory):**
-   Before requesting Phase 2 exit approval, scan every screen, control, input, action, state, and navigation path visible in the finalized prototype. For each element, verify it maps to an item in a feature's Includes list in `lifecycle/01-discover.md`. For any element present in the prototype but absent from the Includes list, surface it using the same format as the Gate 2.1 audit card (`🔍 Found in Prototype, Not in Discover`) and wait for the user's explicit decision before proceeding. Only after every unlisted element is resolved may the Phase 2 exit gate be requested.
+   Before requesting Phase 2 exit approval, run a two-way check:
+   - **Prototype → Discover:** Scan every screen, control, input, action, state, and navigation path in the finalized prototype. Surface any element absent from `01-discover.md` using `🔍 Found in Prototype, Not in Discover`. If the user chooses **Add to Discover**, treat it as a new requirement using `lifecycle-discover` (ask any `ASM-N` questions one by one and document all 5 edge-case lenses in `01-discover.md`) before finalizing Design.
+   - **Discover → Prototype:** Check every `F-N.x` item in `lifecycle/01-discover.md`. Surface any item missing from the prototype using `🔍 Missing from Prototype (Found in Discover)` (Add to Prototype / Move to Deferred / Remove from Discover).
+   Only after every two-way mismatch is resolved may the Phase 2 exit gate be requested.
 
 ---
 
@@ -177,13 +188,13 @@ Before requesting user approval, verify that:
 - **Zero Dead-Ends Verified:** Every error, validation, and timeout branch loops back to an actionable user recovery step or safe exit.
 - **Change Delta Clarified:** For modifications to existing systems, current vs. proposed behavior is clearly distinguished via visual diffs or delta tables.
 - **Mermaid Syntax Validated:** All diagrams use supported types (`flowchart`, `sequenceDiagram`, `stateDiagram-v2`) with quoted labels for special characters, zero parentheses in edge labels, and zero nested `alt` blocks.
-- **Modular Prototype Hub Assembled:** (UI only) Prototypes follow the modular hub structure (`02-prototype.html` index hub + `prototype/<feature>/option-X.html`).
+- **3 Prototype Options & Hub Assembled:** (UI only) Prototypes include 3 distinct variants (`Option A`, `Option B`, `Option C`) in `prototype/<feature>/` linked from `02-prototype.html`, using a clean light theme and HTML modal dialogs (zero `window.alert` / `window.confirm`).
 - **State-Switcher Bar Functional:** (UI only) Sticky bar allows instant toggling between Default, Empty, Loading, Error, and Edge states.
 - **Async Inspection Drawer Included:** (UI only) Simulated drawer allows testing email/magic link payloads without external mail servers.
 - **Non-UI Explicitly Skipped:** For pure backend tasks, prototyping is explicitly marked `Skipped (N/A)` in `lifecycle/00-status.md`.
-- **Feature Includes Coverage (Two-Directional):** Every item in every feature's Includes list from `01-discover.md` is represented by at least one flow or prototype screen. Conversely, every interactive element in the prototype traces back to an Includes list item — no phantom UI elements added during Design without first updating `01-discover.md`.
-- **Reconciliation Audit Completed:** Both pre-gate audits have been run — one after flows (Gate 2.1) and one after prototypes (Phase 2 exit). Every functionality found in flows or prototypes but absent from the Feature Includes list was surfaced to the user and explicitly resolved (Added to Discover / Removed from Design / Deferred). Zero unresolved unlisted elements remain.
-- **Gaps Synced to Discover:** Any missing requirement, unhandled edge case, new decision, or new assumption found during flow modeling or prototyping has been pushed back to `lifecycle/01-discover.md` (Feature Includes list, `DEC-N`, or `ASM-N`). Zero decisions or requirements remain recorded only in `02-design.md`.
+- **Feature Item Coverage (Two-Directional):** Every `F-N.x` item from `01-discover.md` is represented by at least one flow or prototype screen. Conversely, every interactive element in the prototype traces back to an `F-N.x` item — no phantom UI elements added during Design without first updating `01-discover.md`.
+- **Reconciliation Audit Completed:** Both pre-gate audits have been run — one after flows (Gate 2.1) and one after prototypes (Phase 2 exit). Every functionality found in flows or prototypes but absent from `01-discover.md` was surfaced to the user and explicitly resolved (Added to Discover / Removed from Design / Deferred). Zero unresolved unlisted elements remain.
+- **Gaps Synced to Discover:** Any missing requirement, unhandled edge case, new decision, or new assumption found during flow modeling or prototyping has been pushed back to `lifecycle/01-discover.md` (`### F-N`, `DEC-N`, or `ASM-N`). Zero decisions or requirements remain recorded only in `02-design.md`.
 - **Upstream Sync Complete:** `lifecycle/01-discover.md` reflects the full current understanding after Design — it is the single source of truth for requirements and decisions.
 
 ### Requesting User Approval (Phase 0 Protocol)
@@ -209,23 +220,14 @@ The primary deliverable is `lifecycle/02-design.md`, supported by `lifecycle/02-
 ```markdown
 # Design: [Requirement / Feature Name]
 
-## 1. At a Glance
+## 1. UI Prototypes
 
-**The Core Journey:**
-[1-sentence summary of what this end-to-end user flow accomplishes].
-
-**UI Prototypes:**
 - **Prototype Hub:** [02-prototype.html](02-prototype.html) *(or "Skipped (N/A for Non-UI)")*
-- **[Screen 1 / Workflow Name]:** [Option B](prototype/<feature>/screen-1-b.html) selected — [1 sentence why Option A was rejected].
-- **[Screen 2 / Workflow Name]:** [Option A](prototype/<feature>/screen-2-a.html) selected — [1 sentence why Option B was rejected].
+- **[Screen 1]:** `Pending Selection (Options A / B / C ready for review)` *(update after Gate 2.2 to: `[Option B](prototype/<feature>/option-b.html) selected` or `Mixed Option A + B` — 1 sentence on why rejected options/parts were not used)*
 
-**Gaps Synced to Discover:**
-> All gaps, decisions, and assumptions found during Design are recorded in `lifecycle/01-discover.md` — not here.
-- **[Gap / Decision]:** [What was found] → Synced to `01-discover.md` as [DEC-N / ASM-N / Feature Includes item on F-X]
+## 2. Workflows
 
-## 2. Visual Workflows & Sequences
-
-### Workflow 1: [Feature 1 Name]
+### F1 — [Action / Flow Name]
 
 ```mermaid
 sequenceDiagram
@@ -242,7 +244,7 @@ sequenceDiagram
   Frontend-->>User: Visual feedback
 ```
 
-### Workflow 2: [Feature 2 Name]
+### F2 — [Action / Flow Name]
 
 ```mermaid
 flowchart TD
@@ -253,7 +255,7 @@ flowchart TD
   Submit --> Success["Display Success Confirmation"]
 ```
 
-**Zero Dead-Ends Error Recovery:**
+### Shared — Error Recovery Flow
 
 ```mermaid
 flowchart TD

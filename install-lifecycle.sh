@@ -211,16 +211,31 @@ update_guideline() {
 
   local start_prefix='<!-- lifecycle:guideline:start' end_prefix='<!-- lifecycle:guideline:end'
   local end_marker='<!-- lifecycle:guideline:end -->'
-  local pattern='^(.*)<!-- lifecycle:guideline:start sha256=([0-9a-f]{64}) -->(.*)<!-- lifecycle:guideline:end -->(.*)$'
-  local prefix="" suffix="" body installed_hash newline=$'\n'
+  local header_pattern='^ sha256=([0-9a-f]{64}) -->$'
+  local prefix="" suffix="" body installed_hash header rest newline=$'\n'
   if [[ "$content" == *"$start_prefix"* || "$content" == *"$end_prefix"* ]]; then
-    if [[ "${content#*"$start_prefix"}" == *"$start_prefix"* ||
-          "${content#*"$end_prefix"}" == *"$end_prefix"* ]] || ! [[ "$content" =~ $pattern ]]; then
+    if [[ "$content" != *"$start_prefix"* || "$content" != *"$end_marker"* ||
+          "${content#*"$start_prefix"}" == *"$start_prefix"* ||
+          "${content#*"$end_prefix"}" == *"$end_prefix"* ]]; then
       echo "Preserved guideline for review (malformed section markers): $target_file" >&2
       return
     fi
-    prefix="${BASH_REMATCH[1]}" installed_hash="${BASH_REMATCH[2]}"
-    body="${BASH_REMATCH[3]}" suffix="${BASH_REMATCH[4]}"
+    prefix="${content%%"$start_prefix"*}"
+    rest="${content#*"$start_prefix"}"
+    header="${rest%%$'\n'*}"
+    header="${header%$'\r'}"
+    if ! [[ "$header" =~ $header_pattern ]]; then
+      echo "Preserved guideline for review (malformed section markers): $target_file" >&2
+      return
+    fi
+    installed_hash="${BASH_REMATCH[1]}"
+    rest="${rest#*"-->"}"
+    if [[ "$rest" != *"$end_marker"* ]]; then
+      echo "Preserved guideline for review (malformed section markers): $target_file" >&2
+      return
+    fi
+    body="${rest%%"$end_marker"*}"
+    suffix="${rest#*"$end_marker"}"
     if [[ "$body" == $'\r\n'* ]]; then newline=$'\r\n'; fi
     if [[ ( -n "$prefix" && "$prefix" != *$'\n' ) ||
           "$body" != "$newline"* || "$body" != *$'\n' ||

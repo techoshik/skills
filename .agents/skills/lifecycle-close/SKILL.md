@@ -28,7 +28,7 @@ The Agent should continuously look for opportunities to improve the implementati
   - Narrow, mechanical defects on touched files (e.g., removing an unused import or fixing a typo) may be resolved in-place during Finalize.
   - Any behavioral, architectural, data-integrity, or security defect **must** return to Phase 4 — Build as a formal task.
 - **Document Verified Truth Only:** Permanent documentation in `docs/` must represent the final verified implementation, not temporary plans or abandoned ideas.
-- **Honest Global Evidence:** Distinguish pre-existing baseline test failures from regressions introduced by this feature. Report all test results honestly as `Passed`, `Failed`, or `Not Run`.
+- **Honest Global Evidence:** Distinguish pre-existing baseline test failures from regressions introduced by this feature. Report all test results honestly as `Passed`, `Failed`, or `Not Run`. Saying tests "compiled" or "aligned" does NOT count as `Passed` — report unexecuted suites as `Not Run`.
 - **Preserve Lifecycle Artifacts by Default:** Never delete or move the `lifecycle/` directory without an explicit choice from the user at the Artifact Cleanup Gate.
 - **Strict Phase Boundaries (Negative Constraints):**
   - **No New Features or Scope Expansion:** Feature exploration and scope boundaries belong to Phase 1 — Discover.
@@ -84,18 +84,19 @@ Finalize progresses through three disciplined chronological steps:
 
 1. **Synchronize Permanent Documentation via Documentation Treeing:**
    Structure permanent project knowledge hierarchically from Trunk to Leaves:
-   - **Level 1 (Trunk — Module README at `docs/modules/<module>/README.md`):** Module orientation page summarizing business purpose, core data models, feature directory index, and cross-module boundaries.
+   - **Level 1 (Trunk — Module README at `docs/modules/<module>/README.md`):** Module orientation page summarizing business purpose, core data models, feature directory index, and cross-module boundaries. Always copy any `**Deferred:**` items from `lifecycle/01-discover.md` (`## 3. Deferred & Out of Scope`) into `Deferred (Future Backlog)` here so saved future ideas are never lost if `lifecycle/` is deleted.
    - **Level 2 (Branches — Feature Document at `docs/modules/<module>/feature_<name>.md`):** Deep feature specification describing end-to-end primary workflows, alternate paths, and component touchpoints.
    - **Level 3 (Leaves — Invariants & Decisions):** Scoped non-negotiable Business Rules (`BR-X`) and Consequential Architectural Decisions (`DEC-X`).
-   - **Root Updates (`README.md` / `GLOSSARY.md`):** Update root `README.md` if setup or commands changed; promote new or updated `Core Terms` from `lifecycle/01-discover.md` into the root `GLOSSARY.md` so domain vocabulary is permanently preserved after `lifecycle/` cleanup.
+   - **Root Updates (`README.md` / `GLOSSARY.md`):** Update root `README.md` if setup or commands changed; promote new or updated `Core Terms` from `lifecycle/01-discover.md` into the required root `GLOSSARY.md` (creating it from the `§5` template if missing) so domain vocabulary is permanently preserved after `lifecycle/` cleanup.
    - *Format Rule:* Document verified truth with scannable nested sub-bullets. Link rather than duplicate.
 2. **Review Upstream Friction (`lifecycle/refine.md`) — Mandatory Synthesis:**
    - Review every entry recorded in `lifecycle/refine.md` across all earlier phases. If no entries exist, explicitly note in `lifecycle/05-close.md` that the log was checked and was empty — do not silently skip it.
    - For each entry, classify: *One-off* (project-specific, no action needed) or *Framework-wide* (would recur on the next project — a skill or rule needs updating).
    - For every *Framework-wide* entry, produce a concrete Preventive Change recommendation: the specific skill, rule, or template to update and what the update should say.
    - Record the synthesis in `lifecycle/05-close.md` under a `## 4. Friction Log Review` section. These recommendations are the primary mechanism for continuously improving the lifecycle skills themselves.
-3. **Prepare Copyable PR Summary:**
-   Author a clean, evidence-based PR summary directly in `lifecycle/05-close.md` under `## 3. Pull Request Summary` and present it in chat for the user to copy into GitHub/GitLab:
+3. **Prepare Copyable PR Title & Summary:**
+   Author a clean PR title and evidence-based PR summary directly in `lifecycle/05-close.md` under `## 3. Pull Request Summary` for the user to copy into GitHub/GitLab:
+   - **PR Title:** Short, clear title (e.g. `feat(<module>): <concise change summary>`).
    - **Outcome Summary:** Problem solved and delivered user capability.
    - **Key Changes & Files:** Core files created or modified with 1-line descriptions.
    - **Verification Evidence:** Exact test runner commands, results, and manual check proofs.
@@ -124,7 +125,7 @@ Before requesting user approval, verify that:
 - **Orphan Hunter Audit Clean:** Zero orphaned exports, dead route registrations, dangling imports, or stale mocks remain.
 - **Global Checks Honestly Documented:** Project test suite and static analyzers run with results recorded (`Passed`, `Failed`, `Not Run`).
 - **Improvement Assessment Complete:** All identified opportunities were presented and decided by the user (approved, declined, or deferred).
-- **Permanent Docs Synchronized:** `docs/modules/` accurately reflects the final implementation.
+- **Permanent Docs Synchronized:** `docs/modules/` accurately reflects the final implementation, and all `**Deferred:**` items from `01-discover.md` are copied into `docs/modules/<module>/README.md` under `Deferred (Future Backlog)`.
 - **Core Terms Promoted:** New domain vocabulary from `01-discover.md` promoted to root `GLOSSARY.md`.
 - **Friction Log Reviewed:** `lifecycle/refine.md` reviewed; every entry classified as one-off or framework-wide; framework-wide entries have concrete Preventive Change recommendations recorded in `lifecycle/05-close.md`.
 - **PR Summary Ready:** Copyable PR summary prepared in `lifecycle/05-close.md`.
@@ -132,8 +133,9 @@ Before requesting user approval, verify that:
 
 ### Requesting User Approval (Phase 0 Protocol)
 
-1. Follow the **Phase 0 Chat Approval Protocol** to present verified outcomes, updated permanent docs, the copyable PR Summary, and request the **Artifact Decision for `lifecycle/`** (Delete, Archive, Keep).
-2. Stop calling tools immediately and wait for the user's explicit response.
+1. Update Phase 5 status to `In Review` in `lifecycle/00-status.md`.
+2. Output a concise 1–2 sentence summary linking `[05-close.md](05-close.md)` (where the PR summary and audit evidence live) and ask the user to choose whether to **Delete**, **Archive**, or **Keep** `lifecycle/`.
+3. Stop calling tools immediately and wait for the user's explicit response.
 
 ### Gate Outcomes
 
@@ -186,7 +188,10 @@ The deliverables of Phase 5 are:
 - `[Opportunity 1]`: [Brief note + Decision: Approved (created Task 4.x) / Deferred / Declined]
 
 ## 3. Pull Request Summary
-```markdown
+
+**PR Title:** `feat(<module>): <concise summary of delivered change>`
+
+````markdown
 ### Summary
 [1-2 paragraph summary of delivered functionality]
 
@@ -197,7 +202,16 @@ The deliverables of Phase 5 are:
 ### Verification
 - [Passing automated test suites]
 - [User verification confirmed]
-\```
+````
+
+## 4. Friction Log Review
+- `lifecycle/refine.md` checked — [None / list entries classified as One-off or Framework-wide with Preventive Change].
+
+## 5. Artifact Cleanup Decision
+Awaiting user choice for `lifecycle/`:
+1. **Delete** — remove `lifecycle/` (permanent docs already in `docs/`).
+2. **Archive** — move `lifecycle/` to `docs/archive/<feature-name>/`.
+3. **Keep** *(Default)* — keep `lifecycle/` in place.
 ```
 
 ### Recommended Structure for `docs/modules/<module>/README.md`
@@ -270,4 +284,14 @@ The deliverables of Phase 5 are:
 - **Why:** <Evidence and main trade-off>
 - **Alternative rejected:** <Meaningful alternative and why it was not selected>
 - **Consequences / revisit trigger:** <Risk or condition that would justify revisiting>
+```
+
+### Recommended Structure for `GLOSSARY.md` (Project Root — Required)
+
+```markdown
+# Domain Glossary
+
+Core business and domain terms used across code, UI copy, and documentation.
+
+- **[Term]:** [1-line plain-English definition] *(Module: `<module>`)*
 ```

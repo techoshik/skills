@@ -27,7 +27,7 @@ Tasks are executed strictly one task at a time. The Agent must stop for explicit
 - **Red-Green Seam Proof (Proof of Cause):** For bugfixes and new logic, prove the seam: verify the failing behavior or error log before editing (Red), implement the targeted change, and prove the automated check passes after (Green). Never claim a fix works without proving the causal link.
 - **Implement the Smallest Coherent Slice:** Keep changes focused, minimal, and compile-clean. Avoid horizontal fragmentation or sweeping refactors that touch unrelated files.
 - **Pre-Handoff Diff Scrub (Hypo-Allergenic Diffs):** Audit `git diff` line-by-line before requesting review: ensure zero accidental whitespace modifications to untouched code, zero leftover `console.log`, `debugger`, or temporary shims, zero orphaned imports, zero hardcoded design literals (magic numbers on padding, margins, icon sizes, spacers, or raw colors) bypassing canonical design system tokens, and clear plain-language copy. Every line in the diff must directly serve the task.
-- **Honest Evidence Reporting (`Passed` / `Failed` / `Not Run`):** Never claim a check passed unless it was actually executed. Distinguish pre-existing baseline test failures from new regressions; never silently broaden scope to fix unrelated baseline issues.
+- **Honest Evidence Reporting (`Passed` / `Failed` / `Not Run`):** Never claim a check passed unless the test runner actually executed and passed. Saying tests "compiled" or "aligned" does NOT count as `Passed` — report unexecuted suites honestly as `Not Run`. Distinguish pre-existing baseline test failures from new regressions; never silently broaden scope to fix unrelated baseline issues.
 - **Improve Proactively, Change Only With Approval:** Actively spot opportunities to improve code quality, performance, or security, but present them as recommendations in chat. Never implement extra changes without explicit user approval.
 - **Strict Phase Boundaries (Negative Constraints):**
   - **No Task Batching:** Implement strictly one task at a time. Never touch files or write code for subsequent tasks while the current task is awaiting review.
@@ -81,25 +81,13 @@ Implementation follows three disciplined chronological steps for each task:
 2. **Pre-Handoff Diff Scrub:**
    - Run read-only `git diff` line-by-line to verify:
      - Zero accidental whitespace modifications to untouched code, zero debug statements (`console.log`, `print`, `debugger`), zero unused imports, and zero temporary mocks.
-     - **Design System Token & Component Primacy:** Zero raw numeric padding/insets (`EdgeInsets.all/symmetric/only(<number>)`), zero raw integer sizes on icons (`Icon(size: <number>)`), zero ad-hoc spacers (`SizedBox(width/height: <number>)`), zero raw color literals, and zero manual alpha overlays (`.withValues(alpha: ...)`, `.withOpacity(...)`). All UI must strictly consume the project's canonical design system library (widgets, spacing tokens, typography, theme colors, dialogs, toasts, loaders). If any widget, spacing guideline, icon size token, or style appears to be missing in the design system library, **ask the user first** for direction rather than creating ad-hoc custom solutions, raw literals, or bespoke widgets.
+     - **Design System Token & Component Primacy (`.agents/rules/design_system.md`):** Read and enforce `.agents/rules/design_system.md` (if present). Zero raw numeric padding/insets (`EdgeInsets.all/symmetric/only(<number>)`), zero raw integer sizes on icons (`Icon(size: <number>)`), zero ad-hoc spacers (`SizedBox(width/height: <number>)`), zero custom `TextStyle(...)`, zero raw color literals, and zero manual alpha overlays (`.withValues(alpha: ...)`, `.withOpacity(...)`). If any widget, spacing token, icon size, or style is missing, **ask the user first** rather than inventing custom solutions.
      - **Centralized Constants & Zero Raw Query Literals:** Zero raw string literals in database query filters (`.where(col, "==", "raw_string")`, `.orderBy()`) or transport payloads. All collection paths, field names, and status/type values MUST reference canonical runtime constants from the module's dedicated `<module>_constants` file (`<module>_constants.ts` or `<module>_constants.dart`).
      - **Plain-Language Copy Audit (5th-Grade Standard):** Audit all user-facing text (dialog titles, buttons, form hints, descriptions, toasts, and error messages). Zero developer or corporate jargon allowed (e.g. no "synchronize", "manage tiers", "submitting payload"). Text MUST be simple, clear, everyday English that a 5th-grade student can easily read, understand, and use without confusion.
-4. **Halt for Human Review (Strictly Serial Gate):**
-   - Keep the main task checkbox unchecked (`- [ ]`) in `lifecycle/03-plan.md` (only the user checks this upon approval).
-   - Update the task status to `In Review` in `lifecycle/00-status.md`.
-   - Stop calling tools immediately and output the lean chat completion report:
-
-   ```markdown
-   **Task 4.X: [Task Title] Complete**
-   - **Changes:** [1-sentence summary of implemented slice]
-   - **Automated Checks:** [Commands run] -> `Passed`
-   - **User Verification:**
-     - **Setup:** [Prerequisite or None]
-     - **Action:** [Exact steps to test]
-     - **Expected:** [Observable result]
-
-   *Ready to proceed to Task 4.Y? Please confirm.*
-   ```
+     - **Lint & Line-Length Check:** Always run the project linter (e.g. `npm --prefix functions run check` / ESLint for TypeScript, `flutter analyze` for Dart) and fix all lint errors and line-length warnings before hand-off. Never disable lint rules to hide line-length issues.
+3. **Halt for Human Review (Strictly Serial Gate):**
+   - Update the task status to `In Review` in `lifecycle/00-status.md` (only mark `Done` after explicit user approval).
+   - Stop calling tools immediately and output a concise 1–2 sentence summary linking `[03-plan.md](03-plan.md)` (stating the task completed, automated check result, and User Verification steps to run) and ask for explicit approval to proceed to the next task.
 
 ---
 
@@ -114,13 +102,12 @@ Before requesting user review for any task, verify that:
 - **Rule Compliance Verified:** Every `Rule [<Rule Name>]` listed under **Agent Verification** is satisfied with zero unapproved deviations.
 - **Automated Checks Passed:** All **Agent Verification** commands have been executed and passed.
 - **Pre-Handoff Diff Scrubbed:** `git diff` is clean (no debug logs, dead code, secrets, accidental whitespace edits, raw design literals, or jargon copy).
-- **Task Checkbox Unchecked:** Main task checkbox remains `- [ ]` in `lifecycle/03-plan.md` while awaiting review.
-- **Status Dashboard Updated:** Task row in `lifecycle/00-status.md` is set to `In Review`.
+- **Status Set to In Review:** Task row in `lifecycle/00-status.md` is set to `In Review` while awaiting user approval.
 - **User Verification Actionable:** Setup, Action, and Expected instructions are clear and testable.
 
 ### Gate Outcomes
 
-- **Approved:** Mark the active task `- [x]` in `lifecycle/03-plan.md` and set its status to `Done` in `lifecycle/00-status.md`. Proceed to the next `Todo` task, or advance to Phase 5 — Close if all tasks are complete.
+- **Approved:** Set the active task status to `Done` in `lifecycle/00-status.md`. Proceed to the next `Todo` task, or advance to Phase 5 — Close if all tasks are complete.
 - **Changes Requested:** Mark active task `In Progress`, implement corrections, re-run verification and diff scrub, and present the updated handoff.
 - **Blocked:** An unpredicted architectural conflict or broken dependency halts progress. Follow the In-Flight Amendment Protocol or return to earlier phases.
 
@@ -131,7 +118,6 @@ Before requesting user review for any task, verify that:
 The deliverables of Phase 4 are:
 
 1. **Implemented Source Code:** Clean, compile-tested application code, tests, and configuration changes adhering to project rules.
-2. **Updated Implementation Plan:** Completed tasks marked `- [x]` in `lifecycle/03-plan.md` upon user approval.
-3. **Updated Status Dashboard:** Completed tasks marked `Done` in `lifecycle/00-status.md`.
-4. **Verification Evidence:** Passing automated test logs and verified User Verification steps.
-5. **Friction Log (`lifecycle/refine.md`):** Any friction, rule ambiguity, repeatable defect, or in-flight amendment encountered during Build — logged immediately to `lifecycle/refine.md` for review in Phase 5 Close.
+2. **Updated Status Dashboard:** Completed tasks marked `Done` in `lifecycle/00-status.md`.
+3. **Verification Evidence:** Passing automated test logs and verified User Verification steps.
+4. **Friction Log (`lifecycle/refine.md`):** Any friction, rule ambiguity, repeatable defect, or in-flight amendment encountered during Build — logged immediately to `lifecycle/refine.md` for review in Phase 5 Close.

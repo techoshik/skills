@@ -24,14 +24,17 @@ These rules apply universally across every phase of the lifecycle. Phase skills 
 - **Non-Negotiable Git Safety Boundary:** The Agent is permitted to execute **read-only** Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch modifications belong exclusively to the user.
 - **No Persistent Watchers or Daemons:** Never launch long-running watchers, daemon code generators, or persistent dev servers in background processes without explicit user direction.
 - **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`.
-- **Cross-Phase Friction Logging (`lifecycle/refine.md`):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** MUST append an entry to `lifecycle/refine.md` **immediately** whenever any of the following occur — do not wait until phase exit:
+- **Cross-Phase Friction Logging (`lifecycle/refine.md` — Auto-Trigger):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** MUST append an entry to `lifecycle/refine.md` **automatically in the same turn** (without waiting for the user to ask) whenever:
+  - The user points out a bug, gap, missed requirement, rule violation, or asks why an error happened (trace the root cause — why didn't our skills, rules, or design system catch it?)
+  - A rule in `.agents/rules/` or a widget/token in the design system library is missing, unclear, or caused custom code/workarounds
+  - A repeatable code or lint defect occurs (e.g. line-length, missing constants, raw styles)
   - A skill instruction is ambiguous, missing, or contradicts another rule
-  - A tool limitation forces an unintended workaround
-  - A repeatable defect pattern is discovered during Build
   - A workflow step causes unnecessary back-and-forth or decision fatigue
-  - Any friction that, if fixed upstream in a skill or rule, would prevent the same problem recurring on the next project
-  Phase 5 Close systematically reviews all entries and synthesizes actionable skill improvement recommendations.
+  Briefly note `Logged to lifecycle/refine.md: <Short Title>` in chat when an entry is added. Phase 5 Close reviews all entries and proposes upstream improvements.
 - **Context Hygiene:** Load **only** the active phase's skill file into context. Never load all skills simultaneously.
+- **Scannable Bullets & Plain English (All Phases):** Across all lifecycle documents (`01-discover.md`, `02-design.md`, `03-plan.md`, `05-close.md`, and `docs/`):
+  - Keep every bullet short (≤ 15–20 words) with **one** fact, rule, or UI element per line — split multi-part items into sub-bullets rather than chaining with semicolons.
+  - Write in simple, everyday English (5th-grade reading level) — never trade clarity for technical or corporate jargon.
 - **The Universal Treeing Principle:** Decompose complex systems hierarchically: Trunk (Core Purpose / Happy Path) $\to$ Branches (Capabilities / Seams) $\to$ Leaves (Edge Cases, Invariants, Rules).
 - **Strict Phase Boundaries (Negative Constraints):**
   - **No Mutating Git Operations:** Never run `git commit`, `git push`, `git checkout`, `git reset`, or `git restore`. All Git state mutations belong to the user.
@@ -93,7 +96,7 @@ Whenever any phase, sub-stage, or implementation task reaches an exit gate:
    When new requirements emerge, scope expands, or direction changes in ANY active phase:
    - *Pause Current Activity:* Stop coding or generating downstream artifacts immediately.
    - *Update Upstream Source of Truth in Place:* Realign `01-discover.md`, `02-design.md`, or `03-plan.md` in place.
-   - *Feature Includes Change After Plan Approval (Critical):* If any item is added to, removed from, or changed in a feature's Includes list in `01-discover.md` after Phase 3 — Plan is already approved, the affected feature's tasks in `03-plan.md` MUST be returned to `In Progress`, re-verified for traceability against the updated Includes list, and re-approved by the user before Build resumes. No change to a Feature Includes list is silent.
+   - *Feature Item Change After Plan Approval (Critical):* If any `F-N.x` item or `F-N-Ex` edge case is added to, removed from, or changed in `01-discover.md` after Phase 3 — Plan is already approved, the affected feature's tasks in `03-plan.md` MUST be returned to `In Progress`, re-verified for traceability against the updated items, and re-approved by the user before Build resumes. No change to a feature's items is silent.
    - *Realign Dashboard:* Update `lifecycle/00-status.md` so active rows accurately reflect the revised plan.
    - *Working Tree Safety Check:* Run read-only `git status` to identify any uncommitted, discarded code so the user can stash or discard it.
 2. **Session Resumption via Dashboard:**
@@ -109,7 +112,7 @@ The overall development lifecycle is complete only when all five phase exit gate
 
 Before declaring the lifecycle complete, verify that:
 - **All Phases Approved:** All phases (`Discover`, `Design`, `Plan`, `Build`, `Close`) are marked `Done` in `lifecycle/00-status.md`.
-- **All Build Tasks Verified:** Every Phase 4 task in `lifecycle/03-plan.md` is marked `- [x]` with passing automated verification.
+- **All Build Tasks Verified:** Every Phase 4 task in `lifecycle/00-status.md` is marked `Done` with passing automated verification.
 - **Permanent Docs Synchronized:** Updated documentation in `docs/modules/` accurately reflects the final implementation.
 - **Domain Terms Promoted:** Core terms from `01-discover.md` are promoted to root `GLOSSARY.md`.
 - **Upstream Friction Logged:** Entries in `lifecycle/refine.md` (if any) are reviewed for central skill improvements.
@@ -133,6 +136,8 @@ The primary deliverable of Phase 0 is the **Status Dashboard** maintained at `li
 ```markdown
 # Status: [Requirement / Feature Name]
 
+> **Current Step:** Phase 1 — Discover (`In Progress`) | **Progress:** 0/5 Phases Done
+
 | Phase | Task | Status |
 | :--- | :--- | :--- |
 | **Phase 1 — Discover** | Problem, Target Features & Scope ([01-discover.md](01-discover.md)) | `Todo` |
@@ -144,7 +149,7 @@ The primary deliverable of Phase 0 is the **Status Dashboard** maintained at `li
 
 <!-- Status Values: Todo, In Progress, In Review, Blocked, Done, Skipped -->
 <!-- Phase 4 rows are added when Plan is approved. Example row format: -->
-<!-- | | [Task 4.1: Title](03-plan.md) | `Todo` | -->
+<!-- | | [Task 4.1: Title](03-plan.md#task-41-title) | `Todo` | -->
 ```
 
 ---

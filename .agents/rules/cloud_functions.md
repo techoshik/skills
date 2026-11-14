@@ -59,6 +59,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 - **Safe Error Mapping:** Map module and technical errors once to safe `HttpsError` responses at the callable boundary. Raw database exceptions, stack traces, storage errors, or internal service errors MUST NEVER be returned to clients.
 - **Information Leakage:** Secrets, tokens, credentials, PII, and protected internal decisions MUST NEVER appear in client error responses or operational logs.
 - Use structured, minimal operational logs with sensitive data masked or omitted.
+- **TypeScript Lint & Line-Length Compliance:** Run the functions linter and TypeScript build (`npm --prefix functions run check`) before every hand-off. Fix all lint errors and line-length violations (wrap long lines cleanly instead of disabling ESLint rules).
 
 ## Folder Structure (`functions/src`)
 - **`core/`**: Infrastructure, middleware, auth resolution, shared persistence helpers, and base `PlatformFailure` errors.

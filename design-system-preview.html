@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanks Design System — Visual Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Colors from colors.dart & theme.dart */
+      --primary-50: #EBF0FD;
+      --primary-100: #C5D5F8;
+      --primary-200: #8FAEF0;
+      --primary-400: #4F78E0;
+      --primary-500: #1B4FD8;
+      --primary-600: #1435A8;
+      --primary-800: #0D2278;
+
+      --page-bg: #F5F5F5;
+      --surface: #FFFFFF;
+      --surface-2: #F0EEE9;
+      --border-subtle: #E2DFD8;
+      --border-strong: #C8C4BB;
+
+      --text-primary: rgba(0, 0, 0, 0.87);
+      --text-secondary: rgba(0, 0, 0, 0.54);
+      --text-muted: rgba(0, 0, 0, 0.45);
+
+      --success: #1A7A4A;
+      --success-bg: #E8F7EE;
+      --success-border: #B2DDCA;
+
+      --warning: #8A5A00;
+      --warning-bg: #FFF4D9;
+      --warning-border: #FFDB80;
+
+      --danger: #B92B2B;
+      --danger-bg: #FDEAEA;
+      --danger-border: #F4C0C0;
+
+      /* Spacing & Radii from spacing.dart */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-full: 100px;
+
+      --appbar-h: 64px;
+      --input-h: 40px;
+      --button-h: 32px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--page-bg);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ThanksScaffold AppBar */
+    .app-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      height: var(--appbar-h);
+      background: rgba(245, 245, 245, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-md);
+    }
+
+    .app-bar-title {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.22px;
+      color: var(--text-primary);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    /* ThanksSection */
+    .thanks-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* ThanksCard */
+    .thanks-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+    }
+
+    .thanks-card-nested {
+      background: var(--surface-2);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: var(--space-sm);
+    }
+
+    /* ThanksGrid */
+    .thanks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-md);
+    }
+
+    /* Typography helpers */
+    .t-headline-md { font-size: 28px; font-weight: 400; letter-spacing: -0.56px; line-height: 1.25; }
+    .t-title-lg { font-size: 22px; font-weight: 600; letter-spacing: -0.22px; line-height: 1.3; }
+    .t-title-md { font-size: 16px; font-weight: 600; line-height: 1.4; }
+    .t-title-sm { font-size: 14px; font-weight: 600; line-height: 1.4; }
+    .t-body-md { font-size: 14px; font-weight: 400; line-height: 1.6; }
+    .t-body-sm { font-size: 12px; font-weight: 400; line-height: 1.5; color: var(--text-secondary); }
+    .t-label-lg { font-size: 12px; font-weight: 500; letter-spacing: 0.24px; color: var(--text-muted); }
+    .t-label-md { font-size: 11px; font-weight: 500; letter-spacing: 0.22px; color: var(--text-muted); }
+    .t-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: var(--text-primary); }
+
+    /* Swatches */
+    .swatch-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .swatch {
+      width: 150px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .swatch-color {
+      height: 44px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .swatch-meta {
+      padding: var(--space-sm);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    /* ThanksButton */
+    .btn {
+      height: var(--button-h);
+      padding: 0 12px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-filled { background: var(--primary-500); color: #FFFFFF; }
+    .btn-filled:hover { background: var(--primary-600); }
+
+    .btn-outlined { background: var(--surface); color: var(--primary-500); border-color: var(--primary-500); }
+    .btn-outlined:hover { background: var(--primary-50); }
+
+    .btn-text { background: transparent; color: var(--primary-500); }
+    .btn-text:hover { background: var(--primary-50); }
+
+    .btn-danger { background: var(--danger); color: #FFFFFF; }
+    .btn-danger-outlined { background: var(--surface); color: var(--danger); border-color: var(--danger-border); }
+    .btn-danger-outlined:hover { background: var(--danger-bg); }
+
+    .btn-neutral { background: var(--surface); color: var(--text-primary); border-color: var(--border-subtle); }
+    .btn-neutral:hover { background: var(--surface-2); }
+
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ThanksPillSelector */
+    .pill-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .pill {
+      height: var(--button-h);
+      padding: 0 14px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+      background: var(--surface);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .pill.active {
+      background: var(--primary-50);
+      color: var(--primary-500);
+      border-color: var(--primary-200);
+    }
+
+    /* ThanksStatusBadge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .badge-primary { background: var(--primary-50); color: var(--primary-500); border-color: var(--primary-100); }
+    .badge-success { background: var(--success-bg); color: var(--success); border-color: var(--success-border); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); border-color: var(--warning-border); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
+    .badge-neutral { background: var(--surface-2); color: var(--text-secondary); border-color: var(--border-subtle); }
+
+    /* ThanksInputLabel + Input */
+    .field { display: flex; flex-direction: column; gap: var(--space-xs); }
+    .input-label { font-size: 11px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.22px; }
+    .input-box {
+      height: var(--input-h);
+      padding: 0 var(--space-md);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--surface);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+    .input-box:focus { border-color: var(--primary-500); }
+    .input-box.error { border-color: var(--danger); }
+    .input-error { font-size: 11px; color: var(--danger); }
+
+    /* ThanksDisclosureCard */
+    details.disclosure {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      overflow: hidden;
+    }
+    details.disclosure summary {
+      padding: var(--space-md);
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    details.disclosure .disclosure-body {
+      padding: 0 var(--space-md) var(--space-md);
+      border-top: 1px solid var(--border-subtle);
+      padding-top: var(--space-sm);
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    /* ThanksMessageView */
+    .message-view {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      padding: 24px var(--space-md);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .icon-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      background: var(--primary-50);
+      color: var(--primary-500);
+      border: 1px solid var(--primary-100);
+    }
+
+    /* ThanksImageView */
+    .img-avatar {
+      background: var(--primary-50);
+      color: var(--primary-500);
+      border: 1px solid var(--primary-100);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    /* Popup Menu */
+    .menu-wrap { position: relative; display: inline-block; }
+    .popup-menu {
+      position: absolute;
+      right: 0;
+      top: 38px;
+      min-width: 160px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      padding: var(--space-xs);
+      z-index: 40;
+      display: none;
+    }
+    .popup-menu.open { display: block; }
+    .popup-item {
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+    .popup-item:hover { background: var(--surface-2); }
+    .popup-item.danger { color: var(--danger); }
+
+    /* ThanksDialog */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+      z-index: 50;
+    }
+    .modal-backdrop.open { display: flex; }
+    .thanks-dialog {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    /* ThanksToast */
+    .thanks-toast {
+      position: fixed;
+      bottom: var(--space-md);
+      right: var(--space-md);
+      z-index: 60;
+      display: none;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--surface);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .thanks-toast.open { display: flex; }
+    .thanks-toast.success { background: var(--success-bg); border-color: var(--success-border); color: var(--success); }
+    .thanks-toast.error { background: var(--danger-bg); border-color: var(--danger-border); color: var(--danger); }
+    .thanks-toast.info { background: var(--primary-50); border-color: var(--primary-100); color: var(--primary-500); }
+
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid var(--primary-100);
+      border-top-color: var(--primary-500);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- ThanksScaffold AppBar -->
+  <header class="app-bar">
+    <div class="row">
+      <span class="app-bar-title">Thanks Design System</span>
+      <span class="badge badge-primary">Light Theme Only</span>
+    </div>
+    <div class="row">
+      <button class="btn btn-outlined" onclick="openDialog()">Preview ThanksDialog</button>
+      <button class="btn btn-filled" onclick="showToast('success', 'Saved changes successfully')">Preview ThanksToast</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. Colors & Surfaces -->
+    <section class="thanks-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">1. Colors & Surface Roles (ThanksTheme.of(context))</h2>
+          <p class="section-subtitle">Never use hardcoded Color(...) literals or .withOpacity() — use semantic tokens.</p>
+        </div>
+      </div>
+      <div class="thanks-card">
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-color" style="background:#F5F5F5"></div><div class="swatch-meta"><strong>surface.page</strong><br>#F5F5F5</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#FFFFFF"></div><div class="swatch-meta"><strong>surface.panel</strong><br>#FFFFFF</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#F0EEE9"></div><div class="swatch-meta"><strong>surface.hover</strong><br>#F0EEE9</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#E2DFD8"></div><div class="swatch-meta"><strong>borderSubtle</strong><br>#E2DFD8</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#1B4FD8"></div><div class="swatch-meta"><strong>primary.main</strong><br>#1B4FD8</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#1A7A4A"></div><div class="swatch-meta"><strong>success.main</strong><br>#1A7A4A</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#8A5A00"></div><div class="swatch-meta"><strong>warning.main</strong><br>#8A5A00</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#B92B2B"></div><div class="swatch-meta"><strong>error.main</strong><br>#B92B2B</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Typography -->
+    <section class="thanks-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">2. Typography (Theme.of(context).textTheme — DM Sans)</h2>
+          <p class="section-subtitle">Never build TextStyle(...) from scratch — consume textTheme styles.</p>
+        </div>
+      </div>
+      <div class="thanks-card" style="display:flex; flex-direction:column; gap:8px;">
+        <div class="t-headline-md">headlineMedium (28px, w400) — Page Hero Title</div>
+        <div class="t-title-lg">titleLarge (22px, w600) — AppBar & Major Section</div>
+        <div class="t-title-md">titleMedium (16px, w600) — Card & Dialog Title</div>
+        <div class="t-title-sm">titleSmall (14px, w600) — List Item Title</div>
+        <div class="t-body-md">bodyMedium (14px, w400) — Standard readable body text in plain English.</div>
+        <div class="t-body-sm">bodySmall (12px, w400) — Supporting description or helper text.</div>
+        <div class="t-label-lg">labelLarge (12px, w500, muted) — Section Label / Badge</div>
+        <div class="t-label-md">labelMedium (11px, w500, muted) — Form Input Label</div>
+        <div class="t-mono">theme.mono (13px, monospace) — conn_01J9X8K2</div>
+      </div>
+    </section>
+
+    <!-- 3. Spacing, Radii & Icons -->
+    <section class="thanks-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">3. Spacing, Radii & Icon Sizes (theme.spacing / ThanksSpacing)</h2>
+          <p class="section-subtitle">Base scale: 4px (extraSmall), 8px (small), 16px (medium). Icons: 20 / 40 / 60px.</p>
+        </div>
+      </div>
+      <div class="thanks-grid">
+        <div class="thanks-card">
+          <div class="t-title-sm" style="margin-bottom:8px;">Spacing Scale</div>
+          <div class="row"><span class="badge badge-neutral">extraSmall: 4px</span><div style="width:4px;height:16px;background:var(--primary-500);"></div></div>
+          <div class="row" style="margin-top:6px;"><span class="badge badge-neutral">small: 8px</span><div style="width:8px;height:16px;background:var(--primary-500);"></div></div>
+          <div class="row" style="margin-top:6px;"><span class="badge badge-neutral">medium: 16px</span><div style="width:16px;height:16px;background:var(--primary-500);"></div></div>
+        </div>
+        <div class="thanks-card">
+          <div class="t-title-sm" style="margin-bottom:8px;">Corner Radii</div>
+          <div class="row">
+            <div style="padding:6px 12px;border:1px solid var(--border-strong);border-radius:8px;" class="t-body-sm">radiusSmall (8px)</div>
+            <div style="padding:6px 12px;border:1px solid var(--border-strong);border-radius:16px;" class="t-body-sm">radiusMedium (16px)</div>
+            <div style="padding:6px 12px;border:1px solid var(--border-strong);border-radius:100px;" class="t-body-sm">radiusFull (100px)</div>
+          </div>
+        </div>
+        <div class="thanks-card">
+          <div class="t-title-sm" style="margin-bottom:8px;">Icon & Avatar Sizes</div>
+          <div class="row">
+            <div class="icon-box" style="width:20px;height:20px;font-size:11px;" title="iconSmall (20px)">✓</div>
+            <span class="t-body-sm">iconSmall (20px)</span>
+            <div class="icon-box" style="width:40px;height:40px;font-size:16px;" title="iconMedium (40px)">★</div>
+            <span class="t-body-sm">iconMedium (40px)</span>
+            <div class="icon-box" style="width:60px;height:60px;font-size:24px;" title="iconLarge (60px)">🛡️</div>
+            <span class="t-body-sm">iconLarge (60px)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Buttons, Pills, Badges & Menus -->
+    <section class="thanks-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">4. Buttons, Pills, Badges & Menus</h2>
+          <p class="section-subtitle">Height 32px (`buttonHeight`) with `radiusSmall` (8px) or `radiusFull` (100px) for pills.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="thanks-card" style="display:flex;flex-direction:column;gap:12px;">
+          <div class="t-title-sm">ThanksButton Variants</div>
+          <div class="row">
+            <button class="btn btn-filled">Filled Primary</button>
+            <button class="btn btn-outlined">Outlined</button>
+            <button class="btn btn-text">Text Button</button>
+            <button class="btn btn-danger">Danger</button>
+            <button class="btn btn-filled" disabled>Loading / Disabled</button>
+          </div>
+
+          <div class="t-title-sm" style="margin-top:4px;">ThanksPillSelector</div>
+          <div class="pill-group" id="pillGroup">
+            <button class="pill active" onclick="selectPill(this)">All</button>
+            <button class="pill" onclick="selectPill(this)">Connected</button>
+            <button class="pill" onclick="selectPill(this)">Pending</button>
+            <button class="pill" onclick="selectPill(this)">Rejected</button>
+          </div>
+        </div>
+
+        <div class="thanks-card" style="display:flex;flex-direction:column;gap:12px;">
+          <div class="t-title-sm">ThanksStatusBadge</div>
+          <div class="row">
+            <span class="badge badge-primary">Info / Active</span>
+            <span class="badge badge-success">Accepted</span>
+            <span class="badge badge-warning">Pending</span>
+            <span class="badge badge-danger">Rejected</span>
+            <span class="badge badge-neutral">Neutral</span>
+          </div>
+
+          <div class="t-title-sm" style="margin-top:4px;">Menus, Date Picker & Image Shapes</div>
+          <div class="row">
+            <button class="btn btn-neutral" onclick="showToast('info', 'Opened ThanksDateRangePicker')">📅 Date Range</button>
+            <div class="menu-wrap">
+              <button class="btn btn-neutral" onclick="togglePopupMenu()">⋮ Actions</button>
+              <div class="popup-menu" id="popupMenu">
+                <button class="popup-item" onclick="togglePopupMenu(); showToast('info', 'Viewed details')">View Details</button>
+                <button class="popup-item danger" onclick="togglePopupMenu(); openDialog()">Disconnect</button>
+              </div>
+            </div>
+            <div class="img-avatar" style="width:40px;height:40px;border-radius:100px;">GA</div>
+            <div class="img-avatar" style="width:40px;height:40px;border-radius:8px;">PV</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Forms, Cards & Disclosure -->
+    <section class="thanks-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">5. Forms, Cards & Disclosure</h2>
+          <p class="section-subtitle">Inputs use 40px (`inputHeight`); main cards use `radiusMedium` (16px) and nested cards use `radiusSmall` (8px).</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="thanks-card" style="display:flex;flex-direction:column;gap:12px;">
+          <div class="field">
+            <label class="input-label">ThanksInputLabel — Partner Email *</label>
+            <input class="input-box" type="email" placeholder="partner@agency.com">
+          </div>
+          <div class="field">
+            <label class="input-label">Error State Input</label>
+            <input class="input-box error" type="email" value="invalid-email">
+            <span class="input-error">Please enter a valid email address.</span>
+          </div>
+          <div class="thanks-card-nested t-body-sm">
+            Nested card inside a main card uses <strong>radiusSmall (8px)</strong> and <strong>surface.hover (#F0EEE9)</strong>.
+          </div>
+        </div>
+
+        <details class="disclosure" open>
+          <summary>
+            <span>ThanksDisclosureCard — Expandable Details</span>
+            <span class="t-label-md">Click to toggle</span>
+          </summary>
+          <div class="disclosure-body">
+            Use <strong>ThanksDisclosureCard</strong> when you want to keep secondary details tucked away until the user clicks to expand them.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 6. Message Views & Toasts -->
+    <section class="thanks-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">6. Standard State Views (ThanksMessageView) & Toasts</h2>
+          <p class="section-subtitle">Always use ThanksMessageView for loading, error, and empty states — never bare spinners.</p>
+        </div>
+        <div class="row">
+          <button class="btn btn-neutral" onclick="showToast('success', 'Invitation sent!')">Success Toast</button>
+          <button class="btn btn-neutral" onclick="showToast('error', 'Could not send email')">Error Toast</button>
+          <button class="btn btn-neutral" onclick="showToast('info', 'Copied link')">Info Toast</button>
+        </div>
+      </div>
+      <div class="thanks-grid">
+        <div class="message-view">
+          <div class="spinner"></div>
+          <div class="t-title-sm">Loading connections...</div>
+          <div class="t-body-sm">ThanksMessageView.loading()</div>
+        </div>
+        <div class="message-view">
+          <div style="font-size:24px;">🤝</div>
+          <div class="t-title-sm">No partner agencies yet</div>
+          <div class="t-body-sm">Invite a partner agency to start working together.</div>
+          <button class="btn btn-filled">Invite Agency</button>
+        </div>
+        <div class="message-view" style="border-color:var(--danger-border);background:var(--danger-bg);">
+          <div style="font-size:24px;">⚠️</div>
+          <div class="t-title-sm" style="color:var(--danger);">Could not load list</div>
+          <div class="t-body-sm" style="color:var(--danger);">Check your connection and try again.</div>
+          <button class="btn btn-danger-outlined">Try Again</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ThanksDialog Preview -->
+  <div class="modal-backdrop" id="dialogModal">
+    <div class="thanks-dialog">
+      <div class="section-header">
+        <h3 class="t-title-md">Disconnect Partner Agency?</h3>
+        <button class="btn btn-text" onclick="closeDialog()">✕</button>
+      </div>
+      <p class="t-body-md" style="color:var(--text-secondary);">
+        This removes the link with <strong>Global Migration Advisory</strong>. You can always send a new invite later.
+      </p>
+      <div class="row" style="justify-content:flex-end;">
+        <button class="btn btn-neutral" onclick="closeDialog()">Keep Connection</button>
+        <button class="btn btn-danger" onclick="closeDialog(); showToast('success', 'Disconnected partner agency.')">Disconnect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ThanksToast Preview -->
+  <div class="thanks-toast" id="toastBox">
+    <span id="toastIcon">✅</span>
+    <span id="toastText">Action completed.</span>
+  </div>
+
+  <script>
+    function selectPill(el) {
+      document.querySelectorAll('#pillGroup .pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function togglePopupMenu() {
+      document.getElementById('popupMenu').classList.toggle('open');
+    }
+
+    function openDialog() {
+      document.getElementById('dialogModal').classList.add('open');
+    }
+
+    function closeDialog() {
+      document.getElementById('dialogModal').classList.remove('open');
+    }
+
+    let toastTimer;
+    function showToast(type, msg) {
+      const box = document.getElementById('toastBox');
+      const icon = document.getElementById('toastIcon');
+      const text = document.getElementById('toastText');
+      box.className = 'thanks-toast open ' + type;
+      icon.textContent = type === 'success' ? '✅' : type === 'error' ? '⚠️' : 'ℹ️';
+      text.textContent = msg;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { box.className = 'thanks-toast'; }, 3000);
+    }
+  </script>
+</body>
+</html>
