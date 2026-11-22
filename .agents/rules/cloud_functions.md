@@ -4,7 +4,7 @@
 > **MANDATORY BACKEND RULES — STRICT ENFORCEMENT**
 > Creating Cloud Functions for standard CRUD operations is STRICTLY PROHIBITED. All Firestore reads/writes must use Client SDK backed by Security Rules unless satisfying the 5 explicit exception criteria. Production access or deployment requires explicit user authorization; use emulators/dev environments for automated testing.
 
-## Direct Firebase Client SDK First & Permitted Scope
+## 1. Direct Firebase Client SDK First & Permitted Scope
 Clients MUST communicate directly with Firestore and Firebase Storage via Client SDK protected by server-side `firestore.rules`.
 - **CRUD Wrappers Prohibited:** Cloud Functions MUST NOT be created or used for standard get/set/update/delete operations or pass-through database wrappers.
 - **The 5 Strict Exceptions:** A Cloud Function callable, HTTP endpoint, or background trigger is ONLY permitted when fulfilling one of the following criteria:
@@ -14,7 +14,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   4. *Asynchronous System Triggers:* Background event listeners (storage upload processing, malware scanning, webhooks).
   5. *Complex Aggregations:* Multi-document batch processing exceeding Security Rules limits (10 `get()` calls).
 
-## Strict Model Adherence & Remote Contract Literals
+## 2. Strict Model Adherence & Remote Contract Literals
 - **Module Source of Truth:** Backend module models represent the absolute source of truth. Incoming request objects (DTOs) MUST strictly map into internal module models.
 - **Reject Unknown Fields:** Backend models and validators MUST explicitly reject unknown or caller-controlled lifecycle/tenant fields. Silently ignoring or passing through unvalidated payload fields is STRICTLY PROHIBITED.
 - **Ban on Raw Contract Literals & Centralized Constants:** External contract names, callable names, request payload keys, Firestore/Storage paths, persisted collection names, and persisted field names/statuses MUST live once in the module's dedicated `<module>_constants.ts` file.
@@ -24,14 +24,14 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
 - **Static Model Constants:** Static constants in `*_constants.ts` and `*_models.ts` MUST be declared as `static readonly`, never mutable `static`.
 - **Node Runtime:** Active Node runtime MUST be `nodejs22` in `firebase.json` and engine `"22"` in `functions/package.json`.
 
-## Multi-Tenancy & Authorization (Admin SDK Security)
+## 3. Multi-Tenancy & Authorization (Admin SDK Security)
 - **Admin SDK Bypasses Security Rules:** Firestore Security Rules DO NOT protect Admin SDK operations. Every callable, trigger path, and background job MUST perform its own explicit authorization and tenant check before any read or write.
 - **Authentication != Tenant Access:** The actor's identity, tenant identifier (e.g. `tenantId`), role, permissions, and session MUST ALWAYS be derived from the trusted authenticated server context (`context.auth`). Client-supplied tenant IDs or user roles in payloads MUST NEVER be trusted.
 - **Tenant Isolation:** Every tenant-scoped record has one immutable owning tenant. Cross-tenant access MUST fail closed immediately.
 - **Backend-Only Records:** Backend-only collections and records MUST NEVER be client-readable or exposed to client SDKs.
 - **Pure Validation Before Side Effects:** Input and module validation MUST execute prior to initiating any protected side effects, external API calls, or database writes.
 
-## Separation of Concerns & Single Repository Contract
+## 4. Separation of Concerns & Single Repository Contract
 - **Use Cases vs Repositories:** Module business logic, authorization, and validation MUST happen in the Use Case layer (`use_cases/`). Callable handlers act only as thin dispatchers; repositories strictly handle data access and persistence via Firebase Admin SDK.
 - **Single Repository per Module:** All Firestore reads/writes for a module MUST belong to its single `<module>_repository.ts`. Creating sibling `*_lookup.ts`, `*_store.ts`, `*_reader.ts`, or `*_writer.ts` files is STRICTLY PROHIBITED.
 - **Cross-Module Access:** Cross-module workflows MUST consume the other module's public repository contract or compose injected repository interfaces inside use cases. Direct Firestore access across module boundaries is STRICTLY PROHIBITED.
@@ -39,7 +39,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   - **Circular Evaluation Prevention:** Sibling files within the same module import directly from each other (e.g., `./<module>_models`), never through their own `index.ts`. In `index.ts`, constants, models, and types MUST be exported *before* repositories, managers, or functions to guarantee zero runtime circular-evaluation glitches.
   - **Strict Snake_case Naming:** All module files MUST follow the invariant `<module>_<type>.ts` (`_models.ts`, `_repository.ts`, `_functions.ts`, `_constants.ts`, `_contract.ts`), banning dot notation (`.models.ts`, `.repository.ts`).
 
-## Transport vs. Persistence Separation
+## 5. Transport vs. Persistence Separation
 - **Firestore Persistence:** Persist `DateTime` as Firestore Admin SDK `Timestamp`. Server timestamps MUST be used for create/update/delete metadata.
 - **Callable Transport:** Callable request and response contracts MUST be strictly JSON-compatible and MUST NEVER accept or return raw Admin SDK objects (such as `Timestamp`).
   - Use JSON shape `{seconds, nanoseconds}` for timestamp values at the callable boundary.
@@ -47,7 +47,7 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   - Serialize outgoing Firestore timestamps back to the agreed JSON shape.
 - Invalid timestamps or protected enum values MUST yield typed validation failures—NEVER permissive fallback defaults or server current time.
 
-## Concurrency, Atomicity & File-Size Thresholds
+## 6. Concurrency, Atomicity & File-Size Thresholds
 - **Multi-Document Writes:** MUST use atomic operations (Transactions via `runTransaction`, Batched Writes via `batch.commit()`) to prevent partial failures.
 - **Optimistic Concurrency:** Updates to mutable entities where concurrent writes are possible MUST utilize optimistic concurrency (e.g. version or revision checks) to prevent lost updates from concurrent writers.
 - **Idempotency:** Non-idempotent operations MUST implement idempotency keys or transaction checks to prevent duplicate execution.
@@ -55,14 +55,14 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   - *Evaluate threshold — 900 lines:* A handwritten backend file above this MUST be evaluated for a split along natural module seams (separate use cases, dedicated validators, modular adapters) before more code is added.
   - *Hard limit — 1000 lines:* A handwritten backend file MUST NOT exceed this. If a task would cross it, split first, or record a user-approved exception in `lifecycle/01-discover.md` (under `## 4. Key Decisions & Rationale`).
 
-## Error Handling, Logging & Secrets
+## 7. Error Handling, Logging & Secrets
 - **Safe Error Mapping:** Map module and technical errors once to safe `HttpsError` responses at the callable boundary. Raw database exceptions, stack traces, storage errors, or internal service errors MUST NEVER be returned to clients.
 - **Information Leakage:** Secrets, tokens, credentials, PII, and protected internal decisions MUST NEVER appear in client error responses or operational logs.
 - Use structured, minimal operational logs with sensitive data masked or omitted.
 - **TypeScript Lint & Line-Length Compliance:** Run the functions linter and TypeScript build (`npm --prefix functions run check`) before every hand-off. Fix all lint errors and line-length violations (wrap long lines cleanly instead of disabling ESLint rules).
 
-## Folder Structure (`functions/src`)
-- **`core/`**: Infrastructure, middleware, auth resolution, shared persistence helpers, and base `PlatformFailure` errors.
+## 8. Folder Structure (`functions/src`)
+- **`core/`**: Infrastructure, middleware, auth resolution, shared persistence helpers, `adapters/` (single canonical home for external third-party SDK/API `<capability>_adapter.ts` wrappers so any module can reuse them), and base `PlatformFailure` errors.
 - **`modules/<module_name>/`**: Module-driven backend services:
   - `<module>_models.ts`: Schemas and payload DTOs. Constants must be `static readonly`.
   - `<module>_constants.ts`: Collection names, field names, callable names, query constants.
@@ -71,6 +71,5 @@ Clients MUST communicate directly with Firestore and Firebase Storage via Client
   - `<module>_validators.ts`: Pure validation functions and schemas.
   - `<module>_commands.ts`: Callable request/response contracts and payload readers.
   - `<module>_functions.ts`: HTTP/Callable entry points parsing requests and dispatching to Use Cases.
-  - `<capability>_adapter.ts`: Optional external capability implementations.
   - `<module>_contract.ts`: Mandatory public module boundary contract exporting all public types, constants, models, repositories, and callable interfaces (re-exported by `index.ts`).
   - `index.ts`: Public module export barrel re-exporting `<module>_contract.ts`.

@@ -1,123 +1,96 @@
 ---
 name: lifecycle-build
-description: Implement approved tasks incrementally, enforce rule compliance, perform risk-based verification, and present task completion reports for user review (Lifecycle: Phase 4 — Build).
+description: Implement approved tasks one at a time, enforce actionable rule checks, perform active diff scrubs and risk-based verification, and halt for human review after every task (Lifecycle: Phase 4 — Build).
 ---
 
 # Phase 4 — Lifecycle Build
 
 ## 1. Purpose
 
-> **Core Mental Model:** One task at a time. Follow the rules. Verify with evidence. Ship only what was approved.
+> **Core Mental Model:** One task at a time. Check every `Verify` rule actively. Prove with real test runs. Ship only what was approved.
 
-Implement the approved Implementation Plan from Phase 3 (`lifecycle/03-plan.md`) by following the defined technical approach, project conventions, and assigned Rule Files.
-
-The Agent must re-anchor to the active task, inspect existing callers and code before writing, implement focused slices incrementally, maintain code hygiene, and verify all automated checks before presenting work for human review.
-
-Tasks are executed strictly one task at a time. The Agent must stop for explicit human review and approval after every individual task before starting the next.
+Implement `lifecycle/03-plan.md` strictly **one task at a time**. Stop for explicit human review and approval after every individual task before starting the next.
 
 ---
 
-## 2. Guiding Principles
+## 2. Core Rules
 
-- **Follow the Approved Plan:** Implement only the approved scope, changes (`C1`, `C2`...), and file targets from `lifecycle/03-plan.md`. Do not silently add files or change architecture. If an architectural flaw or vulnerability is uncovered, follow the In-Flight Plan Amendment Protocol.
-- **System Ownership (No Speculative Forks):** When encountering an architectural gap or unexpected seam mid-build, the agent must NEVER present open-ended speculative forks (*"We could either do A or B"*). The agent must internally evaluate trade-offs, take ownership, and present **one concrete, settled proposal** with clear rationale via the In-Flight Plan Amendment Protocol.
-- **Instruction Re-Anchoring:** Before editing, re-read the active task in `lifecycle/03-plan.md`, its assigned Rule Files, and its verification criteria. Never rely on conversational memory across multi-task sessions.
-- **Understand Before Changing (Caller & Seam Inspection):** Read target files and trace callers via read-only search (`grep`) before writing code. Know why the change is needed, what contracts must remain unbroken, and how success will be verified.
-- **Rule Compliance Is Mandatory:** Inspect each individual `Rule [<Rule Name>]` declared under Agent Verification before writing code and before requesting review. Verify strict compliance against its documented invariants.
-- **Red-Green Seam Proof (Proof of Cause):** For bugfixes and new logic, prove the seam: verify the failing behavior or error log before editing (Red), implement the targeted change, and prove the automated check passes after (Green). Never claim a fix works without proving the causal link.
-- **Implement the Smallest Coherent Slice:** Keep changes focused, minimal, and compile-clean. Avoid horizontal fragmentation or sweeping refactors that touch unrelated files.
-- **Pre-Handoff Diff Scrub (Hypo-Allergenic Diffs):** Audit `git diff` line-by-line before requesting review: ensure zero accidental whitespace modifications to untouched code, zero leftover `console.log`, `debugger`, or temporary shims, zero orphaned imports, zero hardcoded design literals (magic numbers on padding, margins, icon sizes, spacers, or raw colors) bypassing canonical design system tokens, and clear plain-language copy. Every line in the diff must directly serve the task.
-- **Honest Evidence Reporting (`Passed` / `Failed` / `Not Run`):** Never claim a check passed unless the test runner actually executed and passed. Saying tests "compiled" or "aligned" does NOT count as `Passed` — report unexecuted suites honestly as `Not Run`. Distinguish pre-existing baseline test failures from new regressions; never silently broaden scope to fix unrelated baseline issues.
-- **Improve Proactively, Change Only With Approval:** Actively spot opportunities to improve code quality, performance, or security, but present them as recommendations in chat. Never implement extra changes without explicit user approval.
-- **Strict Phase Boundaries (Negative Constraints):**
-  - **No Task Batching:** Implement strictly one task at a time. Never touch files or write code for subsequent tasks while the current task is awaiting review.
-  - **No Silent Plan Divergence:** Never alter requirements, flows, or task scope unilaterally; follow the In-Flight Plan Amendment Protocol for mid-build discoveries.
-  - **No Unapproved Improvements:** Spot improvement opportunities proactively, but never implement extra changes without explicit user approval.
-- **Friction Logging (`lifecycle/refine.md` — Mandatory):** Whenever a rule file invariant is impossible to satisfy as written, a task's Changes (`C1`, `C2`...) are ambiguous or incomplete, a repeatable defect pattern emerges during implementation, an in-flight plan amendment is required, or any build friction arises that would recur on the next project — immediately append an entry to `lifecycle/refine.md`. Do not wait until Phase 5 Close. This is the most friction-rich phase; every entry is valuable.
-  - **No Unverified Handoffs:** Never mark an agent check passed without executing it; never present unverified work.
+- **Strict Single-Task Scope (No Batching, No Silent Divergence):** Implement only the approved changes (`C1`, `C2`...) and target files of the active task. Never touch files for later tasks while the current task awaits review. If a flaw or unexpected seam surfaces mid-build, halt and follow the In-Flight Plan Amendment Protocol.
+- **System Ownership (No Speculative Forks):** When uncovering an architectural gap mid-build, never ask open-ended *"Should we do A or B?"* questions. Internally evaluate trade-offs and present **one concrete, settled proposal** with rationale via the In-Flight Plan Amendment Protocol.
+- **Re-Anchor & Inspect Before Editing:** Re-read the active task in `lifecycle/03-plan.md`, read target files in full (not snippets), and `grep` immediate callers/routes before writing code. Never rely on conversational memory across multi-task sessions.
+- **Actionable Rule Verification Is Mandatory:** Read and verify **every `- Verify <exact condition> (<file> — <Section>)` bullet** under `Agent Verification` before coding and again before handoff. Never treat rules as optional hints.
+- **Red-Green Proof & Honest Evidence (`Passed` / `Failed` / `Not Run`):** For bugfixes and new logic, prove the failing seam first (Red) and the passing test after (Green). Never claim a check passed unless the runner actually executed and passed — report unexecuted suites honestly as `Not Run`, and distinguish pre-existing baseline failures from new regressions.
+- **Active Pre-Handoff Diff Scrub:** Never eyeball `git diff` passively — actively scan the diff for banned primitives, raw design literals, raw query strings, debug logs, accidental whitespace edits, and jargon copy before requesting review.
+- **Propose Improvements, Never Sneak Them In:** Spot code quality, performance, or security improvements proactively and share them in chat, but never implement extra changes without explicit user approval.
+- **Mandatory Friction Logging (`lifecycle/refine.md`):** Immediately append an entry to `lifecycle/refine.md` (with `Classification: One-off | Project-specific | Framework-wide`) whenever a rule invariant conflicts with reality, a task spec is ambiguous, a repeatable defect pattern emerges, or an in-flight plan amendment is required.
 
 ---
 
-## 3. Responsibilities & Sequence
+## 3. Execution Sequence
 
-Implementation follows three disciplined chronological steps for each task:
+### 3.1 Step 1 — Re-Anchor, Inspect & Pre-Flight Check
 
-### 3.1 Step 1 — Re-Anchor, Inspect & Verify Baseline
+1. **Re-Anchor to Active Task:** Read `lifecycle/00-status.md` and `lifecycle/03-plan.md`. Identify the active `In Progress` (or next `Todo`) task and re-read its **Blast Radius**, **Changes** (`C1`, `C2`...), **Seam Note** (if any), **Agent Verification** (`- Verify ...` lines + commands), and **User Verification**.
+2. **Inspect Callers & Baseline:** Read target files in full, `grep` callers/routes/models to protect existing contracts, and run read-only `git status` (plus baseline tests if pre-existing failures are suspected).
+3. **Pre-Flight Failure-Mode Check (Complex UI, State Sync, or Dual-Engine Tasks):**
+   Before writing code on interactive UI, state synchronization, or multi-engine tasks, briefly verify five predictable failure modes where applicable:
+   - *Focus & Modal Lifecycle:* What happens to input focus and selection when a dialog/drawer opens, closes, or triggers a parent rebuild?
+   - *Writer/Reader Contract Parity:* Do input writers, resolvers, and persistence layers use the exact same key format and enums?
+   - *Closure & Ref Freshness:* Do event callbacks read live state/refs after add, reorder, or delete mutations?
+   - *Widget Tree Stability:* Can typing or state updates filter out, re-key, or unmount the widget currently under the user's cursor?
+   - *Cross-Engine Single Source of Truth:* When two engines render the same model (e.g. interactive UI + export/print), do both read from the same domain constants and enums?
 
-1. **Re-Anchor to the Active Task:**
-   - Read `lifecycle/00-status.md` and `lifecycle/03-plan.md`. Identify the active `In Progress` task (or next `Todo` task).
-   - Re-read the task's **Blast Radius**, **Changes** (`C1`, `C2`...), **Files** (mapped targets with action verbs), **Agent Verification** (assigned rules & automated checks), and **User Verification**.
-2. **Inspect Callers & Target Files:**
-   - Read target files in full—not just snippets.
-   - Inspect immediate callers, routes, and data models via read-only searches (`grep`) to prevent broken contracts or unexpected side effects.
-3. **Verify Baseline & Working Tree:**
-   - Run read-only `git status` to ensure no uncommitted or conflicting user edits exist.
-   - Run relevant baseline tests if existing test suite failures are suspected, distinguishing prior failures from new regressions.
+### 3.2 Step 2 — Implement Minimal Compile-Clean Slice
 
-### 3.2 Step 2 — Implement Slice & Enforce Rules
+1. **Write Minimal Coherent Changes:** Implement only the active task's `C-N` items, reusing existing project utilities and patterns. Keep the codebase buildable and testable after every task (if renaming a shared symbol early, update callers in the same task or schedule explicit alias removal).
+2. **Enforce Every `Verify` Bullet:** Satisfy every `- Verify <exact condition> (<file> — <Section>)` line declared under `Agent Verification` in `03-plan.md` with zero unapproved deviations.
+3. **In-Flight Plan Amendment Protocol (Mid-Build Discoveries):**
+   When an architectural defect, security flaw, race condition, or broken contract is discovered:
+   - *Halt Coding:* Stop immediately — never silently diverge from `03-plan.md`.
+   - *Propose One Settled Correction:* Share verified evidence, why the plan fails, and one concrete adjustment in chat.
+   - *Get Explicit Approval:* Wait for user approval before editing upstream docs or resuming.
+   - *Update Upstream Docs in Place:* Update `03-plan.md` (plus `01-discover.md` / `02-design.md` if flows changed) and sync task titles and anchor links in `00-status.md`.
 
-1. **Write Minimal Coherent Changes:**
-   - Implement only what is required to satisfy the active task's scope.
-   - Reuse existing application utilities and established patterns rather than duplicating logic.
-2. **Maintain a Compile-Clean Slice:**
-   - Keep the codebase buildable and testable after each task.
-   - If an early task renames a shared symbol, either update callers in the same task or introduce a temporary compatibility alias explicitly scheduled for removal in a subsequent task.
-3. **Enforce Named Rules:**
-   - Inspect each `Rule [<Rule Name>]: <file>` declared under **Agent Verification**. Follow every invariant strictly without exception.
-4. **In-Flight Plan Amendment Protocol (Mid-Build Discoveries):**
-   When an architectural defect, security flaw, race condition, or broken contract is discovered during implementation:
-   - *Halt Coding Immediately:* Stop writing code that implements an unworkable design. Never silently diverge from `lifecycle/03-plan.md`.
-   - *Formulate Correction Proposal:* State the verified finding with concrete evidence, explain why the plan fails, and outline the adjustment.
-   - *Obtain Explicit Human Approval:* Present the proposal in chat. Stop and wait for explicit user approval before modifying the plan or proceeding.
-   - *Update Upstream Source of Truth in Place:* Update the affected task in `lifecycle/03-plan.md`, realign `lifecycle/01-discover.md` / `lifecycle/02-design.md` if core flows changed, and update `lifecycle/00-status.md` if tasks were added/split.
-   - *Resume Implementation:* Proceed under the updated specification.
+### 3.3 Step 3 — Active Verification, Diff Scrub & Serial Handoff
 
-### 3.3 Step 3 — Verification, Diff Scrub & Serial Task Handoff
-
-1. **Execute Agent Verification (Named Rules & Automated Proof):**
-   - Verify modified files against each individual `Rule [<Rule Name>]` listed under **Agent Verification** in `lifecycle/03-plan.md` (e.g. file size thresholds, idempotent migration rollback).
-   - Run the exact automated test and verification commands declared under **Agent Verification** in `lifecycle/03-plan.md`.
-   - For bugfixes or logic changes, verify the Red-Green evidence (failing before, passing after).
-2. **Pre-Handoff Diff Scrub:**
-   - Run read-only `git diff` line-by-line to verify:
-     - Zero accidental whitespace modifications to untouched code, zero debug statements (`console.log`, `print`, `debugger`), zero unused imports, and zero temporary mocks.
-     - **Design System Token & Component Primacy (`.agents/rules/design_system.md`):** Read and enforce `.agents/rules/design_system.md` (if present). Zero raw numeric padding/insets (`EdgeInsets.all/symmetric/only(<number>)`), zero raw integer sizes on icons (`Icon(size: <number>)`), zero ad-hoc spacers (`SizedBox(width/height: <number>)`), zero custom `TextStyle(...)`, zero raw color literals, and zero manual alpha overlays (`.withValues(alpha: ...)`, `.withOpacity(...)`). If any widget, spacing token, icon size, or style is missing, **ask the user first** rather than inventing custom solutions.
-     - **Centralized Constants & Zero Raw Query Literals:** Zero raw string literals in database query filters (`.where(col, "==", "raw_string")`, `.orderBy()`) or transport payloads. All collection paths, field names, and status/type values MUST reference canonical runtime constants from the module's dedicated `<module>_constants` file (`<module>_constants.ts` or `<module>_constants.dart`).
-     - **Plain-Language Copy Audit (5th-Grade Standard):** Audit all user-facing text (dialog titles, buttons, form hints, descriptions, toasts, and error messages). Zero developer or corporate jargon allowed (e.g. no "synchronize", "manage tiers", "submitting payload"). Text MUST be simple, clear, everyday English that a 5th-grade student can easily read, understand, and use without confusion.
-     - **Lint & Line-Length Check:** Always run the project linter (e.g. `npm --prefix functions run check` / ESLint for TypeScript, `flutter analyze` for Dart) and fix all lint errors and line-length warnings before hand-off. Never disable lint rules to hide line-length issues.
+1. **Execute Every `Agent Verification` Item:**
+   - Check every `- Verify <exact condition> (<file> — <Section>)` bullet in `03-plan.md` against the actual diff.
+   - Run the project linter/analyzer (e.g. `flutter analyze`, ESLint) and fix all warnings/line-length issues — never disable lint rules to hide violations.
+   - Run every automated test command listed under `Agent Verification` and confirm Red-Green proof for bugfixes/new logic.
+2. **Active Pre-Handoff Diff Scrub (Scan, Don't Just Eyeball):**
+   Run read-only `git diff` and **actively scan/search** the added lines for:
+   - **Hygiene:** Accidental whitespace edits to untouched code, leftover `console.log`/`print`/`debugger`, unused imports, or temporary mocks.
+   - **Design System Tokens (`.agents/rules/design_system.md`):** Raw numeric `EdgeInsets`, `SizedBox(width/height: <number>)`, `Icon(size: <number>)`, custom `TextStyle(...)`, raw `Color(0x...)`/`Colors.*`, or `.withValues(alpha:)`/`.withOpacity()`. If a token or widget is missing, **ask the user first**.
+   - **Prohibited Primitives & Canonical Chrome:** Framework primitives linters miss — raw dialogs (`showDialog`, `AlertDialog`), raw navigation (`Navigator.of(context)`), raw buttons (`TextButton`, `ElevatedButton`, `FilledButton`), raw loading/empty/error widgets (`CircularProgressIndicator`, ad-hoc error/empty `Column`s), banned widget base classes (`StatefulWidget`, standalone `HookWidget`), bespoke scaffold top bars or inline body drawers, and action buttons placed inside dialog `content` instead of the canonical dialog `actions` slot.
+   - **Centralized Constants:** Zero raw string literals in DB query filters or transport payloads — consume canonical `<module>_constants`.
+   - **Plain-Language Copy (5th-Grade Standard):** Zero developer or corporate jargon in titles, buttons, hints, toasts, or errors.
 3. **Halt for Human Review (Strictly Serial Gate):**
-   - Update the task status to `In Review` in `lifecycle/00-status.md` (only mark `Done` after explicit user approval).
-   - Stop calling tools immediately and output a concise 1–2 sentence summary linking `[03-plan.md](03-plan.md)` (stating the task completed, automated check result, and User Verification steps to run) and ask for explicit approval to proceed to the next task.
+   - Set the task row to `In Review` in `lifecycle/00-status.md` (never `Done` before explicit user approval).
+   - Stop calling tools and output a concise summary linking `[03-plan.md](03-plan.md)` confirming: (a) each `Verify` check & linter/test result, and (b) the exact `User Verification` steps to run. Wait for explicit approval before starting the next task.
 
 ---
 
 ## 4. Exit Gate & Completion Criteria
 
-Phase 4 operates strictly **Task-by-Task**. A task is complete only when the pre-flight checklist is satisfied and the user grants explicit approval in chat.
+### Task Pre-Flight Gate
 
-### Task Completion Checklist (Pre-Flight Gate)
-
-Before requesting user review for any task, verify that:
-- **Scope Implemented:** Approved changes (`C1`, `C2`...) across target files have been implemented cleanly.
-- **Rule Compliance Verified:** Every `Rule [<Rule Name>]` listed under **Agent Verification** is satisfied with zero unapproved deviations.
-- **Automated Checks Passed:** All **Agent Verification** commands have been executed and passed.
-- **Pre-Handoff Diff Scrubbed:** `git diff` is clean (no debug logs, dead code, secrets, accidental whitespace edits, raw design literals, or jargon copy).
-- **Status Set to In Review:** Task row in `lifecycle/00-status.md` is set to `In Review` while awaiting user approval.
-- **User Verification Actionable:** Setup, Action, and Expected instructions are clear and testable.
+Before requesting user review, verify:
+- **Scope Implemented:** All approved `C-N` changes across target files are complete and compile-clean.
+- **Every `Verify` Check Confirmed:** Every `- Verify <exact condition> (<file> — <Section>)` bullet under `Agent Verification` is explicitly verified with zero unapproved deviations.
+- **Linter & Tests Passed:** Project linter and all `Agent Verification` test commands executed and passed.
+- **Active Diff Scrub Clean:** Diff actively scanned with zero banned primitives, raw design literals, debug logs, or jargon copy.
+- **Status Updated:** Active task row in `lifecycle/00-status.md` is set to `In Review`.
 
 ### Gate Outcomes
 
-- **Approved:** Set the active task status to `Done` in `lifecycle/00-status.md`. Proceed to the next `Todo` task, or advance to Phase 5 — Close if all tasks are complete.
-- **Changes Requested:** Mark active task `In Progress`, implement corrections, re-run verification and diff scrub, and present the updated handoff.
-- **Blocked:** An unpredicted architectural conflict or broken dependency halts progress. Follow the In-Flight Amendment Protocol or return to earlier phases.
+- **Approved:** Mark active task `Done` in `lifecycle/00-status.md`. Advance to the next `Todo` task, or load `lifecycle-close` if all Phase 4 tasks are `Done`.
+- **Changes Requested:** Set active task `In Progress`, apply fixes, re-run verification + diff scrub, and re-present.
+- **Blocked:** Mark `Blocked` and resolve via In-Flight Plan Amendment Protocol before proceeding.
 
 ---
 
 ## 5. Phase Output
 
-The deliverables of Phase 4 are:
-
-1. **Implemented Source Code:** Clean, compile-tested application code, tests, and configuration changes adhering to project rules.
+1. **Implemented Source Code & Tests:** Clean, verified code strictly adhering to project rules.
 2. **Updated Status Dashboard:** Completed tasks marked `Done` in `lifecycle/00-status.md`.
-3. **Verification Evidence:** Passing automated test logs and verified User Verification steps.
-4. **Friction Log (`lifecycle/refine.md`):** Any friction, rule ambiguity, repeatable defect, or in-flight amendment encountered during Build — logged immediately to `lifecycle/refine.md` for review in Phase 5 Close.
+3. **Friction Log (`lifecycle/refine.md`):** Any build friction, rule ambiguity, repeatable defect, or plan amendment logged immediately for Phase 5 Close.

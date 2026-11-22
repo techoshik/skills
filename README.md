@@ -4,12 +4,12 @@ A portable, agentic development system for engineering teams and AI agents, driv
 
 | Phase | Skill | Responsibility | Live Artifact |
 | :--- | :--- | :--- | :--- |
-| **0. Orchestrator** | `lifecycle` | Master router, status dashboard, automatic friction log, Git safety boundary | `lifecycle/00-status.md`<br>`lifecycle/refine.md` |
-| **1. Discover** | `lifecycle-discover` | Evidence-based problem investigation, target features (`Includes` & `Edge Cases`), deferred/out-of-scope triage, decisions | `lifecycle/01-discover.md` |
-| **2. Design** | `lifecycle-design` | Mermaid workflows (`F-N`), 3-option light-theme prototypes (`02-prototype.html` + `prototype/`), two-way audit | `lifecycle/02-design.md` |
-| **3. Plan** | `lifecycle-plan` | Coverage Map (`Discover → Plan`), small feature-scoped tasks, assigned Rule Files, prefactoring check, two-tier verification | `lifecycle/03-plan.md` |
-| **4. Build** | `lifecycle-build` | Strict task-by-task execution, `design_system.md` & lint checks, caller inspection, honest test evidence | *(Tracked in `00-status.md`)* |
-| **5. Close** | `lifecycle-close` | Integrated audit, orphaned symbols check, permanent docs + deferred backlog sync (`docs/modules/`), PR summary, cleanup | `lifecycle/05-close.md`<br>+ `docs/modules/` |
+| **0. Orchestrator** | `lifecycle` | Master router, status dashboard, automatic friction log (`One-off` / `Project-specific` / `Framework-wide`), Git safety boundary | `lifecycle/00-status.md`<br>`lifecycle/refine.md` |
+| **1. Discover** | `lifecycle-discover` | Pre-flight research, consequence & blind-spot pass, screen-anchored features (`F-N.x` & `Edge Cases`), scope triage, trade-off decisions, glossary | `lifecycle/01-discover.md` |
+| **2. Design** | `lifecycle-design` | 1:1 `F-N` Mermaid workflows, 3 distinct prototypes per UI `F-N` (`02-prototype.html` + `prototype/`), design-system alignment, two-way audit | `lifecycle/02-design.md` |
+| **3. Plan** | `lifecycle-plan` | Single-concern vertical tasks, verified library seams, inline file targets, actionable `Verify` checks, verbatim Coverage Map | `lifecycle/03-plan.md` |
+| **4. Build** | `lifecycle-build` | Strict task-by-task execution, pre-flight failure-mode check, active diff scan for banned primitives/tokens, linter & test evidence | *(Tracked in `00-status.md`)* |
+| **5. Close** | `lifecycle-close` | Integrated `F-N` audit, orphan & anchor check, copyable PR summary, permanent docs + `GLOSSARY.md` sync, 100% friction log review, cleanup | `lifecycle/05-close.md`<br>+ `docs/modules/` |
 
 ---
 

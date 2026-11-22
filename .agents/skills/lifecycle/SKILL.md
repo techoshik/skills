@@ -24,13 +24,12 @@ These rules apply universally across every phase of the lifecycle. Phase skills 
 - **Non-Negotiable Git Safety Boundary:** The Agent is permitted to execute **read-only** Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch modifications belong exclusively to the user.
 - **No Persistent Watchers or Daemons:** Never launch long-running watchers, daemon code generators, or persistent dev servers in background processes without explicit user direction.
 - **Single Live Dashboard (`lifecycle/00-status.md`):** All phase progress, sub-stages, and Phase 4 implementation tasks are tracked strictly in `lifecycle/00-status.md`.
-- **Cross-Phase Friction Logging (`lifecycle/refine.md` — Auto-Trigger):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** MUST append an entry to `lifecycle/refine.md` **automatically in the same turn** (without waiting for the user to ask) whenever:
-  - The user points out a bug, gap, missed requirement, rule violation, or asks why an error happened (trace the root cause — why didn't our skills, rules, or design system catch it?)
-  - A rule in `.agents/rules/` or a widget/token in the design system library is missing, unclear, or caused custom code/workarounds
-  - A repeatable code or lint defect occurs (e.g. line-length, missing constants, raw styles)
-  - A skill instruction is ambiguous, missing, or contradicts another rule
-  - A workflow step causes unnecessary back-and-forth or decision fatigue
-  Briefly note `Logged to lifecycle/refine.md: <Short Title>` in chat when an entry is added. Phase 5 Close reviews all entries and proposes upstream improvements.
+- **Cross-Phase Friction Logging (`lifecycle/refine.md` — Auto-Trigger Across All 4 Targets):** Never edit `.agents/skills/` or framework rules inside consumer projects. Instead, **any active phase (Phases 1–5)** MUST append an entry to `lifecycle/refine.md` **automatically in the same turn** (without waiting for the user to ask) whenever a gap or improvement opportunity surfaces in **Skills**, **Rule Files**, the **Design System Library**, or **Upstream Lifecycle Docs** (`01-discover.md`, `02-design.md`, `03-plan.md`):
+  - **Missed Requirement / Design / Plan Gap:** The user asks for or points out something missing from `01-discover.md`, `02-design.md`, or `03-plan.md`, or there is a gap between current behavior and user intent (trace *why* the earlier phase missed it)
+  - **Design System Library Gap:** A widget, variant, prop, spacing token, icon size, or color role is missing, rigid, or forced a workaround in the design system library itself
+  - **Rule File Gap (`.agents/rules/`):** A rule is missing, unclear, contradicted reality, or failed to prevent a bug or lint defect
+  - **Skill / Workflow Friction (`.agents/skills/`):** A skill instruction is ambiguous, out of order, caused unnecessary back-and-forth, or allowed an unverified handoff
+  Briefly note `Logged to lifecycle/refine.md: <Short Title>` in chat when an entry is added. Phase 5 Close accounts for 100% of entries so every upstream resource can be improved after the feature ships.
 - **Context Hygiene:** Load **only** the active phase's skill file into context. Never load all skills simultaneously.
 - **Scannable Bullets & Plain English (All Phases):** Across all lifecycle documents (`01-discover.md`, `02-design.md`, `03-plan.md`, `05-close.md`, and `docs/`):
   - Keep every bullet short (≤ 15–20 words) with **one** fact, rule, or UI element per line — split multi-part items into sub-bullets rather than chaining with semicolons.
@@ -97,7 +96,7 @@ Whenever any phase, sub-stage, or implementation task reaches an exit gate:
    - *Pause Current Activity:* Stop coding or generating downstream artifacts immediately.
    - *Update Upstream Source of Truth in Place:* Realign `01-discover.md`, `02-design.md`, or `03-plan.md` in place.
    - *Feature Item Change After Plan Approval (Critical):* If any `F-N.x` item or `F-N-Ex` edge case is added to, removed from, or changed in `01-discover.md` after Phase 3 — Plan is already approved, the affected feature's tasks in `03-plan.md` MUST be returned to `In Progress`, re-verified for traceability against the updated items, and re-approved by the user before Build resumes. No change to a feature's items is silent.
-   - *Realign Dashboard:* Update `lifecycle/00-status.md` so active rows accurately reflect the revised plan.
+   - *Realign Dashboard:* Update `lifecycle/00-status.md` so active rows accurately reflect the revised plan. Whenever a task title or screen/module name changes mid-flight, update both the `03-plan.md` heading and its `00-status.md` anchor link together so links never break.
    - *Working Tree Safety Check:* Run read-only `git status` to identify any uncommitted, discarded code so the user can stash or discard it.
 2. **Session Resumption via Dashboard:**
    When resuming work after context compaction or a session break, inspect `lifecycle/00-status.md`. The active step is unambiguously indicated by the row marked `In Progress` or `In Review`.
@@ -165,10 +164,10 @@ Use this log to capture friction, prompt ambiguity, tool limitations, or rule im
 
 ### Entry 1: [Short Title]
 - **Phase / Task:** [Phase or Task where friction occurred]
-- **Classification:** One-off / Project-specific / Framework-wide
+- **Classification:** `One-off` | `Project-specific` | `Framework-wide` *(strictly use one of these 3 values; optional category tag may follow in parentheses)*
 - **Observed Failure:** [What actually happened; not a guess]
 - **Root Cause / Evidence:** [Why current code, rule, or workflow allowed it]
 - **Preventive Change:** [Specific change to an artifact, rule, template, or skill]
-- **Target:** [File path or upstream skill/rule]
+- **Target:** `Skill (.agents/skills/...)` | `Rule (.agents/rules/...)` | `Design System Library` | `Project-Specific` *(include specific file/component)*
 - **Status:** Proposed / Applied / Verified / Deferred
 ```

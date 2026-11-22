@@ -7,6 +7,6 @@
 - **Universal Safety Boundaries:**
   - **Read-Only Git:** The Agent is permitted to execute only read-only Git commands (`git status`, `git diff`, `git log`). **NEVER** run mutating Git commands (`git commit`, `git push`, `git checkout`, `git reset`, `git restore`, `git branch`). All commits, pushes, and branch changes belong exclusively to the user.
   - **No Persistent Watchers or Daemons:** Never launch persistent background dev servers, file watchers, or daemon code generators without explicit user direction.
-  - **Cross-Phase Friction Log (Auto-Trigger):** Never edit `.agents/skills/` directly in consumer projects; whenever the user reports a bug, gap, or rule/design-system issue — or any friction occurs — automatically trace the root cause and append an entry to `lifecycle/refine.md` in the same turn.
+  - **Cross-Phase Friction Log (Auto-Trigger):** Never edit `.agents/skills/` directly in consumer projects; whenever the user asks for something missing from `01-discover.md` / `02-design.md` / `03-plan.md`, reports a bug or rule violation, or hits any gap in **Skills**, **Rule Files**, or the **Design System Library**, automatically trace the root cause and append an entry to `lifecycle/refine.md` in the same turn.
 - **Mandatory Architecture Invariants:** All rule files in [`.agents/rules/`](.agents/rules/) are strict, non-negotiable system invariants. Verify compliance on every task before requesting review.
 <!-- lifecycle:end -->

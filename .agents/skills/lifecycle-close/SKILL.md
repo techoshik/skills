@@ -1,158 +1,88 @@
 ---
 name: lifecycle-close
-description: Verify complete outcomes, audit code quality, assess application-wide improvement opportunities, and complete documentation and handover (Lifecycle: Phase 5 — Close).
+description: Verify complete outcomes, audit code quality, assess improvement opportunities, synchronize permanent docs, synthesize friction logs, and complete handover (Lifecycle: Phase 5 — Close).
 ---
 
 # Phase 5 — Lifecycle Close
 
 ## 1. Purpose
 
-> **Core Mental Model:** Verify the whole picture. Clean up the codebase. Document the verified truth. Hand over with confidence.
+> **Core Mental Model:** Verify the whole picture against `01-discover.md`. Clean up orphans. Document verified truth. Hand over a ready-to-paste PR summary.
 
-Complete the development lifecycle by independently verifying the complete integrated implementation against its original goals and requirements, reviewing code quality and architecture, identifying improvement opportunities across the application, synchronizing permanent documentation, and delivering a clean handover.
-
-The Agent should continuously look for opportunities to improve the implementation, but must obtain user approval before making any improvement beyond what is required by the approved task—even a minor one.
+Independently verify the complete integrated implementation against its original Goal and `F-N` features, audit code hygiene and security seams, assess improvements (change only with approval), synchronize permanent documentation, review 100% of `lifecycle/refine.md`, and execute the user's cleanup choice for `lifecycle/`.
 
 ---
 
-## 2. Guiding Principles
+## 2. Core Rules
 
-- **Verify Outcomes, Not Just Tasks:** Phase 4 verified individual implementation tasks. Phase 5 verifies the complete integrated system against the original Goal and Target Features from `lifecycle/01-discover.md`.
-- **Audit Facts, Not Checklists:** A checked box in `lifecycle/03-plan.md` is a clue, not proof. Verify important behaviors through actual code, tests, and running system evidence.
-- **Improve Proactively, Change Only With Approval:** Actively spot opportunities to improve code quality, performance, deduplication, and architecture across the feature and connected modules. Present recommendations with evidence and trade-offs. Never implement an improvement beyond the approved scope—even a minor one—without explicit user approval.
-- **The Orphan Hunter Audit:** When screens, endpoints, or helpers are deleted, renamed, or consolidated, conduct a dedicated grep audit to ensure zero orphaned exports, dead route registrations, dangling imports, stale test mocks, or unused CSS linger in the project.
-- **Smart Deduplication (Intra-Module vs. Cross-Module):**
-  - *Intra-Module:* Consolidate duplicated helpers across touched files within the module's shared directory.
-  - *Cross-Module:* Reuse existing shared components, but **never** edit shared infrastructure used by unrelated modules without explicit user permission.
-- **Narrow Mechanical Fixes vs. Returning to Build:**
-  - Narrow, mechanical defects on touched files (e.g., removing an unused import or fixing a typo) may be resolved in-place during Finalize.
-  - Any behavioral, architectural, data-integrity, or security defect **must** return to Phase 4 — Build as a formal task.
-- **Document Verified Truth Only:** Permanent documentation in `docs/` must represent the final verified implementation, not temporary plans or abandoned ideas.
-- **Honest Global Evidence:** Distinguish pre-existing baseline test failures from regressions introduced by this feature. Report all test results honestly as `Passed`, `Failed`, or `Not Run`. Saying tests "compiled" or "aligned" does NOT count as `Passed` — report unexecuted suites as `Not Run`.
-- **Preserve Lifecycle Artifacts by Default:** Never delete or move the `lifecycle/` directory without an explicit choice from the user at the Artifact Cleanup Gate.
-- **Strict Phase Boundaries (Negative Constraints):**
-  - **No New Features or Scope Expansion:** Feature exploration and scope boundaries belong to Phase 1 — Discover.
-  - **No Unapproved Improvements:** Never implement refactors, performance tweaks, or deduplication without explicit user approval.
-  - **No Direct Structural Refactoring:** Any substantive behavioral, architectural, or security defect must return to Phase 4 — Build as a formal task.
-  - **No Cross-Module Modification Without Approval:** Never edit shared infrastructure or files consumed by unrelated modules without explicit user permission.
-  - **No Unilateral Lifecycle Deletion:** Never delete or move the `lifecycle/` directory without an explicit choice from the user at the Artifact Cleanup Gate.
+- **Verify Integrated Outcomes With Real Evidence (Not Checklists):** Phase 4 verified individual tasks; Phase 5 verifies the complete system against the Goal and exact `F-N` features in `lifecycle/01-discover.md` using actual code, analyzer, and test runs. Report every check honestly as `Passed`, `Failed`, or `Not Run` (distinguishing pre-existing baseline failures from new regressions).
+- **Orphan Hunter & Link Parity Audit:** Grep for lingering exports, dead routes, dangling imports, stale test mocks, or debug logs after any rename/delete, and confirm `00-status.md` task titles and anchor links match `03-plan.md` and final screen/module names.
+- **Improve Proactively, Never Change Without Approval:** Identify deduplication, modernization, or quality improvements across touched files and present recommendations with trade-offs in chat, but never implement any extra change — even minor — without explicit user approval. Never edit shared cross-module infrastructure without permission.
+- **Narrow Mechanical Fixes vs. Returning to Build:** Trivial typos or unused imports on touched files may be fixed in-place and re-verified; any behavioral, architectural, data-integrity, or security defect must return to Phase 4 — Build as a formal task.
+- **Document Verified Truth Only:** Permanent docs in `docs/modules/` and root `GLOSSARY.md` must reflect the final verified implementation — never temporary plans or abandoned ideas. Always copy `**Deferred:**` items from `01-discover.md` into `docs/modules/<module>/README.md`.
+- **100% Friction Log Accountability:** Account for every `Entry #` in `lifecycle/refine.md` under `## 4. Friction Log Review` (zero entries silently skipped).
+- **Preserve `lifecycle/` Until Explicit User Choice:** Never delete or move `lifecycle/` without the user's explicit choice (`Delete`, `Archive`, or `Keep`) at the Artifact Cleanup Gate. No new feature exploration or scope expansion in Phase 5.
 
 ---
 
-## 3. Responsibilities & Sequence
-
-Finalize progresses through three disciplined chronological steps:
+## 3. Execution Sequence
 
 ### 3.1 Step 1 — Verify Integrated Outcomes & Technical Code Audit
 
-1. **Verify Intended Outcomes & Requirements:**
-   - Trace each Target Feature from `lifecycle/01-discover.md` into the implementation and automated tests.
-   - Verify that the core Goal is achieved and that critical user journeys function end-to-end.
-   - Confirm edge cases (empty states, invalid inputs, network failures, session expirations) behave as designed.
-2. **Audit Seams, Security & Invariants:**
-   - Check routes, navigation, state stores, and caller contracts across module boundaries.
-   - Verify authorization and permission checks at the enforcement boundary (not merely hiding UI elements).
-   - Check sensitive data handling, fail-closed behavior, and transaction integrity.
-3. **Execute the Orphan Hunter Audit & Code Hygiene Check:**
-   - Run dedicated grep searches to ensure deleted or renamed screens, components, or API endpoints have zero lingering exports, dead route registrations, dangling imports, or orphaned test mocks.
-   - Check modified files against assigned Rule Files (folder placement, naming conventions, file-size limits).
-   - Ensure diff hygiene: verify zero leftover `console.log`, `debugger`, or temporary test shims.
-4. **Global Verification Suite & Audit Record:**
-   - Run the project-level analyzer, linter, and full test suite.
-   - Record exact commands and outcomes honestly (`Passed`, `Failed`, `Not Run`) in `lifecycle/05-close.md` under `## 1. At a Glance` (Global Checks table). Distinguish pre-existing baseline issues from new code.
-5. **Handle Findings:**
-   - *Narrow mechanical fix:* Fix trivial typos or unused imports in-place and re-verify.
-   - *Behavioral or security defect:* Halt Close, record the finding, return to Phase 4 — Build, and implement a proper task.
+1. **Verify Intended Outcomes & Exact `F-N` Traceability:**
+   - Trace each Target Feature from `lifecycle/01-discover.md` into the implementation and automated tests using its exact `F-N` IDs — never invent new prefix schemes during Close.
+   - Verify the core Goal and critical user journeys (including empty, validation, permission, concurrency, and failure paths) work end-to-end.
+2. **Audit Seams, Security & Orphans:**
+   - Check routes, navigation, state contracts, and authorization checks at the enforcement boundary (not merely hiding UI).
+   - Run dedicated `grep` searches for orphaned exports, dead routes, dangling imports, stale test mocks, and debug statements (`console.log`, `print`, `debugger`).
+   - Verify `lifecycle/00-status.md` task titles and anchor links match `lifecycle/03-plan.md` headings and final screen/module names.
+3. **Run Global Verification Suite:**
+   - Run the project linter/analyzer and full relevant test suites, recording exact commands and honest results (`Passed`, `Failed`, `Not Run`) in `lifecycle/05-close.md` under `## 1. At a Glance`.
+   - Fix trivial mechanical typos/unused imports in-place; halt and return to Phase 4 — Build for any behavioral or security defect.
 
 ### 3.2 Step 2 — Improvement Assessment & Smart Deduplication
 
-1. **Identify Deduplication & Modernization Opportunities:**
-   - Search for duplicated logic across touched files that can be consolidated into module-level shared utilities.
-   - Identify inconsistent patterns, deprecated dependencies, or unnecessary complexity introduced or exposed by the change.
-2. **Apply the Smart Deduplication Boundary:**
-   - **Intra-Module:** Safe consolidation of helpers or sub-components within the active module.
-   - **Cross-Module:** Never touch shared infrastructure or files consumed by unrelated modules without explicit user permission.
-3. **Classify, Document & Recommend (Never Change Without Approval):**
-   - Record every identified opportunity in `lifecycle/05-close.md` under `## 2. Quality & Audit Evidence` (Assessed Improvements).
-   - For every worthwhile opportunity, present a concise recommendation in chat:
-     - **Location:** Affected files and current behavior.
-     - **Proposed Change:** What should change and expected benefit.
-     - **Recommendation:** Implement now (returns to Phase 4), plan as a follow-up task, or defer to future backlog.
-   - **Wait for explicit user approval.** If approved, update `lifecycle/03-plan.md` and return to Phase 4 — Build to implement and verify the change. If declined or deferred, record the user's decision in `lifecycle/05-close.md` and proceed without editing.
+1. **Identify Opportunities:** Search touched files for intra-module duplication or modernization opportunities (never touch shared cross-module files without permission).
+2. **Recommend Without Editing:** Record every opportunity in `lifecycle/05-close.md` under `## 3. Quality & Audit Evidence` (Assessed Improvements) and present worthwhile items in chat with **Location**, **Proposed Change**, and **Recommendation** (implement now via Phase 4, plan follow-up, or defer). Wait for explicit approval before implementing; record declined/deferred choices in `05-close.md`.
 
-### 3.3 Step 3 — Permanent Documentation & Handover
+### 3.3 Step 3 — Permanent Documentation, Friction Review & Handover
 
-1. **Synchronize Permanent Documentation via Documentation Treeing:**
-   Structure permanent project knowledge hierarchically from Trunk to Leaves:
-   - **Level 1 (Trunk — Module README at `docs/modules/<module>/README.md`):** Module orientation page summarizing business purpose, core data models, feature directory index, and cross-module boundaries. Always copy any `**Deferred:**` items from `lifecycle/01-discover.md` (`## 3. Deferred & Out of Scope`) into `Deferred (Future Backlog)` here so saved future ideas are never lost if `lifecycle/` is deleted.
-   - **Level 2 (Branches — Feature Document at `docs/modules/<module>/feature_<name>.md`):** Deep feature specification describing end-to-end primary workflows, alternate paths, and component touchpoints.
-   - **Level 3 (Leaves — Invariants & Decisions):** Scoped non-negotiable Business Rules (`BR-X`) and Consequential Architectural Decisions (`DEC-X`).
-   - **Root Updates (`README.md` / `GLOSSARY.md`):** Update root `README.md` if setup or commands changed; promote new or updated `Core Terms` from `lifecycle/01-discover.md` into the required root `GLOSSARY.md` (creating it from the `§5` template if missing) so domain vocabulary is permanently preserved after `lifecycle/` cleanup.
-   - *Format Rule:* Document verified truth with scannable nested sub-bullets. Link rather than duplicate.
-2. **Review Upstream Friction (`lifecycle/refine.md`) — Mandatory Synthesis:**
-   - Review every entry recorded in `lifecycle/refine.md` across all earlier phases. If no entries exist, explicitly note in `lifecycle/05-close.md` that the log was checked and was empty — do not silently skip it.
-   - For each entry, classify: *One-off* (project-specific, no action needed) or *Framework-wide* (would recur on the next project — a skill or rule needs updating).
-   - For every *Framework-wide* entry, produce a concrete Preventive Change recommendation: the specific skill, rule, or template to update and what the update should say.
-   - Record the synthesis in `lifecycle/05-close.md` under a `## 4. Friction Log Review` section. These recommendations are the primary mechanism for continuously improving the lifecycle skills themselves.
-3. **Prepare Copyable PR Title & Summary:**
-   Author a clean PR title and evidence-based PR summary directly in `lifecycle/05-close.md` under `## 3. Pull Request Summary` for the user to copy into GitHub/GitLab:
-   - **PR Title:** Short, clear title (e.g. `feat(<module>): <concise change summary>`).
-   - **Outcome Summary:** Problem solved and delivered user capability.
-   - **Key Changes & Files:** Core files created or modified with 1-line descriptions.
-   - **Verification Evidence:** Exact test runner commands, results, and manual check proofs.
-   - **Known Limitations:** Any unrun checks or explicitly deferred edge cases.
+1. **Synchronize Permanent Documentation (`docs/` & `GLOSSARY.md`):**
+   - **Module README (`docs/modules/<module>/README.md`):** Purpose, core models, schemas, feature index, boundaries, and all `**Deferred:**` items copied from `lifecycle/01-discover.md` (`## 3`) under `Deferred (Future Backlog)`.
+   - **Feature Doc (`docs/modules/<module>/feature_<name>.md`):** Verified primary workflow, alternate/failure paths, Business Rules (`BR-X`), file touchpoints, security constraints, and consequential Decisions (`DEC-X`).
+   - **Root Updates (`README.md` / `GLOSSARY.md`):** Update root `README.md` if setup/commands changed; promote new or updated terms from `## 5. Glossary (Core Terms)` in `lifecycle/01-discover.md` into root `GLOSSARY.md` (creating it from the `§5` template if missing).
+2. **Prepare Copyable PR Summary (`## 2. Pull Request Summary` in `05-close.md`):**
+   - Place directly after `## 1. At a Glance` for instant copy-paste into GitHub/GitLab: PR Title (`feat(<module>): ...`), Outcome Summary, Key Changes & Touchpoints, Verification Evidence, and Known Limitations (if any).
+3. **Review Upstream Friction (`lifecycle/refine.md`) — 100% Entry Coverage:**
+   - Review every entry in `lifecycle/refine.md` (if empty, explicitly note it was checked and empty).
+   - Account for **every Entry #** under `## 4. Friction Log Review`: group `One-off` and `Project-specific` entries by Entry # (e.g. `Entries 8–12, 14`), and list every `Framework-wide` entry individually with its Entry # and concrete Preventive Change (target skill/rule file and exact update).
 4. **Execute the Artifact Cleanup Gate (Delete, Archive, or Keep):**
-   Because `lifecycle/` contains temporary development artifacts (`01-discover.md`, `02-design.md`, `03-plan.md`, `refine.md`, `05-close.md`) and permanent knowledge is now in `docs/`:
-   - Run read-only `git status` to inspect existing lifecycle files.
-   - Ask the user in chat to make the **Artifact Decision for `lifecycle/`**:
-     - **1. Delete:** Remove the temporary `lifecycle/` directory (cleanest; permanent docs already committed in `docs/`).
-     - **2. Archive:** Move `lifecycle/` to an archive location (e.g. `docs/archive/<feature-name>/`).
-     - **3. Keep:** Retain the `lifecycle/` directory in place (default).
-   - **Stop and wait for the user's explicit choice.** Never delete or move `lifecycle/` without explicit user permission.
-   - Execute only the authorized choice.
+   - Run read-only `git status` and ask the user to choose for `lifecycle/`: **1. Delete**, **2. Archive** (e.g. `docs/archive/<feature-name>/`), or **3. Keep** *(Default)*.
+   - Stop and wait for explicit authorization; execute only the authorized choice.
 
 ---
 
 ## 4. Exit Gate & Completion Criteria
 
-Phase 5 marks the formal conclusion of the development lifecycle.
+### Pre-Flight Checklist
 
-### Completion Checklist (Pre-Flight Gate)
-
-Before requesting user approval, verify that:
-- **Outcomes Verified:** All Target Features and the core Goal from `lifecycle/01-discover.md` are verified against actual code and test evidence.
-- **Code Audit Passed:** Integrated system passes technical audit (seams, security invariants, diff hygiene).
-- **Orphan Hunter Audit Clean:** Zero orphaned exports, dead route registrations, dangling imports, or stale mocks remain.
-- **Global Checks Honestly Documented:** Project test suite and static analyzers run with results recorded (`Passed`, `Failed`, `Not Run`).
-- **Improvement Assessment Complete:** All identified opportunities were presented and decided by the user (approved, declined, or deferred).
-- **Permanent Docs Synchronized:** `docs/modules/` accurately reflects the final implementation, and all `**Deferred:**` items from `01-discover.md` are copied into `docs/modules/<module>/README.md` under `Deferred (Future Backlog)`.
-- **Core Terms Promoted:** New domain vocabulary from `01-discover.md` promoted to root `GLOSSARY.md`.
-- **Friction Log Reviewed:** `lifecycle/refine.md` reviewed; every entry classified as one-off or framework-wide; framework-wide entries have concrete Preventive Change recommendations recorded in `lifecycle/05-close.md`.
-- **PR Summary Ready:** Copyable PR summary prepared in `lifecycle/05-close.md`.
-- **Artifact Cleanup Decision Authorized:** User's choice (Delete, Archive, or Keep) executed.
+Before requesting final approval, verify:
+- **Outcomes & Seams Verified:** Goal and every exact `F-N` feature verified against real code/tests; Orphan Hunter and `00-status.md` anchor audit clean.
+- **Global Checks Documented:** Analyzer/linter and test suites run and honestly recorded (`Passed` / `Failed` / `Not Run`).
+- **Improvements Decided:** All identified opportunities presented and decided by the user.
+- **Permanent Docs & Glossary Synced:** `docs/modules/` updated with `Deferred` backlog items copied; `Glossary (Core Terms)` promoted to root `GLOSSARY.md`.
+- **100% Friction Log Accounted For:** Every `Entry #` in `lifecycle/refine.md` classified and every `Framework-wide` entry given a concrete Preventive Change in `05-close.md`.
+- **PR Summary & Cleanup Ready:** Copyable PR summary prepared in `## 2` of `05-close.md`; user's `lifecycle/` cleanup choice authorized and executed.
 
 ### Requesting User Approval (Phase 0 Protocol)
 
-1. Update Phase 5 status to `In Review` in `lifecycle/00-status.md`.
-2. Output a concise 1–2 sentence summary linking `[05-close.md](05-close.md)` (where the PR summary and audit evidence live) and ask the user to choose whether to **Delete**, **Archive**, or **Keep** `lifecycle/`.
-3. Stop calling tools immediately and wait for the user's explicit response.
-
-### Gate Outcomes
-
-- **Approved:** All phases in `lifecycle/00-status.md` are marked `Done`. The feature is officially complete and the working tree is ready for the user's manual git commit.
-- **Changes Requested:** Narrow fixes are addressed in-place; substantive defects return to Phase 4 — Build.
-- **Blocked:** A critical architectural invariant, security failure, or regression remains unresolved. Halt and escalate to the user with evidence.
+1. Set Phase 5 to `In Review` in `lifecycle/00-status.md`.
+2. Output a concise 1–2 sentence summary linking `[05-close.md](05-close.md)` and ask the user to choose whether to **Delete**, **Archive**, or **Keep** `lifecycle/`.
+3. Stop calling tools and wait for the user's explicit response (`Approved` → mark Phase 5 `Done`; working tree ready for manual git commit).
 
 ---
 
-## 5. Phase Output
-
-The deliverables of Phase 5 are:
-
-1. **Close Audit & Handover Document:** `lifecycle/05-close.md` capturing verification proof, assessed improvements, permanent doc links, and copyable PR summary.
-2. **Synchronized Permanent Documentation:** Updated files under `docs/modules/<module>/README.md`, `docs/modules/<module>/feature_<name>.md`, root `README.md`, and root `GLOSSARY.md`.
-3. **Completed Status Dashboard:** `lifecycle/00-status.md` showing all phases marked `Done`.
-4. **Reviewed Refinement Log (`lifecycle/refine.md` — Optional):** Upstream friction reviewed for central skills improvement.
+## 5. Output Templates
 
 ### Recommended Structure for `lifecycle/05-close.md`
 
@@ -174,40 +104,45 @@ The deliverables of Phase 5 are:
 **Permanent Docs:**
 - Updated [`docs/modules/<module>/README.md`](../docs/modules/<module>/README.md)
 - Updated [`docs/modules/<module>/feature_<name>.md`](../docs/modules/<module>/feature_<name>.md)
+- Updated [`GLOSSARY.md`](../GLOSSARY.md)
 
-## 2. Quality & Audit Evidence
-
-**Feature Traceability:**
-- `[Feature 1]`: Verified against unit tests and manual steps.
-- `[Feature 2]`: Verified against Cloud Functions integration tests.
-
-**Code Hygiene & Orphans:**
-- 0 orphaned routes/exports, 0 temporary mocks, 0 debug logs.
-
-**Assessed Improvements:**
-- `[Opportunity 1]`: [Brief note + Decision: Approved (created Task 4.x) / Deferred / Declined]
-
-## 3. Pull Request Summary
+## 2. Pull Request Summary
 
 **PR Title:** `feat(<module>): <concise summary of delivered change>`
 
 ````markdown
 ### Summary
-[1-2 paragraph summary of delivered functionality]
+[1–2 concise paragraphs describing delivered capability]
 
 ### Key Changes & Touchpoints
-- `path/to/file1.ext`: [Change description]
-- `path/to/file2.ext`: [Change description]
+- `path/to/file1.ext`: [1-line change description]
+- `path/to/file2.ext`: [1-line change description]
 
 ### Verification
 - [Passing automated test suites]
 - [User verification confirmed]
 ````
 
+## 3. Quality & Audit Evidence
+
+**Feature Traceability (`F-N` from `01-discover.md`):**
+- `F1 — [Feature 1 Name]`: Verified against unit tests and manual steps.
+- `F2 — [Feature 2 Name]`: Verified against integration tests and manual steps.
+
+**Code Hygiene, Orphans & Links:**
+- 0 orphaned routes/exports, 0 temporary mocks, 0 debug logs; `00-status.md` anchors verified.
+
+**Assessed Improvements:**
+- `[Opportunity 1]`: [Brief note + Decision: Approved (Task 4.x) / Deferred / Declined]
+
 ## 4. Friction Log Review
-- `lifecycle/refine.md` checked — [None / list entries classified as One-off or Framework-wide with Preventive Change].
+
+- **One-off / Project-specific:** Entries [list Entry #s] — [1-line summary].
+- **Framework-wide:**
+  - **Entry [N] (`<Target rule/skill>`):** [Concrete preventive rule/skill update].
 
 ## 5. Artifact Cleanup Decision
+
 Awaiting user choice for `lifecycle/`:
 1. **Delete** — remove `lifecycle/` (permanent docs already in `docs/`).
 2. **Archive** — move `lifecycle/` to `docs/archive/<feature-name>/`.

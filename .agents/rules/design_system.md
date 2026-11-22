@@ -9,6 +9,7 @@
 ## 1. Missing Token or Component Protocol
 
 - If a widget, spacing token, icon size, color role, or text style appears to be missing from `thanks_design_system`, **stop and ask the user** before inventing custom widgets, raw literals, or bespoke styles.
+- **Domain Content Values vs. UI Chrome:** Never hardcode inline hex colors, palettes, or physical/print font sizes inside widgets or renderers. App chrome must always use `thanks_design_system` tokens; when a module legitimately owns user-authored *domain content* values (e.g. editor color palettes, paper sizes, or shared print/editor typography baselines), centralize them in `<module>_constants.dart` so all views and renderers consume a single source of truth.
 
 ---
 
@@ -84,7 +85,18 @@ Consume through `final spacing = ThanksTheme.of(context).spacing;` (or `ThanksSp
 | **States & Feedback** | `ThanksMessageView`, `ThanksSliverLoading`, `ThanksSliverEmptyState` | Use `ThanksMessageView.loading(...)` and `.error(...)` with retry |
 | **Display & Forms** | `ThanksStatusBadge`, `ThanksImageView`, `ThanksInputLabel` | `ThanksBadgeTone`, `ThanksBadgeSize`, `ThanksImageShape` |
 
-**Prohibited UI APIs:** `showDialog`, `AlertDialog`, `ScaffoldMessenger`, `SnackBar`, and raw `ElevatedButton`/`FilledButton`/`Card` where a `Thanks*` widget exists.
+### Component Usage Invariants
+- **`ThanksScaffold`:**
+  - Always configure page chrome (`title`, `subtitle`, `showBackButton`, `onBackPressed`, `actions`) directly on `ThanksScaffold` — never build a bespoke top navigation bar `Container` inside `body`.
+  - Pass action widgets directly into `ThanksScaffold.actions` with zero manual `spacing.space*` or `SizedBox` spacers between them (`ThanksScaffold` manages inter-item spacing internally). Declare `adaptive: true` with a `leadingIcon` on action buttons for mobile responsiveness.
+  - Use `ThanksScaffold.endDrawer` paired with `ThanksScaffoldController` and `Drawer(width: ThanksSpacing.navigationDrawerWidthRight, ...)` for slide-over panels instead of bespoke `Stack`/`Row` overlays inside `body`.
+- **`ThanksDialog`:**
+  - Always pass modal action buttons via `ThanksDialog.show(actions: [ThanksDialogAction(...)])` rather than embedding button rows inside `content` (use a lightweight controller callback if actions need to trigger form validation or submission).
+  - Let `maxFitSize` govern responsive dialog width — never wrap dialog `content` in manual `MediaQuery` width calculations or `SizedBox(width: ...)` clamps.
+- **`ThanksMessageView`:**
+  - Use `ThanksMessageView.loading(...)`, `ThanksMessageView.error(...)`, and `ThanksMessageView(...)` for **all** loading, error, and empty states — including inside inline cards, drawers, and modal pickers, not only full-screen scaffolds.
+
+**Prohibited UI APIs:** `showDialog`, `AlertDialog`, `ScaffoldMessenger`, `SnackBar`, `CircularProgressIndicator`, ad-hoc error/empty `Column` widgets, and raw `ElevatedButton`/`FilledButton`/`TextButton`/`Card` where a `Thanks*` widget exists.
 
 ---
 
